@@ -10,16 +10,24 @@ console.log('===================================================================
 console.log('   TRADE CZAR · PHASE 5 UX, DATA & DYNAMIC NEGOTIATION VERIFICATION             ');
 console.log('================================================================================\n');
 
-// 1. Data Verification: 9월 $121.254B, 10월 $114.576B, 1~10월 $930.202B, Nov 19 1조 달러
+// 1. Data Verification: 9월 $121.254B, 10월 $115.410B, 10월 수입 $72.765B, 수지 +$42.645B, 1~10월 $931.036B (공표치 $930.202B), Nov 19 1조 달러
 console.log('>>> [TEST 1] Official Data & Nov 16 Revisions Verification...');
 const m9 = BASELINE_2026.months[8];
 const m10 = BASELINE_2026.months[9];
 assert.equal(m9.export, 121.254, 'Month 9 official export must be exactly $121.254B (11/16 revision)');
-assert.equal(m10.export, 114.576, 'Month 10 official export must be exactly $114.576B');
+assert.equal(m10.export, 115.410, 'Month 10 official export must be exactly $115.410B');
+assert.equal(m10.import, 72.765, 'Month 10 official import must be exactly $72.765B');
+assert.equal(m10.balance, 42.645, 'Month 10 official balance must be exactly +$42.645B');
 
 let sum1to10 = 0;
-for (let i = 0; i < 10; i++) sum1to10 += BASELINE_2026.months[i].export;
-assert.equal(Math.round(sum1to10 * 1000) / 1000, 930.202, '1~10 cumulative export must be exactly $930.202B');
+let sumImp1to10 = 0;
+for (let i = 0; i < 10; i++) {
+  sum1to10 += BASELINE_2026.months[i].export;
+  sumImp1to10 += BASELINE_2026.months[i].import;
+}
+assert.equal(Math.round(sum1to10 * 1000) / 1000, 931.036, '1~10 cumulative export sum must be exactly $931.036B');
+assert.equal(Math.round(sumImp1to10 * 1000) / 1000, 635.214, '1~10 cumulative import must be exactly $635.214B');
+assert.equal(BASELINE_2026.metadata.m10OfficialYtdExportPreRevision, 930.202, 'Pre-revision cumulative export is $930.202B');
 assert.ok(BASELINE_2026.metadata.nov19Milestone, 'Nov 19 $1,000B milestone metadata exists');
 console.log('  ✔ 2026 Official Statistics, Revisions & Nov 19 $1,000B milestone verified!\n');
 

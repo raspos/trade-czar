@@ -33,23 +33,26 @@ console.log('>>> [AUDIT 1] 2026 Official Customs Statistics & Common Ledger Veri
   const m10 = BASELINE_2026.months[9];
   console.log(`  • 9월 최종 정정 확정치: $${m9.export}B (11/16 관세청 최종 고시: 1,212억 5,400만 달러)`);
   assert.strictEqual(m9.export, 121.254, '9월 최종 정정 수출 확정치는 121.254B여야 합니다.');
-  console.log(`  • 10월 수출 확정치: $${m10.export}B (11/16 관세청 확정: 1,145억 7,600만 달러)`);
-  assert.strictEqual(m10.export, 114.576, '10월 수출 확정치는 114.576B여야 합니다.');
+  console.log(`  • 10월 수출 확정치: $${m10.export}B (11/16 관세청 확정: 1,154억 1,000만 달러)`);
+  assert.strictEqual(m10.export, 115.410, '10월 수출 확정치는 115.410B여야 합니다.');
+  assert.strictEqual(m10.import, 72.765, '10월 수입 확정치는 72.765B여야 합니다.');
+  assert.strictEqual(m10.balance, 42.645, '10월 무역수지는 +42.645B여야 합니다.');
 
-  console.log(`  • 1~10월 누적 수출 확정치: $${m10YtdExp}B (공식 통계: 9,302억 200만 달러)`);
-  assert.strictEqual(m10YtdExp, 930.202, '1~10월 누적 수출 확정치는 930.202B여야 합니다.');
+  console.log(`  • 1~10월 누적 수출 확정치 합산: $${m10YtdExp}B (공식 사전공표 $930.202B + 9월정정분 $0.834B)`);
+  assert.strictEqual(m10YtdExp, 931.036, '1~10월 누적 수출 확정치 합산은 931.036B여야 합니다.');
+  assert.strictEqual(BASELINE_2026.metadata.m10OfficialYtdExportPreRevision, 930.202, '사전 공표 1~10월 누적 수출은 930.202B여야 합니다.');
 
   console.log(`  • 1~10월 누적 수입 확정치: $${m10YtdImp}B (공식 통계: 6,352억 1,400만 달러)`);
   assert.strictEqual(m10YtdImp, 635.214, '1~10월 누적 수입 확정치는 635.214B여야 합니다.');
 
-  console.log(`  • 1~10월 누적 무역수지: +$${m10YtdBal}B (+2,949억 8,800만 달러)`);
-  assert.strictEqual(m10YtdBal, 294.988, '1~10월 누적 무역수지는 294.988B여야 합니다.');
+  console.log(`  • 1~10월 누적 무역수지: +$${m10YtdBal}B (+2,958억 2,200만 달러)`);
+  assert.strictEqual(m10YtdBal, 295.822, '1~10월 누적 무역수지는 295.822B여야 합니다.');
 
   console.log(`  • 11월 10일 기준 누적 수출: $963.7B, 수입: $659.9B (11월 1~10일 10일간 실적 $33.5B / $24.7B)`);
   console.log(`  • 2026 연간 총계: 수출 $${annualExp}B, 수입 $${annualImp}B, 무역수지 +$${annualBal}B`);
-  assert.strictEqual(annualExp, 1135.5, '2026 연간 총수출은 1,135.5B여야 합니다.');
+  assert.strictEqual(annualExp, 1136.334, '2026 연간 총수출은 1,136.334B여야 합니다.');
   assert.strictEqual(annualImp, 775.0, '2026 연간 총수입은 775.0B여야 합니다.');
-  assert.strictEqual(annualBal, 360.5, '2026 연간 무역수지는 +360.5B여야 합니다.');
+  assert.strictEqual(annualBal, 361.334, '2026 연간 무역수지는 +361.334B여야 합니다.');
 
   // Check 100% matrix exactness across all 12 months
   BASELINE_2026.months.forEach(m => {
