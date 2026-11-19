@@ -75,12 +75,16 @@ class UIManager {
       }, 0);
     }
 
-    // Render Masthead Header
-    const mast = this.renderMasthead();
-    this.appEl.appendChild(mast);
+    // Render Masthead Header ONLY on internal game screens (title screen has full-bleed hero scene like BOK Governor)
+    if (this.gm.screen !== 'title') {
+      const mast = this.renderMasthead();
+      this.appEl.appendChild(mast);
+    }
 
     const main = document.createElement('main');
-    main.className = 'shell';
+    if (this.gm.screen !== 'title') {
+      main.className = 'shell';
+    }
 
     switch (this.gm.screen) {
       case 'title':
@@ -220,49 +224,33 @@ class UIManager {
     return nav;
   }
 
-  // 1. Title Screen
+  // 1. Title Screen (BOK Governor Aligned Full-Bleed Hero Scene)
   renderTitleScreen() {
-    const wrap = document.createElement('div');
-    wrap.style.paddingTop = '24px';
+    const section = document.createElement('section');
+    section.className = 'title-scene';
+    const hasSave = StorageManager.hasSave();
 
-    const hero = document.createElement('section');
-    hero.className = 'hero';
-    hero.innerHTML = `
-      <div class="hero-copy">
-        <span class="eyebrow">대한민국 경제 전략 시뮬레이션</span>
-        <h1>통상교섭본부장</h1>
-        <p>"12번의 무역 성적표, 대한민국 산업의 운명이 결정된다."</p>
-        <p style="font-size: 13px; color: var(--gold-light);">실제 관세청 수출입 데이터를 바탕으로 반도체, 자동차, 조선 등 10대 주력 산업을 지휘하고 미국·중국과의 통상 담판을 이끄십시오.</p>
-        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-          <button class="primary" id="btn-new-game" style="font-size: 16px; padding: 12px 26px;">새 임기 시작</button>
-          ${StorageManager.hasSave() ? '<button class="secondary" id="btn-continue" style="font-size: 16px;">이전 임기 이어하기</button>' : ''}
+    section.innerHTML = `
+      <div class="title-copy">
+        <p class="eyebrow">2027 · 통상 전략 시뮬레이션</p>
+        <h1 class="title-wordmark">
+          <span class="title-korean" aria-label="통상교섭본부장">
+            <span>통상</span> <span>교섭</span> <span>본부장</span>
+          </span>
+          <small lang="en">TRADE CZAR · Minister for Trade</small>
+        </h1>
+        <p>12번의 무역 성적표,<br>대한민국 산업의 운명이 결정된다.</p>
+        <div class="title-actions">
+          <button class="primary" id="btn-new-game" data-action="new-term">새 게임</button>
+          ${hasSave ? '<button class="secondary" id="btn-continue" data-action="resume-term">이어하기</button>' : ''}
+          <button class="secondary" id="btn-guide" data-view="model">게임 방법</button>
+          <button class="secondary" id="btn-settings" data-action="settings">설정</button>
         </div>
-      </div>
-      <div class="hero-art"></div>
-    `;
-    wrap.appendChild(hero);
-
-    // Scenario feature boxes
-    const grid = document.createElement('div');
-    grid.className = 'office-grid';
-    grid.innerHTML = `
-      <div class="office-card">
-        <div class="icon-head">📊</div>
-        <h3>실제 무역 데이터 기반</h3>
-        <p>관세청과 산업통상부 2026년 기준선 수출입 데이터를 토대로 10대 산업과 7대 교역국의 수치를 오차 없이 정밀 시뮬레이션합니다.</p>
-      </div>
-      <div class="office-card">
-        <div class="icon-head">🤝</div>
-        <h3>인터랙티브 통상 담판</h3>
-        <p>미국의 25% 자동차 관세 폭탄과 중국의 핵심 희토류 통제에 맞서 고위급 양자 협상 테이블에서 치열한 카드 수 싸움을 벌입니다.</p>
-      </div>
-      <div class="office-card">
-        <div class="icon-head">📰</div>
-        <h3>가상 중앙일보 1면 보도</h3>
-        <p>매월 확정된 수출입 성적표와 정책 파급효과가 중앙일보 가상 1면 헤드라인과 분석 기사로 생생하게 발행됩니다.</p>
+        <footer class="title-footer">
+          <p>© <a href="https://raspos.github.io/databrew/" target="_blank" rel="noopener noreferrer">databrew</a>. All rights reserved.</p>
+        </footer>
       </div>
     `;
-    wrap.appendChild(grid);
 
     // Attach event listeners
     setTimeout(() => {
@@ -279,9 +267,113 @@ class UIManager {
           this.render();
         }
       };
+      const btnGuide = document.getElementById('btn-guide');
+      if (btnGuide) btnGuide.onclick = () => {
+        this.showHowToPlayModal();
+      };
+      const btnSettings = document.getElementById('btn-settings');
+      if (btnSettings) btnSettings.onclick = () => {
+        this.showSettingsModal();
+      };
     }, 0);
 
-    return wrap;
+    return section;
+  }
+
+  showHowToPlayModal() {
+    const dialog = document.createElement('dialog');
+    dialog.className = 'game-dialog game-document play-guide';
+    dialog.style.maxWidth = '680px';
+    dialog.style.maxHeight = '90vh';
+    dialog.style.overflowY = 'auto';
+
+    dialog.innerHTML = `
+      <div style="display: flex; justify-content: flex-end; margin-bottom: 8px;">
+        <button class="secondary" id="btn-close-guide" style="padding: 4px 10px;">닫기 ✕</button>
+      </div>
+      <section class="panel play-guide" style="background: none; border: 0; padding: 0;">
+        <h1 style="font-family: var(--font-display); font-size: 24px; color: var(--navy); margin-bottom: 14px;">게임 방법</h1>
+        <ol style="font-size: 14px; line-height: 1.7; padding-left: 20px; color: #333; margin-bottom: 20px;">
+          <li><b>출신과 시나리오 선택:</b> 관료·기업가·정치인 중 출신을 정하고, 2027년 대한민국이 마주할 통상 위기 시나리오를 선택합니다.</li>
+          <li><b>월간 3회 정책 결재 (3 AP):</b> 매월 주어지는 3회의 행동력으로 기업 현장 지원, 무역금융 확대, 규제 혁신 등을 결재합니다. 정책은 1~3개월의 시차를 두고 파급됩니다.</li>
+          <li><b>고위급 양자 통상 담판 (2-Level Games):</b> 미국의 25% 보편·자동차 관세 폭탄과 중국의 공급망 디커플링에 맞서 워싱턴·베이징과의 양자 협상 테이블에서 국익을 방어합니다.</li>
+          <li><b>무역 성적표와 중앙일보 1면:</b> 매월 말 경제 시뮬레이션이 실행되어 관세청 수출입 확정치와 가상 중앙일보 1면 조간이 발행됩니다.</li>
+          <li><b>12개월 완주와 2028년 최종 평가:</b> 12차례 무역 성적표를 거친 후 정부서울청사와 용산 대통령실의 최종 평가를 받아 7대 다중 엔딩에 도달합니다.</li>
+        </ol>
+        <p style="font-size: 13px; color: var(--muted); margin-bottom: 20px;">* 집무실의 무역상황 모니터에서 10대 산업과 7대 교역국의 수치를 상시 점검할 수 있습니다.</p>
+      </section>
+
+      <section class="panel" style="background: var(--paper-card); border-left: 4px solid var(--navy); margin-top: 16px;">
+        <div class="eyebrow" style="color: var(--navy); font-weight: 800;">데이터와 모형</div>
+        <h2 style="font-size: 18px; margin: 4px 0 10px; color: var(--navy);">시뮬레이션 가정</h2>
+        <p style="font-size: 13px; line-height: 1.6; color: #444;">
+          대한민국 관세청과 산업통상자원부의 2026년 공식 확정 통계(1~10월 확정 수출 $931.036B, 수입 $635.214B)와 10대 산업×7대 교역국 교차 원장 매트릭스를 기반으로 구축되었습니다.
+        </p>
+        <p style="font-size: 13px; line-height: 1.6; color: #444;">
+          통관 기준 상품수출과 BOP 서비스수출(MRO·물류·기술)은 엄격히 분리 계산되며, 환율·유가·해상운임·글로벌 수요·품목 관세 및 국내 팹 가동률 상한(Capacity Cap)이 유기적으로 연동됩니다.
+        </p>
+      </section>
+    `;
+
+    dialog.addEventListener('close', () => dialog.remove(), { once: true });
+    this.appEl.appendChild(dialog);
+    dialog.showModal();
+
+    setTimeout(() => {
+      const btnClose = dialog.querySelector('#btn-close-guide');
+      if (btnClose) btnClose.onclick = () => dialog.close();
+    }, 0);
+  }
+
+  showSettingsModal() {
+    const dialog = document.createElement('dialog');
+    dialog.className = 'game-dialog pause-menu';
+    dialog.style.maxWidth = '420px';
+
+    const isReduced = document.documentElement.classList.contains('reduce-motion');
+
+    dialog.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid var(--line); padding-bottom: 8px;">
+        <h2 style="font-size: 18px; color: var(--navy); margin: 0;">설정</h2>
+        <button class="secondary" id="btn-close-settings" style="padding: 2px 8px; font-size: 12px;">✕</button>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 14px; font-size: 14px;">
+        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+          <input type="checkbox" id="chk-reduce-motion" ${isReduced ? 'checked' : ''}>
+          화면 전환 효과 줄이기 (Reduce Motion)
+        </label>
+        <div style="border-top: 1px solid var(--line); padding-top: 12px;">
+          <p style="font-size: 12px; color: var(--muted); margin-bottom: 8px;">저장된 세이브 데이터 관리:</p>
+          <button class="danger" id="btn-clear-save" style="width: 100%; padding: 8px; font-size: 13px;">
+            진행 중인 세이브 데이터 초기화
+          </button>
+        </div>
+      </div>
+    `;
+
+    dialog.addEventListener('close', () => dialog.remove(), { once: true });
+    this.appEl.appendChild(dialog);
+    dialog.showModal();
+
+    setTimeout(() => {
+      const btnClose = dialog.querySelector('#btn-close-settings');
+      if (btnClose) btnClose.onclick = () => dialog.close();
+
+      const chkMotion = dialog.querySelector('#chk-reduce-motion');
+      if (chkMotion) chkMotion.onchange = (e) => {
+        document.documentElement.classList.toggle('reduce-motion', e.target.checked);
+      };
+
+      const btnClear = dialog.querySelector('#btn-clear-save');
+      if (btnClear) btnClear.onclick = () => {
+        if (confirm('정말로 저장된 진행 데이터를 모두 삭제하시겠습니까?')) {
+          StorageManager.clear();
+          dialog.close();
+          this.showToast('세이브 데이터 초기화', '저장된 게임 데이터가 삭제되었습니다.', 'warning');
+          this.render();
+        }
+      };
+    }, 0);
   }
 
   // 2. Origin Select Screen

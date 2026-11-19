@@ -803,3 +803,141 @@ dialog.game-dialog::backdrop {
     padding: 10px;
   }
 }
+
+/* =============================================================================
+   BOK GOVERNOR ALIGNED TITLE SCENE
+   ============================================================================= */
+#app:has(.title-scene) {
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+}
+main:has(.title-scene) {
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+}
+.title-scene {
+  min-height: 100svh;
+  min-height: 100vh;
+  display: grid;
+  align-items: center;
+  background: linear-gradient(90deg, #090e17ef 3%, #090e1780 56%, #090e1720), url('./assets/office-trade.jpg') center/cover;
+  position: relative;
+}
+.title-copy {
+  padding: clamp(1.3rem, 9vw, 8rem);
+  max-width: 65rem;
+}
+.title-copy .eyebrow {
+  color: #e6c488;
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  font-weight: 650;
+  letter-spacing: .095em;
+  margin-bottom: .45rem;
+  display: block;
+}
+.title-copy .title-wordmark {
+  display: grid;
+  justify-items: start;
+  gap: .32em;
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 9vw, 7.5rem);
+  font-weight: 900;
+  letter-spacing: -.06em;
+  line-height: 1.05;
+  margin: .45rem 0 1.2rem;
+  color: #f0cc89;
+  text-shadow: 0 .08em .28em #070b14;
+}
+.title-korean {
+  display: flex;
+  gap: .20em;
+  white-space: nowrap;
+  text-shadow: 0 2px 0 #76552f, 0 5px 24px #070b14;
+}
+.title-korean span:first-child { color: #ffe4ad; }
+.title-korean span:nth-child(2) { color: #f5d491; }
+.title-korean span:last-child { color: #e9be71; }
+.title-wordmark small {
+  color: #fff0ce;
+  font-family: var(--font-sans);
+  font-size: clamp(.68rem, 1.35vw, 1.15rem);
+  letter-spacing: .16em;
+  font-weight: 600;
+  text-shadow: 0 2px 8px #070b14;
+}
+.title-copy > p:not(.eyebrow) {
+  font-size: clamp(1.05rem, 2.4vw, 1.6rem);
+  color: #f7eddc;
+  line-height: 1.5;
+  font-family: var(--font-serif);
+  margin-bottom: 0.8rem;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+}
+.title-actions {
+  display: grid;
+  justify-items: start;
+  gap: .65rem;
+  margin-top: 2rem;
+}
+.title-actions button {
+  min-width: 12rem;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 650;
+  padding: 12px 22px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all .15s ease;
+}
+.title-actions button.primary {
+  background: #d9b77c;
+  color: #142030;
+  border: 1px solid #d9b77c;
+  font-weight: 800;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+}
+.title-actions button.primary:hover {
+  background: #e6c78e;
+  border-color: #e6c78e;
+}
+.title-actions button.secondary {
+  background: rgba(16, 28, 43, 0.75);
+  color: #f7eddc;
+  border: 1px solid #7c6846;
+  backdrop-filter: blur(4px);
+}
+.title-actions button.secondary:hover {
+  background: rgba(26, 44, 66, 0.95);
+  border-color: #d9b77c;
+}
+.title-footer {
+  margin-top: 2.8rem;
+  font-size: .85rem;
+  color: #a49479;
+}
+.title-footer a {
+  color: #dfc494;
+  text-decoration: none;
+}
+.title-footer a:hover {
+  text-decoration: underline;
+}
+@media (max-width: 540px) {
+  .title-scene {
+    background-position: 65% center;
+  }
+  .title-copy {
+    padding: 2.5rem 1.2rem;
+  }
+  .title-copy .title-wordmark {
+    font-size: clamp(2.6rem, 11vw, 3.6rem);
+  }
+  .title-actions button {
+    min-height: 44px;
+    width: 100%;
+  }
+}
