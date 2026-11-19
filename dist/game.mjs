@@ -1,0 +1,334 @@
+// game.mjs - Master Game State and Turn Orchestration for 통상교섭본부장 | TRADE CZAR
+
+import { SCENARIOS, setupRandomScenario } from './scenarios.mjs';
+import { ORIGINS } from './constants.mjs';
+import { getOrigin } from './origins.mjs';
+import { PRNG } from './prng.mjs';
+import { EconomyEngine } from './economy.mjs';
+import { NegotiationEngine } from './negotiations.mjs';
+import { POLICY_ACTIONS, getPolicy } from './policies.mjs';
+import { EventEngine } from './events.mjs';
+import { PoliticsManager } from './politics.mjs';
+import { NewspaperEngine } from './newspaper.mjs';
+import { VerdictEngine } from './verdict.mjs';
+import { StorageManager } from './storage.mjs';
+
+export class GameManager {
+  constructor() {
+    this.screen = "title"; // title, origin_select, scenario_select, office, war_room, negotiation, result_briefing, newspaper, verdict
+    this.scenario = null;
+    this.origin = null;
+    this.seed = 123456789;
+    this.prng = null;
+
+    this.currentMonth = 1;
+    this.actionPoints = 3;
+    this.usedPoliciesThisMonth = [];
+    this.activeEvent = null;
+    this.activeNegotiation = null;
+    this.lastNegotiationAgreement = null;
+
+    this.economy = null;
+    this.politics = null;
+    this.eventEngine = null;
+    this.newspaperEngine = new NewspaperEngine();
+    this.verdictEngine = new VerdictEngine();
+
+    this.latestMonthlyResult = null;
+    this.latestNewspaper = null;
+    this.finalVerdict = null;
+    this.gameLog = [];
+  }
+
+  // Start new game
+  newGame(scenarioId = "baseline", originId = "bureaucrat", customSeed = null) {
+    this.seed = customSeed !== null && !isNaN(customSeed) ? Number(customSeed) : Math.floor(Math.random() * 900000000) + 100000000;
+    this.prng = new PRNG(this.seed);
+
+    let rawScenario = SCENARIOS.find(s => s.id === scenarioId) || SCENARIOS[0];
+    if (rawScenario.isRandom) {
+      const randomProps = setupRandomScenario(this.prng);
+      this.scenario = { ...rawScenario, ...randomProps };
+    } else {
+      this.scenario = { ...rawScenario };
+    }
+
+    this.origin = originId;
+    const originCfg = getOrigin(originId);
+
+    this.economy = new EconomyEngine(this.scenario, this.origin, this.prng);
+    this.politics = new PoliticsManager(originCfg);
+    this.eventEngine = new EventEngine(this.prng);
+
+    this.currentMonth = 1;
+    this.actionPoints = 3;
+    this.usedPoliciesThisMonth = [];
+    this.activeEvent = null;
+    this.activeNegotiation = null;
+    this.lastNegotiationAgreement = null;
+    this.latestMonthlyResult = null;
+    this.latestNewspaper = null;
+    this.finalVerdict = null;
+    this.gameLog = [];
+
+    this.prepareMonth();
+    this.screen = "office";
+    this.autoSave();
+    return this;
+  }
+
+  prepareMonth() {
+    this.actionPoints = 3;
+    this.usedPoliciesThisMonth = [];
+    this.lastNegotiationAgreement = null;
+
+    // Check for random event for this month
+    const stateForEvent = {
+      month: this.currentMonth,
+      currentMacro: this.economy.macroHistory.length > 0 ? this.economy.macroHistory[this.economy.macroHistory.length - 1] : { fxRate: 1400 },
+      politics: this.politics.stats
+    };
+
+    this.activeEvent = this.eventEngine.rollEvent(stateForEvent);
+  }
+
+  // Handle active event choice
+  resolveEventChoice(choiceIndex) {
+    if (!this.activeEvent || !this.activeEvent.choices[choiceIndex]) return;
+    const choice = this.activeEvent.choices[choiceIndex];
+
+    if (choice.impact) {
+      this.politics.applyDeltas(choice.impact);
+    }
+    if (choice.apply) {
+      choice.apply(this.economy);
+    }
+
+    this.gameLog.push({
+      month: this.currentMonth,
+      type: "event",
+      eventTitle: this.activeEvent.title,
+      chosenText: choice.text
+    });
+
+    this.activeEvent = null;
+    this.autoSave();
+  }
+
+  // Execute a policy action
+  executePolicy(policyId) {
+    if (this.actionPoints <= 0) return { error: "No action points remaining" };
+    if (this.usedPoliciesThisMonth.includes(policyId)) return { error: "Policy already executed this month" };
+
+    const policy = getPolicy(policyId);
+    if (!policy) return { error: "Unknown policy" };
+
+    if (policy.isNegotiationLaunch) {
+      // Launch interactive negotiation session!
+      this.activeNegotiation = new NegotiationEngine(policy.partnerId, this.origin, this.prng);
+      this.screen = "negotiation";
+      this.autoSave();
+      return { success: true, mode: "negotiation" };
+    }
+
+    // Normal policy execution
+    this.actionPoints -= 1;
+    this.usedPoliciesThisMonth.push(policyId);
+
+    if (policy.executeImmediate) policy.executeImmediate(this.economy);
+    if (policy.delayMonths && policy.executeDelayed) {
+      this.economy.queueEffect(policy.delayMonths, policy.executeDelayed);
+    }
+    if (policy.impact) {
+      this.politics.applyDeltas(policy.impact);
+    }
+
+    this.gameLog.push({
+      month: this.currentMonth,
+      type: "policy",
+      policyId: policy.id,
+      title: policy.title
+    });
+
+    this.autoSave();
+    return { success: true, actionPoints: this.actionPoints };
+  }
+
+  // Conclude active negotiation
+  concludeNegotiation(choice = 'agree') {
+    if (!this.activeNegotiation) return null;
+
+    const agreement = this.activeNegotiation.conclude(choice);
+    this.activeNegotiation.applyToEconomy(this.economy);
+    this.lastNegotiationAgreement = agreement;
+
+    // Spending 1 action point for negotiation
+    this.actionPoints = Math.max(0, this.actionPoints - 1);
+    this.usedPoliciesThisMonth.push(this.activeNegotiation.scenario.partnerId);
+
+    if (agreement.relationDelta) {
+      this.politics.applyDeltas({
+        diplomaticTrust: agreement.relationDelta > 0 ? 15 : -20,
+        presidentTrust: agreement.relationDelta > 0 ? 10 : -15,
+        publicApproval: agreement.relationDelta > 0 ? 10 : -10
+      });
+    }
+
+    this.gameLog.push({
+      month: this.currentMonth,
+      type: "negotiation",
+      partner: this.activeNegotiation.scenario.partnerName,
+      outcome: agreement.grade,
+      title: agreement.title
+    });
+
+    this.activeNegotiation = null;
+    this.screen = "office";
+    this.autoSave();
+    return agreement;
+  }
+
+  // Simulate and complete the monthly turn
+  advanceTurn() {
+    // 1. Run economic simulation for current month
+    const monthlyResult = this.economy.simulateMonth(this.currentMonth);
+    this.latestMonthlyResult = monthlyResult;
+
+    // 2. Politics evaluation
+    const polEval = this.politics.evaluateMonth(monthlyResult);
+
+    // 3. Generate Virtual JoongAng Ilbo front page
+    const lastPol = this.usedPoliciesThisMonth.length > 0 ? getPolicy(this.usedPoliciesThisMonth[this.usedPoliciesThisMonth.length - 1]) : null;
+    const newspaper = this.newspaperEngine.generateFrontPage(
+      monthlyResult,
+      this.politics.stats,
+      lastPol,
+      this.lastNegotiationAgreement
+    );
+    this.latestNewspaper = newspaper;
+
+    // 4. Check for dismissal
+    if (polEval.isDismissed) {
+      this.finalVerdict = this.verdictEngine.evaluateFinal(this.economy.monthlyResults, this.politics, this.origin);
+      this.screen = "verdict";
+      this.autoSave();
+      return { status: "dismissed" };
+    }
+
+    // 5. Check if 12 months finished
+    if (this.currentMonth === 12) {
+      this.finalVerdict = this.verdictEngine.evaluateFinal(this.economy.monthlyResults, this.politics, this.origin);
+      this.screen = "result_briefing";
+      this.autoSave();
+      return { status: "year_end" };
+    }
+
+    // Proceed to briefing
+    this.screen = "result_briefing";
+    this.autoSave();
+    return { status: "next_month" };
+  }
+
+  // Go to next month after reviewing results & newspaper
+  proceedToNextMonth() {
+    if (this.currentMonth < 12 && !this.politics.isDismissed) {
+      this.currentMonth += 1;
+      this.prepareMonth();
+      this.screen = "office";
+      this.autoSave();
+    } else {
+      this.screen = "verdict";
+      this.autoSave();
+    }
+  }
+
+  autoSave() {
+    StorageManager.save(this.serialize());
+  }
+
+  serialize() {
+    return {
+      screen: this.screen,
+      scenario: this.scenario,
+      origin: this.origin,
+      seed: this.seed,
+      prngState: this.prng ? this.prng.getState() : null,
+      currentMonth: this.currentMonth,
+      actionPoints: this.actionPoints,
+      usedPoliciesThisMonth: this.usedPoliciesThisMonth,
+      activeEvent: this.activeEvent,
+      activeNegotiation: this.activeNegotiation ? {
+        partnerId: this.activeNegotiation.scenario.partnerId,
+        tension: this.activeNegotiation.tension,
+        totalScore: this.activeNegotiation.totalScore,
+        history: this.activeNegotiation.history,
+        usedCards: Array.from(this.activeNegotiation.usedCards),
+        status: this.activeNegotiation.status
+      } : null,
+      lastNegotiationAgreement: this.lastNegotiationAgreement,
+      macroHistory: this.economy ? this.economy.macroHistory : [],
+      monthlyResults: this.economy ? this.economy.monthlyResults : [],
+      industryStates: this.economy ? this.economy.industryStates : {},
+      partnerStates: this.economy ? this.economy.partnerStates : {},
+      delayedPipeline: this.economy ? this.economy.delayedPipeline : [],
+      politicsStats: this.politics ? this.politics.stats : null,
+      politicsHistory: this.politics ? this.politics.history : [],
+      consecutiveDeficits: this.politics ? this.politics.consecutiveDeficits : 0,
+      isDismissed: this.politics ? this.politics.isDismissed : false,
+      dismissalWarning: this.politics ? this.politics.dismissalWarning : false,
+      triggeredEvents: this.eventEngine ? Array.from(this.eventEngine.triggeredEvents) : [],
+      latestMonthlyResult: this.latestMonthlyResult,
+      latestNewspaper: this.latestNewspaper,
+      finalVerdict: this.finalVerdict,
+      gameLog: this.gameLog
+    };
+  }
+
+  deserialize(saved) {
+    if (!saved) return false;
+    this.screen = saved.screen;
+    this.scenario = saved.scenario;
+    this.origin = saved.origin;
+    this.seed = saved.seed;
+    this.prng = new PRNG(this.seed);
+    if (saved.prngState) this.prng.setState(saved.prngState);
+
+    this.currentMonth = saved.currentMonth;
+    this.actionPoints = saved.actionPoints;
+    this.usedPoliciesThisMonth = saved.usedPoliciesThisMonth || [];
+    this.activeEvent = saved.activeEvent;
+    this.lastNegotiationAgreement = saved.lastNegotiationAgreement;
+
+    const originCfg = getOrigin(this.origin);
+    this.politics = new PoliticsManager(originCfg);
+    if (saved.politicsStats) this.politics.stats = saved.politicsStats;
+    if (saved.politicsHistory) this.politics.history = saved.politicsHistory;
+    this.politics.consecutiveDeficits = saved.consecutiveDeficits || 0;
+    this.politics.isDismissed = saved.isDismissed || false;
+    this.politics.dismissalWarning = saved.dismissalWarning || false;
+
+    this.economy = new EconomyEngine(this.scenario, this.origin, this.prng);
+    if (saved.macroHistory) this.economy.macroHistory = saved.macroHistory;
+    if (saved.monthlyResults) this.economy.monthlyResults = saved.monthlyResults;
+    if (saved.industryStates) this.economy.industryStates = saved.industryStates;
+    if (saved.partnerStates) this.economy.partnerStates = saved.partnerStates;
+
+    this.eventEngine = new EventEngine(this.prng);
+    if (saved.triggeredEvents) this.eventEngine.triggeredEvents = new Set(saved.triggeredEvents);
+
+    if (saved.activeNegotiation) {
+      this.activeNegotiation = new NegotiationEngine(saved.activeNegotiation.partnerId, this.origin, this.prng);
+      this.activeNegotiation.tension = saved.activeNegotiation.tension;
+      this.activeNegotiation.totalScore = saved.activeNegotiation.totalScore;
+      this.activeNegotiation.history = saved.activeNegotiation.history;
+      this.activeNegotiation.usedCards = new Set(saved.activeNegotiation.usedCards);
+      this.activeNegotiation.status = saved.activeNegotiation.status;
+    }
+
+    this.latestMonthlyResult = saved.latestMonthlyResult;
+    this.latestNewspaper = saved.latestNewspaper;
+    this.finalVerdict = saved.finalVerdict;
+    this.gameLog = saved.gameLog || [];
+    return true;
+  }
+}
