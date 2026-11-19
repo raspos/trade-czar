@@ -14,6 +14,9 @@ class UIManager {
     this.pendingOrigin = 'bureaucrat';
     this.pendingScenario = 'baseline';
     this.activePolicyTab = 'corporate'; // corporate, government, negotiation
+    this.corporateModalOpen = false;
+    this.selectedCorpId = 'samsung';
+    this.lastCorpResponse = null;
 
     this.init();
   }
@@ -415,6 +418,41 @@ class UIManager {
       wrap.appendChild(warnAlert);
     }
 
+    // Monthly Dilemma Wire (이해관계자 갈등 피드)
+    const dilemmaWire = document.createElement('div');
+    dilemmaWire.className = 'panel';
+    dilemmaWire.style.background = 'var(--paper-card)';
+    dilemmaWire.style.borderLeft = '4px solid var(--gold)';
+    dilemmaWire.style.marginBottom = '20px';
+
+    dilemmaWire.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h3 style="border: 0; padding: 0; margin: 0; font-size: 16px; color: var(--navy); display: flex; align-items: center; gap: 8px;">
+          <span>⚡</span> <span>이해관계자 갈등 피드 (Monthly Dilemma Wire)</span>
+        </h3>
+        <span class="status-pill" style="font-size: 11px;">2027년 ${this.gm.currentMonth}월 첩보</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; font-size: 13px;">
+        <div style="background: var(--white); padding: 10px 12px; border-radius: 4px; border: 1px solid var(--line);">
+          <strong style="color: var(--navy); display: block; margin-bottom: 3px;">🏛️ 용산 대통령실</strong>
+          <p style="color: #444; margin: 0; font-size: 12px; line-height: 1.5;">"${this.gm.scenario.presidentMandate}"</p>
+        </div>
+        <div style="background: var(--white); padding: 10px 12px; border-radius: 4px; border: 1px solid var(--line);">
+          <strong style="color: var(--navy); display: block; margin-bottom: 3px;">🇺🇸 미국 USTR (캐서린 대표)</strong>
+          <p style="color: #444; margin: 0; font-size: 12px; line-height: 1.5;">"한국의 600억 달러 대미 흑자는 지속 불가합니다. 자동차 관세를 피하려면 미국산 농산물과 에너지 구매를 결단하십시오."</p>
+        </div>
+        <div style="background: var(--white); padding: 10px 12px; border-radius: 4px; border: 1px solid var(--line);">
+          <strong style="color: var(--navy); display: block; margin-bottom: 3px;">🌾 전국농민총연맹</strong>
+          <p style="color: #444; margin: 0; font-size: 12px; line-height: 1.5;">"공업 수출을 위해 농민을 제물로 바치는 굴욕 협상은 결사항전입니다! 사과·쇠고기 추가 개방 시 전면 상경 투쟁합니다."</p>
+        </div>
+        <div style="background: var(--white); padding: 10px 12px; border-radius: 4px; border: 1px solid var(--line);">
+          <strong style="color: var(--navy); display: block; margin-bottom: 3px;">💼 경제부총리 겸 재정경제부</strong>
+          <p style="color: #444; margin: 0; font-size: 12px; line-height: 1.5;">"환율 1,400원선 사수와 물가 안정이 최우선 과제입니다. 외교적 마찰을 피하면서도 무역흑자 폭을 질서 있게 유지해야 합니다."</p>
+        </div>
+      </div>
+    `;
+    wrap.appendChild(dilemmaWire);
+
     // Interactive Office Objects Grid
     const officeGrid = document.createElement('div');
     officeGrid.className = 'office-grid';
@@ -450,9 +488,9 @@ class UIManager {
 
       <div class="office-card" id="obj-corp-dialogue" style="cursor: pointer;">
         <div class="icon-head">💼</div>
-        <h3>10대 기업 간담회 연락망</h3>
-        <p>삼성, 현대차, SK, 포스코, 조선 3사 등 주요 기업들의 현장 건의사항과 수출 애로를 청취합니다.</p>
-        <button class="secondary" style="width: 100%;">기업 건의 열람 →</button>
+        <h3>10대 기업 현장 간담회</h3>
+        <p>삼성(반도체 팹), 현대차(관세), 조선 3사(인도 지연), 포스코(덤핑), 중기연합 등 현장 병목을 청취하고 전략을 지시합니다.</p>
+        <button class="secondary" style="width: 100%;">기업 간담회 진행 →</button>
       </div>
 
       <div class="office-card" id="obj-newspaper-archive" style="cursor: pointer;">
@@ -478,16 +516,26 @@ class UIManager {
     `;
     wrap.appendChild(actionBanner);
 
+    // Render Corporate Modal if opened
+    if (this.corporateModalOpen) {
+      wrap.appendChild(this.renderCorporateModal());
+    }
+
     setTimeout(() => {
-      document.getElementById('obj-war-room').onclick = () => { this.gm.screen = 'war_room'; this.render(); };
-      document.getElementById('obj-policies').onclick = () => { this.gm.screen = 'policies'; this.render(); };
-      document.getElementById('obj-nego-us').onclick = () => { this.gm.executePolicy('nego_us_bilateral'); this.render(); };
-      document.getElementById('obj-president-call').onclick = () => {
+      const elWar = document.getElementById('obj-war-room');
+      if (elWar) elWar.onclick = () => { this.gm.screen = 'war_room'; this.render(); };
+      const elPol = document.getElementById('obj-policies');
+      if (elPol) elPol.onclick = () => { this.gm.screen = 'policies'; this.render(); };
+      const elNego = document.getElementById('obj-nego-us');
+      if (elNego) elNego.onclick = () => { this.gm.executePolicy('nego_us_bilateral'); this.render(); };
+      const elPres = document.getElementById('obj-president-call');
+      if (elPres) elPres.onclick = () => {
         alert(`[대통령실 지시]\n\n"${this.gm.scenario.presidentMandate}"\n\n대통령 신임도: ${this.gm.politics.stats.presidentTrust}점 / 100점`);
       };
-      document.getElementById('obj-corp-dialogue').onclick = () => {
-        const text = CORPORATIONS.map(c => `• [${c.name}] (${c.leader}): ${c.demands[0].text}`).join('\n\n');
-        alert(`[10대 기업 현장 애로사항 건의]\n\n${text}`);
+      const elCorp = document.getElementById('obj-corp-dialogue');
+      if (elCorp) elCorp.onclick = () => {
+        this.corporateModalOpen = true;
+        this.render();
       };
       const btnNews = document.getElementById('obj-newspaper-archive');
       if (btnNews && this.gm.latestNewspaper) btnNews.onclick = () => { this.gm.screen = 'newspaper'; this.render(); };
@@ -500,6 +548,98 @@ class UIManager {
     }, 0);
 
     return wrap;
+  }
+
+  // Interactive Corporate Dialogue Modal
+  renderCorporateModal() {
+    const dialog = document.createElement('dialog');
+    dialog.className = 'game-dialog';
+    dialog.open = true;
+    dialog.style.maxHeight = '90vh';
+    dialog.style.overflowY = 'auto';
+
+    const corp = CORPORATIONS.find(c => c.id === this.selectedCorpId) || CORPORATIONS[0];
+
+    dialog.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; border-bottom: 2px solid var(--gold); padding-bottom: 8px;">
+        <div>
+          <span class="eyebrow" style="color: var(--gold); font-weight: 800;">TOP 10 EXPORTERS ROUNDTABLE</span>
+          <h2 style="font-family: var(--font-serif); font-size: 22px; color: var(--navy); margin-top: 4px;">10대 기업 현장 간담회 및 전략 협의</h2>
+        </div>
+        <button class="secondary" id="btn-close-corp-modal" style="padding: 6px 12px; font-size: 14px;">닫기 ✕</button>
+      </div>
+
+      <!-- Corporate selector tabs -->
+      <div style="display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 16px;">
+        ${CORPORATIONS.map(c => `
+          <button class="secondary tab-corp-btn ${c.id === this.selectedCorpId ? 'primary' : ''}" data-cid="${c.id}" style="padding: 8px 12px; font-size: 13px; white-space: nowrap;">
+            ${c.icon} ${c.name}
+          </button>
+        `).join('')}
+      </div>
+
+      <!-- Corporate Card -->
+      <div style="background: var(--white); border: 1px solid var(--line); border-radius: 6px; padding: 18px; margin-bottom: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <h3 style="font-size: 18px; color: var(--navy); margin: 0;">${corp.icon} ${corp.name}</h3>
+            <small style="color: var(--muted); font-weight: 700;">대표 면담자: ${corp.leader} · 수출 비중: ${(corp.annualExportShare * 100).toFixed(0)}%</small>
+          </div>
+          <span class="status-pill" style="font-size: 12px;">기조: ${corp.stance}</span>
+        </div>
+
+        <div style="background: #fbf8f0; border-left: 4px solid var(--gold); padding: 12px 14px; border-radius: 4px; margin: 12px 0; font-size: 14px; line-height: 1.6; color: #222;">
+          <strong>현장 애로 및 물리적 제약 요인:</strong><br>
+          "${corp.dialogue.greeting}"
+        </div>
+
+        ${this.lastCorpResponse ? `
+          <div style="background: rgba(37, 107, 79, 0.08); border-left: 4px solid var(--green); padding: 10px 14px; border-radius: 4px; margin: 12px 0; font-size: 13px; color: #194d38;">
+            <b>기업 측 현장 반응:</b><br>${this.lastCorpResponse}
+          </div>
+        ` : ''}
+
+        <div style="margin-top: 16px;">
+          <h4 style="font-size: 14px; color: var(--navy); margin-bottom: 8px;">통상교섭본부장의 정책 지침 및 현장 지원 선택:</h4>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            ${corp.dialogue.options.map((opt, idx) => `
+              <button class="secondary btn-corp-opt" data-opt="${idx}" style="text-align: left; padding: 12px 14px; border: 1px solid var(--line); line-height: 1.5;">
+                <strong style="color: var(--navy); display: block; margin-bottom: 4px;">지침 ${idx + 1}. ${opt.text}</strong>
+                <span style="font-size: 12px; color: var(--muted);">예상 파급효과: 기업신뢰 ${opt.impact?.businessTrust ? (opt.impact.businessTrust > 0 ? '+' : '') + opt.impact.businessTrust : '0'}pt, 산업 경쟁력 ${opt.impact?.competitiveness ? (opt.impact.competitiveness > 0 ? '+' : '') + opt.impact.competitiveness : '0'}pt</span>
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    `;
+
+    setTimeout(() => {
+      const btnClose = dialog.querySelector('#btn-close-corp-modal');
+      if (btnClose) btnClose.onclick = () => {
+        this.corporateModalOpen = false;
+        this.lastCorpResponse = null;
+        this.render();
+      };
+      dialog.querySelectorAll('.tab-corp-btn').forEach(btn => {
+        btn.onclick = () => {
+          this.selectedCorpId = btn.getAttribute('data-cid');
+          this.lastCorpResponse = null;
+          this.render();
+        };
+      });
+      dialog.querySelectorAll('.btn-corp-opt').forEach(btn => {
+        btn.onclick = () => {
+          const optIdx = Number(btn.getAttribute('data-opt'));
+          const res = this.gm.consultCorporation(this.selectedCorpId, optIdx);
+          if (res) {
+            this.lastCorpResponse = res.response;
+            this.render();
+          }
+        };
+      });
+    }, 0);
+
+    return dialog;
   }
 
   // 5. Trade War Room Screen
@@ -746,13 +886,17 @@ class UIManager {
     const stageWrap = document.createElement('div');
     stageWrap.className = 'negotiation-wrap';
 
-    // Left Column: Intelligence, Demands, and Dialogue Stage
+    // Left Column: Intelligence, Initial Demands, Counter-Demands, Domestic Voices
     const leftCol = document.createElement('div');
     leftCol.className = 'negotiation-stage';
+
+    const demands = nego.scenario.initialDemands || nego.scenario.partnerDemands || [];
+    const stakeholders = nego.scenario.stakeholderOpinions || {};
+
     leftCol.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;">
-        <span class="eyebrow" style="color: var(--gold-light);">BILATERAL SUMMIT</span>
-        <span style="font-size: 13px;">협상 타결 점수: <strong>${nego.totalScore} / 60</strong></span>
+        <span class="eyebrow" style="color: var(--gold-light);">BILATERAL SUMMIT · STAGE ${nego.history.length + 1}</span>
+        <span style="font-size: 13px;">협상 수용 점수: <strong>${nego.totalScore} / ${nego.scenario.minAcceptableScore || 50}pt</strong></span>
       </div>
       <h3 style="font-family: var(--font-serif); font-size: 20px; color: #fff; margin-bottom: 12px;">핵심 쟁점: ${nego.scenario.coreIssue}</h3>
       
@@ -764,24 +908,42 @@ class UIManager {
         <div class="tension-bar">
           <div class="tension-fill" style="width: ${nego.tension}%;"></div>
         </div>
-        <small style="font-size: 11px; color: #aaa;">긴장도가 95%를 초과하면 협상이 자동 결렬됩니다.</small>
+        <small style="font-size: 11px; color: #aaa;">긴장도가 92%를 초과하면 협상이 자동 결렬됩니다.</small>
       </div>
 
-      <div style="background: rgba(0,0,0,0.3); padding: 14px; border-radius: 6px; margin: 16px 0; font-size: 13px; line-height: 1.6; border-left: 3px solid var(--gold);">
+      <div style="background: rgba(0,0,0,0.3); padding: 14px; border-radius: 6px; margin: 14px 0; font-size: 13px; line-height: 1.6; border-left: 3px solid var(--gold);">
         <strong style="color: var(--gold-light);">🕵️ ${nego.scenario.intelReport}</strong>
       </div>
 
-      <div style="margin-top: 16px;">
-        <h4 style="font-size: 13px; color: var(--gold-light); margin-bottom: 8px;">상대국 요구안:</h4>
+      <div style="margin-top: 14px;">
+        <h4 style="font-size: 13px; color: var(--gold-light); margin-bottom: 6px;">상대국 3대 핵심 요구안:</h4>
         <ul style="font-size: 12px; padding-left: 18px; color: #ddd; line-height: 1.7;">
-          ${nego.scenario.partnerDemands.map(d => `<li>${d}</li>`).join('')}
+          ${demands.map(d => `<li>${d}</li>`).join('')}
         </ul>
       </div>
 
+      ${nego.currentCounterDemand ? `
+        <div style="background: rgba(239, 68, 68, 0.2); border-left: 3px solid #ef4444; padding: 12px; border-radius: 4px; margin-top: 14px; font-size: 12px; color: #fca5a5;">
+          <strong style="color: #fff; display: block; margin-bottom: 4px;">🚨 상대국의 기습 역제안 (Counter-Demand):</strong>
+          "${nego.currentCounterDemand}"
+        </div>
+      ` : ''}
+
+      <div style="margin-top: 16px; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 12px;">
+        <h4 style="font-size: 13px; color: var(--gold-light); margin-bottom: 6px;">국내 이해관계자 여론 및 이해상충:</h4>
+        <div style="font-size: 11px; color: #ccc; display: flex; flex-direction: column; gap: 6px;">
+          ${Object.entries(stakeholders).map(([k, text]) => `
+            <div style="background: rgba(255,255,255,0.05); padding: 6px 10px; border-radius: 4px; border-left: 2px solid var(--gold);">
+              ${text}
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
       ${nego.history.length > 0 ? `
-        <div style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 14px;">
-          <h4 style="font-size: 13px; color: var(--gold-light); margin-bottom: 8px;">최근 대화 기록:</h4>
-          <div style="font-size: 13px; font-style: italic; color: #e5e5e5; background: rgba(255,255,255,0.06); padding: 10px; border-radius: 4px;">
+        <div style="margin-top: 16px; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 12px;">
+          <h4 style="font-size: 13px; color: var(--gold-light); margin-bottom: 6px;">직전 교섭 기록:</h4>
+          <div style="font-size: 12px; font-style: italic; color: #e5e5e5; background: rgba(255,255,255,0.08); padding: 8px 12px; border-radius: 4px;">
             ${nego.history[nego.history.length - 1].partnerReaction}
           </div>
         </div>
@@ -789,12 +951,12 @@ class UIManager {
     `;
     stageWrap.appendChild(leftCol);
 
-    // Right Column: Hand of Strategic Cards
+    // Right Column: Hand of Strategic Cards & Conclude Options
     const rightCol = document.createElement('div');
     rightCol.innerHTML = `
       <div class="panel" style="margin-bottom: 16px;">
-        <h3 style="border: 0; padding: 0; margin-bottom: 12px; font-size: 18px;">한국 측 협상 카드 선택</h3>
-        <p style="font-size: 13px; color: var(--muted); margin-bottom: 16px;">원하는 협상 카드를 제시하여 상대국의 수용도를 높이고 긴장도를 관리하십시오.</p>
+        <h3 style="border: 0; padding: 0; margin-bottom: 8px; font-size: 18px;">한국 측 협상 카드 선택</h3>
+        <p style="font-size: 13px; color: var(--muted); margin-bottom: 14px;">전략 카드를 제시하여 상대국 수용도를 올리고 긴장도를 관리하십시오.</p>
         <div class="negotiation-cards">
           ${nego.scenario.cards.map(card => {
             const isUsed = nego.usedCards.has(card.id);
@@ -802,9 +964,9 @@ class UIManager {
               <button class="negotiation-card-btn btn-play-card" data-cid="${card.id}" ${isUsed ? 'disabled' : ''}>
                 <strong>${card.name}</strong>
                 <p>${card.text}</p>
-                <div style="display: flex; justify-content: space-between; font-size: 11px;">
-                  <span style="color: var(--navy); font-weight: 700;">비용: ${card.cost}</span>
-                  <small style="color: ${card.acceptanceScore >= 25 ? 'var(--green)' : 'var(--gold)'};">예상 수용도: +${card.acceptanceScore}pt</small>
+                <div style="display: flex; justify-content: space-between; font-size: 11px; margin-top: 4px;">
+                  <span style="color: var(--navy); font-weight: 700;">비용/리스크: ${card.cost}</span>
+                  <small style="color: ${card.acceptanceScore >= 25 ? 'var(--green)' : 'var(--gold)'}; font-weight: 700;">수용도: +${card.acceptanceScore}pt | 긴장도: ${card.tensionDelta}pt</small>
                 </div>
               </button>
             `;
@@ -814,11 +976,13 @@ class UIManager {
 
       <div style="background: var(--white); border: 1px solid var(--line); border-radius: 6px; padding: 16px; display: flex; flex-direction: column; gap: 10px;">
         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-          <button class="primary" id="btn-conclude-agree" style="flex: 1;">타결안 서명 시도</button>
+          <button class="primary" id="btn-conclude-agree" style="flex: 1.5; font-weight: 700;">타결안 서명 시도</button>
           <button class="secondary" id="btn-conclude-defer" style="flex: 1;">협상 3개월 유예</button>
           <button class="danger" id="btn-conclude-break" style="flex: 1;">협상 결렬 감수</button>
         </div>
-        <small style="color: var(--muted); font-size: 11px; text-align: center;">타결을 위해서는 점수 60점 이상, 긴장도 60% 이하가 권장됩니다.</small>
+        <div style="font-size: 11px; color: var(--muted); line-height: 1.4; text-align: center;">
+          * <b>대타결</b>: 점수 ${nego.scenario.minAcceptableScore + 10}점 이상 & 긴장도 60% 이하 | <b>조건부 절충</b>: 점수 ${nego.scenario.minAcceptableScore}점 이상 & 긴장도 75% 이하
+        </div>
       </div>
     `;
     stageWrap.appendChild(rightCol);
@@ -836,20 +1000,20 @@ class UIManager {
       const btnAgree = document.getElementById('btn-conclude-agree');
       if (btnAgree) btnAgree.onclick = () => {
         const res = this.gm.concludeNegotiation('agree');
-        alert(`[협상 결과 보고]\n\n${res.grade}\n\n${res.text}`);
+        alert(`[협상 결과 보고: ${res.grade}]\n\n${res.title}\n\n${res.description || res.text}`);
         this.render();
       };
       const btnDefer = document.getElementById('btn-conclude-defer');
       if (btnDefer) btnDefer.onclick = () => {
         const res = this.gm.concludeNegotiation('defer');
-        alert(`[협상 결과 보고]\n\n${res.grade}\n\n${res.text}`);
+        alert(`[협상 결과 보고: ${res.grade}]\n\n${res.title}\n\n${res.description || res.text}`);
         this.render();
       };
       const btnBreak = document.getElementById('btn-conclude-break');
       if (btnBreak) btnBreak.onclick = () => {
-        if (confirm('정말로 협상을 결렬시키겠습니까? 상대국의 즉각적인 보복 관세가 발효될 수 있습니다.')) {
+        if (confirm('정말로 협상을 결렬시키겠습니까? 상대국의 즉각적인 보복 관세가 발효됩니다.')) {
           const res = this.gm.concludeNegotiation('breakdown');
-          alert(`[협상 결과 보고]\n\n${res.grade}\n\n${res.text}`);
+          alert(`[협상 결과 보고: ${res.grade}]\n\n${res.title}\n\n${res.description || res.text}`);
           this.render();
         }
       };
@@ -880,6 +1044,12 @@ class UIManager {
       </div>
     `;
     wrap.appendChild(scene);
+
+    // Compute Top Gainer & Top Loser Industries
+    const indEntries = Object.values(res.industries);
+    const sortedByGrowth = [...indEntries].sort((a, b) => b.balance - a.balance);
+    const topGainer = sortedByGrowth[0];
+    const topLoser = sortedByGrowth[sortedByGrowth.length - 1];
 
     const panel = document.createElement('div');
     panel.className = 'panel';
@@ -913,12 +1083,102 @@ class UIManager {
         </div>
       </div>
 
+      <!-- Top Gainer vs Top Loser Callouts -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin: 20px 0; text-align: left;">
+        <div style="background: rgba(37, 107, 79, 0.08); border: 1px solid var(--green); border-radius: 6px; padding: 14px;">
+          <span class="status-pill" style="background: var(--green); color: #fff; font-size: 11px;">🏆 최대 개선 산업 (Top Gainer)</span>
+          <h4 style="font-size: 17px; margin: 8px 0 4px; color: var(--navy);">${topGainer.name}</h4>
+          <div style="font-size: 13px; color: #333;">당월 수출: <b>$${topGainer.export.toFixed(1)}B</b> · 무역수지: <b style="color: var(--green);">+$${topGainer.balance.toFixed(1)}B</b></div>
+          <small style="color: var(--muted); font-size: 11px; margin-top: 4px; display: block;">공장 가동률: ${topGainer.utilizationRate}% · 관세 장벽: ${topGainer.tradeBarrierIndex}pt</small>
+        </div>
+        <div style="background: rgba(175, 81, 71, 0.08); border: 1px solid var(--red); border-radius: 6px; padding: 14px;">
+          <span class="status-pill" style="background: var(--red); color: #fff; font-size: 11px;">⚠️ 최대 악화 산업 (Top Loser)</span>
+          <h4 style="font-size: 17px; margin: 8px 0 4px; color: var(--navy);">${topLoser.name}</h4>
+          <div style="font-size: 13px; color: #333;">당월 수출: <b>$${topLoser.export.toFixed(1)}B</b> · 무역수지: <b style="color: var(--red);">${topLoser.balance >= 0 ? '+' : ''}$${topLoser.balance.toFixed(1)}B</b></div>
+          <small style="color: var(--muted); font-size: 11px; margin-top: 4px; display: block;">공장 가동률: ${topLoser.utilizationRate}% · 관세 장벽: ${topLoser.tradeBarrierIndex}pt</small>
+        </div>
+      </div>
+
+      <!-- Policy vs External Shock Decomposition Table -->
+      <div style="background: var(--white); border: 1px solid var(--line); border-radius: 6px; padding: 16px; margin: 20px 0; text-align: left;">
+        <h4 style="font-family: var(--font-serif); font-size: 16px; color: var(--navy); margin-bottom: 10px;">
+          📊 당월 수출 실적 요인 분해표 (Decomposition Table)
+        </h4>
+        <div class="table-responsive">
+          <table class="game-table">
+            <thead>
+              <tr>
+                <th>구분</th>
+                <th>요인 항목</th>
+                <th>기여 금액 ($B)</th>
+                <th>영향 성격</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>기준선</strong></td>
+                <td>2026년 동월 기준선 수출액</td>
+                <td><b>$${res.decomposition.baseExport.toFixed(1)}B</b></td>
+                <td><span style="color: var(--muted);">기준선</span></td>
+              </tr>
+              <tr>
+                <td>환율 요인</td>
+                <td>원/달러 환율 변동 효과 (FX Rate)</td>
+                <td style="color: ${res.decomposition.fxDelta >= 0 ? 'var(--green)' : 'var(--red)'}; font-weight: 700;">
+                  ${res.decomposition.fxDelta >= 0 ? '+' : ''}$${res.decomposition.fxDelta.toFixed(1)}B
+                </td>
+                <td>${res.decomposition.fxDelta >= 0 ? '환율 상승에 따른 가격경쟁력 개선' : '원화 강세로 수출 채산성 둔화'}</td>
+              </tr>
+              <tr>
+                <td>시장 요인</td>
+                <td>글로벌 수요 변동 지수</td>
+                <td style="color: ${res.decomposition.demandDelta >= 0 ? 'var(--green)' : 'var(--red)'}; font-weight: 700;">
+                  ${res.decomposition.demandDelta >= 0 ? '+' : ''}$${res.decomposition.demandDelta.toFixed(1)}B
+                </td>
+                <td>${res.decomposition.demandDelta >= 0 ? '글로벌 경기 호조' : '해외 경기 둔화 압력'}</td>
+              </tr>
+              <tr>
+                <td>통상 장벽</td>
+                <td>상대국 관세 장벽 (Tariff Impact)</td>
+                <td style="color: ${res.decomposition.tariffDelta >= 0 ? 'var(--green)' : 'var(--red)'}; font-weight: 700;">
+                  ${res.decomposition.tariffDelta >= 0 ? '+' : ''}$${res.decomposition.tariffDelta.toFixed(1)}B
+                </td>
+                <td>${res.decomposition.tariffDelta < 0 ? '미국·EU 등 품목 관세 인상 타격' : '관세 인상 억제'}</td>
+              </tr>
+              <tr>
+                <td>정책 기여</td>
+                <td>정부 무역금융 및 정책 지원</td>
+                <td style="color: var(--green); font-weight: 700;">
+                  +${res.decomposition.supportDelta >= 0 ? '$' + res.decomposition.supportDelta.toFixed(1) + 'B' : '$0.0B'}
+                </td>
+                <td><span style="color: var(--green);">정부 정책 직접 기여</span></td>
+              </tr>
+              <tr>
+                <td>생산 제약</td>
+                <td>국내 설비 및 팹 가동률 상한 (Capacity Cap)</td>
+                <td style="color: var(--red); font-weight: 700;">
+                  ${res.decomposition.capacityConstraintDelta < 0 ? '$' + res.decomposition.capacityConstraintDelta.toFixed(1) + 'B' : '$0.0B'}
+                </td>
+                <td><span style="color: var(--red);">국내 팹·공장 생산 한계로 공급 제한</span></td>
+              </tr>
+              <tr style="background: rgba(16, 28, 43, 0.05); font-weight: 800;">
+                <td><strong>최종 확정</strong></td>
+                <td><strong>2027년 ${res.month}월 공식 수출 총액</strong></td>
+                <td style="color: var(--navy); font-size: 15px;"><strong>$${res.export.toFixed(1)}B</strong></td>
+                <td><strong>관세청 확정 통계</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <div style="margin: 24px 0; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
         <button class="primary" id="btn-view-newspaper" style="font-size: 16px; padding: 12px 30px;">
           📰 중앙일보 1면 보도 확인 →
         </button>
       </div>
     `;
+    panel.style.textAlign = 'center';
     wrap.appendChild(panel);
 
     setTimeout(() => {

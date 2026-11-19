@@ -65,9 +65,9 @@ const js = modules.map(source =>
 ).join('\n');
 
 const page = html
-  .replace('<link rel="stylesheet" href="./style.css">', '<style>' + styles + '</style>')
+  .replace('<link rel="stylesheet" href="./style.css">', () => '<style>' + styles + '</style>')
   .replace('<script type="module" src="./ui.mjs"></script>', '')
-  .replace('</body>', '<script>' + js.replaceAll('</script', '<\\/script') + '</script></body>');
+  .replace('</body>', () => '<script>' + js.replaceAll('</script', '<\\/script') + '</script></body>');
 
 await writeFile(new URL('./play.html', import.meta.url), page);
 console.log('Successfully generated standalone play.html (' + Math.round(page.length / 1024) + ' KB)');

@@ -30,16 +30,17 @@ const MIME = {
 
 const server = createServer(async (req, res) => {
   let urlPath = req.url.split('?')[0];
-  if (urlPath === '/') urlPath = '/dist/index.html';
+  if (urlPath === '/' || urlPath === '') urlPath = 'dist/index.html';
 
-  const filePath = join(projectDir, urlPath);
+  const cleanPath = urlPath.replace(/^[/\\]+/, '');
+  const filePath = join(projectDir, cleanPath);
   try {
     const data = await readFile(filePath);
     const mime = MIME[extname(filePath)] || 'application/octet-stream';
     res.writeHead(200, { 'Content-Type': mime });
     res.end(data);
-  } catch {
-    res.writeHead(404).end('Not Found');
+  } catch (err) {
+    res.writeHead(404).end('Not Found: ' + cleanPath);
   }
 });
 
@@ -73,11 +74,19 @@ try {
 
     const page = await context.newPage();
     const errors = [];
-    page.on('pageerror', err => errors.push(err.message));
+    page.on('pageerror', err => {
+      console.log('PAGE ERROR:', err.message);
+      errors.push(err.message);
+    });
+    page.on('console', msg => console.log('PAGE LOG:', msg.text()));
+    page.on('requestfailed', req => console.log('REQ FAILED:', req.url(), req.failure()?.errorText));
 
     // 1. Visit Title Screen
     await page.goto(`${baseUrl}/dist/index.html`);
+    await page.evaluate(() => localStorage.clear());
+    await page.reload();
     await page.waitForLoadState('networkidle');
+    console.log('PAGE CONTENT LENGTH:', (await page.content()).length);
 
     // Check no horizontal scroll overflow
     const overflowTitle = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
@@ -155,8 +164,13 @@ try {
   console.log('\n=== Testing Standalone play.html ===');
   const standaloneContext = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const standalonePage = await standaloneContext.newPage();
+  standalonePage.on('pageerror', err => console.log('STANDALONE PAGE ERROR:', err.message));
+  standalonePage.on('console', msg => console.log('STANDALONE PAGE LOG:', msg.text()));
   await standalonePage.goto(`${baseUrl}/play.html`);
+  await standalonePage.evaluate(() => localStorage.clear());
+  await standalonePage.reload();
   await standalonePage.waitForLoadState('networkidle');
+  console.log('STANDALONE CONTENT LENGTH:', (await standalonePage.content()).length);
   assert.ok(await standalonePage.locator('#btn-new-game').isVisible(), 'Standalone play.html loaded');
   console.log('✓ Standalone play.html loaded and fully operational!');
   await standaloneContext.close();

@@ -8,6 +8,7 @@ import { BASELINE_2026 } from './data.mjs';
 import { EconomyEngine } from './economy.mjs';
 import { NegotiationEngine } from './negotiations.mjs';
 import { POLICY_ACTIONS, getPolicy } from './policies.mjs';
+import { CORPORATIONS, getCorporation } from './corporations.mjs';
 import { EventEngine } from './events.mjs';
 import { PoliticsManager } from './politics.mjs';
 import { NewspaperEngine } from './newspaper.mjs';
@@ -155,6 +156,36 @@ export class GameManager {
     return { success: true, actionPoints: this.actionPoints };
   }
 
+  // Interactive Corporate Dialogue & Strategy Guidance
+  consultCorporation(corpId, optionIndex) {
+    const corp = getCorporation(corpId);
+    if (!corp || !corp.dialogue || !corp.dialogue.options[optionIndex]) return null;
+    const option = corp.dialogue.options[optionIndex];
+
+    if (option.impact) {
+      this.politics.applyDeltas(option.impact);
+    }
+    if (option.apply) {
+      option.apply(this.economy);
+    }
+
+    this.gameLog.push({
+      month: this.currentMonth,
+      type: "corporate_consultation",
+      corpId: corp.id,
+      corpName: corp.name,
+      chosenOption: option.text,
+      response: option.response
+    });
+
+    this.autoSave();
+    return {
+      corp,
+      option,
+      response: option.response
+    };
+  }
+
   // Conclude active negotiation
   concludeNegotiation(choice = 'agree') {
     if (!this.activeNegotiation) return null;
@@ -211,7 +242,7 @@ export class GameManager {
 
     // 4. Check for dismissal
     if (polEval.isDismissed) {
-      this.finalVerdict = this.verdictEngine.evaluateFinal(this.economy.monthlyResults, this.politics, this.origin);
+      this.finalVerdict = this.verdictEngine.evaluateFinal(this.economy.monthlyResults, this.politics, this.origin, this.gameLog);
       this.screen = "verdict";
       this.autoSave();
       return { status: "dismissed" };
@@ -219,7 +250,7 @@ export class GameManager {
 
     // 5. Check if 12 months finished
     if (this.currentMonth === 12) {
-      this.finalVerdict = this.verdictEngine.evaluateFinal(this.economy.monthlyResults, this.politics, this.origin);
+      this.finalVerdict = this.verdictEngine.evaluateFinal(this.economy.monthlyResults, this.politics, this.origin, this.gameLog);
       this.screen = "result_briefing";
       this.autoSave();
       return { status: "year_end" };
