@@ -21,8 +21,8 @@ test('EconomyEngine: mathematical exactness and 12-month simulation', () => {
       indExpSum += ind.export;
       indImpSum += ind.import;
     }
-    assert.equal(Math.round(indExpSum * 100) / 100, res.export, `Month ${m} industry export sum must match total export`);
-    assert.equal(Math.round(indImpSum * 100) / 100, res.import, `Month ${m} industry import sum must match total import`);
+    assert.equal(Math.round(indExpSum * 1000) / 1000, res.export, `Month ${m} industry export sum must match total export`);
+    assert.equal(Math.round(indImpSum * 1000) / 1000, res.import, `Month ${m} industry import sum must match total import`);
 
     // 2. Check partner exports sum
     let pExpSum = 0;
@@ -31,11 +31,11 @@ test('EconomyEngine: mathematical exactness and 12-month simulation', () => {
       pExpSum += p.export;
       pImpSum += p.import;
     }
-    assert.equal(Math.round(pExpSum * 100) / 100, res.export, `Month ${m} partner export sum must match total export`);
-    assert.equal(Math.round(pImpSum * 100) / 100, res.import, `Month ${m} partner import sum must match total import`);
+    assert.equal(Math.round(pExpSum * 1000) / 1000, res.export, `Month ${m} partner export sum must match total export`);
+    assert.equal(Math.round(pImpSum * 1000) / 1000, res.import, `Month ${m} partner import sum must match total import`);
 
     // 3. Trade balance check
-    assert.equal(Math.round((res.export - res.import) * 100) / 100, res.balance, `Month ${m} trade balance calculation`);
+    assert.equal(Math.round((res.export - res.import) * 1000) / 1000, res.balance, `Month ${m} trade balance calculation`);
   }
 
   assert.equal(engine.monthlyResults.length, 12, '12 months simulated');

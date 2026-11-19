@@ -1,17 +1,21 @@
 {
-  "version": "2026.11.19-AUDITED",
+  "version": "2026.11.19-AUDITED-V2.1",
   "auditDate": "2026-11-19",
   "source": "관세청 수출입무역통계(2026.11.11 공표 11월 10일까지 누적 실적 및 1~10월 확정치) 및 산업통상부 공식 발표자료",
-  "unit": "Billion USD (십억 달러)",
+  "unit": "Billion USD ($B, 십억 달러)",
   "statusDefinition": {
-    "months_1_to_10": "확정 실적 (Final Official Statistics)",
-    "month_11": "잠정 실적 (Provisional Statistics - 11월 10일까지 누적 $963.7B 실적 반영)",
-    "month_12": "공식 추정치 (Official Projection - 연말 밀어내기 통관 추정)"
+    "months_1_to_10": "확정 실적 (관세청 공식 월별 통계. 1~10월 누적 수출 $930.202B, 수입 $635.214B, 1월 수출 $65.805B)",
+    "month_11": "잠정 실적 (11월 10일까지 누적 $963.7B 실적 기반 월간 전체 잠정치 $100.500B. 중복 집계 없음)",
+    "month_12": "공식 추정치 (연말 밀어내기 통관 추정치 $104.798B)"
   },
   "annualSummary2026": {
     "totalExport": 1135.5,
     "totalImport": 775.0,
     "tradeBalance": 360.5,
+    "octYtdExport": 930.202,
+    "octYtdImport": 635.214,
+    "octYtdBalance": 294.988,
+    "janExport": 65.805,
     "ytdNov10Export": 963.7,
     "ytdNov10Import": 659.9,
     "ytdNov10Balance": 303.8,

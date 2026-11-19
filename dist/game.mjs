@@ -4,6 +4,7 @@ import { SCENARIOS, setupRandomScenario } from './scenarios.mjs';
 import { ORIGINS } from './constants.mjs';
 import { getOrigin } from './origins.mjs';
 import { PRNG } from './prng.mjs';
+import { BASELINE_2026 } from './data.mjs';
 import { EconomyEngine } from './economy.mjs';
 import { NegotiationEngine } from './negotiations.mjs';
 import { POLICY_ACTIONS, getPolicy } from './policies.mjs';
@@ -123,7 +124,7 @@ export class GameManager {
     const policy = getPolicy(policyId);
     if (!policy) return { error: "Unknown policy" };
 
-    if (policy.isNegotiationLaunch) {
+    if (policy.isNegotiationLaunch || policy.isNegotiation) {
       // Launch interactive negotiation session!
       this.activeNegotiation = new NegotiationEngine(policy.partnerId, this.origin, this.prng);
       this.screen = "negotiation";
@@ -194,8 +195,9 @@ export class GameManager {
     const monthlyResult = this.economy.simulateMonth(this.currentMonth);
     this.latestMonthlyResult = monthlyResult;
 
-    // 2. Politics evaluation
-    const polEval = this.politics.evaluateMonth(monthlyResult);
+    // 2. Politics evaluation against 2026 baseline expectations
+    const baselineMonth = BASELINE_2026.months[this.currentMonth - 1];
+    const polEval = this.politics.evaluateMonth(monthlyResult, baselineMonth);
 
     // 3. Generate Virtual JoongAng Ilbo front page
     const lastPol = this.usedPoliciesThisMonth.length > 0 ? getPolicy(this.usedPoliciesThisMonth[this.usedPoliciesThisMonth.length - 1]) : null;
