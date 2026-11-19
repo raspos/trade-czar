@@ -80,6 +80,63 @@ export class VerdictEngine {
       structuralLegacy = "대외 충격 속에서 수출 전선의 급격한 붕괴는 막았으나, 특정 품목 의존도 심화와 주요국 무역장벽 대응이라는 구조적 숙제를 남겼습니다.";
     }
 
+    // 3 Defining Decisions of the 1-year tenure
+    const keyDecisions = [];
+    if (successfulNegotiations >= 1) {
+      keyDecisions.push({
+        title: "양자 통상 담판 대타결",
+        summary: "워싱턴·베이징과의 양자 협상에서 품목 관세 인상을 선제 차단하고 핵심 수출선 수호",
+        impact: "자동차·반도체 주력 품목 관세 장벽 80% 완화"
+      });
+    } else if (failedNegotiations >= 1) {
+      keyDecisions.push({
+        title: "통상 협상 결렬 및 자립 대응",
+        summary: "상대국과의 이견 폭발로 협상 결렬 및 징벌적 보복 관세 직면",
+        impact: "주력 수출선 관세 폭탄 현실화 및 독자 공급망 모색"
+      });
+    } else {
+      keyDecisions.push({
+        title: "통상 협상 실무 조율 및 다변화",
+        summary: "신흥국 및 다자 규범 중심의 우회 수출선 개척에 주력",
+        impact: "글로벌 사우스 다자 협력 네트워크 유지"
+      });
+    }
+
+    if (corporateSupportCount >= 2) {
+      keyDecisions.push({
+        title: "첨단 전략산업 생산설비 보조금 및 인프라 매칭",
+        summary: "대기업·중견기업 팹 증설과 패키징 시설에 일대일 정부 보조금 매칭",
+        impact: "국내 팹 생산능력(Capacity) +6% 및 장기 성장 기반 확충"
+      });
+    } else if (hardPushCount >= 2) {
+      keyDecisions.push({
+        title: "고강도 비상 생산 압박 조치",
+        summary: "단기 수출 목표 달성을 위한 24시간 가동 및 관치 생산 독려",
+        impact: "단기 수출 물량 확보 vs 재계 신뢰 급락 및 공장 이전 촉발"
+      });
+    } else {
+      keyDecisions.push({
+        title: "수출금융 50조 원 및 물류 바우처 집중 투입",
+        summary: "수출입은행·무보 무역금융 긴급 공급 및 HMM 선복 우선 배정",
+        impact: "중소·중견기업 물류·금융 애로 전면 해소"
+      });
+    }
+
+    const hasAgriFund = gameLog.some(g => g.type === 'corporate_agency_response' || (g.chosenOption && g.chosenOption.includes('농축산')) || g.title?.includes('농축산') || g.title?.includes('상생기금'));
+    if (hasAgriFund) {
+      keyDecisions.push({
+        title: "당정 협의 1조 원 농축산 피해보완 상생기금 조성",
+        summary: "통상 검역 개방에 따른 피해 농가에 직불금 보전 확정으로 대미 담판 배수진 마련",
+        impact: "국내 정치적 파국 방어 및 대외 협상 레버리지 확보"
+      });
+    } else {
+      keyDecisions.push({
+        title: "10대 주력 기업 및 글로벌 파트너 현장 공조",
+        summary: "공급망 위기 발생 시 현장 긴급 간담회 및 민관 원팀 대응",
+        impact: "수출 전선 이탈 방지 및 거시경제 펀더멘털 방어"
+      });
+    }
+
     // Common ending context
     const context = {
       totalExport,
@@ -92,7 +149,8 @@ export class VerdictEngine {
       worstIndustry,
       topPolicy,
       worstPolicy,
-      structuralLegacy
+      structuralLegacy,
+      keyDecisions
     };
 
     // 1. DISMISSAL (전격 경질):
@@ -207,6 +265,7 @@ export class VerdictEngine {
       topPolicy: data.topPolicy,
       worstPolicy: data.worstPolicy,
       structuralLegacy: data.structuralLegacy,
+      keyDecisions: data.keyDecisions || [],
       scoreCard: [
         { label: "통관 상품수출", value: `$${data.totalExport.toLocaleString()}B` },
         { label: "BOP 서비스수출", value: `$${(data.totalServicesExport || 0).toFixed(1)}B` },

@@ -221,6 +221,7 @@ export class NegotiationEngine {
     this.status = "in_progress"; // in_progress, agreed, partial, deferred, broken, suspended
     this.finalAgreement = null;
     this.currentCounterDemand = null;
+    this.consecutiveAggressiveCount = 0;
 
     // Two-Level Game (국내 이해관계자 재협의 체계)
     this.domesticState = {
@@ -260,6 +261,38 @@ export class NegotiationEngine {
       cardScore += 6; // Corporate expert has real credibility with capital cards
     }
 
+    // Dynamic counterplay logic (반복 강경 카드 응징 및 상대국 역제안 수용 보상)
+    const isAggressive = (card.tensionDelta > 0 || card.acceptanceScore < 0);
+    if (isAggressive) {
+      this.consecutiveAggressiveCount = (this.consecutiveAggressiveCount || 0) + 1;
+      if (this.consecutiveAggressiveCount >= 2) {
+        cardTension += 8;
+        cardScore -= 6;
+      }
+    } else {
+      this.consecutiveAggressiveCount = 0;
+    }
+
+    let answeredCounterDemand = false;
+    if (this.currentCounterDemand) {
+      if ((cardId === 'us_lng' || cardId === 'us_agri_concession') && this.scenario.partnerId === 'US') {
+        answeredCounterDemand = true;
+        cardScore += 8;
+        cardTension -= 6;
+        this.currentCounterDemand = null;
+      } else if ((cardId === 'cn_neutral_tech' || cardId === 'cn_antidumping_bargain') && this.scenario.partnerId === 'CN') {
+        answeredCounterDemand = true;
+        cardScore += 8;
+        cardTension -= 6;
+        this.currentCounterDemand = null;
+      } else if ((cardId === 'eu_defense_package' || cardId === 'eu_cbam_equivalency') && this.scenario.partnerId === 'EU') {
+        answeredCounterDemand = true;
+        cardScore += 8;
+        cardTension -= 6;
+        this.currentCounterDemand = null;
+      }
+    }
+
     this.totalScore += cardScore;
     this.tension = Math.max(0, Math.min(100, this.tension + cardTension));
 
@@ -277,9 +310,13 @@ export class NegotiationEngine {
       }
     }
 
-    // Dynamic partner counter-demand based on score
+    // Dynamic partner reaction text
     let partnerReaction = "";
-    if (cardScore >= 28) {
+    if (this.consecutiveAggressiveCount >= 2) {
+      partnerReaction = `[${this.scenario.representative} 강경 경고] "일방적인 압박과 강경 카드가 거듭되고 있습니다. 이런 방식은 협상 결렬만을 재촉할 뿐입니다!"`;
+    } else if (answeredCounterDemand) {
+      partnerReaction = `[${this.scenario.representative} 적극 환영] "우리 측의 핵심 요구사항을 진지하게 고려해 주신 대승적 결단에 감사드립니다. 양국 타결의 결정적 돌파구가 마련되었습니다!"`;
+    } else if (cardScore >= 28) {
       partnerReaction = `[${this.scenario.representative}] "매우 인상적이고 건설적인 제안입니다. 우리 측 핵심 이해관계를 충족시켜 주는 진지한 결단에 경의를 표합니다."`;
     } else if (cardScore >= 15) {
       partnerReaction = `[${this.scenario.representative}] "한 걸음 진전된 카드이나, 여전히 우리 의회와 산업계의 눈높이에는 다소 부족합니다. 추가적인 성의를 기대합니다."`;
@@ -411,6 +448,7 @@ export class NegotiationEngine {
       return this.resolveDeferral();
     }
 
+    this.finalAgreement.tradeOffSummary = this.generateTradeOffSummary();
     return this.finalAgreement;
   }
 
@@ -427,6 +465,7 @@ export class NegotiationEngine {
       domesticGrowthBoost: 0.0,
       description: `이견을 좁히지 못하고 현행 잠정 관세율을 유지한 채 3개월 뒤 실무 협상을 재개하기로 합의했습니다. 불확실성이 지속됩니다.`
     };
+    this.finalAgreement.tradeOffSummary = this.generateTradeOffSummary();
     return this.finalAgreement;
   }
 
@@ -443,7 +482,84 @@ export class NegotiationEngine {
       domesticGrowthBoost: -0.08,
       description: `상대국과의 이견이 폭발하며 협상이 결렬되었습니다. ${this.scenario.partnerId === 'US' ? '미국의 25% 보복 관세가 즉각 발효되며 주력 자동차 수출에 치명적 타격이 시작됩니다.' : '상대국의 징벌적 관세와 무역 장벽이 즉각 현실화됩니다.'}`
     };
+    this.finalAgreement.tradeOffSummary = this.generateTradeOffSummary();
     return this.finalAgreement;
+  }
+
+  generateTradeOffSummary() {
+    const pId = this.scenario.partnerId;
+    const isAgreed = this.status === 'agreed';
+    const isDeferred = this.status === 'deferred';
+    const summary = {
+      gains: [],
+      concessions: [],
+      diplomaticSpillover: ""
+    };
+
+    if (pId === 'US') {
+      if (isAgreed) {
+        summary.gains.push("한국산 승용차 및 자동차 부품 보편관세를 2.5% 수준으로 대폭 방어 (연간 약 150억 달러 수출 보호)");
+        if (this.usedCards.has('us_shipbuilding_mro')) {
+          summary.gains.push("미 해군 7함대 군함 MRO 및 특수선 수주 보증 획득 (매월 수억 달러 서비스 수출 창출)");
+        }
+        if (this.usedCards.has('us_lng')) {
+          summary.concessions.push("미국산 LNG 연간 100억 달러 10년 장기 수입 계약 체결 (에너지 수입선 대미 편중 수용)");
+        }
+        if (this.usedCards.has('us_investment')) {
+          summary.concessions.push("현대차·삼성의 대미 150억 달러 추가 투자 및 조지아·텍사스 현지 고용 공약");
+        }
+        if (this.usedCards.has('us_agri_concession')) {
+          summary.concessions.push("미국산 농축산물 검역 간소화 로드맵 수용 (국내 1조 원 피해보완 직불금 기금 투입)");
+        }
+        summary.diplomaticSpillover = "대미 안보·통상 결속 강화로 대미 흑자 압박은 해소되었으나, 중국과의 기술 교역 마찰에 대한 정교한 관리 필요";
+      } else if (isDeferred) {
+        summary.gains.push("즉각적인 25% 보편관세 집행 3개월 일시 유예");
+        summary.concessions.push("불확실성 장기화로 현대차·기아 현지 설비 전환 비용 발생");
+        summary.diplomaticSpillover = "미 의회 보호무역 강경파의 추가 압박 예고";
+      } else {
+        summary.gains.push("자주적 통상 주권 천명 및 일방적 농업·에너지 양보 거부");
+        summary.concessions.push("미국의 25% 품목관세 전면 부과 직격탄, 자동차 수출선 붕괴 위기");
+        summary.diplomaticSpillover = "한미 통상 동맹 전례 없는 냉각 및 WTO 분쟁 격화";
+      }
+    } else if (pId === 'CN') {
+      if (isAgreed) {
+        summary.gains.push("갈륨·게르마늄·흑연 등 배터리·반도체 핵심 원자재 통관 지연 해제");
+        summary.gains.push("중국산 철강·석유화학 저가 덤핑 자율 수출 규제(VRA) 합의로 국내 시장 안정");
+        if (this.usedCards.has('cn_neutral_tech')) {
+          summary.concessions.push("순수 상업용 민간 차량·가전 반도체의 안정적 대중 공급 원칙 재확인");
+        }
+        summary.diplomaticSpillover = "한중 공급망 핫라인 복원으로 공급망 불안 해소, 미국 측의 견제 시선 상시 관리 필요";
+      } else if (isDeferred) {
+        summary.gains.push("상호 제재 확전 방지 및 실무 협의체 유지");
+        summary.concessions.push("핵심 원자재 통관 지연 불확실성 잔존");
+        summary.diplomaticSpillover = "동북아 경제 협력 회의 지연";
+      } else {
+        summary.gains.push("다자간 공급망 연대 규범 수호");
+        summary.concessions.push("중국 상무부의 추가 광물 통제 및 한국산 석화제품 반덤핑 조사 직면");
+        summary.diplomaticSpillover = "대중 교역 관계 급랭 및 배터리 공급망 비상";
+      }
+    } else if (pId === 'EU') {
+      if (isAgreed) {
+        summary.gains.push("한국 배출권거래제(K-ETS)와 EU-ETS 상호 동등성 인정 협약으로 CBAM 탄소세 폭탄 면제");
+        if (this.usedCards.has('eu_defense_package')) {
+          summary.gains.push("K-방산 유럽 거점 현지 생산 및 NATO 안보 공급망 동맹 강화");
+        }
+        if (this.usedCards.has('eu_renewables_partner')) {
+          summary.concessions.push("국내 해상풍력 프로젝트에 유럽산 터빈 도입 확대");
+        }
+        summary.diplomaticSpillover = "유럽과의 친환경·방산 공급망 동맹 결속 및 다자 규범 리더십 확보";
+      } else if (isDeferred) {
+        summary.gains.push("CBAM 본격 과세 유예 기간 확보");
+        summary.concessions.push("철강·배터리 기업들의 탄소 배출 실사 비용 부담 지속");
+        summary.diplomaticSpillover = "브뤼셀 기후 집행위와의 지속적 마찰";
+      } else {
+        summary.gains.push("국내 제조업 산업 경쟁력 중심 원칙 고수");
+        summary.concessions.push("EU CBAM 탄소 관세 전면 부과로 대유럽 철강·배터리 수출 급감");
+        summary.diplomaticSpillover = "한·EU 기후 협력 파트너십 균열";
+      }
+    }
+
+    return summary;
   }
 
   applyToEconomy(engine) {

@@ -77,6 +77,8 @@ export class GameManager {
     this.currentMonth = 1;
     this.actionPoints = 3;
     this.usedPoliciesThisMonth = [];
+    this.firstTurnBriefingDismissed = false;
+    this.lastActionResult = null;
     this.activeEvent = null;
     this.activeNegotiation = null;
     this.lastNegotiationAgreement = null;
@@ -99,11 +101,28 @@ export class GameManager {
     if (!doc) return;
     this.doctrine = doc;
     if (doc.id === 'semiconductor_supremacy') {
-      this.economy.industryStates.semiconductor.competitivenessIndex += 4;
+      this.economy.industryStates.semiconductor.competitivenessIndex += 6;
+      this.economy.industryStates.semiconductor.capacityIndex += 3;
     } else if (doc.id === 'us_alliance_first') {
-      this.politics.stats.diplomaticTrust = Math.min(100, this.politics.stats.diplomaticTrust + 5);
+      this.politics.stats.diplomaticTrust = Math.min(100, this.politics.stats.diplomaticTrust + 8);
+      if (this.economy.partnerStates.US) {
+        this.economy.partnerStates.US.allianceBonus = 0.15;
+      }
+    } else if (doc.id === 'china_derisking') {
+      this.politics.stats.diplomaticTrust = Math.min(100, this.politics.stats.diplomaticTrust + 4);
+      if (this.economy.partnerStates.ASEAN) this.economy.partnerStates.ASEAN.growthMod = 0.04;
+      if (this.economy.partnerStates.INDIA) this.economy.partnerStates.INDIA.growthMod = 0.04;
+    } else if (doc.id === 'global_south_frontier') {
+      if (this.economy.partnerStates.ASEAN) this.economy.partnerStates.ASEAN.growthMod = 0.06;
+      if (this.economy.partnerStates.INDIA) this.economy.partnerStates.INDIA.growthMod = 0.06;
+      this.economy.industryStates.consumer.competitivenessIndex += 3;
     } else if (doc.id === 'inclusive_sme_trade') {
-      this.politics.stats.publicApproval = Math.min(100, this.politics.stats.publicApproval + 5);
+      this.politics.stats.publicApproval = Math.min(100, this.politics.stats.publicApproval + 8);
+      this.economy.industryStates.consumer.competitivenessIndex += 4;
+      this.economy.industryStates.machinery.competitivenessIndex += 3;
+    } else if (doc.id === 'energy_green_security') {
+      this.politics.stats.diplomaticTrust = Math.min(100, this.politics.stats.diplomaticTrust + 6);
+      if (this.economy.partnerStates.EU) this.economy.partnerStates.EU.greenExempt = true;
     }
     this.gameLog.push({
       month: this.currentMonth,
@@ -219,6 +238,14 @@ export class GameManager {
       this.politics.applyDeltas(policy.impact);
     }
 
+    this.lastActionResult = {
+      success: true,
+      policyId: policy.id,
+      title: policy.title,
+      costText: policy.costText,
+      remainingAP: this.actionPoints
+    };
+
     this.gameLog.push({
       month: this.currentMonth,
       type: "policy",
@@ -227,7 +254,7 @@ export class GameManager {
     });
 
     this.autoSave();
-    return { success: true, actionPoints: this.actionPoints };
+    return { success: true, actionPoints: this.actionPoints, lastActionResult: this.lastActionResult };
   }
 
   // Interactive Corporate Dialogue & Strategy Guidance
@@ -370,6 +397,7 @@ export class GameManager {
       currentMonth: this.currentMonth,
       actionPoints: this.actionPoints,
       usedPoliciesThisMonth: this.usedPoliciesThisMonth,
+      firstTurnBriefingDismissed: this.firstTurnBriefingDismissed || false,
       activeEvent: this.activeEvent,
       activeNegotiation: this.activeNegotiation ? {
         partnerId: this.activeNegotiation.scenario.partnerId,
@@ -377,7 +405,10 @@ export class GameManager {
         totalScore: this.activeNegotiation.totalScore,
         history: this.activeNegotiation.history,
         usedCards: Array.from(this.activeNegotiation.usedCards),
-        status: this.activeNegotiation.status
+        status: this.activeNegotiation.status,
+        domesticState: this.activeNegotiation.domesticState,
+        currentCounterDemand: this.activeNegotiation.currentCounterDemand,
+        consecutiveAggressiveCount: this.activeNegotiation.consecutiveAggressiveCount || 0
       } : null,
       lastNegotiationAgreement: this.lastNegotiationAgreement,
       macroHistory: this.economy ? this.economy.macroHistory : [],
@@ -412,6 +443,8 @@ export class GameManager {
     this.currentMonth = saved.currentMonth;
     this.actionPoints = saved.actionPoints;
     this.usedPoliciesThisMonth = saved.usedPoliciesThisMonth || [];
+    this.firstTurnBriefingDismissed = saved.firstTurnBriefingDismissed || false;
+    this.lastActionResult = null;
     this.activeEvent = saved.activeEvent;
     this.lastNegotiationAgreement = saved.lastNegotiationAgreement;
 
@@ -428,6 +461,7 @@ export class GameManager {
     if (saved.monthlyResults) this.economy.monthlyResults = saved.monthlyResults;
     if (saved.industryStates) this.economy.industryStates = saved.industryStates;
     if (saved.partnerStates) this.economy.partnerStates = saved.partnerStates;
+    if (saved.delayedPipeline) this.economy.delayedPipeline = saved.delayedPipeline;
 
     this.eventEngine = new EventEngine(this.prng);
     if (saved.triggeredEvents) this.eventEngine.triggeredEvents = new Set(saved.triggeredEvents);
@@ -439,6 +473,15 @@ export class GameManager {
       this.activeNegotiation.history = saved.activeNegotiation.history;
       this.activeNegotiation.usedCards = new Set(saved.activeNegotiation.usedCards);
       this.activeNegotiation.status = saved.activeNegotiation.status;
+      if (saved.activeNegotiation.domesticState) {
+        this.activeNegotiation.domesticState = saved.activeNegotiation.domesticState;
+      }
+      if (saved.activeNegotiation.currentCounterDemand) {
+        this.activeNegotiation.currentCounterDemand = saved.activeNegotiation.currentCounterDemand;
+      }
+      if (saved.activeNegotiation.consecutiveAggressiveCount) {
+        this.activeNegotiation.consecutiveAggressiveCount = saved.activeNegotiation.consecutiveAggressiveCount;
+      }
     }
 
     this.latestMonthlyResult = saved.latestMonthlyResult;

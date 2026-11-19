@@ -49,13 +49,24 @@ export class NewspaperEngine {
       deck = `워싱턴의 초강경 통상 압박…통상교섭본부, 비상 대응책 마련 착수`;
       body.push(`미국 무역대표부(USTR)가 한국 통상 당국을 상대로 상호주의 보편관세 25% 부과 카운트다운을 통보했다. 연간 550억 달러에 달하는 대미 무역흑자를 대폭 줄이지 않을 경우 주요 수출품에 고율 관세를 즉각 집행하겠다는 압박이다.`);
     } else if (negotiationResult && negotiationResult.type === 'agreed') {
-      headline = `美·韓 통상협상 극적 타결…韓 자동차 '25% 관세 폭탄' 피했다`;
-      deck = `통상교섭본부, 워싱턴 담판서 車 관세 면제 이끌어내…LNG 구매·투자 패키지 합의`;
-      body.push(`워싱턴 D.C.에서 열린 한미 고위급 통상 담판이 극적인 타협점을 찾았다. 미국의 25% 보복 관세를 철회시키고 2.5% 수준의 관세율을 방어함으로써 우리 완성차 및 1·2차 부품 수출 전선의 최대 악재를 걷어냈다.`);
+      const isLngCommitted = negotiationResult.energyQuotaMod > 0;
+      if (isLngCommitted) {
+        headline = `美·韓 통상협상 극적 타결…車 '25% 관세' 막고 美 에너지 100억불 수입`;
+        deck = `통상교섭본부, 워싱턴서 벼랑 끝 담판…자동차 수출 지켰지만 '에너지 빅딜' 대가`;
+        body.push(`워싱턴 D.C.에서 열린 한미 고위급 통상 담판이 극적인 타협점을 찾았다. 미국의 25% 보복 관세를 철회시키고 2.5% 수준의 관세율을 방어하는 대신, 미국산 LNG 연간 100억 달러 장기 구매와 현지 투자를 확약했다. 자동차 산업의 숨통은 틔웠으나 막대한 수입 약정이라는 숙제를 안게 됐다.`);
+      } else {
+        headline = `美·韓 통상협상 극적 타결…韓 자동차 '25% 관세 폭탄' 피했다`;
+        deck = `통상교섭본부, 워싱턴 담판서 車 관세 면제 이끌어내…방산·투자 패키지 합의`;
+        body.push(`워싱턴 D.C.에서 열린 한미 고위급 통상 담판이 극적인 타협점을 찾았다. 미국의 25% 보복 관세를 철회시키고 2.5% 수준의 관세율을 방어함으로써 우리 완성차 및 1·2차 부품 수출 전선의 최대 악재를 걷어냈다.`);
+      }
     } else if (negotiationResult && negotiationResult.type === 'broken') {
       headline = `한·미 통상 담판 끝내 결렬…美, 韓 자동차에 '25% 관세' 즉각 발효`;
       deck = `수출 전선에 사상 최악의 먹구름…정부, WTO 제소 및 보복관세 검토`;
       body.push(`한미 양자 통상 협상이 양국의 첨예한 이견을 좁히지 못하고 파국으로 끝났다. 미국은 즉각 한국산 자동차에 25% 관세를 부과하기 시작했으며, 국내 완성차 및 부품 공장의 연쇄 셧다운 우려가 현실화되고 있다.`);
+    } else if (topInd.yoyGrowth - bottomInd.yoyGrowth >= 22.0) {
+      headline = `수출 ${exp}억 달러 달성에도…'반도체 착시' 속 제조업 양극화 심화`;
+      deck = `${topInd.name} 나홀로 질주(+${topInd.yoyGrowth}%)…${bottomInd.name}(-${Math.abs(bottomInd.yoyGrowth)}%) 등 전통 제조 한파`;
+      body.push(`월간 수출 실적은 호조세를 보였으나 산업 현장의 양극화는 위험 수위에 도달했다. ${topInd.name} 산업이 고성장세를 주도하는 반면, ${bottomInd.name}과 범용 제조업은 글로벌 수요 둔화와 관세 장벽에 가로막혀 가동률 저하에 신음하고 있다.`);
     } else if (monthlyResult.servicesExport && monthlyResult.servicesExport >= 1.2) {
       headline = `미 7함대 군수지원·K-물류 돌풍…'서비스 무역'이 수출 흑자 새 엔진`;
       deck = `거제·울산 MRO 함정정비 수주 잇따라…통관 상품수출 넘어 용역 수출 신기원`;
@@ -92,6 +103,12 @@ export class NewspaperEngine {
     } else {
       body.push(
         `전문가들은 통상교섭본부의 기민한 외교적 대응과 현장 중심의 수출금융 지원이 단기적인 무역 방어에 기여하고 있다고 평가했다. 다만 미국의 보호무역 기조와 중국발 공급과잉 등 구조적 파고에 대비한 장기 전략이 절실하다는 지적이다.`
+      );
+    }
+
+    if (doctrine) {
+      body.push(
+        `정부가 가동 중인 '${doctrine.name}' 기조에 발맞춰 ${doctrine.slogan}`
       );
     }
 

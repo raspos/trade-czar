@@ -73,6 +73,7 @@ try {
     });
 
     const page = await context.newPage();
+    page.on('dialog', dialog => dialog.accept());
     const errors = [];
     page.on('pageerror', err => {
       console.log('PAGE ERROR:', err.message);

@@ -29,6 +29,13 @@ console.log('>>> [AUDIT 1] 2026 Official Customs Statistics & Common Ledger Veri
   console.log(`  • 1월 수출 확정치: $${m1.export}B (공식 통계: 658억 500만 달러)`);
   assert.strictEqual(m1.export, 65.805, '1월 공식 수출 확정치는 65.805B여야 합니다.');
 
+  const m9 = BASELINE_2026.months[8];
+  const m10 = BASELINE_2026.months[9];
+  console.log(`  • 9월 최종 정정 확정치: $${m9.export}B (11/16 관세청 최종 고시: 1,212억 5,400만 달러)`);
+  assert.strictEqual(m9.export, 121.254, '9월 최종 정정 수출 확정치는 121.254B여야 합니다.');
+  console.log(`  • 10월 수출 확정치: $${m10.export}B (11/16 관세청 확정: 1,145억 7,600만 달러)`);
+  assert.strictEqual(m10.export, 114.576, '10월 수출 확정치는 114.576B여야 합니다.');
+
   console.log(`  • 1~10월 누적 수출 확정치: $${m10YtdExp}B (공식 통계: 9,302억 200만 달러)`);
   assert.strictEqual(m10YtdExp, 930.202, '1~10월 누적 수출 확정치는 930.202B여야 합니다.');
 

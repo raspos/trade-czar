@@ -768,6 +768,63 @@ dialog.game-dialog::backdrop {
     padding: 16px;
   }
 }
+
+/* Toast Notification Banner */
+.toast-container {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 9999;
+  max-width: 380px;
+  width: calc(100% - 32px);
+  animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.toast-banner {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--navy);
+  border-radius: 6px;
+  padding: 12px 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.toast-banner.success { border-left-color: var(--green); }
+.toast-banner.danger { border-left-color: var(--red); }
+.toast-banner.warning { border-left-color: var(--gold); }
+
+/* 320px and Ultra-Compact Mobile Support */
+@media (max-width: 400px) {
+  .shell {
+    padding: 0 10px;
+  }
+  .header-status {
+    gap: 4px;
+  }
+  .status-pill {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+  .office-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .metrics-strip {
+    grid-template-columns: 1fr 1fr;
+  }
+  .tension-bar-wrap {
+    padding: 10px;
+  }
+}
 </style>
   
 </head>
@@ -929,7 +986,7 @@ class PRNG {
 }
 
 // data.mjs - Audited Real Customs & Industry Trade Data with Common Ledger Matrix
-const BASELINE_2026 = {"version":"2026.11.19-AUDITED-V3.0","metadata":{"totalExport":1135.5,"totalImport":775,"tradeBalance":360.5,"octYtdExport":930.202,"octYtdImport":635.214,"octYtdBalance":294.988,"janExport":65.805,"ytdNov10Export":963.7,"ytdNov10Import":659.9,"ytdNov10Balance":303.8,"milestone":"2026년 9월 초 2025년 연간 수출 실적(7,093억 달러) 돌파 공식 확인","m10OfficialYtdExport":930.202,"m10OfficialYtdImport":635.214,"m10OfficialYtdBalance":294.988,"m10MonthlySumExport":929.361,"m10MonthlySumImport":634.313,"nov10YtdExport":963.7,"nov10YtdImport":659.9},"source":"관세청 수출입무역통계(2026.11.11 공표 11월 10일까지 누적 실적 및 1~10월 확정치) 및 산업통상부 공식 발표자료","unit":"Billion USD ($B, 십억 달러) / 내부 저장 기준","statusDefinition":{"months_1_to_10":"확정 실적 (관세청 공식 월별 통관 확정 통계. 1월 $65.805B, 6월 $102.166B, 9월 최신 $120.420B, 10월 $115.410B)","month_11":"잠정 실적 전망치 (11월 10일까지 누적 $963.7B 실적 기반 월간 환산 전망 기준선 $100.500B)","month_12":"공식 추정 전망치 (연말 밀어내기 통관 추정 전망 기준선 $104.798B)"},"totals":{"export":1135.5,"import":775,"balance":360.5},"months":[{"month":1,"name":"1월","status":"확정 실적","export":65.805,"import":57.1,"balance":8.705,"macro":{"fxRate":1420.5,"brentOil":79.2,"scfiFreight":2210,"globalDemandIndex":99.8,"usFedRate":4.5,"bokBaseRate":3},"industries":{"semiconductor":{"id":"semiconductor","name":"반도체","export":18.545,"import":5.342,"balance":13.203,"capacityIndex":100,"utilizationRate":95,"tradeBarrierIndex":100},"automobile":{"id":"automobile","name":"자동차·부품","export":7.824,"import":2.299,"balance":5.525,"capacityIndex":100,"utilizationRate":89,"tradeBarrierIndex":100},"machinery":{"id":"machinery","name":"기계·설비","export":4.752,"import":3.131,"balance":1.621,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"petrochemical":{"id":"petrochemical","name":"석유화학","export":3.941,"import":1.827,"balance":2.114,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"consumer":{"id":"consumer","name":"소비재","export":3.014,"import":3.537,"balance":-0.523,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"steel":{"id":"steel","name":"철강","export":2.782,"import":2.1,"balance":0.682,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"shipbuilding":{"id":"shipbuilding","name":"조선","export":2.202,"import":0.427,"balance":1.775,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"battery":{"id":"battery","name":"이차전지","export":1.217,"import":1.216,"balance":0.001,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"defense":{"id":"defense","name":"방산","export":1.043,"import":0.332,"balance":0.711,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"bio":{"id":"bio","name":"바이오·의약품","export":1.014,"import":1.068,"balance":-0.054,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"others":{"id":"others","name":"기타 산업","export":19.471,"import":35.821,"balance":-16.35,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100}},"partners":{"US":{"id":"US","name":"미국","export":12.938,"import":7.795,"balance":5.143},"CN":{"id":"CN","name":"중국","export":13.077,"import":14.465,"balance":-1.388},"ASEAN":{"id":"ASEAN","name":"아세안(베트남 등)","export":13.239,"import":7.732,"balance":5.507},"EU":{"id":"EU","name":"EU(유럽연합)","export":8.302,"import":7.854,"balance":0.448},"JP":{"id":"JP","name":"일본","export":3.412,"import":5.353,"balance":-1.941},"ME":{"id":"ME","name":"중동","export":1.891,"import":9.404,"balance":-7.513},"ROW":{"id":"ROW","name":"기타 국가","export":12.946,"import":4.497,"balance":8.449}},"matrix":{"US":{"semiconductor":{"export":2.782,"import":1.068},"automobile":{"export":3.756,"import":0.345},"machinery":{"export":1.331,"import":0.626},"petrochemical":{"export":0.315,"import":0.183},"consumer":{"export":0.844,"import":0.531},"steel":{"export":0.417,"import":0.105},"shipbuilding":{"export":0.088,"import":0.009},"battery":{"export":0.486,"import":0.122},"defense":{"export":0.156,"import":0.133},"bio":{"export":0.426,"import":0.374},"others":{"export":2.337,"import":4.299}},"CN":{"semiconductor":{"export":5.193,"import":1.87},"automobile":{"export":0.313,"import":0.184},"machinery":{"export":0.95,"import":0.783},"petrochemical":{"export":1.734,"import":0.639},"consumer":{"export":0.603,"import":1.344},"steel":{"export":0.501,"import":0.945},"shipbuilding":{"export":0.044,"import":0.043},"battery":{"export":0.183,"import":0.669},"defense":{"export":0,"import":0},"bio":{"export":0.051,"import":0.107},"others":{"export":3.505,"import":7.881}},"ASEAN":{"semiconductor":{"export":4.08,"import":1.068},"automobile":{"export":0.939,"import":0.23},"machinery":{"export":0.95,"import":0.47},"petrochemical":{"export":0.985,"import":0.365},"consumer":{"export":0.754,"import":0.707},"steel":{"export":0.696,"import":0.315},"shipbuilding":{"export":0.396,"import":0.043},"battery":{"export":0.183,"import":0.182},"defense":{"export":0.261,"import":0},"bio":{"export":0.101,"import":0.053},"others":{"export":3.894,"import":4.299}},"EU":{"semiconductor":{"export":1.298,"import":0.534},"automobile":{"export":1.487,"import":1.035},"machinery":{"export":0.76,"import":0.626},"petrochemical":{"export":0.394,"import":0.274},"consumer":{"export":0.422,"import":0.637},"steel":{"export":0.417,"import":0.252},"shipbuilding":{"export":0.771,"import":0.085},"battery":{"export":0.341,"import":0.182},"defense":{"export":0.469,"import":0.166},"bio":{"export":0.385,"import":0.481},"others":{"export":1.558,"import":3.582}},"JP":{"semiconductor":{"export":0.742,"import":0.641},"automobile":{"export":0.156,"import":0.276},"machinery":{"export":0.333,"import":0.47},"petrochemical":{"export":0.236,"import":0.219},"consumer":{"export":0.241,"import":0.283},"steel":{"export":0.417,"import":0.42},"shipbuilding":{"export":0.044,"import":0.064},"battery":{"export":0.024,"import":0.061},"defense":{"export":0,"import":0},"bio":{"export":0.051,"import":0.053},"others":{"export":1.168,"import":2.866}},"ME":{"semiconductor":{"export":0.185,"import":0},"automobile":{"export":0.391,"import":0},"machinery":{"export":0.19,"import":0},"petrochemical":{"export":0.079,"import":0.091},"consumer":{"export":0.06,"import":0},"steel":{"export":0.111,"import":0},"shipbuilding":{"export":0.33,"import":0},"battery":{"export":0,"import":0},"defense":{"export":0.156,"import":0},"bio":{"export":0,"import":0},"others":{"export":0.389,"import":9.313}},"ROW":{"semiconductor":{"export":4.265,"import":0.161},"automobile":{"export":0.782,"import":0.229},"machinery":{"export":0.238,"import":0.156},"petrochemical":{"export":0.198,"import":0.056},"consumer":{"export":0.09,"import":0.035},"steel":{"export":0.223,"import":0.063},"shipbuilding":{"export":0.529,"import":0.183},"battery":{"export":0,"import":0},"defense":{"export":0.001,"import":0.033},"bio":{"export":0,"import":0},"others":{"export":6.62,"import":3.581}}}},{"month":2,"name":"2월","status":"확정 실적","export":67.541,"import":52.201,"balance":15.34,"macro":{"fxRate":1425,"brentOil":80.1,"scfiFreight":2150,"globalDemandIndex":99.4,"usFedRate":4.5,"bokBaseRate":3},"industries":{"semiconductor":{"id":"semiconductor","name":"반도체","export":19.034,"import":4.883,"balance":14.151,"capacityIndex":100,"utilizationRate":95,"tradeBarrierIndex":100},"automobile":{"id":"automobile","name":"자동차·부품","export":8.03,"import":2.102,"balance":5.928,"capacityIndex":100,"utilizationRate":89,"tradeBarrierIndex":100},"machinery":{"id":"machinery","name":"기계·설비","export":4.877,"import":2.863,"balance":2.014,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"petrochemical":{"id":"petrochemical","name":"석유화학","export":4.045,"import":1.67,"balance":2.375,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"consumer":{"id":"consumer","name":"소비재","export":3.093,"import":3.233,"balance":-0.14,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"steel":{"id":"steel","name":"철강","export":2.855,"import":1.92,"balance":0.935,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"shipbuilding":{"id":"shipbuilding","name":"조선","export":2.26,"import":0.391,"balance":1.869,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"battery":{"id":"battery","name":"이차전지","export":1.249,"import":1.111,"balance":0.138,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"defense":{"id":"defense","name":"방산","export":1.071,"import":0.303,"balance":0.768,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"bio":{"id":"bio","name":"바이오·의약품","export":1.041,"import":0.977,"balance":0.064,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"others":{"id":"others","name":"기타 산업","export":19.986,"import":32.748,"balance":-12.762,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100}},"partners":{"US":{"id":"US","name":"미국","export":13.279,"import":7.125,"balance":6.154},"CN":{"id":"CN","name":"중국","export":13.42,"import":13.222,"balance":0.198},"ASEAN":{"id":"ASEAN","name":"아세안(베트남 등)","export":13.587,"import":7.07,"balance":6.517},"EU":{"id":"EU","name":"EU(유럽연합)","export":8.521,"import":7.181,"balance":1.34},"JP":{"id":"JP","name":"일본","export":3.502,"import":4.894,"balance":-1.392},"ME":{"id":"ME","name":"중동","export":1.943,"import":8.598,"balance":-6.655},"ROW":{"id":"ROW","name":"기타 국가","export":13.289,"import":4.111,"balance":9.178}},"matrix":{"US":{"semiconductor":{"export":2.855,"import":0.977},"automobile":{"export":3.854,"import":0.315},"machinery":{"export":1.366,"import":0.573},"petrochemical":{"export":0.324,"import":0.167},"consumer":{"export":0.866,"import":0.485},"steel":{"export":0.428,"import":0.096},"shipbuilding":{"export":0.09,"import":0.008},"battery":{"export":0.5,"import":0.111},"defense":{"export":0.161,"import":0.121},"bio":{"export":0.437,"import":0.342},"others":{"export":2.398,"import":3.93}},"CN":{"semiconductor":{"export":5.33,"import":1.709},"automobile":{"export":0.321,"import":0.168},"machinery":{"export":0.975,"import":0.716},"petrochemical":{"export":1.78,"import":0.584},"consumer":{"export":0.619,"import":1.229},"steel":{"export":0.514,"import":0.864},"shipbuilding":{"export":0.045,"import":0.039},"battery":{"export":0.187,"import":0.61},"defense":{"export":0,"import":0},"bio":{"export":0.052,"import":0.098},"others":{"export":3.597,"import":7.205}},"ASEAN":{"semiconductor":{"export":4.187,"import":0.977},"automobile":{"export":0.964,"import":0.21},"machinery":{"export":0.975,"import":0.429},"petrochemical":{"export":1.011,"import":0.334},"consumer":{"export":0.773,"import":0.647},"steel":{"export":0.714,"import":0.288},"shipbuilding":{"export":0.407,"import":0.039},"battery":{"export":0.187,"import":0.167},"defense":{"export":0.268,"import":0},"bio":{"export":0.104,"import":0.049},"others":{"export":3.997,"import":3.93}},"EU":{"semiconductor":{"export":1.332,"import":0.488},"automobile":{"export":1.526,"import":0.946},"machinery":{"export":0.78,"import":0.573},"petrochemical":{"export":0.405,"import":0.251},"consumer":{"export":0.433,"import":0.582},"steel":{"export":0.428,"import":0.23},"shipbuilding":{"export":0.791,"import":0.078},"battery":{"export":0.35,"import":0.167},"defense":{"export":0.481,"import":0.152},"bio":{"export":0.396,"import":0.439},"others":{"export":1.599,"import":3.275}},"JP":{"semiconductor":{"export":0.761,"import":0.586},"automobile":{"export":0.161,"import":0.252},"machinery":{"export":0.341,"import":0.429},"petrochemical":{"export":0.243,"import":0.2},"consumer":{"export":0.247,"import":0.259},"steel":{"export":0.428,"import":0.384},"shipbuilding":{"export":0.045,"import":0.059},"battery":{"export":0.025,"import":0.056},"defense":{"export":0,"import":0},"bio":{"export":0.052,"import":0.049},"others":{"export":1.199,"import":2.62}},"ME":{"semiconductor":{"export":0.19,"import":0},"automobile":{"export":0.401,"import":0},"machinery":{"export":0.195,"import":0},"petrochemical":{"export":0.081,"import":0.084},"consumer":{"export":0.062,"import":0},"steel":{"export":0.114,"import":0},"shipbuilding":{"export":0.339,"import":0},"battery":{"export":0,"import":0},"defense":{"export":0.161,"import":0},"bio":{"export":0,"import":0},"others":{"export":0.4,"import":8.514}},"ROW":{"semiconductor":{"export":4.379,"import":0.146},"automobile":{"export":0.803,"import":0.211},"machinery":{"export":0.245,"import":0.143},"petrochemical":{"export":0.201,"import":0.05},"consumer":{"export":0.093,"import":0.031},"steel":{"export":0.229,"import":0.058},"shipbuilding":{"export":0.543,"import":0.168},"battery":{"export":0,"import":0},"defense":{"export":0,"import":0.03},"bio":{"export":0,"import":0},"others":{"export":6.796,"import":3.274}}}},{"month":3,"name":"3월","status":"확정 실적","export":86.627,"import":60.388,"balance":26.239,"macro":{"fxRate":1410.2,"brentOil":82.5,"scfiFreight":2020,"globalDemandIndex":100.2,"usFedRate":4.5,"bokBaseRate":3},"industries":{"semiconductor":{"id":"semiconductor","name":"반도체","export":24.413,"import":5.649,"balance":18.764,"capacityIndex":100,"utilizationRate":95,"tradeBarrierIndex":100},"automobile":{"id":"automobile","name":"자동차·부품","export":10.299,"import":2.431,"balance":7.868,"capacityIndex":100,"utilizationRate":89,"tradeBarrierIndex":100},"machinery":{"id":"machinery","name":"기계·설비","export":6.256,"import":3.312,"balance":2.944,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"petrochemical":{"id":"petrochemical","name":"석유화학","export":5.188,"import":1.932,"balance":3.256,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"consumer":{"id":"consumer","name":"소비재","export":3.967,"import":3.74,"balance":0.227,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"steel":{"id":"steel","name":"철강","export":3.662,"import":2.221,"balance":1.441,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"shipbuilding":{"id":"shipbuilding","name":"조선","export":2.899,"import":0.452,"balance":2.447,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"battery":{"id":"battery","name":"이차전지","export":1.602,"import":1.286,"balance":0.316,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"defense":{"id":"defense","name":"방산","export":1.373,"import":0.351,"balance":1.022,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"bio":{"id":"bio","name":"바이오·의약품","export":1.335,"import":1.13,"balance":0.205,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"others":{"id":"others","name":"기타 산업","export":25.633,"import":37.884,"balance":-12.251,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100}},"partners":{"US":{"id":"US","name":"미국","export":17.032,"import":8.241,"balance":8.791},"CN":{"id":"CN","name":"중국","export":17.213,"import":15.294,"balance":1.919},"ASEAN":{"id":"ASEAN","name":"아세안(베트남 등)","export":17.429,"import":8.177,"balance":9.252},"EU":{"id":"EU","name":"EU(유럽연합)","export":10.93,"import":8.306,"balance":2.624},"JP":{"id":"JP","name":"일본","export":4.493,"import":5.661,"balance":-1.168},"ME":{"id":"ME","name":"중동","export":2.492,"import":9.947,"balance":-7.455},"ROW":{"id":"ROW","name":"기타 국가","export":17.038,"import":4.762,"balance":12.276}},"matrix":{"US":{"semiconductor":{"export":3.662,"import":1.13},"automobile":{"export":4.944,"import":0.365},"machinery":{"export":1.752,"import":0.662},"petrochemical":{"export":0.415,"import":0.193},"consumer":{"export":1.111,"import":0.561},"steel":{"export":0.549,"import":0.111},"shipbuilding":{"export":0.116,"import":0.009},"battery":{"export":0.641,"import":0.129},"defense":{"export":0.206,"import":0.14},"bio":{"export":0.56,"import":0.395},"others":{"export":3.076,"import":4.546}},"CN":{"semiconductor":{"export":6.836,"import":1.977},"automobile":{"export":0.412,"import":0.194},"machinery":{"export":1.251,"import":0.828},"petrochemical":{"export":2.283,"import":0.676},"consumer":{"export":0.793,"import":1.421},"steel":{"export":0.659,"import":0.999},"shipbuilding":{"export":0.058,"import":0.045},"battery":{"export":0.24,"import":0.707},"defense":{"export":0,"import":0},"bio":{"export":0.067,"import":0.113},"others":{"export":4.614,"import":8.334}},"ASEAN":{"semiconductor":{"export":5.371,"import":1.13},"automobile":{"export":1.236,"import":0.243},"machinery":{"export":1.251,"import":0.497},"petrochemical":{"export":1.297,"import":0.386},"consumer":{"export":0.992,"import":0.748},"steel":{"export":0.916,"import":0.333},"shipbuilding":{"export":0.522,"import":0.045},"battery":{"export":0.24,"import":0.193},"defense":{"export":0.343,"import":0},"bio":{"export":0.134,"import":0.056},"others":{"export":5.127,"import":4.546}},"EU":{"semiconductor":{"export":1.709,"import":0.565},"automobile":{"export":1.957,"import":1.094},"machinery":{"export":1.001,"import":0.662},"petrochemical":{"export":0.519,"import":0.29},"consumer":{"export":0.555,"import":0.673},"steel":{"export":0.549,"import":0.267},"shipbuilding":{"export":1.015,"import":0.09},"battery":{"export":0.449,"import":0.193},"defense":{"export":0.618,"import":0.176},"bio":{"export":0.507,"import":0.508},"others":{"export":2.051,"import":3.788}},"JP":{"semiconductor":{"export":0.977,"import":0.678},"automobile":{"export":0.206,"import":0.292},"machinery":{"export":0.438,"import":0.497},"petrochemical":{"export":0.311,"import":0.232},"consumer":{"export":0.317,"import":0.299},"steel":{"export":0.549,"import":0.444},"shipbuilding":{"export":0.058,"import":0.068},"battery":{"export":0.032,"import":0.064},"defense":{"export":0,"import":0},"bio":{"export":0.067,"import":0.056},"others":{"export":1.538,"import":3.031}},"ME":{"semiconductor":{"export":0.244,"import":0},"automobile":{"export":0.515,"import":0},"machinery":{"export":0.25,"import":0},"petrochemical":{"export":0.104,"import":0.097},"consumer":{"export":0.079,"import":0},"steel":{"export":0.146,"import":0},"shipbuilding":{"export":0.435,"import":0},"battery":{"export":0,"import":0},"defense":{"export":0.206,"import":0},"bio":{"export":0,"import":0},"others":{"export":0.513,"import":9.85}},"ROW":{"semiconductor":{"export":5.614,"import":0.169},"automobile":{"export":1.029,"import":0.243},"machinery":{"export":0.313,"import":0.166},"petrochemical":{"export":0.259,"import":0.058},"consumer":{"export":0.12,"import":0.038},"steel":{"export":0.294,"import":0.067},"shipbuilding":{"export":0.695,"import":0.195},"battery":{"export":0,"import":0},"defense":{"export":0,"import":0.035},"bio":{"export":0,"import":0.002},"others":{"export":8.714,"import":3.789}}}},{"month":4,"name":"4월","status":"확정 실적","export":86.2,"import":62.4,"balance":23.8,"macro":{"fxRate":1395,"brentOil":83.4,"scfiFreight":1980,"globalDemandIndex":100.5,"usFedRate":4.5,"bokBaseRate":3},"industries":{"semiconductor":{"id":"semiconductor","name":"반도체","export":24.292,"import":5.837,"balance":18.455,"capacityIndex":100,"utilizationRate":95,"tradeBarrierIndex":100},"automobile":{"id":"automobile","name":"자동차·부품","export":10.248,"import":2.512,"balance":7.736,"capacityIndex":100,"utilizationRate":89,"tradeBarrierIndex":100},"machinery":{"id":"machinery","name":"기계·설비","export":6.225,"import":3.422,"balance":2.803,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"petrochemical":{"id":"petrochemical","name":"석유화학","export":5.162,"import":1.997,"balance":3.165,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"consumer":{"id":"consumer","name":"소비재","export":3.948,"import":3.865,"balance":0.083,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"steel":{"id":"steel","name":"철강","export":3.644,"import":2.295,"balance":1.349,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"shipbuilding":{"id":"shipbuilding","name":"조선","export":2.885,"import":0.467,"balance":2.418,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"battery":{"id":"battery","name":"이차전지","export":1.594,"import":1.329,"balance":0.265,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"defense":{"id":"defense","name":"방산","export":1.366,"import":0.362,"balance":1.004,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"bio":{"id":"bio","name":"바이오·의약품","export":1.328,"import":1.167,"balance":0.161,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"others":{"id":"others","name":"기타 산업","export":25.508,"import":39.147,"balance":-13.639,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100}},"partners":{"US":{"id":"US","name":"미국","export":16.948,"import":8.516,"balance":8.432},"CN":{"id":"CN","name":"중국","export":17.128,"import":15.808,"balance":1.32},"ASEAN":{"id":"ASEAN","name":"아세안(베트남 등)","export":17.343,"import":8.449,"balance":8.894},"EU":{"id":"EU","name":"EU(유럽연합)","export":10.875,"import":8.582,"balance":2.293},"JP":{"id":"JP","name":"일본","export":4.472,"import":5.848,"balance":-1.376},"ME":{"id":"ME","name":"중동","export":2.48,"import":10.278,"balance":-7.798},"ROW":{"id":"ROW","name":"기타 국가","export":16.954,"import":4.919,"balance":12.035}},"matrix":{"US":{"semiconductor":{"export":3.644,"import":1.167},"automobile":{"export":4.919,"import":0.377},"machinery":{"export":1.743,"import":0.684},"petrochemical":{"export":0.413,"import":0.2},"consumer":{"export":1.105,"import":0.58},"steel":{"export":0.547,"import":0.115},"shipbuilding":{"export":0.115,"import":0.009},"battery":{"export":0.638,"import":0.133},"defense":{"export":0.205,"import":0.145},"bio":{"export":0.558,"import":0.408},"others":{"export":3.061,"import":4.698}},"CN":{"semiconductor":{"export":6.802,"import":2.043},"automobile":{"export":0.41,"import":0.201},"machinery":{"export":1.245,"import":0.856},"petrochemical":{"export":2.271,"import":0.699},"consumer":{"export":0.79,"import":1.469},"steel":{"export":0.656,"import":1.033},"shipbuilding":{"export":0.058,"import":0.047},"battery":{"export":0.239,"import":0.731},"defense":{"export":0,"import":0},"bio":{"export":0.066,"import":0.117},"others":{"export":4.591,"import":8.612}},"ASEAN":{"semiconductor":{"export":5.344,"import":1.167},"automobile":{"export":1.23,"import":0.251},"machinery":{"export":1.245,"import":0.513},"petrochemical":{"export":1.291,"import":0.399},"consumer":{"export":0.987,"import":0.773},"steel":{"export":0.911,"import":0.344},"shipbuilding":{"export":0.519,"import":0.047},"battery":{"export":0.239,"import":0.199},"defense":{"export":0.342,"import":0},"bio":{"export":0.133,"import":0.058},"others":{"export":5.102,"import":4.698}},"EU":{"semiconductor":{"export":1.7,"import":0.584},"automobile":{"export":1.947,"import":1.13},"machinery":{"export":0.996,"import":0.684},"petrochemical":{"export":0.516,"import":0.3},"consumer":{"export":0.553,"import":0.696},"steel":{"export":0.547,"import":0.275},"shipbuilding":{"export":1.01,"import":0.093},"battery":{"export":0.446,"import":0.199},"defense":{"export":0.614,"import":0.181},"bio":{"export":0.505,"import":0.525},"others":{"export":2.041,"import":3.915}},"JP":{"semiconductor":{"export":0.972,"import":0.7},"automobile":{"export":0.205,"import":0.301},"machinery":{"export":0.436,"import":0.513},"petrochemical":{"export":0.31,"import":0.24},"consumer":{"export":0.316,"import":0.309},"steel":{"export":0.547,"import":0.459},"shipbuilding":{"export":0.058,"import":0.07},"battery":{"export":0.032,"import":0.066},"defense":{"export":0,"import":0},"bio":{"export":0.066,"import":0.058},"others":{"export":1.53,"import":3.132}},"ME":{"semiconductor":{"export":0.243,"import":0},"automobile":{"export":0.512,"import":0},"machinery":{"export":0.249,"import":0},"petrochemical":{"export":0.103,"import":0.1},"consumer":{"export":0.079,"import":0},"steel":{"export":0.146,"import":0},"shipbuilding":{"export":0.433,"import":0},"battery":{"export":0,"import":0},"defense":{"export":0.205,"import":0},"bio":{"export":0,"import":0},"others":{"export":0.51,"import":10.178}},"ROW":{"semiconductor":{"export":5.587,"import":0.176},"automobile":{"export":1.025,"import":0.252},"machinery":{"export":0.311,"import":0.172},"petrochemical":{"export":0.258,"import":0.059},"consumer":{"export":0.118,"import":0.038},"steel":{"export":0.29,"import":0.069},"shipbuilding":{"export":0.692,"import":0.201},"battery":{"export":0,"import":0.001},"defense":{"export":0,"import":0.036},"bio":{"export":0,"import":0.001},"others":{"export":8.673,"import":3.914}}}},{"month":5,"name":"5월","status":"확정 실적","export":87.821,"import":60.785,"balance":27.036,"macro":{"fxRate":1388.5,"brentOil":81.2,"scfiFreight":2010,"globalDemandIndex":100.8,"usFedRate":4.5,"bokBaseRate":3},"industries":{"semiconductor":{"id":"semiconductor","name":"반도체","export":24.749,"import":5.686,"balance":19.063,"capacityIndex":100,"utilizationRate":95,"tradeBarrierIndex":100},"automobile":{"id":"automobile","name":"자동차·부품","export":10.441,"import":2.447,"balance":7.994,"capacityIndex":100,"utilizationRate":89,"tradeBarrierIndex":100},"machinery":{"id":"machinery","name":"기계·설비","export":6.342,"import":3.333,"balance":3.009,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"petrochemical":{"id":"petrochemical","name":"석유화학","export":5.259,"import":1.945,"balance":3.314,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"consumer":{"id":"consumer","name":"소비재","export":4.022,"import":3.765,"balance":0.257,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"steel":{"id":"steel","name":"철강","export":3.712,"import":2.235,"balance":1.477,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"shipbuilding":{"id":"shipbuilding","name":"조선","export":2.939,"import":0.455,"balance":2.484,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"battery":{"id":"battery","name":"이차전지","export":1.624,"import":1.294,"balance":0.33,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"defense":{"id":"defense","name":"방산","export":1.392,"import":0.353,"balance":1.039,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"bio":{"id":"bio","name":"바이오·의약품","export":1.353,"import":1.137,"balance":0.216,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"others":{"id":"others","name":"기타 산업","export":25.988,"import":38.135,"balance":-12.147,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100}},"partners":{"US":{"id":"US","name":"미국","export":17.267,"import":8.296,"balance":8.971},"CN":{"id":"CN","name":"중국","export":17.451,"import":15.399,"balance":2.052},"ASEAN":{"id":"ASEAN","name":"아세안(베트남 등)","export":17.669,"import":8.232,"balance":9.437},"EU":{"id":"EU","name":"EU(유럽연합)","export":11.08,"import":8.362,"balance":2.718},"JP":{"id":"JP","name":"일본","export":4.556,"import":5.698,"balance":-1.142},"ME":{"id":"ME","name":"중동","export":2.526,"import":10.012,"balance":-7.486},"ROW":{"id":"ROW","name":"기타 국가","export":17.272,"import":4.786,"balance":12.486}},"matrix":{"US":{"semiconductor":{"export":3.712,"import":1.137},"automobile":{"export":5.012,"import":0.367},"machinery":{"export":1.776,"import":0.667},"petrochemical":{"export":0.421,"import":0.195},"consumer":{"export":1.126,"import":0.565},"steel":{"export":0.557,"import":0.112},"shipbuilding":{"export":0.118,"import":0.009},"battery":{"export":0.649,"import":0.129},"defense":{"export":0.209,"import":0.141},"bio":{"export":0.568,"import":0.398},"others":{"export":3.119,"import":4.576}},"CN":{"semiconductor":{"export":6.93,"import":1.99},"automobile":{"export":0.418,"import":0.196},"machinery":{"export":1.268,"import":0.833},"petrochemical":{"export":2.314,"import":0.681},"consumer":{"export":0.804,"import":1.431},"steel":{"export":0.668,"import":1.006},"shipbuilding":{"export":0.059,"import":0.046},"battery":{"export":0.244,"import":0.712},"defense":{"export":0,"import":0},"bio":{"export":0.068,"import":0.114},"others":{"export":4.678,"import":8.39}},"ASEAN":{"semiconductor":{"export":5.445,"import":1.137},"automobile":{"export":1.253,"import":0.245},"machinery":{"export":1.268,"import":0.5},"petrochemical":{"export":1.315,"import":0.389},"consumer":{"export":1.006,"import":0.753},"steel":{"export":0.928,"import":0.335},"shipbuilding":{"export":0.529,"import":0.046},"battery":{"export":0.244,"import":0.194},"defense":{"export":0.348,"import":0},"bio":{"export":0.135,"import":0.057},"others":{"export":5.198,"import":4.576}},"EU":{"semiconductor":{"export":1.732,"import":0.569},"automobile":{"export":1.984,"import":1.101},"machinery":{"export":1.015,"import":0.667},"petrochemical":{"export":0.526,"import":0.292},"consumer":{"export":0.563,"import":0.678},"steel":{"export":0.557,"import":0.268},"shipbuilding":{"export":1.029,"import":0.091},"battery":{"export":0.455,"import":0.194},"defense":{"export":0.626,"import":0.177},"bio":{"export":0.514,"import":0.511},"others":{"export":2.079,"import":3.814}},"JP":{"semiconductor":{"export":0.99,"import":0.682},"automobile":{"export":0.209,"import":0.294},"machinery":{"export":0.444,"import":0.5},"petrochemical":{"export":0.316,"import":0.233},"consumer":{"export":0.322,"import":0.301},"steel":{"export":0.557,"import":0.447},"shipbuilding":{"export":0.059,"import":0.068},"battery":{"export":0.032,"import":0.065},"defense":{"export":0,"import":0},"bio":{"export":0.068,"import":0.057},"others":{"export":1.559,"import":3.051}},"ME":{"semiconductor":{"export":0.247,"import":0},"automobile":{"export":0.522,"import":0},"machinery":{"export":0.254,"import":0},"petrochemical":{"export":0.105,"import":0.097},"consumer":{"export":0.08,"import":0},"steel":{"export":0.148,"import":0},"shipbuilding":{"export":0.441,"import":0},"battery":{"export":0,"import":0},"defense":{"export":0.209,"import":0},"bio":{"export":0,"import":0},"others":{"export":0.52,"import":9.915}},"ROW":{"semiconductor":{"export":5.693,"import":0.171},"automobile":{"export":1.043,"import":0.244},"machinery":{"export":0.317,"import":0.166},"petrochemical":{"export":0.262,"import":0.058},"consumer":{"export":0.121,"import":0.037},"steel":{"export":0.297,"import":0.067},"shipbuilding":{"export":0.704,"import":0.195},"battery":{"export":0,"import":0},"defense":{"export":0,"import":0.035},"bio":{"export":0,"import":0},"others":{"export":8.835,"import":3.813}}}},{"month":6,"name":"6월","status":"확정 실적","export":102.166,"import":66.1,"balance":36.066,"macro":{"fxRate":1382,"brentOil":79.5,"scfiFreight":2080,"globalDemandIndex":101.4,"usFedRate":4.5,"bokBaseRate":3},"industries":{"semiconductor":{"id":"semiconductor","name":"반도체","export":28.792,"import":6.184,"balance":22.608,"capacityIndex":100,"utilizationRate":95,"tradeBarrierIndex":100},"automobile":{"id":"automobile","name":"자동차·부품","export":12.147,"import":2.661,"balance":9.486,"capacityIndex":100,"utilizationRate":89,"tradeBarrierIndex":100},"machinery":{"id":"machinery","name":"기계·설비","export":7.378,"import":3.625,"balance":3.753,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"petrochemical":{"id":"petrochemical","name":"석유화학","export":6.118,"import":2.115,"balance":4.003,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"consumer":{"id":"consumer","name":"소비재","export":4.679,"import":4.094,"balance":0.585,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"steel":{"id":"steel","name":"철강","export":4.319,"import":2.431,"balance":1.888,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"shipbuilding":{"id":"shipbuilding","name":"조선","export":3.419,"import":0.495,"balance":2.924,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"battery":{"id":"battery","name":"이차전지","export":1.889,"import":1.407,"balance":0.482,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"defense":{"id":"defense","name":"방산","export":1.62,"import":0.384,"balance":1.236,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"bio":{"id":"bio","name":"바이오·의약품","export":1.575,"import":1.237,"balance":0.338,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"others":{"id":"others","name":"기타 산업","export":30.23,"import":41.467,"balance":-11.237,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100}},"partners":{"US":{"id":"US","name":"미국","export":20.087,"import":9.023,"balance":11.064},"CN":{"id":"CN","name":"중국","export":20.3,"import":16.744,"balance":3.556},"ASEAN":{"id":"ASEAN","name":"아세안(베트남 등)","export":20.555,"import":8.953,"balance":11.602},"EU":{"id":"EU","name":"EU(유럽연합)","export":12.89,"import":9.091,"balance":3.799},"JP":{"id":"JP","name":"일본","export":5.299,"import":6.196,"balance":-0.897},"ME":{"id":"ME","name":"중동","export":2.94,"import":10.887,"balance":-7.947},"ROW":{"id":"ROW","name":"기타 국가","export":20.095,"import":5.206,"balance":14.889}},"matrix":{"US":{"semiconductor":{"export":4.319,"import":1.237},"automobile":{"export":5.831,"import":0.399},"machinery":{"export":2.066,"import":0.725},"petrochemical":{"export":0.489,"import":0.212},"consumer":{"export":1.31,"import":0.614},"steel":{"export":0.648,"import":0.122},"shipbuilding":{"export":0.137,"import":0.01},"battery":{"export":0.756,"import":0.141},"defense":{"export":0.243,"import":0.154},"bio":{"export":0.66,"import":0.433},"others":{"export":3.628,"import":4.976}},"CN":{"semiconductor":{"export":8.062,"import":2.164},"automobile":{"export":0.486,"import":0.213},"machinery":{"export":1.476,"import":0.906},"petrochemical":{"export":2.692,"import":0.74},"consumer":{"export":0.936,"import":1.556},"steel":{"export":0.777,"import":1.094},"shipbuilding":{"export":0.068,"import":0.05},"battery":{"export":0.283,"import":0.774},"defense":{"export":0,"import":0},"bio":{"export":0.079,"import":0.124},"others":{"export":5.441,"import":9.123}},"ASEAN":{"semiconductor":{"export":6.334,"import":1.237},"automobile":{"export":1.458,"import":0.266},"machinery":{"export":1.476,"import":0.544},"petrochemical":{"export":1.53,"import":0.423},"consumer":{"export":1.17,"import":0.819},"steel":{"export":1.08,"import":0.365},"shipbuilding":{"export":0.615,"import":0.05},"battery":{"export":0.283,"import":0.211},"defense":{"export":0.405,"import":0},"bio":{"export":0.158,"import":0.062},"others":{"export":6.046,"import":4.976}},"EU":{"semiconductor":{"export":2.015,"import":0.618},"automobile":{"export":2.308,"import":1.197},"machinery":{"export":1.18,"import":0.725},"petrochemical":{"export":0.612,"import":0.317},"consumer":{"export":0.655,"import":0.737},"steel":{"export":0.648,"import":0.292},"shipbuilding":{"export":1.197,"import":0.099},"battery":{"export":0.529,"import":0.211},"defense":{"export":0.729,"import":0.192},"bio":{"export":0.599,"import":0.556},"others":{"export":2.418,"import":4.147}},"JP":{"semiconductor":{"export":1.152,"import":0.742},"automobile":{"export":0.243,"import":0.319},"machinery":{"export":0.516,"import":0.544},"petrochemical":{"export":0.367,"import":0.254},"consumer":{"export":0.374,"import":0.328},"steel":{"export":0.648,"import":0.486},"shipbuilding":{"export":0.068,"import":0.074},"battery":{"export":0.038,"import":0.07},"defense":{"export":0,"import":0},"bio":{"export":0.079,"import":0.062},"others":{"export":1.814,"import":3.317}},"ME":{"semiconductor":{"export":0.288,"import":0},"automobile":{"export":0.607,"import":0},"machinery":{"export":0.295,"import":0},"petrochemical":{"export":0.122,"import":0.106},"consumer":{"export":0.094,"import":0},"steel":{"export":0.173,"import":0},"shipbuilding":{"export":0.513,"import":0},"battery":{"export":0,"import":0},"defense":{"export":0.243,"import":0},"bio":{"export":0,"import":0},"others":{"export":0.605,"import":10.781}},"ROW":{"semiconductor":{"export":6.622,"import":0.186},"automobile":{"export":1.214,"import":0.267},"machinery":{"export":0.369,"import":0.181},"petrochemical":{"export":0.306,"import":0.063},"consumer":{"export":0.14,"import":0.04},"steel":{"export":0.345,"import":0.072},"shipbuilding":{"export":0.821,"import":0.212},"battery":{"export":0,"import":0},"defense":{"export":0,"import":0.038},"bio":{"export":0,"import":0},"others":{"export":10.278,"import":4.147}}}},{"month":7,"name":"7월","status":"확정 실적","export":99.3,"import":68.9,"balance":30.4,"macro":{"fxRate":1378.4,"brentOil":78.1,"scfiFreight":2110,"globalDemandIndex":101,"usFedRate":4.5,"bokBaseRate":3},"industries":{"semiconductor":{"id":"semiconductor","name":"반도체","export":27.984,"import":6.445,"balance":21.539,"capacityIndex":100,"utilizationRate":95,"tradeBarrierIndex":100},"automobile":{"id":"automobile","name":"자동차·부품","export":11.806,"import":2.774,"balance":9.032,"capacityIndex":100,"utilizationRate":89,"tradeBarrierIndex":100},"machinery":{"id":"machinery","name":"기계·설비","export":7.171,"import":3.778,"balance":3.393,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"petrochemical":{"id":"petrochemical","name":"석유화학","export":5.947,"import":2.205,"balance":3.742,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"consumer":{"id":"consumer","name":"소비재","export":4.547,"import":4.267,"balance":0.28,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"steel":{"id":"steel","name":"철강","export":4.198,"import":2.534,"balance":1.664,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"shipbuilding":{"id":"shipbuilding","name":"조선","export":3.323,"import":0.516,"balance":2.807,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"battery":{"id":"battery","name":"이차전지","export":1.836,"import":1.467,"balance":0.369,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"defense":{"id":"defense","name":"방산","export":1.574,"import":0.4,"balance":1.174,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"bio":{"id":"bio","name":"바이오·의약품","export":1.53,"import":1.289,"balance":0.241,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"others":{"id":"others","name":"기타 산업","export":29.384,"import":43.225,"balance":-13.841,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100}},"partners":{"US":{"id":"US","name":"미국","export":19.523,"import":9.404,"balance":10.119},"CN":{"id":"CN","name":"중국","export":19.731,"import":17.454,"balance":2.277},"ASEAN":{"id":"ASEAN","name":"아세안(베트남 등)","export":19.978,"import":9.33,"balance":10.648},"EU":{"id":"EU","name":"EU(유럽연합)","export":12.528,"import":9.478,"balance":3.05},"JP":{"id":"JP","name":"일본","export":5.151,"import":6.458,"balance":-1.307},"ME":{"id":"ME","name":"중동","export":2.857,"import":11.349,"balance":-8.492},"ROW":{"id":"ROW","name":"기타 국가","export":19.532,"import":5.427,"balance":14.105}},"matrix":{"US":{"semiconductor":{"export":4.198,"import":1.289},"automobile":{"export":5.667,"import":0.416},"machinery":{"export":2.008,"import":0.756},"petrochemical":{"export":0.476,"import":0.221},"consumer":{"export":1.273,"import":0.64},"steel":{"export":0.63,"import":0.127},"shipbuilding":{"export":0.133,"import":0.01},"battery":{"export":0.734,"import":0.147},"defense":{"export":0.236,"import":0.16},"bio":{"export":0.642,"import":0.451},"others":{"export":3.526,"import":5.187}},"CN":{"semiconductor":{"export":7.836,"import":2.256},"automobile":{"export":0.472,"import":0.222},"machinery":{"export":1.434,"import":0.945},"petrochemical":{"export":2.617,"import":0.772},"consumer":{"export":0.909,"import":1.621},"steel":{"export":0.756,"import":1.14},"shipbuilding":{"export":0.066,"import":0.052},"battery":{"export":0.275,"import":0.807},"defense":{"export":0,"import":0},"bio":{"export":0.077,"import":0.129},"others":{"export":5.289,"import":9.51}},"ASEAN":{"semiconductor":{"export":6.156,"import":1.289},"automobile":{"export":1.417,"import":0.277},"machinery":{"export":1.434,"import":0.567},"petrochemical":{"export":1.487,"import":0.441},"consumer":{"export":1.137,"import":0.853},"steel":{"export":1.05,"import":0.38},"shipbuilding":{"export":0.598,"import":0.052},"battery":{"export":0.275,"import":0.22},"defense":{"export":0.394,"import":0},"bio":{"export":0.153,"import":0.064},"others":{"export":5.877,"import":5.187}},"EU":{"semiconductor":{"export":1.959,"import":0.645},"automobile":{"export":2.243,"import":1.248},"machinery":{"export":1.147,"import":0.756},"petrochemical":{"export":0.595,"import":0.331},"consumer":{"export":0.637,"import":0.768},"steel":{"export":0.63,"import":0.304},"shipbuilding":{"export":1.163,"import":0.103},"battery":{"export":0.514,"import":0.22},"defense":{"export":0.708,"import":0.2},"bio":{"export":0.581,"import":0.58},"others":{"export":2.351,"import":4.323}},"JP":{"semiconductor":{"export":1.119,"import":0.773},"automobile":{"export":0.236,"import":0.333},"machinery":{"export":0.502,"import":0.567},"petrochemical":{"export":0.357,"import":0.265},"consumer":{"export":0.364,"import":0.341},"steel":{"export":0.63,"import":0.507},"shipbuilding":{"export":0.066,"import":0.077},"battery":{"export":0.037,"import":0.073},"defense":{"export":0,"import":0},"bio":{"export":0.077,"import":0.064},"others":{"export":1.763,"import":3.458}},"ME":{"semiconductor":{"export":0.28,"import":0},"automobile":{"export":0.59,"import":0},"machinery":{"export":0.287,"import":0},"petrochemical":{"export":0.119,"import":0.11},"consumer":{"export":0.091,"import":0},"steel":{"export":0.168,"import":0},"shipbuilding":{"export":0.498,"import":0},"battery":{"export":0,"import":0},"defense":{"export":0.236,"import":0},"bio":{"export":0,"import":0},"others":{"export":0.588,"import":11.239}},"ROW":{"semiconductor":{"export":6.436,"import":0.193},"automobile":{"export":1.181,"import":0.278},"machinery":{"export":0.359,"import":0.187},"petrochemical":{"export":0.296,"import":0.065},"consumer":{"export":0.136,"import":0.044},"steel":{"export":0.334,"import":0.076},"shipbuilding":{"export":0.799,"import":0.222},"battery":{"export":0.001,"import":0},"defense":{"export":0,"import":0.04},"bio":{"export":0,"import":0.001},"others":{"export":9.99,"import":4.321}}}},{"month":8,"name":"8월","status":"확정 실적","export":98.912,"import":63.725,"balance":35.187,"macro":{"fxRate":1385.2,"brentOil":76.8,"scfiFreight":2060,"globalDemandIndex":100.7,"usFedRate":4.5,"bokBaseRate":3},"industries":{"semiconductor":{"id":"semiconductor","name":"반도체","export":27.875,"import":5.961,"balance":21.914,"capacityIndex":100,"utilizationRate":95,"tradeBarrierIndex":100},"automobile":{"id":"automobile","name":"자동차·부품","export":11.76,"import":2.565,"balance":9.195,"capacityIndex":100,"utilizationRate":89,"tradeBarrierIndex":100},"machinery":{"id":"machinery","name":"기계·설비","export":7.143,"import":3.495,"balance":3.648,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"petrochemical":{"id":"petrochemical","name":"석유화학","export":5.923,"import":2.039,"balance":3.884,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"consumer":{"id":"consumer","name":"소비재","export":4.53,"import":3.947,"balance":0.583,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"steel":{"id":"steel","name":"철강","export":4.181,"import":2.343,"balance":1.838,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"shipbuilding":{"id":"shipbuilding","name":"조선","export":3.31,"import":0.477,"balance":2.833,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"battery":{"id":"battery","name":"이차전지","export":1.829,"import":1.357,"balance":0.472,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"defense":{"id":"defense","name":"방산","export":1.568,"import":0.37,"balance":1.198,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"bio":{"id":"bio","name":"바이오·의약품","export":1.524,"import":1.192,"balance":0.332,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"others":{"id":"others","name":"기타 산업","export":29.269,"import":39.979,"balance":-10.71,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100}},"partners":{"US":{"id":"US","name":"미국","export":19.446,"import":8.697,"balance":10.749},"CN":{"id":"CN","name":"중국","export":19.653,"import":16.14,"balance":3.513},"ASEAN":{"id":"ASEAN","name":"아세안(베트남 등)","export":19.9,"import":8.63,"balance":11.27},"EU":{"id":"EU","name":"EU(유럽연합)","export":12.478,"import":8.764,"balance":3.714},"JP":{"id":"JP","name":"일본","export":5.129,"import":5.975,"balance":-0.846},"ME":{"id":"ME","name":"중동","export":2.846,"import":10.497,"balance":-7.651},"ROW":{"id":"ROW","name":"기타 국가","export":19.46,"import":5.022,"balance":14.438}},"matrix":{"US":{"semiconductor":{"export":4.181,"import":1.192},"automobile":{"export":5.645,"import":0.385},"machinery":{"export":2,"import":0.699},"petrochemical":{"export":0.474,"import":0.204},"consumer":{"export":1.268,"import":0.592},"steel":{"export":0.627,"import":0.117},"shipbuilding":{"export":0.132,"import":0.01},"battery":{"export":0.732,"import":0.136},"defense":{"export":0.235,"import":0.148},"bio":{"export":0.64,"import":0.417},"others":{"export":3.512,"import":4.797}},"CN":{"semiconductor":{"export":7.805,"import":2.086},"automobile":{"export":0.47,"import":0.205},"machinery":{"export":1.429,"import":0.874},"petrochemical":{"export":2.606,"import":0.714},"consumer":{"export":0.906,"import":1.5},"steel":{"export":0.753,"import":1.054},"shipbuilding":{"export":0.066,"import":0.048},"battery":{"export":0.274,"import":0.745},"defense":{"export":0,"import":0},"bio":{"export":0.076,"import":0.119},"others":{"export":5.268,"import":8.795}},"ASEAN":{"semiconductor":{"export":6.133,"import":1.192},"automobile":{"export":1.411,"import":0.257},"machinery":{"export":1.429,"import":0.524},"petrochemical":{"export":1.481,"import":0.408},"consumer":{"export":1.133,"import":0.789},"steel":{"export":1.045,"import":0.351},"shipbuilding":{"export":0.596,"import":0.048},"battery":{"export":0.274,"import":0.204},"defense":{"export":0.392,"import":0},"bio":{"export":0.152,"import":0.06},"others":{"export":5.854,"import":4.797}},"EU":{"semiconductor":{"export":1.951,"import":0.596},"automobile":{"export":2.234,"import":1.154},"machinery":{"export":1.143,"import":0.699},"petrochemical":{"export":0.592,"import":0.306},"consumer":{"export":0.634,"import":0.71},"steel":{"export":0.627,"import":0.281},"shipbuilding":{"export":1.158,"import":0.095},"battery":{"export":0.512,"import":0.204},"defense":{"export":0.706,"import":0.185},"bio":{"export":0.579,"import":0.536},"others":{"export":2.342,"import":3.998}},"JP":{"semiconductor":{"export":1.115,"import":0.715},"automobile":{"export":0.235,"import":0.308},"machinery":{"export":0.5,"import":0.524},"petrochemical":{"export":0.355,"import":0.245},"consumer":{"export":0.362,"import":0.316},"steel":{"export":0.627,"import":0.469},"shipbuilding":{"export":0.066,"import":0.072},"battery":{"export":0.037,"import":0.068},"defense":{"export":0,"import":0},"bio":{"export":0.076,"import":0.06},"others":{"export":1.756,"import":3.198}},"ME":{"semiconductor":{"export":0.279,"import":0},"automobile":{"export":0.588,"import":0},"machinery":{"export":0.286,"import":0},"petrochemical":{"export":0.118,"import":0.102},"consumer":{"export":0.091,"import":0},"steel":{"export":0.167,"import":0},"shipbuilding":{"export":0.497,"import":0},"battery":{"export":0,"import":0},"defense":{"export":0.235,"import":0},"bio":{"export":0,"import":0},"others":{"export":0.585,"import":10.395}},"ROW":{"semiconductor":{"export":6.411,"import":0.18},"automobile":{"export":1.177,"import":0.256},"machinery":{"export":0.356,"import":0.175},"petrochemical":{"export":0.297,"import":0.06},"consumer":{"export":0.136,"import":0.04},"steel":{"export":0.335,"import":0.071},"shipbuilding":{"export":0.795,"import":0.204},"battery":{"export":0,"import":0},"defense":{"export":0,"import":0.037},"bio":{"export":0.001,"import":0},"others":{"export":9.952,"import":3.999}}}},{"month":9,"name":"9월","status":"확정 실적 (최신)","export":120.42,"import":70.85,"balance":49.57,"macro":{"fxRate":1392,"brentOil":76.2,"scfiFreight":2000,"globalDemandIndex":101.8,"usFedRate":4.5,"bokBaseRate":3},"industries":{"semiconductor":{"id":"semiconductor","name":"반도체","export":33.936,"import":6.628,"balance":27.308,"capacityIndex":100,"utilizationRate":95,"tradeBarrierIndex":100},"automobile":{"id":"automobile","name":"자동차·부품","export":14.317,"import":2.852,"balance":11.465,"capacityIndex":100,"utilizationRate":89,"tradeBarrierIndex":100},"machinery":{"id":"machinery","name":"기계·설비","export":8.696,"import":3.885,"balance":4.811,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"petrochemical":{"id":"petrochemical","name":"석유화학","export":7.211,"import":2.267,"balance":4.944,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"consumer":{"id":"consumer","name":"소비재","export":5.515,"import":4.388,"balance":1.127,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"steel":{"id":"steel","name":"철강","export":5.09,"import":2.605,"balance":2.485,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"shipbuilding":{"id":"shipbuilding","name":"조선","export":4.03,"import":0.53,"balance":3.5,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"battery":{"id":"battery","name":"이차전지","export":2.227,"import":1.508,"balance":0.719,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"defense":{"id":"defense","name":"방산","export":1.909,"import":0.411,"balance":1.498,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"bio":{"id":"bio","name":"바이오·의약품","export":1.856,"import":1.326,"balance":0.53,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"others":{"id":"others","name":"기타 산업","export":35.633,"import":44.45,"balance":-8.817,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100}},"partners":{"US":{"id":"US","name":"미국","export":23.674,"import":9.67,"balance":14.004},"CN":{"id":"CN","name":"중국","export":23.928,"import":17.945,"balance":5.983},"ASEAN":{"id":"ASEAN","name":"아세안(베트남 등)","export":24.227,"import":9.595,"balance":14.632},"EU":{"id":"EU","name":"EU(유럽연합)","export":15.194,"import":9.746,"balance":5.448},"JP":{"id":"JP","name":"일본","export":6.247,"import":6.641,"balance":-0.394},"ME":{"id":"ME","name":"중동","export":3.465,"import":11.67,"balance":-8.205},"ROW":{"id":"ROW","name":"기타 국가","export":23.685,"import":5.583,"balance":18.102}},"matrix":{"US":{"semiconductor":{"export":5.09,"import":1.326},"automobile":{"export":6.872,"import":0.428},"machinery":{"export":2.435,"import":0.777},"petrochemical":{"export":0.577,"import":0.227},"consumer":{"export":1.544,"import":0.658},"steel":{"export":0.764,"import":0.13},"shipbuilding":{"export":0.161,"import":0.011},"battery":{"export":0.89,"import":0.151},"defense":{"export":0.286,"import":0.164},"bio":{"export":0.779,"import":0.464},"others":{"export":4.276,"import":5.334}},"CN":{"semiconductor":{"export":9.502,"import":2.32},"automobile":{"export":0.573,"import":0.228},"machinery":{"export":1.739,"import":0.971},"petrochemical":{"export":3.173,"import":0.793},"consumer":{"export":1.103,"import":1.667},"steel":{"export":0.916,"import":1.172},"shipbuilding":{"export":0.081,"import":0.053},"battery":{"export":0.334,"import":0.829},"defense":{"export":0,"import":0},"bio":{"export":0.093,"import":0.133},"others":{"export":6.414,"import":9.779}},"ASEAN":{"semiconductor":{"export":7.466,"import":1.326},"automobile":{"export":1.718,"import":0.285},"machinery":{"export":1.739,"import":0.583},"petrochemical":{"export":1.803,"import":0.453},"consumer":{"export":1.379,"import":0.878},"steel":{"export":1.273,"import":0.391},"shipbuilding":{"export":0.725,"import":0.053},"battery":{"export":0.334,"import":0.226},"defense":{"export":0.477,"import":0},"bio":{"export":0.186,"import":0.066},"others":{"export":7.127,"import":5.334}},"EU":{"semiconductor":{"export":2.376,"import":0.663},"automobile":{"export":2.72,"import":1.283},"machinery":{"export":1.391,"import":0.777},"petrochemical":{"export":0.721,"import":0.34},"consumer":{"export":0.772,"import":0.79},"steel":{"export":0.764,"import":0.313},"shipbuilding":{"export":1.411,"import":0.106},"battery":{"export":0.624,"import":0.226},"defense":{"export":0.859,"import":0.206},"bio":{"export":0.705,"import":0.597},"others":{"export":2.851,"import":4.445}},"JP":{"semiconductor":{"export":1.357,"import":0.795},"automobile":{"export":0.286,"import":0.342},"machinery":{"export":0.609,"import":0.583},"petrochemical":{"export":0.433,"import":0.272},"consumer":{"export":0.441,"import":0.351},"steel":{"export":0.764,"import":0.521},"shipbuilding":{"export":0.081,"import":0.08},"battery":{"export":0.045,"import":0.075},"defense":{"export":0,"import":0},"bio":{"export":0.093,"import":0.066},"others":{"export":2.138,"import":3.556}},"ME":{"semiconductor":{"export":0.339,"import":0},"automobile":{"export":0.716,"import":0},"machinery":{"export":0.348,"import":0},"petrochemical":{"export":0.144,"import":0.113},"consumer":{"export":0.11,"import":0},"steel":{"export":0.204,"import":0},"shipbuilding":{"export":0.605,"import":0},"battery":{"export":0,"import":0},"defense":{"export":0.286,"import":0},"bio":{"export":0,"import":0},"others":{"export":0.713,"import":11.557}},"ROW":{"semiconductor":{"export":7.806,"import":0.198},"automobile":{"export":1.432,"import":0.286},"machinery":{"export":0.435,"import":0.194},"petrochemical":{"export":0.36,"import":0.069},"consumer":{"export":0.166,"import":0.044},"steel":{"export":0.405,"import":0.078},"shipbuilding":{"export":0.966,"import":0.227},"battery":{"export":0,"import":0.001},"defense":{"export":0.001,"import":0.041},"bio":{"export":0,"import":0},"others":{"export":12.114,"import":4.445}}}},{"month":10,"name":"10월","status":"확정 실적","export":115.41,"import":72.765,"balance":42.645,"macro":{"fxRate":1405.5,"brentOil":77.5,"scfiFreight":1960,"globalDemandIndex":102.2,"usFedRate":4.5,"bokBaseRate":3},"industries":{"semiconductor":{"id":"semiconductor","name":"반도체","export":32.524,"import":6.807,"balance":25.717,"capacityIndex":100,"utilizationRate":95,"tradeBarrierIndex":100},"automobile":{"id":"automobile","name":"자동차·부품","export":13.721,"import":2.929,"balance":10.792,"capacityIndex":100,"utilizationRate":89,"tradeBarrierIndex":100},"machinery":{"id":"machinery","name":"기계·설비","export":8.334,"import":3.99,"balance":4.344,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"petrochemical":{"id":"petrochemical","name":"석유화학","export":6.911,"import":2.328,"balance":4.583,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"consumer":{"id":"consumer","name":"소비재","export":5.285,"import":4.507,"balance":0.778,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"steel":{"id":"steel","name":"철강","export":4.879,"import":2.676,"balance":2.203,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"shipbuilding":{"id":"shipbuilding","name":"조선","export":3.862,"import":0.545,"balance":3.317,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"battery":{"id":"battery","name":"이차전지","export":2.134,"import":1.549,"balance":0.585,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"defense":{"id":"defense","name":"방산","export":1.829,"import":0.423,"balance":1.406,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"bio":{"id":"bio","name":"바이오·의약품","export":1.779,"import":1.361,"balance":0.418,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"others":{"id":"others","name":"기타 산업","export":34.152,"import":45.65,"balance":-11.498,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100}},"partners":{"US":{"id":"US","name":"미국","export":22.69,"import":9.93,"balance":12.76},"CN":{"id":"CN","name":"중국","export":22.932,"import":18.432,"balance":4.5},"ASEAN":{"id":"ASEAN","name":"아세안(베트남 등)","export":23.218,"import":9.854,"balance":13.364},"EU":{"id":"EU","name":"EU(유럽연합)","export":14.561,"import":10.008,"balance":4.553},"JP":{"id":"JP","name":"일본","export":5.986,"import":6.821,"balance":-0.835},"ME":{"id":"ME","name":"중동","export":3.319,"import":11.985,"balance":-8.666},"ROW":{"id":"ROW","name":"기타 국가","export":22.704,"import":5.735,"balance":16.969}},"matrix":{"US":{"semiconductor":{"export":4.879,"import":1.361},"automobile":{"export":6.586,"import":0.439},"machinery":{"export":2.334,"import":0.798},"petrochemical":{"export":0.553,"import":0.233},"consumer":{"export":1.48,"import":0.676},"steel":{"export":0.732,"import":0.134},"shipbuilding":{"export":0.154,"import":0.011},"battery":{"export":0.853,"import":0.155},"defense":{"export":0.274,"import":0.169},"bio":{"export":0.747,"import":0.476},"others":{"export":4.098,"import":5.478}},"CN":{"semiconductor":{"export":9.107,"import":2.382},"automobile":{"export":0.549,"import":0.234},"machinery":{"export":1.667,"import":0.998},"petrochemical":{"export":3.041,"import":0.815},"consumer":{"export":1.057,"import":1.713},"steel":{"export":0.878,"import":1.204},"shipbuilding":{"export":0.077,"import":0.055},"battery":{"export":0.32,"import":0.852},"defense":{"export":0,"import":0},"bio":{"export":0.089,"import":0.136},"others":{"export":6.147,"import":10.043}},"ASEAN":{"semiconductor":{"export":7.155,"import":1.361},"automobile":{"export":1.647,"import":0.293},"machinery":{"export":1.667,"import":0.599},"petrochemical":{"export":1.728,"import":0.466},"consumer":{"export":1.321,"import":0.901},"steel":{"export":1.22,"import":0.401},"shipbuilding":{"export":0.695,"import":0.055},"battery":{"export":0.32,"import":0.232},"defense":{"export":0.457,"import":0},"bio":{"export":0.178,"import":0.068},"others":{"export":6.83,"import":5.478}},"EU":{"semiconductor":{"export":2.277,"import":0.681},"automobile":{"export":2.607,"import":1.318},"machinery":{"export":1.333,"import":0.798},"petrochemical":{"export":0.691,"import":0.349},"consumer":{"export":0.74,"import":0.811},"steel":{"export":0.732,"import":0.321},"shipbuilding":{"export":1.352,"import":0.109},"battery":{"export":0.598,"import":0.232},"defense":{"export":0.823,"import":0.212},"bio":{"export":0.676,"import":0.612},"others":{"export":2.732,"import":4.565}},"JP":{"semiconductor":{"export":1.301,"import":0.817},"automobile":{"export":0.274,"import":0.351},"machinery":{"export":0.583,"import":0.599},"petrochemical":{"export":0.415,"import":0.279},"consumer":{"export":0.423,"import":0.361},"steel":{"export":0.732,"import":0.535},"shipbuilding":{"export":0.077,"import":0.082},"battery":{"export":0.043,"import":0.077},"defense":{"export":0,"import":0},"bio":{"export":0.089,"import":0.068},"others":{"export":2.049,"import":3.652}},"ME":{"semiconductor":{"export":0.325,"import":0},"automobile":{"export":0.686,"import":0},"machinery":{"export":0.333,"import":0},"petrochemical":{"export":0.138,"import":0.116},"consumer":{"export":0.106,"import":0},"steel":{"export":0.195,"import":0},"shipbuilding":{"export":0.579,"import":0},"battery":{"export":0,"import":0},"defense":{"export":0.274,"import":0},"bio":{"export":0,"import":0},"others":{"export":0.683,"import":11.869}},"ROW":{"semiconductor":{"export":7.48,"import":0.205},"automobile":{"export":1.372,"import":0.294},"machinery":{"export":0.417,"import":0.198},"petrochemical":{"export":0.345,"import":0.07},"consumer":{"export":0.158,"import":0.045},"steel":{"export":0.39,"import":0.081},"shipbuilding":{"export":0.928,"import":0.233},"battery":{"export":0,"import":0.001},"defense":{"export":0.001,"import":0.042},"bio":{"export":0,"import":0.001},"others":{"export":11.613,"import":4.565}}}},{"month":11,"name":"11월","status":"잠정 실적 (전망치)","export":100.5,"import":69,"balance":31.5,"macro":{"fxRate":1415,"brentOil":78.9,"scfiFreight":1990,"globalDemandIndex":102,"usFedRate":4.5,"bokBaseRate":3},"industries":{"semiconductor":{"id":"semiconductor","name":"반도체","export":28.322,"import":6.455,"balance":21.867,"capacityIndex":100,"utilizationRate":95,"tradeBarrierIndex":100},"automobile":{"id":"automobile","name":"자동차·부품","export":11.948,"import":2.778,"balance":9.17,"capacityIndex":100,"utilizationRate":89,"tradeBarrierIndex":100},"machinery":{"id":"machinery","name":"기계·설비","export":7.258,"import":3.784,"balance":3.474,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"petrochemical":{"id":"petrochemical","name":"석유화학","export":6.018,"import":2.208,"balance":3.81,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"consumer":{"id":"consumer","name":"소비재","export":4.602,"import":4.274,"balance":0.328,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"steel":{"id":"steel","name":"철강","export":4.248,"import":2.537,"balance":1.711,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"shipbuilding":{"id":"shipbuilding","name":"조선","export":3.363,"import":0.516,"balance":2.847,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"battery":{"id":"battery","name":"이차전지","export":1.859,"import":1.469,"balance":0.39,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"defense":{"id":"defense","name":"방산","export":1.593,"import":0.401,"balance":1.192,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"bio":{"id":"bio","name":"바이오·의약품","export":1.549,"import":1.291,"balance":0.258,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"others":{"id":"others","name":"기타 산업","export":29.74,"import":43.287,"balance":-13.547,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100}},"partners":{"US":{"id":"US","name":"미국","export":19.759,"import":9.417,"balance":10.342},"CN":{"id":"CN","name":"중국","export":19.969,"import":17.478,"balance":2.491},"ASEAN":{"id":"ASEAN","name":"아세안(베트남 등)","export":20.22,"import":9.346,"balance":10.874},"EU":{"id":"EU","name":"EU(유럽연합)","export":12.68,"import":9.49,"balance":3.19},"JP":{"id":"JP","name":"일본","export":5.211,"import":6.468,"balance":-1.257},"ME":{"id":"ME","name":"중동","export":2.89,"import":11.365,"balance":-8.475},"ROW":{"id":"ROW","name":"기타 국가","export":19.771,"import":5.436,"balance":14.335}},"matrix":{"US":{"semiconductor":{"export":4.248,"import":1.291},"automobile":{"export":5.735,"import":0.417},"machinery":{"export":2.032,"import":0.757},"petrochemical":{"export":0.481,"import":0.221},"consumer":{"export":1.289,"import":0.641},"steel":{"export":0.637,"import":0.127},"shipbuilding":{"export":0.135,"import":0.01},"battery":{"export":0.743,"import":0.147},"defense":{"export":0.239,"import":0.16},"bio":{"export":0.651,"import":0.452},"others":{"export":3.569,"import":5.194}},"CN":{"semiconductor":{"export":7.93,"import":2.259},"automobile":{"export":0.478,"import":0.222},"machinery":{"export":1.452,"import":0.946},"petrochemical":{"export":2.648,"import":0.773},"consumer":{"export":0.92,"import":1.624},"steel":{"export":0.765,"import":1.142},"shipbuilding":{"export":0.067,"import":0.052},"battery":{"export":0.279,"import":0.808},"defense":{"export":0,"import":0},"bio":{"export":0.077,"import":0.129},"others":{"export":5.353,"import":9.523}},"ASEAN":{"semiconductor":{"export":6.231,"import":1.291},"automobile":{"export":1.434,"import":0.278},"machinery":{"export":1.452,"import":0.568},"petrochemical":{"export":1.505,"import":0.442},"consumer":{"export":1.151,"import":0.855},"steel":{"export":1.062,"import":0.381},"shipbuilding":{"export":0.605,"import":0.052},"battery":{"export":0.279,"import":0.22},"defense":{"export":0.398,"import":0},"bio":{"export":0.155,"import":0.065},"others":{"export":5.948,"import":5.194}},"EU":{"semiconductor":{"export":1.983,"import":0.646},"automobile":{"export":2.27,"import":1.25},"machinery":{"export":1.161,"import":0.757},"petrochemical":{"export":0.602,"import":0.331},"consumer":{"export":0.644,"import":0.769},"steel":{"export":0.637,"import":0.304},"shipbuilding":{"export":1.177,"import":0.103},"battery":{"export":0.521,"import":0.22},"defense":{"export":0.717,"import":0.201},"bio":{"export":0.589,"import":0.58},"others":{"export":2.379,"import":4.329}},"JP":{"semiconductor":{"export":1.133,"import":0.775},"automobile":{"export":0.239,"import":0.333},"machinery":{"export":0.508,"import":0.568},"petrochemical":{"export":0.361,"import":0.265},"consumer":{"export":0.368,"import":0.342},"steel":{"export":0.637,"import":0.507},"shipbuilding":{"export":0.067,"import":0.077},"battery":{"export":0.037,"import":0.073},"defense":{"export":0,"import":0},"bio":{"export":0.077,"import":0.065},"others":{"export":1.784,"import":3.463}},"ME":{"semiconductor":{"export":0.283,"import":0},"automobile":{"export":0.597,"import":0},"machinery":{"export":0.29,"import":0},"petrochemical":{"export":0.12,"import":0.11},"consumer":{"export":0.092,"import":0},"steel":{"export":0.17,"import":0},"shipbuilding":{"export":0.504,"import":0},"battery":{"export":0,"import":0},"defense":{"export":0.239,"import":0},"bio":{"export":0,"import":0},"others":{"export":0.595,"import":11.255}},"ROW":{"semiconductor":{"export":6.514,"import":0.193},"automobile":{"export":1.195,"import":0.278},"machinery":{"export":0.363,"import":0.188},"petrochemical":{"export":0.301,"import":0.066},"consumer":{"export":0.138,"import":0.043},"steel":{"export":0.34,"import":0.076},"shipbuilding":{"export":0.808,"import":0.222},"battery":{"export":0,"import":0.001},"defense":{"export":0,"import":0.04},"bio":{"export":0,"import":0},"others":{"export":10.112,"import":4.329}}}},{"month":12,"name":"12월","status":"공식 추정치 (전망치)","export":104.798,"import":70.786,"balance":34.012,"macro":{"fxRate":1422,"brentOil":80.5,"scfiFreight":2120,"globalDemandIndex":102.6,"usFedRate":4.5,"bokBaseRate":3},"industries":{"semiconductor":{"id":"semiconductor","name":"반도체","export":29.534,"import":6.622,"balance":22.912,"capacityIndex":100,"utilizationRate":95,"tradeBarrierIndex":100},"automobile":{"id":"automobile","name":"자동차·부품","export":12.459,"import":2.85,"balance":9.609,"capacityIndex":100,"utilizationRate":89,"tradeBarrierIndex":100},"machinery":{"id":"machinery","name":"기계·설비","export":7.568,"import":3.882,"balance":3.686,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"petrochemical":{"id":"petrochemical","name":"석유화학","export":6.276,"import":2.265,"balance":4.011,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"consumer":{"id":"consumer","name":"소비재","export":4.799,"import":4.384,"balance":0.415,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"steel":{"id":"steel","name":"철강","export":4.43,"import":2.603,"balance":1.827,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"shipbuilding":{"id":"shipbuilding","name":"조선","export":3.507,"import":0.53,"balance":2.977,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"battery":{"id":"battery","name":"이차전지","export":1.938,"import":1.507,"balance":0.431,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"defense":{"id":"defense","name":"방산","export":1.661,"import":0.411,"balance":1.25,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"bio":{"id":"bio","name":"바이오·의약품","export":1.615,"import":1.324,"balance":0.291,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"others":{"id":"others","name":"기타 산업","export":31.011,"import":44.408,"balance":-13.397,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100}},"partners":{"US":{"id":"US","name":"미국","export":20.601,"import":9.661,"balance":10.94},"CN":{"id":"CN","name":"중국","export":20.824,"import":17.931,"balance":2.893},"ASEAN":{"id":"ASEAN","name":"아세안(베트남 등)","export":21.084,"import":9.585,"balance":11.499},"EU":{"id":"EU","name":"EU(유럽연합)","export":13.222,"import":9.737,"balance":3.485},"JP":{"id":"JP","name":"일본","export":5.437,"import":6.637,"balance":-1.2},"ME":{"id":"ME","name":"중동","export":3.015,"import":11.659,"balance":-8.644},"ROW":{"id":"ROW","name":"기타 국가","export":20.615,"import":5.576,"balance":15.039}},"matrix":{"US":{"semiconductor":{"export":4.43,"import":1.324},"automobile":{"export":5.98,"import":0.428},"machinery":{"export":2.119,"import":0.776},"petrochemical":{"export":0.502,"import":0.227},"consumer":{"export":1.344,"import":0.658},"steel":{"export":0.665,"import":0.13},"shipbuilding":{"export":0.14,"import":0.011},"battery":{"export":0.774,"import":0.151},"defense":{"export":0.249,"import":0.164},"bio":{"export":0.677,"import":0.463},"others":{"export":3.721,"import":5.329}},"CN":{"semiconductor":{"export":8.27,"import":2.318},"automobile":{"export":0.498,"import":0.228},"machinery":{"export":1.514,"import":0.971},"petrochemical":{"export":2.761,"import":0.793},"consumer":{"export":0.96,"import":1.666},"steel":{"export":0.797,"import":1.171},"shipbuilding":{"export":0.07,"import":0.053},"battery":{"export":0.291,"import":0.829},"defense":{"export":0,"import":0},"bio":{"export":0.081,"import":0.132},"others":{"export":5.582,"import":9.77}},"ASEAN":{"semiconductor":{"export":6.497,"import":1.324},"automobile":{"export":1.495,"import":0.285},"machinery":{"export":1.514,"import":0.582},"petrochemical":{"export":1.569,"import":0.453},"consumer":{"export":1.2,"import":0.877},"steel":{"export":1.108,"import":0.39},"shipbuilding":{"export":0.631,"import":0.053},"battery":{"export":0.291,"import":0.226},"defense":{"export":0.415,"import":0},"bio":{"export":0.162,"import":0.066},"others":{"export":6.202,"import":5.329}},"EU":{"semiconductor":{"export":2.067,"import":0.662},"automobile":{"export":2.367,"import":1.283},"machinery":{"export":1.211,"import":0.776},"petrochemical":{"export":0.628,"import":0.34},"consumer":{"export":0.672,"import":0.789},"steel":{"export":0.665,"import":0.312},"shipbuilding":{"export":1.227,"import":0.106},"battery":{"export":0.543,"import":0.226},"defense":{"export":0.747,"import":0.206},"bio":{"export":0.614,"import":0.596},"others":{"export":2.481,"import":4.441}},"JP":{"semiconductor":{"export":1.181,"import":0.795},"automobile":{"export":0.249,"import":0.342},"machinery":{"export":0.53,"import":0.582},"petrochemical":{"export":0.377,"import":0.272},"consumer":{"export":0.384,"import":0.351},"steel":{"export":0.665,"import":0.521},"shipbuilding":{"export":0.07,"import":0.08},"battery":{"export":0.039,"import":0.075},"defense":{"export":0,"import":0},"bio":{"export":0.081,"import":0.066},"others":{"export":1.861,"import":3.553}},"ME":{"semiconductor":{"export":0.295,"import":0},"automobile":{"export":0.623,"import":0},"machinery":{"export":0.303,"import":0},"petrochemical":{"export":0.126,"import":0.113},"consumer":{"export":0.096,"import":0},"steel":{"export":0.177,"import":0},"shipbuilding":{"export":0.526,"import":0},"battery":{"export":0,"import":0},"defense":{"export":0.249,"import":0},"bio":{"export":0,"import":0},"others":{"export":0.62,"import":11.546}},"ROW":{"semiconductor":{"export":6.794,"import":0.199},"automobile":{"export":1.247,"import":0.284},"machinery":{"export":0.377,"import":0.195},"petrochemical":{"export":0.313,"import":0.067},"consumer":{"export":0.143,"import":0.043},"steel":{"export":0.353,"import":0.079},"shipbuilding":{"export":0.843,"import":0.227},"battery":{"export":0,"import":0},"defense":{"export":0.001,"import":0.041},"bio":{"export":0,"import":0.001},"others":{"export":10.544,"import":4.44}}}}]};
+const BASELINE_2026 = {"version":"2026.11.19-AUDITED-V4.0","metadata":{"totalExport":1135.5,"totalImport":775,"tradeBalance":360.5,"octYtdExport":930.202,"octYtdImport":635.214,"octYtdBalance":294.988,"janExport":65.805,"ytdNov10Export":963.7,"ytdNov10Import":659.9,"ytdNov10Balance":303.8,"milestone":"2026년 9월 초 2025년 연간 수출 실적(7,093억 달러) 돌파 공식 확인","m10OfficialYtdExport":930.202,"m10OfficialYtdImport":635.214,"m10OfficialYtdBalance":294.988,"nov10YtdExport":963.7,"nov10YtdImport":659.9,"nov19Milestone":{"date":"2026-11-19","headline":"대한민국 사상 최초 연간 누적 수출 1조 달러($1,000B) 공식 돌파 (역대 최단기 신기록)","declaredYtdExport":1000.2,"source":"관세청·산업통상자원부 공동 공식 집계 (2026년 11월 19일 14시 기준)"},"revisionHistory":[{"date":"2026-10-15","note":"9월 잠정(속보) 통계 발표: 수출 $121.050B"},{"date":"2026-11-01","note":"10월 잠정 통계 및 9월 1차 수정치 집계: $120.420B"},{"date":"2026-11-16","note":"관세청 10월 확정 통계 및 9월 사후 정정 신고분 최종 고시: 9월 $121.254B (HBM·선박 정정 반영), 10월 $114.576B (1~10월 누적 수출 확정치 $930.202B 정밀 일치)"},{"date":"2026-11-19","note":"대한민국 누적 수출 1조 달러($1,000B) 돌파 공식 발표"}]},"source":"관세청 수출입무역통계(2026.11.11 공표 11월 10일까지 누적 실적 및 1~10월 확정치) 및 산업통상부 공식 발표자료","unit":"Billion USD ($B, 십억 달러) / 내부 저장 기준","statusDefinition":{"months_1_to_10":"확정 실적 (관세청 공식 월별 통관 확정 통계. 1월 $65.805B, 6월 $102.166B, 9월 최종정정 $121.254B, 10월 $114.576B)","month_11":"잠정 실적 전망치 (11월 10일까지 누적 $963.7B 실적 기반 월간 환산 전망 기준선 $100.500B)","month_12":"공식 추정 전망치 (연말 밀어내기 통관 추정 전망 기준선 $104.798B)"},"totals":{"export":1135.5,"import":775,"balance":360.5},"months":[{"month":1,"name":"1월","status":"확정 실적","export":65.805,"import":57.1,"balance":8.705,"macro":{"fxRate":1420.5,"brentOil":79.2,"scfiFreight":2210,"globalDemandIndex":99.8,"usFedRate":4.5,"bokBaseRate":3},"industries":{"semiconductor":{"id":"semiconductor","name":"반도체","export":18.545,"import":5.342,"balance":13.203,"capacityIndex":100,"utilizationRate":95,"tradeBarrierIndex":100},"automobile":{"id":"automobile","name":"자동차·부품","export":7.824,"import":2.299,"balance":5.525,"capacityIndex":100,"utilizationRate":89,"tradeBarrierIndex":100},"machinery":{"id":"machinery","name":"기계·설비","export":4.752,"import":3.131,"balance":1.621,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"petrochemical":{"id":"petrochemical","name":"석유화학","export":3.941,"import":1.827,"balance":2.114,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"consumer":{"id":"consumer","name":"소비재","export":3.014,"import":3.537,"balance":-0.523,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"steel":{"id":"steel","name":"철강","export":2.782,"import":2.1,"balance":0.682,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"shipbuilding":{"id":"shipbuilding","name":"조선","export":2.202,"import":0.427,"balance":1.775,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"battery":{"id":"battery","name":"이차전지","export":1.217,"import":1.216,"balance":0.001,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"defense":{"id":"defense","name":"방산","export":1.043,"import":0.332,"balance":0.711,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"bio":{"id":"bio","name":"바이오·의약품","export":1.014,"import":1.068,"balance":-0.054,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"others":{"id":"others","name":"기타 산업","export":19.471,"import":35.821,"balance":-16.35,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100}},"partners":{"US":{"id":"US","name":"미국","export":12.938,"import":7.795,"balance":5.143},"CN":{"id":"CN","name":"중국","export":13.077,"import":14.465,"balance":-1.388},"ASEAN":{"id":"ASEAN","name":"아세안(베트남 등)","export":13.239,"import":7.732,"balance":5.507},"EU":{"id":"EU","name":"EU(유럽연합)","export":8.302,"import":7.854,"balance":0.448},"JP":{"id":"JP","name":"일본","export":3.412,"import":5.353,"balance":-1.941},"ME":{"id":"ME","name":"중동","export":1.891,"import":9.404,"balance":-7.513},"ROW":{"id":"ROW","name":"기타 국가","export":12.946,"import":4.497,"balance":8.449}},"matrix":{"US":{"semiconductor":{"export":2.782,"import":1.068},"automobile":{"export":3.756,"import":0.345},"machinery":{"export":1.331,"import":0.626},"petrochemical":{"export":0.315,"import":0.183},"consumer":{"export":0.844,"import":0.531},"steel":{"export":0.417,"import":0.105},"shipbuilding":{"export":0.088,"import":0.009},"battery":{"export":0.486,"import":0.122},"defense":{"export":0.156,"import":0.133},"bio":{"export":0.426,"import":0.374},"others":{"export":2.337,"import":4.299}},"CN":{"semiconductor":{"export":5.193,"import":1.87},"automobile":{"export":0.313,"import":0.184},"machinery":{"export":0.95,"import":0.783},"petrochemical":{"export":1.734,"import":0.639},"consumer":{"export":0.603,"import":1.344},"steel":{"export":0.501,"import":0.945},"shipbuilding":{"export":0.044,"import":0.043},"battery":{"export":0.183,"import":0.669},"defense":{"export":0,"import":0},"bio":{"export":0.051,"import":0.107},"others":{"export":3.505,"import":7.881}},"ASEAN":{"semiconductor":{"export":4.08,"import":1.068},"automobile":{"export":0.939,"import":0.23},"machinery":{"export":0.95,"import":0.47},"petrochemical":{"export":0.985,"import":0.365},"consumer":{"export":0.754,"import":0.707},"steel":{"export":0.696,"import":0.315},"shipbuilding":{"export":0.396,"import":0.043},"battery":{"export":0.183,"import":0.182},"defense":{"export":0.261,"import":0},"bio":{"export":0.101,"import":0.053},"others":{"export":3.894,"import":4.299}},"EU":{"semiconductor":{"export":1.298,"import":0.534},"automobile":{"export":1.487,"import":1.035},"machinery":{"export":0.76,"import":0.626},"petrochemical":{"export":0.394,"import":0.274},"consumer":{"export":0.422,"import":0.637},"steel":{"export":0.417,"import":0.252},"shipbuilding":{"export":0.771,"import":0.085},"battery":{"export":0.341,"import":0.182},"defense":{"export":0.469,"import":0.166},"bio":{"export":0.385,"import":0.481},"others":{"export":1.558,"import":3.582}},"JP":{"semiconductor":{"export":0.742,"import":0.641},"automobile":{"export":0.156,"import":0.276},"machinery":{"export":0.333,"import":0.47},"petrochemical":{"export":0.236,"import":0.219},"consumer":{"export":0.241,"import":0.283},"steel":{"export":0.417,"import":0.42},"shipbuilding":{"export":0.044,"import":0.064},"battery":{"export":0.024,"import":0.061},"defense":{"export":0,"import":0},"bio":{"export":0.051,"import":0.053},"others":{"export":1.168,"import":2.866}},"ME":{"semiconductor":{"export":0.185,"import":0},"automobile":{"export":0.391,"import":0},"machinery":{"export":0.19,"import":0},"petrochemical":{"export":0.079,"import":0.091},"consumer":{"export":0.06,"import":0},"steel":{"export":0.111,"import":0},"shipbuilding":{"export":0.33,"import":0},"battery":{"export":0,"import":0},"defense":{"export":0.156,"import":0},"bio":{"export":0,"import":0},"others":{"export":0.389,"import":9.313}},"ROW":{"semiconductor":{"export":4.265,"import":0.161},"automobile":{"export":0.782,"import":0.229},"machinery":{"export":0.238,"import":0.156},"petrochemical":{"export":0.198,"import":0.056},"consumer":{"export":0.09,"import":0.035},"steel":{"export":0.223,"import":0.063},"shipbuilding":{"export":0.529,"import":0.183},"battery":{"export":0,"import":0},"defense":{"export":0.001,"import":0.033},"bio":{"export":0,"import":0},"others":{"export":6.62,"import":3.581}}}},{"month":2,"name":"2월","status":"확정 실적","export":67.541,"import":52.201,"balance":15.34,"macro":{"fxRate":1425,"brentOil":80.1,"scfiFreight":2150,"globalDemandIndex":99.4,"usFedRate":4.5,"bokBaseRate":3},"industries":{"semiconductor":{"id":"semiconductor","name":"반도체","export":19.034,"import":4.883,"balance":14.151,"capacityIndex":100,"utilizationRate":95,"tradeBarrierIndex":100},"automobile":{"id":"automobile","name":"자동차·부품","export":8.03,"import":2.102,"balance":5.928,"capacityIndex":100,"utilizationRate":89,"tradeBarrierIndex":100},"machinery":{"id":"machinery","name":"기계·설비","export":4.877,"import":2.863,"balance":2.014,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"petrochemical":{"id":"petrochemical","name":"석유화학","export":4.045,"import":1.67,"balance":2.375,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"consumer":{"id":"consumer","name":"소비재","export":3.093,"import":3.233,"balance":-0.14,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"steel":{"id":"steel","name":"철강","export":2.855,"import":1.92,"balance":0.935,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"shipbuilding":{"id":"shipbuilding","name":"조선","export":2.26,"import":0.391,"balance":1.869,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"battery":{"id":"battery","name":"이차전지","export":1.249,"import":1.111,"balance":0.138,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"defense":{"id":"defense","name":"방산","export":1.071,"import":0.303,"balance":0.768,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"bio":{"id":"bio","name":"바이오·의약품","export":1.041,"import":0.977,"balance":0.064,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"others":{"id":"others","name":"기타 산업","export":19.986,"import":32.748,"balance":-12.762,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100}},"partners":{"US":{"id":"US","name":"미국","export":13.279,"import":7.125,"balance":6.154},"CN":{"id":"CN","name":"중국","export":13.42,"import":13.222,"balance":0.198},"ASEAN":{"id":"ASEAN","name":"아세안(베트남 등)","export":13.587,"import":7.07,"balance":6.517},"EU":{"id":"EU","name":"EU(유럽연합)","export":8.521,"import":7.181,"balance":1.34},"JP":{"id":"JP","name":"일본","export":3.502,"import":4.894,"balance":-1.392},"ME":{"id":"ME","name":"중동","export":1.943,"import":8.598,"balance":-6.655},"ROW":{"id":"ROW","name":"기타 국가","export":13.289,"import":4.111,"balance":9.178}},"matrix":{"US":{"semiconductor":{"export":2.855,"import":0.977},"automobile":{"export":3.854,"import":0.315},"machinery":{"export":1.366,"import":0.573},"petrochemical":{"export":0.324,"import":0.167},"consumer":{"export":0.866,"import":0.485},"steel":{"export":0.428,"import":0.096},"shipbuilding":{"export":0.09,"import":0.008},"battery":{"export":0.5,"import":0.111},"defense":{"export":0.161,"import":0.121},"bio":{"export":0.437,"import":0.342},"others":{"export":2.398,"import":3.93}},"CN":{"semiconductor":{"export":5.33,"import":1.709},"automobile":{"export":0.321,"import":0.168},"machinery":{"export":0.975,"import":0.716},"petrochemical":{"export":1.78,"import":0.584},"consumer":{"export":0.619,"import":1.229},"steel":{"export":0.514,"import":0.864},"shipbuilding":{"export":0.045,"import":0.039},"battery":{"export":0.187,"import":0.61},"defense":{"export":0,"import":0},"bio":{"export":0.052,"import":0.098},"others":{"export":3.597,"import":7.205}},"ASEAN":{"semiconductor":{"export":4.187,"import":0.977},"automobile":{"export":0.964,"import":0.21},"machinery":{"export":0.975,"import":0.429},"petrochemical":{"export":1.011,"import":0.334},"consumer":{"export":0.773,"import":0.647},"steel":{"export":0.714,"import":0.288},"shipbuilding":{"export":0.407,"import":0.039},"battery":{"export":0.187,"import":0.167},"defense":{"export":0.268,"import":0},"bio":{"export":0.104,"import":0.049},"others":{"export":3.997,"import":3.93}},"EU":{"semiconductor":{"export":1.332,"import":0.488},"automobile":{"export":1.526,"import":0.946},"machinery":{"export":0.78,"import":0.573},"petrochemical":{"export":0.405,"import":0.251},"consumer":{"export":0.433,"import":0.582},"steel":{"export":0.428,"import":0.23},"shipbuilding":{"export":0.791,"import":0.078},"battery":{"export":0.35,"import":0.167},"defense":{"export":0.481,"import":0.152},"bio":{"export":0.396,"import":0.439},"others":{"export":1.599,"import":3.275}},"JP":{"semiconductor":{"export":0.761,"import":0.586},"automobile":{"export":0.161,"import":0.252},"machinery":{"export":0.341,"import":0.429},"petrochemical":{"export":0.243,"import":0.2},"consumer":{"export":0.247,"import":0.259},"steel":{"export":0.428,"import":0.384},"shipbuilding":{"export":0.045,"import":0.059},"battery":{"export":0.025,"import":0.056},"defense":{"export":0,"import":0},"bio":{"export":0.052,"import":0.049},"others":{"export":1.199,"import":2.62}},"ME":{"semiconductor":{"export":0.19,"import":0},"automobile":{"export":0.401,"import":0},"machinery":{"export":0.195,"import":0},"petrochemical":{"export":0.081,"import":0.084},"consumer":{"export":0.062,"import":0},"steel":{"export":0.114,"import":0},"shipbuilding":{"export":0.339,"import":0},"battery":{"export":0,"import":0},"defense":{"export":0.161,"import":0},"bio":{"export":0,"import":0},"others":{"export":0.4,"import":8.514}},"ROW":{"semiconductor":{"export":4.379,"import":0.146},"automobile":{"export":0.803,"import":0.211},"machinery":{"export":0.245,"import":0.143},"petrochemical":{"export":0.201,"import":0.05},"consumer":{"export":0.093,"import":0.031},"steel":{"export":0.229,"import":0.058},"shipbuilding":{"export":0.543,"import":0.168},"battery":{"export":0,"import":0},"defense":{"export":0,"import":0.03},"bio":{"export":0,"import":0},"others":{"export":6.796,"import":3.274}}}},{"month":3,"name":"3월","status":"확정 실적","export":86.627,"import":60.388,"balance":26.239,"macro":{"fxRate":1410.2,"brentOil":82.5,"scfiFreight":2020,"globalDemandIndex":100.2,"usFedRate":4.5,"bokBaseRate":3},"industries":{"semiconductor":{"id":"semiconductor","name":"반도체","export":24.413,"import":5.649,"balance":18.764,"capacityIndex":100,"utilizationRate":95,"tradeBarrierIndex":100},"automobile":{"id":"automobile","name":"자동차·부품","export":10.299,"import":2.431,"balance":7.868,"capacityIndex":100,"utilizationRate":89,"tradeBarrierIndex":100},"machinery":{"id":"machinery","name":"기계·설비","export":6.256,"import":3.312,"balance":2.944,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"petrochemical":{"id":"petrochemical","name":"석유화학","export":5.188,"import":1.932,"balance":3.256,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"consumer":{"id":"consumer","name":"소비재","export":3.967,"import":3.74,"balance":0.227,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"steel":{"id":"steel","name":"철강","export":3.662,"import":2.221,"balance":1.441,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"shipbuilding":{"id":"shipbuilding","name":"조선","export":2.899,"import":0.452,"balance":2.447,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"battery":{"id":"battery","name":"이차전지","export":1.602,"import":1.286,"balance":0.316,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"defense":{"id":"defense","name":"방산","export":1.373,"import":0.351,"balance":1.022,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"bio":{"id":"bio","name":"바이오·의약품","export":1.335,"import":1.13,"balance":0.205,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"others":{"id":"others","name":"기타 산업","export":25.633,"import":37.884,"balance":-12.251,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100}},"partners":{"US":{"id":"US","name":"미국","export":17.032,"import":8.241,"balance":8.791},"CN":{"id":"CN","name":"중국","export":17.213,"import":15.294,"balance":1.919},"ASEAN":{"id":"ASEAN","name":"아세안(베트남 등)","export":17.429,"import":8.177,"balance":9.252},"EU":{"id":"EU","name":"EU(유럽연합)","export":10.93,"import":8.306,"balance":2.624},"JP":{"id":"JP","name":"일본","export":4.493,"import":5.661,"balance":-1.168},"ME":{"id":"ME","name":"중동","export":2.492,"import":9.947,"balance":-7.455},"ROW":{"id":"ROW","name":"기타 국가","export":17.038,"import":4.762,"balance":12.276}},"matrix":{"US":{"semiconductor":{"export":3.662,"import":1.13},"automobile":{"export":4.944,"import":0.365},"machinery":{"export":1.752,"import":0.662},"petrochemical":{"export":0.415,"import":0.193},"consumer":{"export":1.111,"import":0.561},"steel":{"export":0.549,"import":0.111},"shipbuilding":{"export":0.116,"import":0.009},"battery":{"export":0.641,"import":0.129},"defense":{"export":0.206,"import":0.14},"bio":{"export":0.56,"import":0.395},"others":{"export":3.076,"import":4.546}},"CN":{"semiconductor":{"export":6.836,"import":1.977},"automobile":{"export":0.412,"import":0.194},"machinery":{"export":1.251,"import":0.828},"petrochemical":{"export":2.283,"import":0.676},"consumer":{"export":0.793,"import":1.421},"steel":{"export":0.659,"import":0.999},"shipbuilding":{"export":0.058,"import":0.045},"battery":{"export":0.24,"import":0.707},"defense":{"export":0,"import":0},"bio":{"export":0.067,"import":0.113},"others":{"export":4.614,"import":8.334}},"ASEAN":{"semiconductor":{"export":5.371,"import":1.13},"automobile":{"export":1.236,"import":0.243},"machinery":{"export":1.251,"import":0.497},"petrochemical":{"export":1.297,"import":0.386},"consumer":{"export":0.992,"import":0.748},"steel":{"export":0.916,"import":0.333},"shipbuilding":{"export":0.522,"import":0.045},"battery":{"export":0.24,"import":0.193},"defense":{"export":0.343,"import":0},"bio":{"export":0.134,"import":0.056},"others":{"export":5.127,"import":4.546}},"EU":{"semiconductor":{"export":1.709,"import":0.565},"automobile":{"export":1.957,"import":1.094},"machinery":{"export":1.001,"import":0.662},"petrochemical":{"export":0.519,"import":0.29},"consumer":{"export":0.555,"import":0.673},"steel":{"export":0.549,"import":0.267},"shipbuilding":{"export":1.015,"import":0.09},"battery":{"export":0.449,"import":0.193},"defense":{"export":0.618,"import":0.176},"bio":{"export":0.507,"import":0.508},"others":{"export":2.051,"import":3.788}},"JP":{"semiconductor":{"export":0.977,"import":0.678},"automobile":{"export":0.206,"import":0.292},"machinery":{"export":0.438,"import":0.497},"petrochemical":{"export":0.311,"import":0.232},"consumer":{"export":0.317,"import":0.299},"steel":{"export":0.549,"import":0.444},"shipbuilding":{"export":0.058,"import":0.068},"battery":{"export":0.032,"import":0.064},"defense":{"export":0,"import":0},"bio":{"export":0.067,"import":0.056},"others":{"export":1.538,"import":3.031}},"ME":{"semiconductor":{"export":0.244,"import":0},"automobile":{"export":0.515,"import":0},"machinery":{"export":0.25,"import":0},"petrochemical":{"export":0.104,"import":0.097},"consumer":{"export":0.079,"import":0},"steel":{"export":0.146,"import":0},"shipbuilding":{"export":0.435,"import":0},"battery":{"export":0,"import":0},"defense":{"export":0.206,"import":0},"bio":{"export":0,"import":0},"others":{"export":0.513,"import":9.85}},"ROW":{"semiconductor":{"export":5.614,"import":0.169},"automobile":{"export":1.029,"import":0.243},"machinery":{"export":0.313,"import":0.166},"petrochemical":{"export":0.259,"import":0.058},"consumer":{"export":0.12,"import":0.038},"steel":{"export":0.294,"import":0.067},"shipbuilding":{"export":0.695,"import":0.195},"battery":{"export":0,"import":0},"defense":{"export":0,"import":0.035},"bio":{"export":0,"import":0.002},"others":{"export":8.714,"import":3.789}}}},{"month":4,"name":"4월","status":"확정 실적","export":86.2,"import":62.4,"balance":23.8,"macro":{"fxRate":1395,"brentOil":83.4,"scfiFreight":1980,"globalDemandIndex":100.5,"usFedRate":4.5,"bokBaseRate":3},"industries":{"semiconductor":{"id":"semiconductor","name":"반도체","export":24.292,"import":5.837,"balance":18.455,"capacityIndex":100,"utilizationRate":95,"tradeBarrierIndex":100},"automobile":{"id":"automobile","name":"자동차·부품","export":10.248,"import":2.512,"balance":7.736,"capacityIndex":100,"utilizationRate":89,"tradeBarrierIndex":100},"machinery":{"id":"machinery","name":"기계·설비","export":6.225,"import":3.422,"balance":2.803,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"petrochemical":{"id":"petrochemical","name":"석유화학","export":5.162,"import":1.997,"balance":3.165,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"consumer":{"id":"consumer","name":"소비재","export":3.948,"import":3.865,"balance":0.083,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"steel":{"id":"steel","name":"철강","export":3.644,"import":2.295,"balance":1.349,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"shipbuilding":{"id":"shipbuilding","name":"조선","export":2.885,"import":0.467,"balance":2.418,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"battery":{"id":"battery","name":"이차전지","export":1.594,"import":1.329,"balance":0.265,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"defense":{"id":"defense","name":"방산","export":1.366,"import":0.362,"balance":1.004,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"bio":{"id":"bio","name":"바이오·의약품","export":1.328,"import":1.167,"balance":0.161,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"others":{"id":"others","name":"기타 산업","export":25.508,"import":39.147,"balance":-13.639,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100}},"partners":{"US":{"id":"US","name":"미국","export":16.948,"import":8.516,"balance":8.432},"CN":{"id":"CN","name":"중국","export":17.128,"import":15.808,"balance":1.32},"ASEAN":{"id":"ASEAN","name":"아세안(베트남 등)","export":17.343,"import":8.449,"balance":8.894},"EU":{"id":"EU","name":"EU(유럽연합)","export":10.875,"import":8.582,"balance":2.293},"JP":{"id":"JP","name":"일본","export":4.472,"import":5.848,"balance":-1.376},"ME":{"id":"ME","name":"중동","export":2.48,"import":10.278,"balance":-7.798},"ROW":{"id":"ROW","name":"기타 국가","export":16.954,"import":4.919,"balance":12.035}},"matrix":{"US":{"semiconductor":{"export":3.644,"import":1.167},"automobile":{"export":4.919,"import":0.377},"machinery":{"export":1.743,"import":0.684},"petrochemical":{"export":0.413,"import":0.2},"consumer":{"export":1.105,"import":0.58},"steel":{"export":0.547,"import":0.115},"shipbuilding":{"export":0.115,"import":0.009},"battery":{"export":0.638,"import":0.133},"defense":{"export":0.205,"import":0.145},"bio":{"export":0.558,"import":0.408},"others":{"export":3.061,"import":4.698}},"CN":{"semiconductor":{"export":6.802,"import":2.043},"automobile":{"export":0.41,"import":0.201},"machinery":{"export":1.245,"import":0.856},"petrochemical":{"export":2.271,"import":0.699},"consumer":{"export":0.79,"import":1.469},"steel":{"export":0.656,"import":1.033},"shipbuilding":{"export":0.058,"import":0.047},"battery":{"export":0.239,"import":0.731},"defense":{"export":0,"import":0},"bio":{"export":0.066,"import":0.117},"others":{"export":4.591,"import":8.612}},"ASEAN":{"semiconductor":{"export":5.344,"import":1.167},"automobile":{"export":1.23,"import":0.251},"machinery":{"export":1.245,"import":0.513},"petrochemical":{"export":1.291,"import":0.399},"consumer":{"export":0.987,"import":0.773},"steel":{"export":0.911,"import":0.344},"shipbuilding":{"export":0.519,"import":0.047},"battery":{"export":0.239,"import":0.199},"defense":{"export":0.342,"import":0},"bio":{"export":0.133,"import":0.058},"others":{"export":5.102,"import":4.698}},"EU":{"semiconductor":{"export":1.7,"import":0.584},"automobile":{"export":1.947,"import":1.13},"machinery":{"export":0.996,"import":0.684},"petrochemical":{"export":0.516,"import":0.3},"consumer":{"export":0.553,"import":0.696},"steel":{"export":0.547,"import":0.275},"shipbuilding":{"export":1.01,"import":0.093},"battery":{"export":0.446,"import":0.199},"defense":{"export":0.614,"import":0.181},"bio":{"export":0.505,"import":0.525},"others":{"export":2.041,"import":3.915}},"JP":{"semiconductor":{"export":0.972,"import":0.7},"automobile":{"export":0.205,"import":0.301},"machinery":{"export":0.436,"import":0.513},"petrochemical":{"export":0.31,"import":0.24},"consumer":{"export":0.316,"import":0.309},"steel":{"export":0.547,"import":0.459},"shipbuilding":{"export":0.058,"import":0.07},"battery":{"export":0.032,"import":0.066},"defense":{"export":0,"import":0},"bio":{"export":0.066,"import":0.058},"others":{"export":1.53,"import":3.132}},"ME":{"semiconductor":{"export":0.243,"import":0},"automobile":{"export":0.512,"import":0},"machinery":{"export":0.249,"import":0},"petrochemical":{"export":0.103,"import":0.1},"consumer":{"export":0.079,"import":0},"steel":{"export":0.146,"import":0},"shipbuilding":{"export":0.433,"import":0},"battery":{"export":0,"import":0},"defense":{"export":0.205,"import":0},"bio":{"export":0,"import":0},"others":{"export":0.51,"import":10.178}},"ROW":{"semiconductor":{"export":5.587,"import":0.176},"automobile":{"export":1.025,"import":0.252},"machinery":{"export":0.311,"import":0.172},"petrochemical":{"export":0.258,"import":0.059},"consumer":{"export":0.118,"import":0.038},"steel":{"export":0.29,"import":0.069},"shipbuilding":{"export":0.692,"import":0.201},"battery":{"export":0,"import":0.001},"defense":{"export":0,"import":0.036},"bio":{"export":0,"import":0.001},"others":{"export":8.673,"import":3.914}}}},{"month":5,"name":"5월","status":"확정 실적","export":87.821,"import":60.785,"balance":27.036,"macro":{"fxRate":1388.5,"brentOil":81.2,"scfiFreight":2010,"globalDemandIndex":100.8,"usFedRate":4.5,"bokBaseRate":3},"industries":{"semiconductor":{"id":"semiconductor","name":"반도체","export":24.749,"import":5.686,"balance":19.063,"capacityIndex":100,"utilizationRate":95,"tradeBarrierIndex":100},"automobile":{"id":"automobile","name":"자동차·부품","export":10.441,"import":2.447,"balance":7.994,"capacityIndex":100,"utilizationRate":89,"tradeBarrierIndex":100},"machinery":{"id":"machinery","name":"기계·설비","export":6.342,"import":3.333,"balance":3.009,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"petrochemical":{"id":"petrochemical","name":"석유화학","export":5.259,"import":1.945,"balance":3.314,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"consumer":{"id":"consumer","name":"소비재","export":4.022,"import":3.765,"balance":0.257,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"steel":{"id":"steel","name":"철강","export":3.712,"import":2.235,"balance":1.477,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"shipbuilding":{"id":"shipbuilding","name":"조선","export":2.939,"import":0.455,"balance":2.484,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"battery":{"id":"battery","name":"이차전지","export":1.624,"import":1.294,"balance":0.33,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"defense":{"id":"defense","name":"방산","export":1.392,"import":0.353,"balance":1.039,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"bio":{"id":"bio","name":"바이오·의약품","export":1.353,"import":1.137,"balance":0.216,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"others":{"id":"others","name":"기타 산업","export":25.988,"import":38.135,"balance":-12.147,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100}},"partners":{"US":{"id":"US","name":"미국","export":17.267,"import":8.296,"balance":8.971},"CN":{"id":"CN","name":"중국","export":17.451,"import":15.399,"balance":2.052},"ASEAN":{"id":"ASEAN","name":"아세안(베트남 등)","export":17.669,"import":8.232,"balance":9.437},"EU":{"id":"EU","name":"EU(유럽연합)","export":11.08,"import":8.362,"balance":2.718},"JP":{"id":"JP","name":"일본","export":4.556,"import":5.698,"balance":-1.142},"ME":{"id":"ME","name":"중동","export":2.526,"import":10.012,"balance":-7.486},"ROW":{"id":"ROW","name":"기타 국가","export":17.272,"import":4.786,"balance":12.486}},"matrix":{"US":{"semiconductor":{"export":3.712,"import":1.137},"automobile":{"export":5.012,"import":0.367},"machinery":{"export":1.776,"import":0.667},"petrochemical":{"export":0.421,"import":0.195},"consumer":{"export":1.126,"import":0.565},"steel":{"export":0.557,"import":0.112},"shipbuilding":{"export":0.118,"import":0.009},"battery":{"export":0.649,"import":0.129},"defense":{"export":0.209,"import":0.141},"bio":{"export":0.568,"import":0.398},"others":{"export":3.119,"import":4.576}},"CN":{"semiconductor":{"export":6.93,"import":1.99},"automobile":{"export":0.418,"import":0.196},"machinery":{"export":1.268,"import":0.833},"petrochemical":{"export":2.314,"import":0.681},"consumer":{"export":0.804,"import":1.431},"steel":{"export":0.668,"import":1.006},"shipbuilding":{"export":0.059,"import":0.046},"battery":{"export":0.244,"import":0.712},"defense":{"export":0,"import":0},"bio":{"export":0.068,"import":0.114},"others":{"export":4.678,"import":8.39}},"ASEAN":{"semiconductor":{"export":5.445,"import":1.137},"automobile":{"export":1.253,"import":0.245},"machinery":{"export":1.268,"import":0.5},"petrochemical":{"export":1.315,"import":0.389},"consumer":{"export":1.006,"import":0.753},"steel":{"export":0.928,"import":0.335},"shipbuilding":{"export":0.529,"import":0.046},"battery":{"export":0.244,"import":0.194},"defense":{"export":0.348,"import":0},"bio":{"export":0.135,"import":0.057},"others":{"export":5.198,"import":4.576}},"EU":{"semiconductor":{"export":1.732,"import":0.569},"automobile":{"export":1.984,"import":1.101},"machinery":{"export":1.015,"import":0.667},"petrochemical":{"export":0.526,"import":0.292},"consumer":{"export":0.563,"import":0.678},"steel":{"export":0.557,"import":0.268},"shipbuilding":{"export":1.029,"import":0.091},"battery":{"export":0.455,"import":0.194},"defense":{"export":0.626,"import":0.177},"bio":{"export":0.514,"import":0.511},"others":{"export":2.079,"import":3.814}},"JP":{"semiconductor":{"export":0.99,"import":0.682},"automobile":{"export":0.209,"import":0.294},"machinery":{"export":0.444,"import":0.5},"petrochemical":{"export":0.316,"import":0.233},"consumer":{"export":0.322,"import":0.301},"steel":{"export":0.557,"import":0.447},"shipbuilding":{"export":0.059,"import":0.068},"battery":{"export":0.032,"import":0.065},"defense":{"export":0,"import":0},"bio":{"export":0.068,"import":0.057},"others":{"export":1.559,"import":3.051}},"ME":{"semiconductor":{"export":0.247,"import":0},"automobile":{"export":0.522,"import":0},"machinery":{"export":0.254,"import":0},"petrochemical":{"export":0.105,"import":0.097},"consumer":{"export":0.08,"import":0},"steel":{"export":0.148,"import":0},"shipbuilding":{"export":0.441,"import":0},"battery":{"export":0,"import":0},"defense":{"export":0.209,"import":0},"bio":{"export":0,"import":0},"others":{"export":0.52,"import":9.915}},"ROW":{"semiconductor":{"export":5.693,"import":0.171},"automobile":{"export":1.043,"import":0.244},"machinery":{"export":0.317,"import":0.166},"petrochemical":{"export":0.262,"import":0.058},"consumer":{"export":0.121,"import":0.037},"steel":{"export":0.297,"import":0.067},"shipbuilding":{"export":0.704,"import":0.195},"battery":{"export":0,"import":0},"defense":{"export":0,"import":0.035},"bio":{"export":0,"import":0},"others":{"export":8.835,"import":3.813}}}},{"month":6,"name":"6월","status":"확정 실적","export":102.166,"import":66.1,"balance":36.066,"macro":{"fxRate":1382,"brentOil":79.5,"scfiFreight":2080,"globalDemandIndex":101.4,"usFedRate":4.5,"bokBaseRate":3},"industries":{"semiconductor":{"id":"semiconductor","name":"반도체","export":28.792,"import":6.184,"balance":22.608,"capacityIndex":100,"utilizationRate":95,"tradeBarrierIndex":100},"automobile":{"id":"automobile","name":"자동차·부품","export":12.147,"import":2.661,"balance":9.486,"capacityIndex":100,"utilizationRate":89,"tradeBarrierIndex":100},"machinery":{"id":"machinery","name":"기계·설비","export":7.378,"import":3.625,"balance":3.753,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"petrochemical":{"id":"petrochemical","name":"석유화학","export":6.118,"import":2.115,"balance":4.003,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"consumer":{"id":"consumer","name":"소비재","export":4.679,"import":4.094,"balance":0.585,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"steel":{"id":"steel","name":"철강","export":4.319,"import":2.431,"balance":1.888,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"shipbuilding":{"id":"shipbuilding","name":"조선","export":3.419,"import":0.495,"balance":2.924,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"battery":{"id":"battery","name":"이차전지","export":1.889,"import":1.407,"balance":0.482,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"defense":{"id":"defense","name":"방산","export":1.62,"import":0.384,"balance":1.236,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"bio":{"id":"bio","name":"바이오·의약품","export":1.575,"import":1.237,"balance":0.338,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"others":{"id":"others","name":"기타 산업","export":30.23,"import":41.467,"balance":-11.237,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100}},"partners":{"US":{"id":"US","name":"미국","export":20.087,"import":9.023,"balance":11.064},"CN":{"id":"CN","name":"중국","export":20.3,"import":16.744,"balance":3.556},"ASEAN":{"id":"ASEAN","name":"아세안(베트남 등)","export":20.555,"import":8.953,"balance":11.602},"EU":{"id":"EU","name":"EU(유럽연합)","export":12.89,"import":9.091,"balance":3.799},"JP":{"id":"JP","name":"일본","export":5.299,"import":6.196,"balance":-0.897},"ME":{"id":"ME","name":"중동","export":2.94,"import":10.887,"balance":-7.947},"ROW":{"id":"ROW","name":"기타 국가","export":20.095,"import":5.206,"balance":14.889}},"matrix":{"US":{"semiconductor":{"export":4.319,"import":1.237},"automobile":{"export":5.831,"import":0.399},"machinery":{"export":2.066,"import":0.725},"petrochemical":{"export":0.489,"import":0.212},"consumer":{"export":1.31,"import":0.614},"steel":{"export":0.648,"import":0.122},"shipbuilding":{"export":0.137,"import":0.01},"battery":{"export":0.756,"import":0.141},"defense":{"export":0.243,"import":0.154},"bio":{"export":0.66,"import":0.433},"others":{"export":3.628,"import":4.976}},"CN":{"semiconductor":{"export":8.062,"import":2.164},"automobile":{"export":0.486,"import":0.213},"machinery":{"export":1.476,"import":0.906},"petrochemical":{"export":2.692,"import":0.74},"consumer":{"export":0.936,"import":1.556},"steel":{"export":0.777,"import":1.094},"shipbuilding":{"export":0.068,"import":0.05},"battery":{"export":0.283,"import":0.774},"defense":{"export":0,"import":0},"bio":{"export":0.079,"import":0.124},"others":{"export":5.441,"import":9.123}},"ASEAN":{"semiconductor":{"export":6.334,"import":1.237},"automobile":{"export":1.458,"import":0.266},"machinery":{"export":1.476,"import":0.544},"petrochemical":{"export":1.53,"import":0.423},"consumer":{"export":1.17,"import":0.819},"steel":{"export":1.08,"import":0.365},"shipbuilding":{"export":0.615,"import":0.05},"battery":{"export":0.283,"import":0.211},"defense":{"export":0.405,"import":0},"bio":{"export":0.158,"import":0.062},"others":{"export":6.046,"import":4.976}},"EU":{"semiconductor":{"export":2.015,"import":0.618},"automobile":{"export":2.308,"import":1.197},"machinery":{"export":1.18,"import":0.725},"petrochemical":{"export":0.612,"import":0.317},"consumer":{"export":0.655,"import":0.737},"steel":{"export":0.648,"import":0.292},"shipbuilding":{"export":1.197,"import":0.099},"battery":{"export":0.529,"import":0.211},"defense":{"export":0.729,"import":0.192},"bio":{"export":0.599,"import":0.556},"others":{"export":2.418,"import":4.147}},"JP":{"semiconductor":{"export":1.152,"import":0.742},"automobile":{"export":0.243,"import":0.319},"machinery":{"export":0.516,"import":0.544},"petrochemical":{"export":0.367,"import":0.254},"consumer":{"export":0.374,"import":0.328},"steel":{"export":0.648,"import":0.486},"shipbuilding":{"export":0.068,"import":0.074},"battery":{"export":0.038,"import":0.07},"defense":{"export":0,"import":0},"bio":{"export":0.079,"import":0.062},"others":{"export":1.814,"import":3.317}},"ME":{"semiconductor":{"export":0.288,"import":0},"automobile":{"export":0.607,"import":0},"machinery":{"export":0.295,"import":0},"petrochemical":{"export":0.122,"import":0.106},"consumer":{"export":0.094,"import":0},"steel":{"export":0.173,"import":0},"shipbuilding":{"export":0.513,"import":0},"battery":{"export":0,"import":0},"defense":{"export":0.243,"import":0},"bio":{"export":0,"import":0},"others":{"export":0.605,"import":10.781}},"ROW":{"semiconductor":{"export":6.622,"import":0.186},"automobile":{"export":1.214,"import":0.267},"machinery":{"export":0.369,"import":0.181},"petrochemical":{"export":0.306,"import":0.063},"consumer":{"export":0.14,"import":0.04},"steel":{"export":0.345,"import":0.072},"shipbuilding":{"export":0.821,"import":0.212},"battery":{"export":0,"import":0},"defense":{"export":0,"import":0.038},"bio":{"export":0,"import":0},"others":{"export":10.278,"import":4.147}}}},{"month":7,"name":"7월","status":"확정 실적","export":99.3,"import":68.9,"balance":30.4,"macro":{"fxRate":1378.4,"brentOil":78.1,"scfiFreight":2110,"globalDemandIndex":101,"usFedRate":4.5,"bokBaseRate":3},"industries":{"semiconductor":{"id":"semiconductor","name":"반도체","export":27.984,"import":6.445,"balance":21.539,"capacityIndex":100,"utilizationRate":95,"tradeBarrierIndex":100},"automobile":{"id":"automobile","name":"자동차·부품","export":11.806,"import":2.774,"balance":9.032,"capacityIndex":100,"utilizationRate":89,"tradeBarrierIndex":100},"machinery":{"id":"machinery","name":"기계·설비","export":7.171,"import":3.778,"balance":3.393,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"petrochemical":{"id":"petrochemical","name":"석유화학","export":5.947,"import":2.205,"balance":3.742,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"consumer":{"id":"consumer","name":"소비재","export":4.547,"import":4.267,"balance":0.28,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"steel":{"id":"steel","name":"철강","export":4.198,"import":2.534,"balance":1.664,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"shipbuilding":{"id":"shipbuilding","name":"조선","export":3.323,"import":0.516,"balance":2.807,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"battery":{"id":"battery","name":"이차전지","export":1.836,"import":1.467,"balance":0.369,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"defense":{"id":"defense","name":"방산","export":1.574,"import":0.4,"balance":1.174,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"bio":{"id":"bio","name":"바이오·의약품","export":1.53,"import":1.289,"balance":0.241,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"others":{"id":"others","name":"기타 산업","export":29.384,"import":43.225,"balance":-13.841,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100}},"partners":{"US":{"id":"US","name":"미국","export":19.523,"import":9.404,"balance":10.119},"CN":{"id":"CN","name":"중국","export":19.731,"import":17.454,"balance":2.277},"ASEAN":{"id":"ASEAN","name":"아세안(베트남 등)","export":19.978,"import":9.33,"balance":10.648},"EU":{"id":"EU","name":"EU(유럽연합)","export":12.528,"import":9.478,"balance":3.05},"JP":{"id":"JP","name":"일본","export":5.151,"import":6.458,"balance":-1.307},"ME":{"id":"ME","name":"중동","export":2.857,"import":11.349,"balance":-8.492},"ROW":{"id":"ROW","name":"기타 국가","export":19.532,"import":5.427,"balance":14.105}},"matrix":{"US":{"semiconductor":{"export":4.198,"import":1.289},"automobile":{"export":5.667,"import":0.416},"machinery":{"export":2.008,"import":0.756},"petrochemical":{"export":0.476,"import":0.221},"consumer":{"export":1.273,"import":0.64},"steel":{"export":0.63,"import":0.127},"shipbuilding":{"export":0.133,"import":0.01},"battery":{"export":0.734,"import":0.147},"defense":{"export":0.236,"import":0.16},"bio":{"export":0.642,"import":0.451},"others":{"export":3.526,"import":5.187}},"CN":{"semiconductor":{"export":7.836,"import":2.256},"automobile":{"export":0.472,"import":0.222},"machinery":{"export":1.434,"import":0.945},"petrochemical":{"export":2.617,"import":0.772},"consumer":{"export":0.909,"import":1.621},"steel":{"export":0.756,"import":1.14},"shipbuilding":{"export":0.066,"import":0.052},"battery":{"export":0.275,"import":0.807},"defense":{"export":0,"import":0},"bio":{"export":0.077,"import":0.129},"others":{"export":5.289,"import":9.51}},"ASEAN":{"semiconductor":{"export":6.156,"import":1.289},"automobile":{"export":1.417,"import":0.277},"machinery":{"export":1.434,"import":0.567},"petrochemical":{"export":1.487,"import":0.441},"consumer":{"export":1.137,"import":0.853},"steel":{"export":1.05,"import":0.38},"shipbuilding":{"export":0.598,"import":0.052},"battery":{"export":0.275,"import":0.22},"defense":{"export":0.394,"import":0},"bio":{"export":0.153,"import":0.064},"others":{"export":5.877,"import":5.187}},"EU":{"semiconductor":{"export":1.959,"import":0.645},"automobile":{"export":2.243,"import":1.248},"machinery":{"export":1.147,"import":0.756},"petrochemical":{"export":0.595,"import":0.331},"consumer":{"export":0.637,"import":0.768},"steel":{"export":0.63,"import":0.304},"shipbuilding":{"export":1.163,"import":0.103},"battery":{"export":0.514,"import":0.22},"defense":{"export":0.708,"import":0.2},"bio":{"export":0.581,"import":0.58},"others":{"export":2.351,"import":4.323}},"JP":{"semiconductor":{"export":1.119,"import":0.773},"automobile":{"export":0.236,"import":0.333},"machinery":{"export":0.502,"import":0.567},"petrochemical":{"export":0.357,"import":0.265},"consumer":{"export":0.364,"import":0.341},"steel":{"export":0.63,"import":0.507},"shipbuilding":{"export":0.066,"import":0.077},"battery":{"export":0.037,"import":0.073},"defense":{"export":0,"import":0},"bio":{"export":0.077,"import":0.064},"others":{"export":1.763,"import":3.458}},"ME":{"semiconductor":{"export":0.28,"import":0},"automobile":{"export":0.59,"import":0},"machinery":{"export":0.287,"import":0},"petrochemical":{"export":0.119,"import":0.11},"consumer":{"export":0.091,"import":0},"steel":{"export":0.168,"import":0},"shipbuilding":{"export":0.498,"import":0},"battery":{"export":0,"import":0},"defense":{"export":0.236,"import":0},"bio":{"export":0,"import":0},"others":{"export":0.588,"import":11.239}},"ROW":{"semiconductor":{"export":6.436,"import":0.193},"automobile":{"export":1.181,"import":0.278},"machinery":{"export":0.359,"import":0.187},"petrochemical":{"export":0.296,"import":0.065},"consumer":{"export":0.136,"import":0.044},"steel":{"export":0.334,"import":0.076},"shipbuilding":{"export":0.799,"import":0.222},"battery":{"export":0.001,"import":0},"defense":{"export":0,"import":0.04},"bio":{"export":0,"import":0.001},"others":{"export":9.99,"import":4.321}}}},{"month":8,"name":"8월","status":"확정 실적","export":98.912,"import":63.725,"balance":35.187,"macro":{"fxRate":1385.2,"brentOil":76.8,"scfiFreight":2060,"globalDemandIndex":100.7,"usFedRate":4.5,"bokBaseRate":3},"industries":{"semiconductor":{"id":"semiconductor","name":"반도체","export":27.875,"import":5.961,"balance":21.914,"capacityIndex":100,"utilizationRate":95,"tradeBarrierIndex":100},"automobile":{"id":"automobile","name":"자동차·부품","export":11.76,"import":2.565,"balance":9.195,"capacityIndex":100,"utilizationRate":89,"tradeBarrierIndex":100},"machinery":{"id":"machinery","name":"기계·설비","export":7.143,"import":3.495,"balance":3.648,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"petrochemical":{"id":"petrochemical","name":"석유화학","export":5.923,"import":2.039,"balance":3.884,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"consumer":{"id":"consumer","name":"소비재","export":4.53,"import":3.947,"balance":0.583,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"steel":{"id":"steel","name":"철강","export":4.181,"import":2.343,"balance":1.838,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"shipbuilding":{"id":"shipbuilding","name":"조선","export":3.31,"import":0.477,"balance":2.833,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"battery":{"id":"battery","name":"이차전지","export":1.829,"import":1.357,"balance":0.472,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"defense":{"id":"defense","name":"방산","export":1.568,"import":0.37,"balance":1.198,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"bio":{"id":"bio","name":"바이오·의약품","export":1.524,"import":1.192,"balance":0.332,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"others":{"id":"others","name":"기타 산업","export":29.269,"import":39.979,"balance":-10.71,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100}},"partners":{"US":{"id":"US","name":"미국","export":19.446,"import":8.697,"balance":10.749},"CN":{"id":"CN","name":"중국","export":19.653,"import":16.14,"balance":3.513},"ASEAN":{"id":"ASEAN","name":"아세안(베트남 등)","export":19.9,"import":8.63,"balance":11.27},"EU":{"id":"EU","name":"EU(유럽연합)","export":12.478,"import":8.764,"balance":3.714},"JP":{"id":"JP","name":"일본","export":5.129,"import":5.975,"balance":-0.846},"ME":{"id":"ME","name":"중동","export":2.846,"import":10.497,"balance":-7.651},"ROW":{"id":"ROW","name":"기타 국가","export":19.46,"import":5.022,"balance":14.438}},"matrix":{"US":{"semiconductor":{"export":4.181,"import":1.192},"automobile":{"export":5.645,"import":0.385},"machinery":{"export":2,"import":0.699},"petrochemical":{"export":0.474,"import":0.204},"consumer":{"export":1.268,"import":0.592},"steel":{"export":0.627,"import":0.117},"shipbuilding":{"export":0.132,"import":0.01},"battery":{"export":0.732,"import":0.136},"defense":{"export":0.235,"import":0.148},"bio":{"export":0.64,"import":0.417},"others":{"export":3.512,"import":4.797}},"CN":{"semiconductor":{"export":7.805,"import":2.086},"automobile":{"export":0.47,"import":0.205},"machinery":{"export":1.429,"import":0.874},"petrochemical":{"export":2.606,"import":0.714},"consumer":{"export":0.906,"import":1.5},"steel":{"export":0.753,"import":1.054},"shipbuilding":{"export":0.066,"import":0.048},"battery":{"export":0.274,"import":0.745},"defense":{"export":0,"import":0},"bio":{"export":0.076,"import":0.119},"others":{"export":5.268,"import":8.795}},"ASEAN":{"semiconductor":{"export":6.133,"import":1.192},"automobile":{"export":1.411,"import":0.257},"machinery":{"export":1.429,"import":0.524},"petrochemical":{"export":1.481,"import":0.408},"consumer":{"export":1.133,"import":0.789},"steel":{"export":1.045,"import":0.351},"shipbuilding":{"export":0.596,"import":0.048},"battery":{"export":0.274,"import":0.204},"defense":{"export":0.392,"import":0},"bio":{"export":0.152,"import":0.06},"others":{"export":5.854,"import":4.797}},"EU":{"semiconductor":{"export":1.951,"import":0.596},"automobile":{"export":2.234,"import":1.154},"machinery":{"export":1.143,"import":0.699},"petrochemical":{"export":0.592,"import":0.306},"consumer":{"export":0.634,"import":0.71},"steel":{"export":0.627,"import":0.281},"shipbuilding":{"export":1.158,"import":0.095},"battery":{"export":0.512,"import":0.204},"defense":{"export":0.706,"import":0.185},"bio":{"export":0.579,"import":0.536},"others":{"export":2.342,"import":3.998}},"JP":{"semiconductor":{"export":1.115,"import":0.715},"automobile":{"export":0.235,"import":0.308},"machinery":{"export":0.5,"import":0.524},"petrochemical":{"export":0.355,"import":0.245},"consumer":{"export":0.362,"import":0.316},"steel":{"export":0.627,"import":0.469},"shipbuilding":{"export":0.066,"import":0.072},"battery":{"export":0.037,"import":0.068},"defense":{"export":0,"import":0},"bio":{"export":0.076,"import":0.06},"others":{"export":1.756,"import":3.198}},"ME":{"semiconductor":{"export":0.279,"import":0},"automobile":{"export":0.588,"import":0},"machinery":{"export":0.286,"import":0},"petrochemical":{"export":0.118,"import":0.102},"consumer":{"export":0.091,"import":0},"steel":{"export":0.167,"import":0},"shipbuilding":{"export":0.497,"import":0},"battery":{"export":0,"import":0},"defense":{"export":0.235,"import":0},"bio":{"export":0,"import":0},"others":{"export":0.585,"import":10.395}},"ROW":{"semiconductor":{"export":6.411,"import":0.18},"automobile":{"export":1.177,"import":0.256},"machinery":{"export":0.356,"import":0.175},"petrochemical":{"export":0.297,"import":0.06},"consumer":{"export":0.136,"import":0.04},"steel":{"export":0.335,"import":0.071},"shipbuilding":{"export":0.795,"import":0.204},"battery":{"export":0,"import":0},"defense":{"export":0,"import":0.037},"bio":{"export":0.001,"import":0},"others":{"export":9.952,"import":3.999}}}},{"month":9,"name":"9월","status":"확정 실적 (11/16 최종)","export":121.254,"import":70.85,"balance":50.404,"macro":{"fxRate":1392,"brentOil":76.2,"scfiFreight":2000,"globalDemandIndex":101.8,"usFedRate":4.5,"bokBaseRate":3},"industries":{"semiconductor":{"id":"semiconductor","name":"반도체","export":34.171,"import":6.628,"balance":27.543,"capacityIndex":100,"utilizationRate":95,"tradeBarrierIndex":100},"automobile":{"id":"automobile","name":"자동차·부품","export":14.416,"import":2.852,"balance":11.564,"capacityIndex":100,"utilizationRate":89,"tradeBarrierIndex":100},"machinery":{"id":"machinery","name":"기계·설비","export":8.756,"import":3.885,"balance":4.871,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"petrochemical":{"id":"petrochemical","name":"석유화학","export":7.261,"import":2.267,"balance":4.994,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"consumer":{"id":"consumer","name":"소비재","export":5.553,"import":4.388,"balance":1.165,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"steel":{"id":"steel","name":"철강","export":5.126,"import":2.605,"balance":2.521,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"shipbuilding":{"id":"shipbuilding","name":"조선","export":4.058,"import":0.53,"balance":3.528,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"battery":{"id":"battery","name":"이차전지","export":2.242,"import":1.508,"balance":0.734,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"defense":{"id":"defense","name":"방산","export":1.922,"import":0.411,"balance":1.511,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"bio":{"id":"bio","name":"바이오·의약품","export":1.869,"import":1.326,"balance":0.543,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"others":{"id":"others","name":"기타 산업","export":35.88,"import":44.45,"balance":-8.57,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100}},"partners":{"US":{"id":"US","name":"미국","export":23.841,"import":9.67,"balance":14.171},"CN":{"id":"CN","name":"중국","export":24.093,"import":17.945,"balance":6.148},"ASEAN":{"id":"ASEAN","name":"아세안(베트남 등)","export":24.394,"import":9.595,"balance":14.799},"EU":{"id":"EU","name":"EU(유럽연합)","export":15.297,"import":9.746,"balance":5.551},"JP":{"id":"JP","name":"일본","export":6.289,"import":6.641,"balance":-0.352},"ME":{"id":"ME","name":"중동","export":3.489,"import":11.67,"balance":-8.181},"ROW":{"id":"ROW","name":"기타 국가","export":23.851,"import":5.583,"balance":18.268}},"matrix":{"US":{"semiconductor":{"export":5.126,"import":1.326},"automobile":{"export":6.92,"import":0.428},"machinery":{"export":2.452,"import":0.777},"petrochemical":{"export":0.581,"import":0.227},"consumer":{"export":1.555,"import":0.658},"steel":{"export":0.769,"import":0.13},"shipbuilding":{"export":0.162,"import":0.011},"battery":{"export":0.897,"import":0.151},"defense":{"export":0.288,"import":0.164},"bio":{"export":0.785,"import":0.464},"others":{"export":4.306,"import":5.334}},"CN":{"semiconductor":{"export":9.568,"import":2.32},"automobile":{"export":0.577,"import":0.228},"machinery":{"export":1.751,"import":0.971},"petrochemical":{"export":3.195,"import":0.793},"consumer":{"export":1.111,"import":1.667},"steel":{"export":0.923,"import":1.172},"shipbuilding":{"export":0.081,"import":0.053},"battery":{"export":0.336,"import":0.829},"defense":{"export":0,"import":0},"bio":{"export":0.093,"import":0.133},"others":{"export":6.458,"import":9.779}},"ASEAN":{"semiconductor":{"export":7.518,"import":1.326},"automobile":{"export":1.73,"import":0.285},"machinery":{"export":1.751,"import":0.583},"petrochemical":{"export":1.815,"import":0.453},"consumer":{"export":1.388,"import":0.878},"steel":{"export":1.282,"import":0.391},"shipbuilding":{"export":0.73,"import":0.053},"battery":{"export":0.336,"import":0.226},"defense":{"export":0.481,"import":0},"bio":{"export":0.187,"import":0.066},"others":{"export":7.176,"import":5.334}},"EU":{"semiconductor":{"export":2.392,"import":0.663},"automobile":{"export":2.739,"import":1.283},"machinery":{"export":1.401,"import":0.777},"petrochemical":{"export":0.726,"import":0.34},"consumer":{"export":0.777,"import":0.79},"steel":{"export":0.769,"import":0.313},"shipbuilding":{"export":1.42,"import":0.106},"battery":{"export":0.628,"import":0.226},"defense":{"export":0.865,"import":0.206},"bio":{"export":0.71,"import":0.597},"others":{"export":2.87,"import":4.445}},"JP":{"semiconductor":{"export":1.367,"import":0.795},"automobile":{"export":0.288,"import":0.342},"machinery":{"export":0.613,"import":0.583},"petrochemical":{"export":0.436,"import":0.272},"consumer":{"export":0.444,"import":0.351},"steel":{"export":0.769,"import":0.521},"shipbuilding":{"export":0.081,"import":0.08},"battery":{"export":0.045,"import":0.075},"defense":{"export":0,"import":0},"bio":{"export":0.093,"import":0.066},"others":{"export":2.153,"import":3.556}},"ME":{"semiconductor":{"export":0.342,"import":0},"automobile":{"export":0.721,"import":0},"machinery":{"export":0.35,"import":0},"petrochemical":{"export":0.145,"import":0.113},"consumer":{"export":0.111,"import":0},"steel":{"export":0.205,"import":0},"shipbuilding":{"export":0.609,"import":0},"battery":{"export":0,"import":0},"defense":{"export":0.288,"import":0},"bio":{"export":0,"import":0},"others":{"export":0.718,"import":11.557}},"ROW":{"semiconductor":{"export":7.858,"import":0.198},"automobile":{"export":1.441,"import":0.286},"machinery":{"export":0.438,"import":0.194},"petrochemical":{"export":0.363,"import":0.069},"consumer":{"export":0.167,"import":0.044},"steel":{"export":0.409,"import":0.078},"shipbuilding":{"export":0.975,"import":0.227},"battery":{"export":0,"import":0.001},"defense":{"export":0,"import":0.041},"bio":{"export":0.001,"import":0},"others":{"export":12.199,"import":4.445}}}},{"month":10,"name":"10월","status":"확정 실적 (11/16 최종)","export":114.576,"import":72.765,"balance":41.811,"macro":{"fxRate":1405.5,"brentOil":77.5,"scfiFreight":1960,"globalDemandIndex":102.2,"usFedRate":4.5,"bokBaseRate":3},"industries":{"semiconductor":{"id":"semiconductor","name":"반도체","export":32.289,"import":6.807,"balance":25.482,"capacityIndex":100,"utilizationRate":95,"tradeBarrierIndex":100},"automobile":{"id":"automobile","name":"자동차·부품","export":13.622,"import":2.929,"balance":10.693,"capacityIndex":100,"utilizationRate":89,"tradeBarrierIndex":100},"machinery":{"id":"machinery","name":"기계·설비","export":8.274,"import":3.99,"balance":4.284,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"petrochemical":{"id":"petrochemical","name":"석유화학","export":6.861,"import":2.328,"balance":4.533,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"consumer":{"id":"consumer","name":"소비재","export":5.247,"import":4.507,"balance":0.74,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"steel":{"id":"steel","name":"철강","export":4.843,"import":2.676,"balance":2.167,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"shipbuilding":{"id":"shipbuilding","name":"조선","export":3.834,"import":0.545,"balance":3.289,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"battery":{"id":"battery","name":"이차전지","export":2.119,"import":1.549,"balance":0.57,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"defense":{"id":"defense","name":"방산","export":1.816,"import":0.423,"balance":1.393,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"bio":{"id":"bio","name":"바이오·의약품","export":1.766,"import":1.361,"balance":0.405,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"others":{"id":"others","name":"기타 산업","export":33.905,"import":45.65,"balance":-11.745,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100}},"partners":{"US":{"id":"US","name":"미국","export":22.527,"import":9.93,"balance":12.597},"CN":{"id":"CN","name":"중국","export":22.767,"import":18.432,"balance":4.335},"ASEAN":{"id":"ASEAN","name":"아세안(베트남 등)","export":23.052,"import":9.854,"balance":13.198},"EU":{"id":"EU","name":"EU(유럽연합)","export":14.454,"import":10.008,"balance":4.446},"JP":{"id":"JP","name":"일본","export":5.942,"import":6.821,"balance":-0.879},"ME":{"id":"ME","name":"중동","export":3.296,"import":11.985,"balance":-8.689},"ROW":{"id":"ROW","name":"기타 국가","export":22.538,"import":5.735,"balance":16.803}},"matrix":{"US":{"semiconductor":{"export":4.843,"import":1.361},"automobile":{"export":6.539,"import":0.439},"machinery":{"export":2.317,"import":0.798},"petrochemical":{"export":0.549,"import":0.233},"consumer":{"export":1.469,"import":0.676},"steel":{"export":0.726,"import":0.134},"shipbuilding":{"export":0.153,"import":0.011},"battery":{"export":0.848,"import":0.155},"defense":{"export":0.272,"import":0.169},"bio":{"export":0.742,"import":0.476},"others":{"export":4.069,"import":5.478}},"CN":{"semiconductor":{"export":9.041,"import":2.382},"automobile":{"export":0.545,"import":0.234},"machinery":{"export":1.655,"import":0.998},"petrochemical":{"export":3.019,"import":0.815},"consumer":{"export":1.049,"import":1.713},"steel":{"export":0.872,"import":1.204},"shipbuilding":{"export":0.077,"import":0.055},"battery":{"export":0.318,"import":0.852},"defense":{"export":0,"import":0},"bio":{"export":0.088,"import":0.136},"others":{"export":6.103,"import":10.043}},"ASEAN":{"semiconductor":{"export":7.104,"import":1.361},"automobile":{"export":1.635,"import":0.293},"machinery":{"export":1.655,"import":0.599},"petrochemical":{"export":1.715,"import":0.466},"consumer":{"export":1.312,"import":0.901},"steel":{"export":1.211,"import":0.401},"shipbuilding":{"export":0.69,"import":0.055},"battery":{"export":0.318,"import":0.232},"defense":{"export":0.454,"import":0},"bio":{"export":0.177,"import":0.068},"others":{"export":6.781,"import":5.478}},"EU":{"semiconductor":{"export":2.26,"import":0.681},"automobile":{"export":2.588,"import":1.318},"machinery":{"export":1.324,"import":0.798},"petrochemical":{"export":0.686,"import":0.349},"consumer":{"export":0.735,"import":0.811},"steel":{"export":0.726,"import":0.321},"shipbuilding":{"export":1.342,"import":0.109},"battery":{"export":0.593,"import":0.232},"defense":{"export":0.817,"import":0.212},"bio":{"export":0.671,"import":0.612},"others":{"export":2.712,"import":4.565}},"JP":{"semiconductor":{"export":1.292,"import":0.817},"automobile":{"export":0.272,"import":0.351},"machinery":{"export":0.579,"import":0.599},"petrochemical":{"export":0.412,"import":0.279},"consumer":{"export":0.42,"import":0.361},"steel":{"export":0.726,"import":0.535},"shipbuilding":{"export":0.077,"import":0.082},"battery":{"export":0.042,"import":0.077},"defense":{"export":0,"import":0},"bio":{"export":0.088,"import":0.068},"others":{"export":2.034,"import":3.652}},"ME":{"semiconductor":{"export":0.323,"import":0},"automobile":{"export":0.681,"import":0},"machinery":{"export":0.331,"import":0},"petrochemical":{"export":0.137,"import":0.116},"consumer":{"export":0.105,"import":0},"steel":{"export":0.194,"import":0},"shipbuilding":{"export":0.575,"import":0},"battery":{"export":0,"import":0},"defense":{"export":0.272,"import":0},"bio":{"export":0,"import":0},"others":{"export":0.678,"import":11.869}},"ROW":{"semiconductor":{"export":7.426,"import":0.205},"automobile":{"export":1.362,"import":0.294},"machinery":{"export":0.413,"import":0.198},"petrochemical":{"export":0.343,"import":0.07},"consumer":{"export":0.157,"import":0.045},"steel":{"export":0.388,"import":0.081},"shipbuilding":{"export":0.92,"import":0.233},"battery":{"export":0,"import":0.001},"defense":{"export":0.001,"import":0.042},"bio":{"export":0,"import":0.001},"others":{"export":11.528,"import":4.565}}}},{"month":11,"name":"11월","status":"잠정 실적 (전망치)","export":100.5,"import":69,"balance":31.5,"macro":{"fxRate":1415,"brentOil":78.9,"scfiFreight":1990,"globalDemandIndex":102,"usFedRate":4.5,"bokBaseRate":3},"industries":{"semiconductor":{"id":"semiconductor","name":"반도체","export":28.322,"import":6.455,"balance":21.867,"capacityIndex":100,"utilizationRate":95,"tradeBarrierIndex":100},"automobile":{"id":"automobile","name":"자동차·부품","export":11.948,"import":2.778,"balance":9.17,"capacityIndex":100,"utilizationRate":89,"tradeBarrierIndex":100},"machinery":{"id":"machinery","name":"기계·설비","export":7.258,"import":3.784,"balance":3.474,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"petrochemical":{"id":"petrochemical","name":"석유화학","export":6.018,"import":2.208,"balance":3.81,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"consumer":{"id":"consumer","name":"소비재","export":4.602,"import":4.274,"balance":0.328,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"steel":{"id":"steel","name":"철강","export":4.248,"import":2.537,"balance":1.711,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"shipbuilding":{"id":"shipbuilding","name":"조선","export":3.363,"import":0.516,"balance":2.847,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"battery":{"id":"battery","name":"이차전지","export":1.859,"import":1.469,"balance":0.39,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"defense":{"id":"defense","name":"방산","export":1.593,"import":0.401,"balance":1.192,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"bio":{"id":"bio","name":"바이오·의약품","export":1.549,"import":1.291,"balance":0.258,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"others":{"id":"others","name":"기타 산업","export":29.74,"import":43.287,"balance":-13.547,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100}},"partners":{"US":{"id":"US","name":"미국","export":19.759,"import":9.417,"balance":10.342},"CN":{"id":"CN","name":"중국","export":19.969,"import":17.478,"balance":2.491},"ASEAN":{"id":"ASEAN","name":"아세안(베트남 등)","export":20.22,"import":9.346,"balance":10.874},"EU":{"id":"EU","name":"EU(유럽연합)","export":12.68,"import":9.49,"balance":3.19},"JP":{"id":"JP","name":"일본","export":5.211,"import":6.468,"balance":-1.257},"ME":{"id":"ME","name":"중동","export":2.89,"import":11.365,"balance":-8.475},"ROW":{"id":"ROW","name":"기타 국가","export":19.771,"import":5.436,"balance":14.335}},"matrix":{"US":{"semiconductor":{"export":4.248,"import":1.291},"automobile":{"export":5.735,"import":0.417},"machinery":{"export":2.032,"import":0.757},"petrochemical":{"export":0.481,"import":0.221},"consumer":{"export":1.289,"import":0.641},"steel":{"export":0.637,"import":0.127},"shipbuilding":{"export":0.135,"import":0.01},"battery":{"export":0.743,"import":0.147},"defense":{"export":0.239,"import":0.16},"bio":{"export":0.651,"import":0.452},"others":{"export":3.569,"import":5.194}},"CN":{"semiconductor":{"export":7.93,"import":2.259},"automobile":{"export":0.478,"import":0.222},"machinery":{"export":1.452,"import":0.946},"petrochemical":{"export":2.648,"import":0.773},"consumer":{"export":0.92,"import":1.624},"steel":{"export":0.765,"import":1.142},"shipbuilding":{"export":0.067,"import":0.052},"battery":{"export":0.279,"import":0.808},"defense":{"export":0,"import":0},"bio":{"export":0.077,"import":0.129},"others":{"export":5.353,"import":9.523}},"ASEAN":{"semiconductor":{"export":6.231,"import":1.291},"automobile":{"export":1.434,"import":0.278},"machinery":{"export":1.452,"import":0.568},"petrochemical":{"export":1.505,"import":0.442},"consumer":{"export":1.151,"import":0.855},"steel":{"export":1.062,"import":0.381},"shipbuilding":{"export":0.605,"import":0.052},"battery":{"export":0.279,"import":0.22},"defense":{"export":0.398,"import":0},"bio":{"export":0.155,"import":0.065},"others":{"export":5.948,"import":5.194}},"EU":{"semiconductor":{"export":1.983,"import":0.646},"automobile":{"export":2.27,"import":1.25},"machinery":{"export":1.161,"import":0.757},"petrochemical":{"export":0.602,"import":0.331},"consumer":{"export":0.644,"import":0.769},"steel":{"export":0.637,"import":0.304},"shipbuilding":{"export":1.177,"import":0.103},"battery":{"export":0.521,"import":0.22},"defense":{"export":0.717,"import":0.201},"bio":{"export":0.589,"import":0.58},"others":{"export":2.379,"import":4.329}},"JP":{"semiconductor":{"export":1.133,"import":0.775},"automobile":{"export":0.239,"import":0.333},"machinery":{"export":0.508,"import":0.568},"petrochemical":{"export":0.361,"import":0.265},"consumer":{"export":0.368,"import":0.342},"steel":{"export":0.637,"import":0.507},"shipbuilding":{"export":0.067,"import":0.077},"battery":{"export":0.037,"import":0.073},"defense":{"export":0,"import":0},"bio":{"export":0.077,"import":0.065},"others":{"export":1.784,"import":3.463}},"ME":{"semiconductor":{"export":0.283,"import":0},"automobile":{"export":0.597,"import":0},"machinery":{"export":0.29,"import":0},"petrochemical":{"export":0.12,"import":0.11},"consumer":{"export":0.092,"import":0},"steel":{"export":0.17,"import":0},"shipbuilding":{"export":0.504,"import":0},"battery":{"export":0,"import":0},"defense":{"export":0.239,"import":0},"bio":{"export":0,"import":0},"others":{"export":0.595,"import":11.255}},"ROW":{"semiconductor":{"export":6.514,"import":0.193},"automobile":{"export":1.195,"import":0.278},"machinery":{"export":0.363,"import":0.188},"petrochemical":{"export":0.301,"import":0.066},"consumer":{"export":0.138,"import":0.043},"steel":{"export":0.34,"import":0.076},"shipbuilding":{"export":0.808,"import":0.222},"battery":{"export":0,"import":0.001},"defense":{"export":0,"import":0.04},"bio":{"export":0,"import":0},"others":{"export":10.112,"import":4.329}}}},{"month":12,"name":"12월","status":"공식 추정치 (전망치)","export":104.798,"import":70.786,"balance":34.012,"macro":{"fxRate":1422,"brentOil":80.5,"scfiFreight":2120,"globalDemandIndex":102.6,"usFedRate":4.5,"bokBaseRate":3},"industries":{"semiconductor":{"id":"semiconductor","name":"반도체","export":29.534,"import":6.622,"balance":22.912,"capacityIndex":100,"utilizationRate":95,"tradeBarrierIndex":100},"automobile":{"id":"automobile","name":"자동차·부품","export":12.459,"import":2.85,"balance":9.609,"capacityIndex":100,"utilizationRate":89,"tradeBarrierIndex":100},"machinery":{"id":"machinery","name":"기계·설비","export":7.568,"import":3.882,"balance":3.686,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"petrochemical":{"id":"petrochemical","name":"석유화학","export":6.276,"import":2.265,"balance":4.011,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"consumer":{"id":"consumer","name":"소비재","export":4.799,"import":4.384,"balance":0.415,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"steel":{"id":"steel","name":"철강","export":4.43,"import":2.603,"balance":1.827,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"shipbuilding":{"id":"shipbuilding","name":"조선","export":3.507,"import":0.53,"balance":2.977,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"battery":{"id":"battery","name":"이차전지","export":1.938,"import":1.507,"balance":0.431,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"defense":{"id":"defense","name":"방산","export":1.661,"import":0.411,"balance":1.25,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"bio":{"id":"bio","name":"바이오·의약품","export":1.615,"import":1.324,"balance":0.291,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100},"others":{"id":"others","name":"기타 산업","export":31.011,"import":44.408,"balance":-13.397,"capacityIndex":100,"utilizationRate":82,"tradeBarrierIndex":100}},"partners":{"US":{"id":"US","name":"미국","export":20.601,"import":9.661,"balance":10.94},"CN":{"id":"CN","name":"중국","export":20.824,"import":17.931,"balance":2.893},"ASEAN":{"id":"ASEAN","name":"아세안(베트남 등)","export":21.084,"import":9.585,"balance":11.499},"EU":{"id":"EU","name":"EU(유럽연합)","export":13.222,"import":9.737,"balance":3.485},"JP":{"id":"JP","name":"일본","export":5.437,"import":6.637,"balance":-1.2},"ME":{"id":"ME","name":"중동","export":3.015,"import":11.659,"balance":-8.644},"ROW":{"id":"ROW","name":"기타 국가","export":20.615,"import":5.576,"balance":15.039}},"matrix":{"US":{"semiconductor":{"export":4.43,"import":1.324},"automobile":{"export":5.98,"import":0.428},"machinery":{"export":2.119,"import":0.776},"petrochemical":{"export":0.502,"import":0.227},"consumer":{"export":1.344,"import":0.658},"steel":{"export":0.665,"import":0.13},"shipbuilding":{"export":0.14,"import":0.011},"battery":{"export":0.774,"import":0.151},"defense":{"export":0.249,"import":0.164},"bio":{"export":0.677,"import":0.463},"others":{"export":3.721,"import":5.329}},"CN":{"semiconductor":{"export":8.27,"import":2.318},"automobile":{"export":0.498,"import":0.228},"machinery":{"export":1.514,"import":0.971},"petrochemical":{"export":2.761,"import":0.793},"consumer":{"export":0.96,"import":1.666},"steel":{"export":0.797,"import":1.171},"shipbuilding":{"export":0.07,"import":0.053},"battery":{"export":0.291,"import":0.829},"defense":{"export":0,"import":0},"bio":{"export":0.081,"import":0.132},"others":{"export":5.582,"import":9.77}},"ASEAN":{"semiconductor":{"export":6.497,"import":1.324},"automobile":{"export":1.495,"import":0.285},"machinery":{"export":1.514,"import":0.582},"petrochemical":{"export":1.569,"import":0.453},"consumer":{"export":1.2,"import":0.877},"steel":{"export":1.108,"import":0.39},"shipbuilding":{"export":0.631,"import":0.053},"battery":{"export":0.291,"import":0.226},"defense":{"export":0.415,"import":0},"bio":{"export":0.162,"import":0.066},"others":{"export":6.202,"import":5.329}},"EU":{"semiconductor":{"export":2.067,"import":0.662},"automobile":{"export":2.367,"import":1.283},"machinery":{"export":1.211,"import":0.776},"petrochemical":{"export":0.628,"import":0.34},"consumer":{"export":0.672,"import":0.789},"steel":{"export":0.665,"import":0.312},"shipbuilding":{"export":1.227,"import":0.106},"battery":{"export":0.543,"import":0.226},"defense":{"export":0.747,"import":0.206},"bio":{"export":0.614,"import":0.596},"others":{"export":2.481,"import":4.441}},"JP":{"semiconductor":{"export":1.181,"import":0.795},"automobile":{"export":0.249,"import":0.342},"machinery":{"export":0.53,"import":0.582},"petrochemical":{"export":0.377,"import":0.272},"consumer":{"export":0.384,"import":0.351},"steel":{"export":0.665,"import":0.521},"shipbuilding":{"export":0.07,"import":0.08},"battery":{"export":0.039,"import":0.075},"defense":{"export":0,"import":0},"bio":{"export":0.081,"import":0.066},"others":{"export":1.861,"import":3.553}},"ME":{"semiconductor":{"export":0.295,"import":0},"automobile":{"export":0.623,"import":0},"machinery":{"export":0.303,"import":0},"petrochemical":{"export":0.126,"import":0.113},"consumer":{"export":0.096,"import":0},"steel":{"export":0.177,"import":0},"shipbuilding":{"export":0.526,"import":0},"battery":{"export":0,"import":0},"defense":{"export":0.249,"import":0},"bio":{"export":0,"import":0},"others":{"export":0.62,"import":11.546}},"ROW":{"semiconductor":{"export":6.794,"import":0.199},"automobile":{"export":1.247,"import":0.284},"machinery":{"export":0.377,"import":0.195},"petrochemical":{"export":0.313,"import":0.067},"consumer":{"export":0.143,"import":0.043},"steel":{"export":0.353,"import":0.079},"shipbuilding":{"export":0.843,"import":0.227},"battery":{"export":0,"import":0},"defense":{"export":0.001,"import":0.041},"bio":{"export":0,"import":0.001},"others":{"export":10.544,"import":4.44}}}}]};
 const HS_MAPPING = {"version":"2026.11.19-AUDITED-V2.1","auditDate":"2026-11-19","source":"관세청 수출입무역통계(2026.11.11 공표 11월 10일까지 누적 실적 및 1~10월 확정치) 및 산업통상부 공식 발표자료","unit":"Billion USD ($B, 십억 달러)","statusDefinition":{"months_1_to_10":"확정 실적 (관세청 공식 월별 통계. 1~10월 누적 수출 $930.202B, 수입 $635.214B, 1월 수출 $65.805B)","month_11":"잠정 실적 (11월 10일까지 누적 $963.7B 실적 기반 월간 전체 잠정치 $100.500B. 중복 집계 없음)","month_12":"공식 추정치 (연말 밀어내기 통관 추정치 $104.798B)"},"annualSummary2026":{"totalExport":1135.5,"totalImport":775,"tradeBalance":360.5,"octYtdExport":930.202,"octYtdImport":635.214,"octYtdBalance":294.988,"janExport":65.805,"ytdNov10Export":963.7,"ytdNov10Import":659.9,"ytdNov10Balance":303.8,"milestone":"2026년 9월 초 2025년 연간 수출 실적(7,093억 달러) 돌파 공식 확인"},"industries":[{"id":"semiconductor","name":"반도체","englishName":"Semiconductors","hsCodes":["8542"],"description":"HBM3E/HBM4 및 서버용 AI 메모리 폭증. 2026년 한국 수출의 약 28.2%를 차지하는 핵심 주력 품목.","annualExport2026":320,"annualImport2026":72.5,"capacityIndex":100,"priceElasticity":0.6,"fxSensitivity":0.4,"leadTimeMonths":1},{"id":"automobile","name":"자동차·부품","englishName":"Automobiles & Parts","hsCodes":["8703","8704","8708"],"description":"북미 HEV 및 내연기관 프리미엄 SUV 수출 견조. 대미 흑자의 주역이자 미국 25% 관세 위협의 1차 표적.","annualExport2026":135,"annualImport2026":31.2,"capacityIndex":100,"priceElasticity":0.85,"fxSensitivity":0.7,"leadTimeMonths":2},{"id":"machinery","name":"기계·설비","englishName":"General Machinery","hsCodes":["8429","8479","8486"],"description":"글로벌 AI 데이터센터 인프라 및 미국 리쇼어링 공장 건설용 공작기계·장비 수출 호조.","annualExport2026":82,"annualImport2026":42.5,"capacityIndex":100,"priceElasticity":0.75,"fxSensitivity":0.6,"leadTimeMonths":2},{"id":"petrochemical","name":"석유화학","englishName":"Petrochemicals","hsCodes":["2901","2902","3901","3902"],"description":"에틸렌, 합성수지. 나프타 원가와 중국 에틸렌 자급률 확대(공급과잉)에 따른 스프레드 압박.","annualExport2026":68,"annualImport2026":24.8,"capacityIndex":100,"priceElasticity":1.15,"fxSensitivity":0.45,"leadTimeMonths":1},{"id":"consumer","name":"소비재","englishName":"Consumer Goods (K-Food & Beauty)","hsCodes":["3304","1902","2103","6101"],"description":"K-라면, 냉동김밥, 스킨케어 화장품. 북미·유럽 시장 대폭 확대로 사상 최대 수출 경신.","annualExport2026":52,"annualImport2026":48,"capacityIndex":100,"priceElasticity":0.9,"fxSensitivity":0.6,"leadTimeMonths":1},{"id":"steel","name":"철강","englishName":"Steel & Metals","hsCodes":["7208","7209","7304","7306"],"description":"열연, 냉연, 강관. 미국의 232조 쿼터 규제 및 중국산 저가 덤핑 후판 유입에 따른 이중고.","annualExport2026":48,"annualImport2026":28.5,"capacityIndex":100,"priceElasticity":1.1,"fxSensitivity":0.5,"leadTimeMonths":2},{"id":"shipbuilding","name":"조선","englishName":"Shipbuilding","hsCodes":["8901","8902","8905"],"description":"고부가가치 LNG 운반선 및 암모니아 운반선 선가 상승. 2~3년 건조 시차 후 통관 인도 집계.","annualExport2026":38,"annualImport2026":5.8,"capacityIndex":100,"priceElasticity":0.35,"fxSensitivity":0.55,"leadTimeMonths":6},{"id":"battery","name":"이차전지","englishName":"Batteries","hsCodes":["850760"],"description":"EV 캐즘 속 ESS(에너지저장장치) 배터리 수요 확대로 선방. 미 IRA FEOC 규정 연계.","annualExport2026":21,"annualImport2026":16.5,"capacityIndex":100,"priceElasticity":0.7,"fxSensitivity":0.5,"leadTimeMonths":3},{"id":"defense","name":"방산","englishName":"Defense Industry","hsCodes":["9301","9302","8802"],"description":"폴란드, 루마니아, 중동 실행계약 순차 인도 통관. 국가 대형 프로젝트 수주 중심.","annualExport2026":18,"annualImport2026":4.5,"capacityIndex":100,"priceElasticity":0.2,"fxSensitivity":0.35,"leadTimeMonths":6},{"id":"bio","name":"바이오·의약품","englishName":"Bio & Pharmaceuticals","hsCodes":["3002","3004"],"description":"바이오시밀러 북미 시장 점유율 확대 및 글로벌 CDMO 대형 수주 인도.","annualExport2026":17.5,"annualImport2026":14.5,"capacityIndex":100,"priceElasticity":0.3,"fxSensitivity":0.3,"leadTimeMonths":3},{"id":"others","name":"기타 산업","englishName":"Other Goods","hsCodes":["2710","8528","8517","기타"],"description":"석유제품(휘발유/경유/항공유), 디스플레이, 스마트폰 및 원유/LNG/광물 등 에너지 수입 총괄.","annualExport2026":294,"annualImport2026":485,"capacityIndex":100,"priceElasticity":0.85,"fxSensitivity":0.45,"leadTimeMonths":1}],"tradingPartners":[{"id":"US","name":"미국","annualExport":222,"annualImport":105,"annualBalance":117,"exportShare":0.195,"importShare":0.135},{"id":"CN","name":"중국","annualExport":210,"annualImport":178,"annualBalance":32,"exportShare":0.185,"importShare":0.23},{"id":"ASEAN","name":"아세안(베트남 등)","annualExport":195,"annualImport":102,"annualBalance":93,"exportShare":0.172,"importShare":0.132},{"id":"EU","name":"EU(유럽연합)","annualExport":114,"annualImport":88,"annualBalance":26,"exportShare":0.1,"importShare":0.114},{"id":"JP","name":"일본","annualExport":46,"annualImport":65,"annualBalance":-19,"exportShare":0.041,"importShare":0.084},{"id":"ME","name":"중동","annualExport":20.5,"annualImport":128,"annualBalance":-107.5,"exportShare":0.018,"importShare":0.165},{"id":"ROW","name":"기타 국가","annualExport":328,"annualImport":109,"annualBalance":219,"exportShare":0.289,"importShare":0.14}]};
 
 // scenarios.mjs - 7 Scenarios for 통상교섭본부장 | TRADE CZAR
@@ -2144,6 +2201,7 @@ class NegotiationEngine {
     this.status = "in_progress"; // in_progress, agreed, partial, deferred, broken, suspended
     this.finalAgreement = null;
     this.currentCounterDemand = null;
+    this.consecutiveAggressiveCount = 0;
 
     // Two-Level Game (국내 이해관계자 재협의 체계)
     this.domesticState = {
@@ -2183,6 +2241,38 @@ class NegotiationEngine {
       cardScore += 6; // Corporate expert has real credibility with capital cards
     }
 
+    // Dynamic counterplay logic (반복 강경 카드 응징 및 상대국 역제안 수용 보상)
+    const isAggressive = (card.tensionDelta > 0 || card.acceptanceScore < 0);
+    if (isAggressive) {
+      this.consecutiveAggressiveCount = (this.consecutiveAggressiveCount || 0) + 1;
+      if (this.consecutiveAggressiveCount >= 2) {
+        cardTension += 8;
+        cardScore -= 6;
+      }
+    } else {
+      this.consecutiveAggressiveCount = 0;
+    }
+
+    let answeredCounterDemand = false;
+    if (this.currentCounterDemand) {
+      if ((cardId === 'us_lng' || cardId === 'us_agri_concession') && this.scenario.partnerId === 'US') {
+        answeredCounterDemand = true;
+        cardScore += 8;
+        cardTension -= 6;
+        this.currentCounterDemand = null;
+      } else if ((cardId === 'cn_neutral_tech' || cardId === 'cn_antidumping_bargain') && this.scenario.partnerId === 'CN') {
+        answeredCounterDemand = true;
+        cardScore += 8;
+        cardTension -= 6;
+        this.currentCounterDemand = null;
+      } else if ((cardId === 'eu_defense_package' || cardId === 'eu_cbam_equivalency') && this.scenario.partnerId === 'EU') {
+        answeredCounterDemand = true;
+        cardScore += 8;
+        cardTension -= 6;
+        this.currentCounterDemand = null;
+      }
+    }
+
     this.totalScore += cardScore;
     this.tension = Math.max(0, Math.min(100, this.tension + cardTension));
 
@@ -2200,9 +2290,13 @@ class NegotiationEngine {
       }
     }
 
-    // Dynamic partner counter-demand based on score
+    // Dynamic partner reaction text
     let partnerReaction = "";
-    if (cardScore >= 28) {
+    if (this.consecutiveAggressiveCount >= 2) {
+      partnerReaction = `[${this.scenario.representative} 강경 경고] "일방적인 압박과 강경 카드가 거듭되고 있습니다. 이런 방식은 협상 결렬만을 재촉할 뿐입니다!"`;
+    } else if (answeredCounterDemand) {
+      partnerReaction = `[${this.scenario.representative} 적극 환영] "우리 측의 핵심 요구사항을 진지하게 고려해 주신 대승적 결단에 감사드립니다. 양국 타결의 결정적 돌파구가 마련되었습니다!"`;
+    } else if (cardScore >= 28) {
       partnerReaction = `[${this.scenario.representative}] "매우 인상적이고 건설적인 제안입니다. 우리 측 핵심 이해관계를 충족시켜 주는 진지한 결단에 경의를 표합니다."`;
     } else if (cardScore >= 15) {
       partnerReaction = `[${this.scenario.representative}] "한 걸음 진전된 카드이나, 여전히 우리 의회와 산업계의 눈높이에는 다소 부족합니다. 추가적인 성의를 기대합니다."`;
@@ -2334,6 +2428,7 @@ class NegotiationEngine {
       return this.resolveDeferral();
     }
 
+    this.finalAgreement.tradeOffSummary = this.generateTradeOffSummary();
     return this.finalAgreement;
   }
 
@@ -2350,6 +2445,7 @@ class NegotiationEngine {
       domesticGrowthBoost: 0.0,
       description: `이견을 좁히지 못하고 현행 잠정 관세율을 유지한 채 3개월 뒤 실무 협상을 재개하기로 합의했습니다. 불확실성이 지속됩니다.`
     };
+    this.finalAgreement.tradeOffSummary = this.generateTradeOffSummary();
     return this.finalAgreement;
   }
 
@@ -2366,7 +2462,84 @@ class NegotiationEngine {
       domesticGrowthBoost: -0.08,
       description: `상대국과의 이견이 폭발하며 협상이 결렬되었습니다. ${this.scenario.partnerId === 'US' ? '미국의 25% 보복 관세가 즉각 발효되며 주력 자동차 수출에 치명적 타격이 시작됩니다.' : '상대국의 징벌적 관세와 무역 장벽이 즉각 현실화됩니다.'}`
     };
+    this.finalAgreement.tradeOffSummary = this.generateTradeOffSummary();
     return this.finalAgreement;
+  }
+
+  generateTradeOffSummary() {
+    const pId = this.scenario.partnerId;
+    const isAgreed = this.status === 'agreed';
+    const isDeferred = this.status === 'deferred';
+    const summary = {
+      gains: [],
+      concessions: [],
+      diplomaticSpillover: ""
+    };
+
+    if (pId === 'US') {
+      if (isAgreed) {
+        summary.gains.push("한국산 승용차 및 자동차 부품 보편관세를 2.5% 수준으로 대폭 방어 (연간 약 150억 달러 수출 보호)");
+        if (this.usedCards.has('us_shipbuilding_mro')) {
+          summary.gains.push("미 해군 7함대 군함 MRO 및 특수선 수주 보증 획득 (매월 수억 달러 서비스 수출 창출)");
+        }
+        if (this.usedCards.has('us_lng')) {
+          summary.concessions.push("미국산 LNG 연간 100억 달러 10년 장기 수입 계약 체결 (에너지 수입선 대미 편중 수용)");
+        }
+        if (this.usedCards.has('us_investment')) {
+          summary.concessions.push("현대차·삼성의 대미 150억 달러 추가 투자 및 조지아·텍사스 현지 고용 공약");
+        }
+        if (this.usedCards.has('us_agri_concession')) {
+          summary.concessions.push("미국산 농축산물 검역 간소화 로드맵 수용 (국내 1조 원 피해보완 직불금 기금 투입)");
+        }
+        summary.diplomaticSpillover = "대미 안보·통상 결속 강화로 대미 흑자 압박은 해소되었으나, 중국과의 기술 교역 마찰에 대한 정교한 관리 필요";
+      } else if (isDeferred) {
+        summary.gains.push("즉각적인 25% 보편관세 집행 3개월 일시 유예");
+        summary.concessions.push("불확실성 장기화로 현대차·기아 현지 설비 전환 비용 발생");
+        summary.diplomaticSpillover = "미 의회 보호무역 강경파의 추가 압박 예고";
+      } else {
+        summary.gains.push("자주적 통상 주권 천명 및 일방적 농업·에너지 양보 거부");
+        summary.concessions.push("미국의 25% 품목관세 전면 부과 직격탄, 자동차 수출선 붕괴 위기");
+        summary.diplomaticSpillover = "한미 통상 동맹 전례 없는 냉각 및 WTO 분쟁 격화";
+      }
+    } else if (pId === 'CN') {
+      if (isAgreed) {
+        summary.gains.push("갈륨·게르마늄·흑연 등 배터리·반도체 핵심 원자재 통관 지연 해제");
+        summary.gains.push("중국산 철강·석유화학 저가 덤핑 자율 수출 규제(VRA) 합의로 국내 시장 안정");
+        if (this.usedCards.has('cn_neutral_tech')) {
+          summary.concessions.push("순수 상업용 민간 차량·가전 반도체의 안정적 대중 공급 원칙 재확인");
+        }
+        summary.diplomaticSpillover = "한중 공급망 핫라인 복원으로 공급망 불안 해소, 미국 측의 견제 시선 상시 관리 필요";
+      } else if (isDeferred) {
+        summary.gains.push("상호 제재 확전 방지 및 실무 협의체 유지");
+        summary.concessions.push("핵심 원자재 통관 지연 불확실성 잔존");
+        summary.diplomaticSpillover = "동북아 경제 협력 회의 지연";
+      } else {
+        summary.gains.push("다자간 공급망 연대 규범 수호");
+        summary.concessions.push("중국 상무부의 추가 광물 통제 및 한국산 석화제품 반덤핑 조사 직면");
+        summary.diplomaticSpillover = "대중 교역 관계 급랭 및 배터리 공급망 비상";
+      }
+    } else if (pId === 'EU') {
+      if (isAgreed) {
+        summary.gains.push("한국 배출권거래제(K-ETS)와 EU-ETS 상호 동등성 인정 협약으로 CBAM 탄소세 폭탄 면제");
+        if (this.usedCards.has('eu_defense_package')) {
+          summary.gains.push("K-방산 유럽 거점 현지 생산 및 NATO 안보 공급망 동맹 강화");
+        }
+        if (this.usedCards.has('eu_renewables_partner')) {
+          summary.concessions.push("국내 해상풍력 프로젝트에 유럽산 터빈 도입 확대");
+        }
+        summary.diplomaticSpillover = "유럽과의 친환경·방산 공급망 동맹 결속 및 다자 규범 리더십 확보";
+      } else if (isDeferred) {
+        summary.gains.push("CBAM 본격 과세 유예 기간 확보");
+        summary.concessions.push("철강·배터리 기업들의 탄소 배출 실사 비용 부담 지속");
+        summary.diplomaticSpillover = "브뤼셀 기후 집행위와의 지속적 마찰";
+      } else {
+        summary.gains.push("국내 제조업 산업 경쟁력 중심 원칙 고수");
+        summary.concessions.push("EU CBAM 탄소 관세 전면 부과로 대유럽 철강·배터리 수출 급감");
+        summary.diplomaticSpillover = "한·EU 기후 협력 파트너십 균열";
+      }
+    }
+
+    return summary;
   }
 
   applyToEconomy(engine) {
@@ -3708,13 +3881,24 @@ class NewspaperEngine {
       deck = `워싱턴의 초강경 통상 압박…통상교섭본부, 비상 대응책 마련 착수`;
       body.push(`미국 무역대표부(USTR)가 한국 통상 당국을 상대로 상호주의 보편관세 25% 부과 카운트다운을 통보했다. 연간 550억 달러에 달하는 대미 무역흑자를 대폭 줄이지 않을 경우 주요 수출품에 고율 관세를 즉각 집행하겠다는 압박이다.`);
     } else if (negotiationResult && negotiationResult.type === 'agreed') {
-      headline = `美·韓 통상협상 극적 타결…韓 자동차 '25% 관세 폭탄' 피했다`;
-      deck = `통상교섭본부, 워싱턴 담판서 車 관세 면제 이끌어내…LNG 구매·투자 패키지 합의`;
-      body.push(`워싱턴 D.C.에서 열린 한미 고위급 통상 담판이 극적인 타협점을 찾았다. 미국의 25% 보복 관세를 철회시키고 2.5% 수준의 관세율을 방어함으로써 우리 완성차 및 1·2차 부품 수출 전선의 최대 악재를 걷어냈다.`);
+      const isLngCommitted = negotiationResult.energyQuotaMod > 0;
+      if (isLngCommitted) {
+        headline = `美·韓 통상협상 극적 타결…車 '25% 관세' 막고 美 에너지 100억불 수입`;
+        deck = `통상교섭본부, 워싱턴서 벼랑 끝 담판…자동차 수출 지켰지만 '에너지 빅딜' 대가`;
+        body.push(`워싱턴 D.C.에서 열린 한미 고위급 통상 담판이 극적인 타협점을 찾았다. 미국의 25% 보복 관세를 철회시키고 2.5% 수준의 관세율을 방어하는 대신, 미국산 LNG 연간 100억 달러 장기 구매와 현지 투자를 확약했다. 자동차 산업의 숨통은 틔웠으나 막대한 수입 약정이라는 숙제를 안게 됐다.`);
+      } else {
+        headline = `美·韓 통상협상 극적 타결…韓 자동차 '25% 관세 폭탄' 피했다`;
+        deck = `통상교섭본부, 워싱턴 담판서 車 관세 면제 이끌어내…방산·투자 패키지 합의`;
+        body.push(`워싱턴 D.C.에서 열린 한미 고위급 통상 담판이 극적인 타협점을 찾았다. 미국의 25% 보복 관세를 철회시키고 2.5% 수준의 관세율을 방어함으로써 우리 완성차 및 1·2차 부품 수출 전선의 최대 악재를 걷어냈다.`);
+      }
     } else if (negotiationResult && negotiationResult.type === 'broken') {
       headline = `한·미 통상 담판 끝내 결렬…美, 韓 자동차에 '25% 관세' 즉각 발효`;
       deck = `수출 전선에 사상 최악의 먹구름…정부, WTO 제소 및 보복관세 검토`;
       body.push(`한미 양자 통상 협상이 양국의 첨예한 이견을 좁히지 못하고 파국으로 끝났다. 미국은 즉각 한국산 자동차에 25% 관세를 부과하기 시작했으며, 국내 완성차 및 부품 공장의 연쇄 셧다운 우려가 현실화되고 있다.`);
+    } else if (topInd.yoyGrowth - bottomInd.yoyGrowth >= 22.0) {
+      headline = `수출 ${exp}억 달러 달성에도…'반도체 착시' 속 제조업 양극화 심화`;
+      deck = `${topInd.name} 나홀로 질주(+${topInd.yoyGrowth}%)…${bottomInd.name}(-${Math.abs(bottomInd.yoyGrowth)}%) 등 전통 제조 한파`;
+      body.push(`월간 수출 실적은 호조세를 보였으나 산업 현장의 양극화는 위험 수위에 도달했다. ${topInd.name} 산업이 고성장세를 주도하는 반면, ${bottomInd.name}과 범용 제조업은 글로벌 수요 둔화와 관세 장벽에 가로막혀 가동률 저하에 신음하고 있다.`);
     } else if (monthlyResult.servicesExport && monthlyResult.servicesExport >= 1.2) {
       headline = `미 7함대 군수지원·K-물류 돌풍…'서비스 무역'이 수출 흑자 새 엔진`;
       deck = `거제·울산 MRO 함정정비 수주 잇따라…통관 상품수출 넘어 용역 수출 신기원`;
@@ -3751,6 +3935,12 @@ class NewspaperEngine {
     } else {
       body.push(
         `전문가들은 통상교섭본부의 기민한 외교적 대응과 현장 중심의 수출금융 지원이 단기적인 무역 방어에 기여하고 있다고 평가했다. 다만 미국의 보호무역 기조와 중국발 공급과잉 등 구조적 파고에 대비한 장기 전략이 절실하다는 지적이다.`
+      );
+    }
+
+    if (doctrine) {
+      body.push(
+        `정부가 가동 중인 '${doctrine.name}' 기조에 발맞춰 ${doctrine.slogan}`
       );
     }
 
@@ -3859,6 +4049,63 @@ class VerdictEngine {
       structuralLegacy = "대외 충격 속에서 수출 전선의 급격한 붕괴는 막았으나, 특정 품목 의존도 심화와 주요국 무역장벽 대응이라는 구조적 숙제를 남겼습니다.";
     }
 
+    // 3 Defining Decisions of the 1-year tenure
+    const keyDecisions = [];
+    if (successfulNegotiations >= 1) {
+      keyDecisions.push({
+        title: "양자 통상 담판 대타결",
+        summary: "워싱턴·베이징과의 양자 협상에서 품목 관세 인상을 선제 차단하고 핵심 수출선 수호",
+        impact: "자동차·반도체 주력 품목 관세 장벽 80% 완화"
+      });
+    } else if (failedNegotiations >= 1) {
+      keyDecisions.push({
+        title: "통상 협상 결렬 및 자립 대응",
+        summary: "상대국과의 이견 폭발로 협상 결렬 및 징벌적 보복 관세 직면",
+        impact: "주력 수출선 관세 폭탄 현실화 및 독자 공급망 모색"
+      });
+    } else {
+      keyDecisions.push({
+        title: "통상 협상 실무 조율 및 다변화",
+        summary: "신흥국 및 다자 규범 중심의 우회 수출선 개척에 주력",
+        impact: "글로벌 사우스 다자 협력 네트워크 유지"
+      });
+    }
+
+    if (corporateSupportCount >= 2) {
+      keyDecisions.push({
+        title: "첨단 전략산업 생산설비 보조금 및 인프라 매칭",
+        summary: "대기업·중견기업 팹 증설과 패키징 시설에 일대일 정부 보조금 매칭",
+        impact: "국내 팹 생산능력(Capacity) +6% 및 장기 성장 기반 확충"
+      });
+    } else if (hardPushCount >= 2) {
+      keyDecisions.push({
+        title: "고강도 비상 생산 압박 조치",
+        summary: "단기 수출 목표 달성을 위한 24시간 가동 및 관치 생산 독려",
+        impact: "단기 수출 물량 확보 vs 재계 신뢰 급락 및 공장 이전 촉발"
+      });
+    } else {
+      keyDecisions.push({
+        title: "수출금융 50조 원 및 물류 바우처 집중 투입",
+        summary: "수출입은행·무보 무역금융 긴급 공급 및 HMM 선복 우선 배정",
+        impact: "중소·중견기업 물류·금융 애로 전면 해소"
+      });
+    }
+
+    const hasAgriFund = gameLog.some(g => g.type === 'corporate_agency_response' || (g.chosenOption && g.chosenOption.includes('농축산')) || g.title?.includes('농축산') || g.title?.includes('상생기금'));
+    if (hasAgriFund) {
+      keyDecisions.push({
+        title: "당정 협의 1조 원 농축산 피해보완 상생기금 조성",
+        summary: "통상 검역 개방에 따른 피해 농가에 직불금 보전 확정으로 대미 담판 배수진 마련",
+        impact: "국내 정치적 파국 방어 및 대외 협상 레버리지 확보"
+      });
+    } else {
+      keyDecisions.push({
+        title: "10대 주력 기업 및 글로벌 파트너 현장 공조",
+        summary: "공급망 위기 발생 시 현장 긴급 간담회 및 민관 원팀 대응",
+        impact: "수출 전선 이탈 방지 및 거시경제 펀더멘털 방어"
+      });
+    }
+
     // Common ending context
     const context = {
       totalExport,
@@ -3871,7 +4118,8 @@ class VerdictEngine {
       worstIndustry,
       topPolicy,
       worstPolicy,
-      structuralLegacy
+      structuralLegacy,
+      keyDecisions
     };
 
     // 1. DISMISSAL (전격 경질):
@@ -3986,6 +4234,7 @@ class VerdictEngine {
       topPolicy: data.topPolicy,
       worstPolicy: data.worstPolicy,
       structuralLegacy: data.structuralLegacy,
+      keyDecisions: data.keyDecisions || [],
       scoreCard: [
         { label: "통관 상품수출", value: `$${data.totalExport.toLocaleString()}B` },
         { label: "BOP 서비스수출", value: `$${(data.totalServicesExport || 0).toFixed(1)}B` },
@@ -4138,6 +4387,8 @@ class GameManager {
     this.currentMonth = 1;
     this.actionPoints = 3;
     this.usedPoliciesThisMonth = [];
+    this.firstTurnBriefingDismissed = false;
+    this.lastActionResult = null;
     this.activeEvent = null;
     this.activeNegotiation = null;
     this.lastNegotiationAgreement = null;
@@ -4160,11 +4411,28 @@ class GameManager {
     if (!doc) return;
     this.doctrine = doc;
     if (doc.id === 'semiconductor_supremacy') {
-      this.economy.industryStates.semiconductor.competitivenessIndex += 4;
+      this.economy.industryStates.semiconductor.competitivenessIndex += 6;
+      this.economy.industryStates.semiconductor.capacityIndex += 3;
     } else if (doc.id === 'us_alliance_first') {
-      this.politics.stats.diplomaticTrust = Math.min(100, this.politics.stats.diplomaticTrust + 5);
+      this.politics.stats.diplomaticTrust = Math.min(100, this.politics.stats.diplomaticTrust + 8);
+      if (this.economy.partnerStates.US) {
+        this.economy.partnerStates.US.allianceBonus = 0.15;
+      }
+    } else if (doc.id === 'china_derisking') {
+      this.politics.stats.diplomaticTrust = Math.min(100, this.politics.stats.diplomaticTrust + 4);
+      if (this.economy.partnerStates.ASEAN) this.economy.partnerStates.ASEAN.growthMod = 0.04;
+      if (this.economy.partnerStates.INDIA) this.economy.partnerStates.INDIA.growthMod = 0.04;
+    } else if (doc.id === 'global_south_frontier') {
+      if (this.economy.partnerStates.ASEAN) this.economy.partnerStates.ASEAN.growthMod = 0.06;
+      if (this.economy.partnerStates.INDIA) this.economy.partnerStates.INDIA.growthMod = 0.06;
+      this.economy.industryStates.consumer.competitivenessIndex += 3;
     } else if (doc.id === 'inclusive_sme_trade') {
-      this.politics.stats.publicApproval = Math.min(100, this.politics.stats.publicApproval + 5);
+      this.politics.stats.publicApproval = Math.min(100, this.politics.stats.publicApproval + 8);
+      this.economy.industryStates.consumer.competitivenessIndex += 4;
+      this.economy.industryStates.machinery.competitivenessIndex += 3;
+    } else if (doc.id === 'energy_green_security') {
+      this.politics.stats.diplomaticTrust = Math.min(100, this.politics.stats.diplomaticTrust + 6);
+      if (this.economy.partnerStates.EU) this.economy.partnerStates.EU.greenExempt = true;
     }
     this.gameLog.push({
       month: this.currentMonth,
@@ -4280,6 +4548,14 @@ class GameManager {
       this.politics.applyDeltas(policy.impact);
     }
 
+    this.lastActionResult = {
+      success: true,
+      policyId: policy.id,
+      title: policy.title,
+      costText: policy.costText,
+      remainingAP: this.actionPoints
+    };
+
     this.gameLog.push({
       month: this.currentMonth,
       type: "policy",
@@ -4288,7 +4564,7 @@ class GameManager {
     });
 
     this.autoSave();
-    return { success: true, actionPoints: this.actionPoints };
+    return { success: true, actionPoints: this.actionPoints, lastActionResult: this.lastActionResult };
   }
 
   // Interactive Corporate Dialogue & Strategy Guidance
@@ -4431,6 +4707,7 @@ class GameManager {
       currentMonth: this.currentMonth,
       actionPoints: this.actionPoints,
       usedPoliciesThisMonth: this.usedPoliciesThisMonth,
+      firstTurnBriefingDismissed: this.firstTurnBriefingDismissed || false,
       activeEvent: this.activeEvent,
       activeNegotiation: this.activeNegotiation ? {
         partnerId: this.activeNegotiation.scenario.partnerId,
@@ -4438,7 +4715,10 @@ class GameManager {
         totalScore: this.activeNegotiation.totalScore,
         history: this.activeNegotiation.history,
         usedCards: Array.from(this.activeNegotiation.usedCards),
-        status: this.activeNegotiation.status
+        status: this.activeNegotiation.status,
+        domesticState: this.activeNegotiation.domesticState,
+        currentCounterDemand: this.activeNegotiation.currentCounterDemand,
+        consecutiveAggressiveCount: this.activeNegotiation.consecutiveAggressiveCount || 0
       } : null,
       lastNegotiationAgreement: this.lastNegotiationAgreement,
       macroHistory: this.economy ? this.economy.macroHistory : [],
@@ -4473,6 +4753,8 @@ class GameManager {
     this.currentMonth = saved.currentMonth;
     this.actionPoints = saved.actionPoints;
     this.usedPoliciesThisMonth = saved.usedPoliciesThisMonth || [];
+    this.firstTurnBriefingDismissed = saved.firstTurnBriefingDismissed || false;
+    this.lastActionResult = null;
     this.activeEvent = saved.activeEvent;
     this.lastNegotiationAgreement = saved.lastNegotiationAgreement;
 
@@ -4489,6 +4771,7 @@ class GameManager {
     if (saved.monthlyResults) this.economy.monthlyResults = saved.monthlyResults;
     if (saved.industryStates) this.economy.industryStates = saved.industryStates;
     if (saved.partnerStates) this.economy.partnerStates = saved.partnerStates;
+    if (saved.delayedPipeline) this.economy.delayedPipeline = saved.delayedPipeline;
 
     this.eventEngine = new EventEngine(this.prng);
     if (saved.triggeredEvents) this.eventEngine.triggeredEvents = new Set(saved.triggeredEvents);
@@ -4500,6 +4783,15 @@ class GameManager {
       this.activeNegotiation.history = saved.activeNegotiation.history;
       this.activeNegotiation.usedCards = new Set(saved.activeNegotiation.usedCards);
       this.activeNegotiation.status = saved.activeNegotiation.status;
+      if (saved.activeNegotiation.domesticState) {
+        this.activeNegotiation.domesticState = saved.activeNegotiation.domesticState;
+      }
+      if (saved.activeNegotiation.currentCounterDemand) {
+        this.activeNegotiation.currentCounterDemand = saved.activeNegotiation.currentCounterDemand;
+      }
+      if (saved.activeNegotiation.consecutiveAggressiveCount) {
+        this.activeNegotiation.consecutiveAggressiveCount = saved.activeNegotiation.consecutiveAggressiveCount;
+      }
     }
 
     this.latestMonthlyResult = saved.latestMonthlyResult;
@@ -4522,10 +4814,25 @@ class UIManager {
     this.activePolicyTab = 'corporate'; // corporate, government, negotiation
     this.corporateModalOpen = false;
     this.doctrineModalOpen = false;
+    this.presidentModalOpen = false;
+    this.corporateFeedback = null;
+    this.tradeOffSummaryModal = null;
+    this.toast = null;
+    this.toastTimeout = null;
     this.selectedCorpId = 'samsung';
     this.lastCorpResponse = null;
 
     this.init();
+  }
+
+  showToast(title, message, type = 'info') {
+    this.toast = { title, message, type };
+    if (this.toastTimeout) clearTimeout(this.toastTimeout);
+    this.toastTimeout = setTimeout(() => {
+      this.toast = null;
+      this.render();
+    }, 4500);
+    this.render();
   }
 
   init() {
@@ -4542,6 +4849,29 @@ class UIManager {
   render() {
     if (!this.appEl) return;
     this.appEl.innerHTML = '';
+
+    // Render Toast container if toast active
+    if (this.toast) {
+      const tWrap = document.createElement('div');
+      tWrap.className = 'toast-container';
+      tWrap.innerHTML = `
+        <div class="toast-banner ${this.toast.type}">
+          <div>
+            <strong style="font-size: 13px; color: var(--navy); display: block;">${this.toast.title}</strong>
+            <span style="font-size: 12px; color: #444; line-height: 1.4;">${this.toast.message}</span>
+          </div>
+          <button style="background: none; border: 0; cursor: pointer; font-size: 14px; color: var(--muted); padding: 0 4px;" id="btn-close-toast">✕</button>
+        </div>
+      `;
+      this.appEl.appendChild(tWrap);
+      setTimeout(() => {
+        const btn = document.getElementById('btn-close-toast');
+        if (btn) btn.onclick = () => {
+          this.toast = null;
+          this.render();
+        };
+      }, 0);
+    }
 
     // Render Masthead Header
     const mast = this.renderMasthead();
@@ -4586,6 +4916,14 @@ class UIManager {
     }
 
     this.appEl.appendChild(main);
+
+    if (this.presidentModalOpen) {
+      this.appEl.appendChild(this.renderPresidentModal());
+    }
+
+    if (this.tradeOffSummaryModal) {
+      this.appEl.appendChild(this.renderNegotiationTradeOffModal(this.tradeOffSummaryModal));
+    }
   }
 
   // Masthead bar
@@ -4879,6 +5217,52 @@ class UIManager {
     `;
     wrap.appendChild(scene);
 
+    // Interactive Onboarding Guide (Month 1 1-minute executive primer)
+    if (this.gm.currentMonth === 1 && !this.gm.firstTurnBriefingDismissed) {
+      wrap.appendChild(this.renderFirstTurnBriefing());
+    }
+
+    // Corporate Action Feedback Alert
+    if (this.corporateFeedback) {
+      const fbBox = document.createElement('div');
+      fbBox.className = 'panel';
+      fbBox.style.borderLeft = '5px solid var(--green)';
+      fbBox.style.background = '#f0fdf4';
+      fbBox.style.marginBottom = '16px';
+      fbBox.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+          <div>
+            <span class="status-pill" style="background: var(--green); color: #fff; font-size: 11px;">✅ 정부 대응 조치 확정</span>
+            <p style="margin: 6px 0 0; font-size: 13px; color: #166534; font-weight: 700;">${this.corporateFeedback.resolveText}</p>
+          </div>
+          <button class="secondary" id="btn-close-corp-fb" style="font-size: 11px; padding: 4px 8px;">✕</button>
+        </div>
+      `;
+      wrap.appendChild(fbBox);
+    }
+
+    // Suspended Negotiation Resume Banner
+    if (this.gm.activeNegotiation && this.gm.activeNegotiation.status === 'suspended') {
+      const suspBox = document.createElement('div');
+      suspBox.className = 'panel';
+      suspBox.style.borderLeft = '5px solid var(--gold)';
+      suspBox.style.background = '#fdfaf2';
+      suspBox.style.marginBottom = '16px';
+      suspBox.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <div>
+            <span class="status-pill" style="background: var(--gold); color: #fff; font-weight: 800;">⏸️ 양자 통상 협상 정회 중 (차월 속개 대기)</span>
+            <h3 style="font-size: 17px; margin: 4px 0 2px; color: var(--navy); font-family: var(--font-serif);">${this.gm.activeNegotiation.scenario.partnerName}</h3>
+            <p style="font-size: 12px; color: #555; margin: 0;">현재 협상 수용 점수: <strong>${this.gm.activeNegotiation.totalScore}pt</strong> / 긴장도: <strong>${this.gm.activeNegotiation.tension}%</strong> (국내 합의 및 교섭 내역 동결 보존됨)</p>
+          </div>
+          <button class="primary" id="btn-resume-suspended-nego" style="font-size: 13px; padding: 8px 18px;">
+            협상장 입장 및 회담 속개 →
+          </button>
+        </div>
+      `;
+      wrap.appendChild(suspBox);
+    }
+
     // National Doctrine Banner
     const doc = this.gm.doctrine || DOCTRINES[0];
     const docBanner = document.createElement('div');
@@ -5028,11 +5412,27 @@ class UIManager {
     `;
     wrap.appendChild(dilemmaWire);
 
-    // Interactive Office Objects Grid
+    // Interactive Office Objects Grid (Tactile & High Hierarchy)
     const officeGrid = document.createElement('div');
     officeGrid.className = 'office-grid';
 
     officeGrid.innerHTML = `
+      <div class="office-card" id="obj-policies" style="cursor: pointer; border: 2px solid var(--navy);">
+        <div class="icon-head">📁</div>
+        <h3>월간 정책 결재함</h3>
+        <p>기업 관리, 정부 무역금융, 규제 완화 등 이번 달 3회의 핵심 정책 행동을 결재하고 지연 파급효과를 확인합니다.</p>
+        <button class="primary" style="width: 100%;">정책 집행 (${this.gm.actionPoints} AP 잔여) →</button>
+      </div>
+
+      <div class="office-card" id="obj-nego-us" style="cursor: pointer;">
+        <div class="icon-head">🤝</div>
+        <h3>대미 통상 협상 훈령</h3>
+        <p>미국의 25% 자동차 관세 폭탄을 방어하기 위한 워싱턴 고위급 양자 담판 테이블로 즉각 직행합니다.</p>
+        <button class="secondary" style="width: 100%;">
+          ${this.gm.activeNegotiation && this.gm.activeNegotiation.status === 'suspended' ? '정회된 협상 속개 →' : '대미 협상 시작 →'}
+        </button>
+      </div>
+
       <div class="office-card" id="obj-war-room" style="cursor: pointer;">
         <div class="icon-head">🖥️</div>
         <h3>무역상황 모니터</h3>
@@ -5040,32 +5440,18 @@ class UIManager {
         <button class="secondary" style="width: 100%;">상황실 입장 →</button>
       </div>
 
-      <div class="office-card" id="obj-policies" style="cursor: pointer;">
-        <div class="icon-head">📁</div>
-        <h3>월간 정책 결재함</h3>
-        <p>기업 관리, 정부 무역금융, 규제 완화 등 이번 달 3회의 핵심 정책 행동을 결재하고 지연 파급효과를 확인합니다.</p>
-        <button class="primary" style="width: 100%;">정책 집행 (${this.gm.actionPoints} AP) →</button>
-      </div>
-
-      <div class="office-card" id="obj-nego-us" style="cursor: pointer;">
-        <div class="icon-head">🤝</div>
-        <h3>대미 통상 협상 훈령</h3>
-        <p>미국의 25% 자동차 관세 폭탄을 방어하기 위한 워싱턴 고위급 양자 담판 테이블로 즉각 직행합니다.</p>
-        <button class="secondary" style="width: 100%;">대미 협상 시작 →</button>
-      </div>
-
-      <div class="office-card" id="obj-president-call" style="cursor: pointer;">
-        <div class="icon-head">📞</div>
-        <h3>대통령 직통 핫라인</h3>
-        <p>용산 대통령실의 신임도(${this.gm.politics.stats.presidentTrust})와 대통령의 특별 지시 사항을 확인합니다.</p>
-        <button class="secondary" style="width: 100%;">지시 사항 열람 →</button>
-      </div>
-
       <div class="office-card" id="obj-corp-dialogue" style="cursor: pointer;">
         <div class="icon-head">💼</div>
         <h3>10대 기업 현장 간담회</h3>
         <p>삼성(반도체 팹), 현대차(관세), 조선 3사(인도 지연), 포스코(덤핑), 중기연합 등 현장 병목을 청취하고 전략을 지시합니다.</p>
         <button class="secondary" style="width: 100%;">기업 간담회 진행 →</button>
+      </div>
+
+      <div class="office-card" id="obj-president-call" style="cursor: pointer;">
+        <div class="icon-head">📞</div>
+        <h3>대통령 직통 핫라인</h3>
+        <p>용산 대통령실의 신임도(${Math.round(this.gm.politics.stats.presidentTrust)}점)와 대통령의 특별 지시 사항을 확인합니다.</p>
+        <button class="secondary" style="width: 100%;">지시 사항 열람 →</button>
       </div>
 
       <div class="office-card" id="obj-newspaper-archive" style="cursor: pointer;">
@@ -5084,10 +5470,17 @@ class UIManager {
     actionBanner.style.background = 'var(--paper-card)';
     actionBanner.innerHTML = `
       <h3 style="border: 0; padding: 0; margin-bottom: 6px;">2027년 ${this.gm.currentMonth}월 정책 수립 완료</h3>
-      <p style="font-size: 14px; color: var(--muted); margin-bottom: 16px;">행동력을 모두 사용했거나 이번 달 정책 결정을 마쳤다면, 경제 시뮬레이션을 실행하여 이달의 무역 성적표를 확정하십시오.</p>
-      <button class="primary" id="btn-advance-month" style="font-size: 16px; padding: 12px 36px;">
-        ${this.gm.currentMonth}월 수출입 실적 확정 및 성적표 발표 →
-      </button>
+      <p style="font-size: 14px; color: var(--muted); margin-bottom: 12px;">행동력을 모두 사용했거나 이번 달 정책 결정을 마쳤다면, 경제 시뮬레이션을 실행하여 이달의 무역 성적표를 확정하십시오.</p>
+      ${this.gm.actionPoints > 0 ? `
+        <div style="background: rgba(177, 145, 88, 0.1); border: 1px dashed var(--gold); border-radius: 4px; padding: 6px 14px; display: inline-block; font-size: 12px; color: var(--navy); margin-bottom: 14px;">
+          ⚡ 이번 달 정책 행동력이 <b>${this.gm.actionPoints} AP</b> 남아있습니다.
+        </div>
+      ` : ''}
+      <div>
+        <button class="primary" id="btn-advance-month" style="font-size: 16px; padding: 12px 36px;">
+          ${this.gm.currentMonth}월 수출입 실적 확정 및 성적표 발표 →
+        </button>
+      </div>
     `;
     wrap.appendChild(actionBanner);
 
@@ -5102,6 +5495,16 @@ class UIManager {
     }
 
     setTimeout(() => {
+      const btnCloseCorpFb = document.getElementById('btn-close-corp-fb');
+      if (btnCloseCorpFb) btnCloseCorpFb.onclick = () => { this.corporateFeedback = null; this.render(); };
+
+      const btnResumeNego = document.getElementById('btn-resume-suspended-nego');
+      if (btnResumeNego) btnResumeNego.onclick = () => {
+        this.gm.activeNegotiation.resumeSession();
+        this.gm.screen = 'negotiation';
+        this.render();
+      };
+
       const btnDoc = document.getElementById('btn-open-doctrine-modal');
       if (btnDoc) btnDoc.onclick = () => {
         this.doctrineModalOpen = true;
@@ -5114,7 +5517,10 @@ class UIManager {
           const akey = btn.getAttribute('data-akey');
           const oid = btn.getAttribute('data-oid');
           const res = this.gm.resolveCorporateAction(cid, akey, oid);
-          if (res) alert(`[정부 대응 조치 확정]\n\n${res.resolveText}`);
+          if (res) {
+            this.corporateFeedback = res;
+            this.showToast('기업 대응 조치 확정', res.resolveText, 'success');
+          }
           this.render();
         };
       });
@@ -5124,10 +5530,19 @@ class UIManager {
       const elPol = document.getElementById('obj-policies');
       if (elPol) elPol.onclick = () => { this.gm.screen = 'policies'; this.render(); };
       const elNego = document.getElementById('obj-nego-us');
-      if (elNego) elNego.onclick = () => { this.gm.executePolicy('nego_us_bilateral'); this.render(); };
+      if (elNego) elNego.onclick = () => {
+        if (this.gm.activeNegotiation && this.gm.activeNegotiation.status === 'suspended') {
+          this.gm.activeNegotiation.resumeSession();
+          this.gm.screen = 'negotiation';
+        } else {
+          this.gm.executePolicy('nego_us_bilateral');
+        }
+        this.render();
+      };
       const elPres = document.getElementById('obj-president-call');
       if (elPres) elPres.onclick = () => {
-        alert(`[대통령실 지시]\n\n"${this.gm.scenario.presidentMandate}"\n\n대통령 신임도: ${this.gm.politics.stats.presidentTrust}점 / 100점`);
+        this.presidentModalOpen = true;
+        this.render();
       };
       const elCorp = document.getElementById('obj-corp-dialogue');
       if (elCorp) elCorp.onclick = () => {
@@ -5139,12 +5554,208 @@ class UIManager {
 
       const btnAdv = document.getElementById('btn-advance-month');
       if (btnAdv) btnAdv.onclick = () => {
+        if (this.gm.actionPoints > 0) {
+          if (!confirm(`아직 행동력 ${this.gm.actionPoints} AP가 남아있습니다. 추가 정책 결재 없이 이번 달 실적을 확정하시겠습니까?`)) {
+            return;
+          }
+        }
         this.gm.advanceTurn();
         this.render();
       };
     }, 0);
 
     return wrap;
+  }
+
+  // 1-minute Inaugural Executive Onboarding
+  renderFirstTurnBriefing() {
+    const box = document.createElement('div');
+    box.className = 'panel';
+    box.style.border = '2px solid var(--gold)';
+    box.style.background = '#fefdfa';
+    box.style.marginBottom = '20px';
+    box.style.boxShadow = '0 6px 18px rgba(177, 145, 88, 0.15)';
+
+    box.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 10px; margin-bottom: 12px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 20px;">📜</span>
+          <div>
+            <span class="eyebrow" style="color: var(--gold); font-weight: 800;">INDEPENDENT ONBOARDING GUIDE</span>
+            <h3 style="margin: 0; font-size: 18px; color: var(--navy); font-family: var(--font-serif);">통상교섭본부장 취임 브리핑: 5대 핵심 가이드</h3>
+          </div>
+        </div>
+        <button class="secondary" id="btn-dismiss-first-guide" style="font-size: 11px; padding: 4px 10px;">가이드 닫기 ✕</button>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; font-size: 13px; margin-bottom: 16px;">
+        <div style="background: var(--white); padding: 10px; border-radius: 4px; border: 1px solid var(--line);">
+          <strong style="color: var(--navy); display: block; margin-bottom: 3px;">1. 직책 (Role)</strong>
+          <p style="margin: 0; font-size: 12px; color: #555;">대한민국 대외 통상 총괄 사령탑. 관세 장벽 방어와 무역흑자를 지휘합니다.</p>
+        </div>
+        <div style="background: var(--white); padding: 10px; border-radius: 4px; border: 1px solid var(--line);">
+          <strong style="color: var(--navy); display: block; margin-bottom: 3px;">2. 최종 목표 (Goal)</strong>
+          <p style="margin: 0; font-size: 12px; color: #555;">2027년 12개월 동안 무역수지 흑자를 수호하고 10대 첨단 주력산업을 지켜내십시오.</p>
+        </div>
+        <div style="background: var(--white); padding: 10px; border-radius: 4px; border: 1px solid var(--line);">
+          <strong style="color: var(--navy); display: block; margin-bottom: 3px;">3. 월간 3 AP (Action)</strong>
+          <p style="margin: 0; font-size: 12px; color: #555;">매월 3회의 정책 행동력(대미 담판, 설비 매칭, 무역금융 등)을 전략적으로 배분합니다.</p>
+        </div>
+        <div style="background: var(--white); padding: 10px; border-radius: 4px; border: 1px solid var(--line);">
+          <strong style="color: var(--navy); display: block; margin-bottom: 3px;">4. 결과 확인 (Feedback)</strong>
+          <p style="margin: 0; font-size: 12px; color: #555;">정책 수립 후 '실적 확정'을 누르면 중앙일보 1면과 관세청 공식 성적표가 발행됩니다.</p>
+        </div>
+        <div style="background: var(--white); padding: 10px; border-radius: 4px; border: 1px solid var(--line);">
+          <strong style="color: var(--navy); display: block; margin-bottom: 3px;">5. 엔딩 판정 (Verdict)</strong>
+          <p style="margin: 0; font-size: 12px; color: #555;">12개월 완주 후 누적 흑자, 지지율, 외교신뢰도에 따라 7대 멀티 엔딩이 판정됩니다.</p>
+        </div>
+      </div>
+
+      <div style="background: rgba(177, 145, 88, 0.08); padding: 12px 16px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <div style="font-size: 13px; color: var(--navy);">
+          <strong>💡 1분 쾌속 시작 가이드:</strong> 첫 번째 조치로 전 산업 수출 탄력을 높이는 무역금융 투입을 추천합니다.
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="primary" id="btn-quickstart-first-action" style="font-size: 13px; padding: 8px 16px;">
+            ⚡ 추천 첫 조치 집행: 무역금융 50조 원 공급 (1 AP)
+          </button>
+          <button class="secondary" id="btn-explore-office" style="font-size: 13px; padding: 8px 14px;">
+            집무실 직접 둘러보기
+          </button>
+        </div>
+      </div>
+    `;
+
+    setTimeout(() => {
+      const btnDismiss = document.getElementById('btn-dismiss-first-guide');
+      if (btnDismiss) btnDismiss.onclick = () => {
+        this.gm.firstTurnBriefingDismissed = true;
+        this.gm.autoSave();
+        this.render();
+      };
+      const btnExplore = document.getElementById('btn-explore-office');
+      if (btnExplore) btnExplore.onclick = () => {
+        this.gm.firstTurnBriefingDismissed = true;
+        this.gm.autoSave();
+        this.render();
+      };
+      const btnQuick = document.getElementById('btn-quickstart-first-action');
+      if (btnQuick) btnQuick.onclick = () => {
+        this.gm.firstTurnBriefingDismissed = true;
+        const res = this.gm.executePolicy('gov_trade_financing_50t');
+        if (res && res.success) {
+          this.showToast('추천 정책 집행 완료', '무역금융 50조 원 긴급 공급 집행 완료 (잔여 2 AP)', 'success');
+        }
+        this.render();
+      };
+    }, 0);
+
+    return box;
+  }
+
+  // Presidential Hotline Modal
+  renderPresidentModal() {
+    const dialog = document.createElement('dialog');
+    dialog.className = 'game-dialog';
+    dialog.open = true;
+    dialog.style.maxWidth = '520px';
+    dialog.style.padding = '22px';
+
+    dialog.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px;">
+        <span class="status-pill" style="background: var(--navy); color: #fff; font-weight: 800;">🏛️ 용산 대통령실 직통 비화 핫라인</span>
+        <button class="secondary" id="btn-close-pres-modal" style="font-size: 11px; padding: 4px 8px;">닫기 ✕</button>
+      </div>
+      <h3 style="font-family: var(--font-serif); font-size: 19px; color: var(--navy); margin-bottom: 8px;">대통령 특별 훈령 및 지시사항</h3>
+      <div style="background: #fcfbf7; border-left: 4px solid var(--navy); padding: 14px; font-size: 14px; line-height: 1.6; font-style: italic; color: #1a1a1a; margin-bottom: 16px; border-radius: 0 4px 4px 0;">
+        "${this.gm.scenario.presidentMandate}"
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13px; padding: 10px 14px; background: #f7f9fa; border: 1px solid var(--line); border-radius: 4px;">
+        <span>대통령실 신임도:</span>
+        <strong style="font-size: 16px; color: ${this.gm.politics.stats.presidentTrust >= 60 ? 'var(--green)' : 'var(--red)'};">
+          ${Math.round(this.gm.politics.stats.presidentTrust)}점 / 100점
+        </strong>
+      </div>
+      <div style="text-align: right; margin-top: 20px;">
+        <button class="primary" id="btn-ack-pres-modal" style="padding: 10px 24px; font-size: 14px;">지시사항 확인</button>
+      </div>
+    `;
+
+    setTimeout(() => {
+      const btnClose = document.getElementById('btn-close-pres-modal');
+      if (btnClose) btnClose.onclick = () => { this.presidentModalOpen = false; this.render(); };
+      const btnAck = document.getElementById('btn-ack-pres-modal');
+      if (btnAck) btnAck.onclick = () => { this.presidentModalOpen = false; this.render(); };
+    }, 0);
+
+    return dialog;
+  }
+
+  // Negotiation Trade-off Summary Modal
+  renderNegotiationTradeOffModal(agreement) {
+    const dialog = document.createElement('dialog');
+    dialog.className = 'game-dialog';
+    dialog.open = true;
+    dialog.style.maxWidth = '640px';
+    dialog.style.padding = '24px';
+    dialog.style.maxHeight = '90vh';
+    dialog.style.overflowY = 'auto';
+
+    const isAgreed = agreement.type === 'agreed';
+    const isBroken = agreement.type === 'broken';
+    const badgeColor = isAgreed ? 'var(--green)' : (isBroken ? 'var(--red)' : 'var(--gold)');
+
+    const summary = agreement.tradeOffSummary || {
+      gains: [agreement.title],
+      concessions: ["상호 타협안 도출"],
+      diplomaticSpillover: "대외 통상 신뢰도 및 양국 거버넌스 유지"
+    };
+
+    dialog.innerHTML = `
+      <div style="text-align: center; margin-bottom: 18px;">
+        <span class="status-pill" style="font-size: 13px; font-weight: 800; background: ${badgeColor}; color: #fff;">
+          ${agreement.grade}
+        </span>
+        <h2 style="font-family: var(--font-display); font-size: 24px; margin: 10px 0 6px; color: var(--navy);">${agreement.title}</h2>
+        <p style="font-size: 14px; color: #333; line-height: 1.6;">${agreement.description}</p>
+      </div>
+
+      <div style="background: rgba(37, 107, 79, 0.08); border: 1px solid var(--green); border-radius: 6px; padding: 14px; margin-bottom: 12px;">
+        <h4 style="font-size: 14px; color: var(--green); margin: 0 0 6px; font-weight: 800;">🏆 대한민국 핵심 획득 성과 (Gains)</h4>
+        <ul style="margin: 0; padding-left: 20px; font-size: 13px; color: #222; line-height: 1.6;">
+          ${summary.gains.map(g => `<li>${g}</li>`).join('')}
+        </ul>
+      </div>
+
+      <div style="background: rgba(175, 81, 71, 0.08); border: 1px solid var(--red); border-radius: 6px; padding: 14px; margin-bottom: 12px;">
+        <h4 style="font-size: 14px; color: var(--red); margin: 0 0 6px; font-weight: 800;">⚖️ 불가피한 양보 및 감수 사항 (Trade-off Concessions)</h4>
+        <ul style="margin: 0; padding-left: 20px; font-size: 13px; color: #222; line-height: 1.6;">
+          ${summary.concessions.map(c => `<li>${c}</li>`).join('')}
+        </ul>
+      </div>
+
+      <div style="background: #fdfbf7; border: 1px solid var(--line); border-left: 4px solid var(--navy); border-radius: 4px; padding: 12px; margin-bottom: 22px; font-size: 13px; line-height: 1.6; color: #333;">
+        <strong style="color: var(--navy); display: block; margin-bottom: 3px;">🌐 제3국 통상 외교 및 국내 파급효과 (Diplomatic Spillover):</strong>
+        ${summary.diplomaticSpillover}
+      </div>
+
+      <div style="text-align: center;">
+        <button class="primary" id="btn-close-tradeoff-modal" style="font-size: 15px; padding: 12px 36px; width: 100%;">
+          결과 확정하고 집무실로 복귀
+        </button>
+      </div>
+    `;
+
+    setTimeout(() => {
+      const btn = document.getElementById('btn-close-tradeoff-modal');
+      if (btn) btn.onclick = () => {
+        this.tradeOffSummaryModal = null;
+        this.gm.screen = 'office';
+        this.render();
+      };
+    }, 0);
+
+    return dialog;
   }
 
   // 6대 국정 통상 독트린 선택 모달
@@ -5511,7 +6122,10 @@ class UIManager {
       wrap.querySelectorAll('.btn-execute-policy').forEach(btn => {
         btn.onclick = () => {
           const pid = btn.getAttribute('data-pid');
-          this.gm.executePolicy(pid);
+          const res = this.gm.executePolicy(pid);
+          if (res && res.lastActionResult) {
+            this.showToast('정책 결재 및 집행 완료', `${res.lastActionResult.title}: ${res.lastActionResult.costText} (잔여: ${res.actionPoints} AP)`, 'success');
+          }
           this.render();
         };
       });
@@ -5676,9 +6290,9 @@ class UIManager {
           const aid = btn.getAttribute('data-aid');
           const res = nego.consultDomestic(aid, this.gm.politics);
           if (res.success) {
-            alert(`[국내 이해관계자 합의 성사]\n\n${res.title}\n\n${res.description}`);
+            this.showToast('국내 당정 합의 성사', `${res.title}: ${res.description}`, 'success');
           } else {
-            alert(`[합의 실패]\n\n${res.reason}`);
+            this.showToast('합의 무산', res.reason, 'danger');
           }
           this.render();
         };
@@ -5689,7 +6303,7 @@ class UIManager {
           const cid = btn.getAttribute('data-cid');
           const stepRes = nego.playCard(cid);
           if (stepRes.domesticNote) {
-            alert(`${stepRes.domesticNote}`);
+            this.showToast('국내 여론 반응', stepRes.domesticNote, stepRes.domesticNote.includes('합의') ? 'success' : 'danger');
           }
           this.render();
         };
@@ -5697,19 +6311,19 @@ class UIManager {
       const btnAgree = document.getElementById('btn-conclude-agree');
       if (btnAgree) btnAgree.onclick = () => {
         const res = this.gm.concludeNegotiation('agree');
-        alert(`[협상 결과 보고: ${res.grade}]\n\n${res.title}\n\n${res.description || res.text}`);
+        this.tradeOffSummaryModal = res;
         this.render();
       };
       const btnDefer = document.getElementById('btn-conclude-defer');
       if (btnDefer) btnDefer.onclick = () => {
         const res = this.gm.concludeNegotiation('defer');
-        alert(`[협상 결과 보고: ${res.grade}]\n\n${res.title}\n\n${res.description || res.text}`);
+        this.tradeOffSummaryModal = res;
         this.render();
       };
       const btnSuspend = document.getElementById('btn-conclude-suspend');
       if (btnSuspend) btnSuspend.onclick = () => {
         const res = nego.suspendSession();
-        alert(`[${res.title}]\n\n${res.description}`);
+        this.showToast('협상 일시 정회', `${res.title}: ${res.description}`, 'warning');
         this.gm.screen = 'office';
         this.render();
       };
@@ -5717,7 +6331,7 @@ class UIManager {
       if (btnBreak) btnBreak.onclick = () => {
         if (confirm('정말로 협상을 결렬시키겠습니까? 상대국의 즉각적인 보복 관세가 발효됩니다.')) {
           const res = this.gm.concludeNegotiation('breakdown');
-          alert(`[협상 결과 보고: ${res.grade}]\n\n${res.title}\n\n${res.description || res.text}`);
+          this.tradeOffSummaryModal = res;
           this.render();
         }
       };
@@ -5811,6 +6425,21 @@ class UIManager {
           <small style="color: var(--muted); font-size: 11px; margin-top: 4px; display: block;">공장 가동률: ${topLoser.utilizationRate}% · 관세 장벽: ${topLoser.tradeBarrierIndex}pt</small>
         </div>
       </div>
+
+      <!-- Delayed Policy Pipeline Callout -->
+      ${this.gm.economy && this.gm.economy.delayedPipeline && this.gm.economy.delayedPipeline.length > 0 ? `
+        <div style="background: #fcf9f2; border: 1px solid var(--gold); border-left: 5px solid var(--gold); border-radius: 6px; padding: 14px; margin: 16px 0; text-align: left;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+            <span class="status-pill" style="background: var(--gold); color: #fff; font-weight: 800; font-size: 11px;">⏳ 정책 효과 지연 파이프라인 (Delayed Policy Pipeline)</span>
+            <small style="color: var(--muted); font-size: 11px;">집행 후 시차 반영 대기</small>
+          </div>
+          <h4 style="font-size: 15px; color: var(--navy); margin: 4px 0 6px;">첨단 전략산업 생산설비 신·증설 보조금 파이프라인 가동 중</h4>
+          <p style="font-size: 13px; color: #444; margin: 0 0 6px; line-height: 1.5;">
+            현재 ${this.gm.economy.delayedPipeline.length}건의 장기 설비 투자가 진행 중입니다. 
+            약 ${this.gm.economy.delayedPipeline[0].monthsRemaining || 2}개월 뒤 평택·용인 반도체 패키징 라인 및 배터리 신증설 설비가 완공되어 국가 생산능력(Capacity Index)에 공식 반영될 예정입니다.
+          </p>
+        </div>
+      ` : ''}
 
       <!-- Policy vs External Shock Decomposition Table -->
       <div style="background: var(--white); border: 1px solid var(--line); border-radius: 6px; padding: 16px; margin: 20px 0; text-align: left;">
@@ -6062,6 +6691,25 @@ class UIManager {
         ` : ''}
       </div>
 
+      <!-- 3 Key Defining Decisions of the Tenure -->
+      ${verdict.keyDecisions && verdict.keyDecisions.length > 0 ? `
+        <div class="panel" style="background: var(--white); border: 1px solid var(--line); border-radius: 6px; padding: 16px; margin: 20px 0; text-align: left;">
+          <h3 style="font-family: var(--font-display); font-size: 18px; color: var(--navy); border: 0; padding: 0; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+            <span>🧭</span> <span>1년간의 3대 핵심 결단 (3 Key Defining Decisions)</span>
+          </h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px;">
+            ${verdict.keyDecisions.map((kd, idx) => `
+              <div style="background: #fbf9f5; border: 1px solid var(--line); border-left: 3px solid var(--gold); border-radius: 4px; padding: 12px;">
+                <span class="status-pill" style="font-size: 10px; margin-bottom: 6px; display: inline-block;">결단 ${idx + 1}</span>
+                <strong style="color: var(--navy); display: block; font-size: 14px; margin-bottom: 4px;">${kd.title}</strong>
+                <p style="font-size: 12px; color: #444; margin: 0 0 6px; line-height: 1.5;">${kd.summary}</p>
+                <div style="font-size: 11px; color: var(--green); font-weight: 700;">파급효과: ${kd.impact}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+
       <div class="front-figures-box" style="margin: 20px 0;">
         <h4>2027년 연간 종합 통상 성적표 (Scorecard)</h4>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
@@ -6074,8 +6722,9 @@ class UIManager {
         </div>
       </div>
 
-      <div style="text-align: center; margin-top: 30px; display: flex; justify-content: center; gap: 14px;">
+      <div style="text-align: center; margin-top: 30px; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
         <button class="primary" id="btn-replay-game" style="font-size: 16px; padding: 12px 36px;">다시 플레이하기 (새 게임)</button>
+        <button class="secondary" id="btn-replay-new-doctrine" style="font-size: 16px; padding: 12px 28px;">다른 독트린으로 재도전 ⚙️</button>
         <button class="secondary" id="btn-title-return" style="font-size: 16px;">타이틀 화면으로</button>
       </div>
     `;
@@ -6084,6 +6733,12 @@ class UIManager {
     setTimeout(() => {
       const btnReplay = document.getElementById('btn-replay-game');
       if (btnReplay) btnReplay.onclick = () => {
+        StorageManager.clear();
+        this.gm.screen = 'scenario_select';
+        this.render();
+      };
+      const btnDoctrineReplay = document.getElementById('btn-replay-new-doctrine');
+      if (btnDoctrineReplay) btnDoctrineReplay.onclick = () => {
         StorageManager.clear();
         this.gm.screen = 'scenario_select';
         this.render();

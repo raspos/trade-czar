@@ -16,10 +16,25 @@ class UIManager {
     this.activePolicyTab = 'corporate'; // corporate, government, negotiation
     this.corporateModalOpen = false;
     this.doctrineModalOpen = false;
+    this.presidentModalOpen = false;
+    this.corporateFeedback = null;
+    this.tradeOffSummaryModal = null;
+    this.toast = null;
+    this.toastTimeout = null;
     this.selectedCorpId = 'samsung';
     this.lastCorpResponse = null;
 
     this.init();
+  }
+
+  showToast(title, message, type = 'info') {
+    this.toast = { title, message, type };
+    if (this.toastTimeout) clearTimeout(this.toastTimeout);
+    this.toastTimeout = setTimeout(() => {
+      this.toast = null;
+      this.render();
+    }, 4500);
+    this.render();
   }
 
   init() {
@@ -36,6 +51,29 @@ class UIManager {
   render() {
     if (!this.appEl) return;
     this.appEl.innerHTML = '';
+
+    // Render Toast container if toast active
+    if (this.toast) {
+      const tWrap = document.createElement('div');
+      tWrap.className = 'toast-container';
+      tWrap.innerHTML = `
+        <div class="toast-banner ${this.toast.type}">
+          <div>
+            <strong style="font-size: 13px; color: var(--navy); display: block;">${this.toast.title}</strong>
+            <span style="font-size: 12px; color: #444; line-height: 1.4;">${this.toast.message}</span>
+          </div>
+          <button style="background: none; border: 0; cursor: pointer; font-size: 14px; color: var(--muted); padding: 0 4px;" id="btn-close-toast">✕</button>
+        </div>
+      `;
+      this.appEl.appendChild(tWrap);
+      setTimeout(() => {
+        const btn = document.getElementById('btn-close-toast');
+        if (btn) btn.onclick = () => {
+          this.toast = null;
+          this.render();
+        };
+      }, 0);
+    }
 
     // Render Masthead Header
     const mast = this.renderMasthead();
@@ -80,6 +118,14 @@ class UIManager {
     }
 
     this.appEl.appendChild(main);
+
+    if (this.presidentModalOpen) {
+      this.appEl.appendChild(this.renderPresidentModal());
+    }
+
+    if (this.tradeOffSummaryModal) {
+      this.appEl.appendChild(this.renderNegotiationTradeOffModal(this.tradeOffSummaryModal));
+    }
   }
 
   // Masthead bar
@@ -373,6 +419,52 @@ class UIManager {
     `;
     wrap.appendChild(scene);
 
+    // Interactive Onboarding Guide (Month 1 1-minute executive primer)
+    if (this.gm.currentMonth === 1 && !this.gm.firstTurnBriefingDismissed) {
+      wrap.appendChild(this.renderFirstTurnBriefing());
+    }
+
+    // Corporate Action Feedback Alert
+    if (this.corporateFeedback) {
+      const fbBox = document.createElement('div');
+      fbBox.className = 'panel';
+      fbBox.style.borderLeft = '5px solid var(--green)';
+      fbBox.style.background = '#f0fdf4';
+      fbBox.style.marginBottom = '16px';
+      fbBox.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+          <div>
+            <span class="status-pill" style="background: var(--green); color: #fff; font-size: 11px;">✅ 정부 대응 조치 확정</span>
+            <p style="margin: 6px 0 0; font-size: 13px; color: #166534; font-weight: 700;">${this.corporateFeedback.resolveText}</p>
+          </div>
+          <button class="secondary" id="btn-close-corp-fb" style="font-size: 11px; padding: 4px 8px;">✕</button>
+        </div>
+      `;
+      wrap.appendChild(fbBox);
+    }
+
+    // Suspended Negotiation Resume Banner
+    if (this.gm.activeNegotiation && this.gm.activeNegotiation.status === 'suspended') {
+      const suspBox = document.createElement('div');
+      suspBox.className = 'panel';
+      suspBox.style.borderLeft = '5px solid var(--gold)';
+      suspBox.style.background = '#fdfaf2';
+      suspBox.style.marginBottom = '16px';
+      suspBox.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <div>
+            <span class="status-pill" style="background: var(--gold); color: #fff; font-weight: 800;">⏸️ 양자 통상 협상 정회 중 (차월 속개 대기)</span>
+            <h3 style="font-size: 17px; margin: 4px 0 2px; color: var(--navy); font-family: var(--font-serif);">${this.gm.activeNegotiation.scenario.partnerName}</h3>
+            <p style="font-size: 12px; color: #555; margin: 0;">현재 협상 수용 점수: <strong>${this.gm.activeNegotiation.totalScore}pt</strong> / 긴장도: <strong>${this.gm.activeNegotiation.tension}%</strong> (국내 합의 및 교섭 내역 동결 보존됨)</p>
+          </div>
+          <button class="primary" id="btn-resume-suspended-nego" style="font-size: 13px; padding: 8px 18px;">
+            협상장 입장 및 회담 속개 →
+          </button>
+        </div>
+      `;
+      wrap.appendChild(suspBox);
+    }
+
     // National Doctrine Banner
     const doc = this.gm.doctrine || DOCTRINES[0];
     const docBanner = document.createElement('div');
@@ -522,11 +614,27 @@ class UIManager {
     `;
     wrap.appendChild(dilemmaWire);
 
-    // Interactive Office Objects Grid
+    // Interactive Office Objects Grid (Tactile & High Hierarchy)
     const officeGrid = document.createElement('div');
     officeGrid.className = 'office-grid';
 
     officeGrid.innerHTML = `
+      <div class="office-card" id="obj-policies" style="cursor: pointer; border: 2px solid var(--navy);">
+        <div class="icon-head">📁</div>
+        <h3>월간 정책 결재함</h3>
+        <p>기업 관리, 정부 무역금융, 규제 완화 등 이번 달 3회의 핵심 정책 행동을 결재하고 지연 파급효과를 확인합니다.</p>
+        <button class="primary" style="width: 100%;">정책 집행 (${this.gm.actionPoints} AP 잔여) →</button>
+      </div>
+
+      <div class="office-card" id="obj-nego-us" style="cursor: pointer;">
+        <div class="icon-head">🤝</div>
+        <h3>대미 통상 협상 훈령</h3>
+        <p>미국의 25% 자동차 관세 폭탄을 방어하기 위한 워싱턴 고위급 양자 담판 테이블로 즉각 직행합니다.</p>
+        <button class="secondary" style="width: 100%;">
+          ${this.gm.activeNegotiation && this.gm.activeNegotiation.status === 'suspended' ? '정회된 협상 속개 →' : '대미 협상 시작 →'}
+        </button>
+      </div>
+
       <div class="office-card" id="obj-war-room" style="cursor: pointer;">
         <div class="icon-head">🖥️</div>
         <h3>무역상황 모니터</h3>
@@ -534,32 +642,18 @@ class UIManager {
         <button class="secondary" style="width: 100%;">상황실 입장 →</button>
       </div>
 
-      <div class="office-card" id="obj-policies" style="cursor: pointer;">
-        <div class="icon-head">📁</div>
-        <h3>월간 정책 결재함</h3>
-        <p>기업 관리, 정부 무역금융, 규제 완화 등 이번 달 3회의 핵심 정책 행동을 결재하고 지연 파급효과를 확인합니다.</p>
-        <button class="primary" style="width: 100%;">정책 집행 (${this.gm.actionPoints} AP) →</button>
-      </div>
-
-      <div class="office-card" id="obj-nego-us" style="cursor: pointer;">
-        <div class="icon-head">🤝</div>
-        <h3>대미 통상 협상 훈령</h3>
-        <p>미국의 25% 자동차 관세 폭탄을 방어하기 위한 워싱턴 고위급 양자 담판 테이블로 즉각 직행합니다.</p>
-        <button class="secondary" style="width: 100%;">대미 협상 시작 →</button>
-      </div>
-
-      <div class="office-card" id="obj-president-call" style="cursor: pointer;">
-        <div class="icon-head">📞</div>
-        <h3>대통령 직통 핫라인</h3>
-        <p>용산 대통령실의 신임도(${this.gm.politics.stats.presidentTrust})와 대통령의 특별 지시 사항을 확인합니다.</p>
-        <button class="secondary" style="width: 100%;">지시 사항 열람 →</button>
-      </div>
-
       <div class="office-card" id="obj-corp-dialogue" style="cursor: pointer;">
         <div class="icon-head">💼</div>
         <h3>10대 기업 현장 간담회</h3>
         <p>삼성(반도체 팹), 현대차(관세), 조선 3사(인도 지연), 포스코(덤핑), 중기연합 등 현장 병목을 청취하고 전략을 지시합니다.</p>
         <button class="secondary" style="width: 100%;">기업 간담회 진행 →</button>
+      </div>
+
+      <div class="office-card" id="obj-president-call" style="cursor: pointer;">
+        <div class="icon-head">📞</div>
+        <h3>대통령 직통 핫라인</h3>
+        <p>용산 대통령실의 신임도(${Math.round(this.gm.politics.stats.presidentTrust)}점)와 대통령의 특별 지시 사항을 확인합니다.</p>
+        <button class="secondary" style="width: 100%;">지시 사항 열람 →</button>
       </div>
 
       <div class="office-card" id="obj-newspaper-archive" style="cursor: pointer;">
@@ -578,10 +672,17 @@ class UIManager {
     actionBanner.style.background = 'var(--paper-card)';
     actionBanner.innerHTML = `
       <h3 style="border: 0; padding: 0; margin-bottom: 6px;">2027년 ${this.gm.currentMonth}월 정책 수립 완료</h3>
-      <p style="font-size: 14px; color: var(--muted); margin-bottom: 16px;">행동력을 모두 사용했거나 이번 달 정책 결정을 마쳤다면, 경제 시뮬레이션을 실행하여 이달의 무역 성적표를 확정하십시오.</p>
-      <button class="primary" id="btn-advance-month" style="font-size: 16px; padding: 12px 36px;">
-        ${this.gm.currentMonth}월 수출입 실적 확정 및 성적표 발표 →
-      </button>
+      <p style="font-size: 14px; color: var(--muted); margin-bottom: 12px;">행동력을 모두 사용했거나 이번 달 정책 결정을 마쳤다면, 경제 시뮬레이션을 실행하여 이달의 무역 성적표를 확정하십시오.</p>
+      ${this.gm.actionPoints > 0 ? `
+        <div style="background: rgba(177, 145, 88, 0.1); border: 1px dashed var(--gold); border-radius: 4px; padding: 6px 14px; display: inline-block; font-size: 12px; color: var(--navy); margin-bottom: 14px;">
+          ⚡ 이번 달 정책 행동력이 <b>${this.gm.actionPoints} AP</b> 남아있습니다.
+        </div>
+      ` : ''}
+      <div>
+        <button class="primary" id="btn-advance-month" style="font-size: 16px; padding: 12px 36px;">
+          ${this.gm.currentMonth}월 수출입 실적 확정 및 성적표 발표 →
+        </button>
+      </div>
     `;
     wrap.appendChild(actionBanner);
 
@@ -596,6 +697,16 @@ class UIManager {
     }
 
     setTimeout(() => {
+      const btnCloseCorpFb = document.getElementById('btn-close-corp-fb');
+      if (btnCloseCorpFb) btnCloseCorpFb.onclick = () => { this.corporateFeedback = null; this.render(); };
+
+      const btnResumeNego = document.getElementById('btn-resume-suspended-nego');
+      if (btnResumeNego) btnResumeNego.onclick = () => {
+        this.gm.activeNegotiation.resumeSession();
+        this.gm.screen = 'negotiation';
+        this.render();
+      };
+
       const btnDoc = document.getElementById('btn-open-doctrine-modal');
       if (btnDoc) btnDoc.onclick = () => {
         this.doctrineModalOpen = true;
@@ -608,7 +719,10 @@ class UIManager {
           const akey = btn.getAttribute('data-akey');
           const oid = btn.getAttribute('data-oid');
           const res = this.gm.resolveCorporateAction(cid, akey, oid);
-          if (res) alert(`[정부 대응 조치 확정]\n\n${res.resolveText}`);
+          if (res) {
+            this.corporateFeedback = res;
+            this.showToast('기업 대응 조치 확정', res.resolveText, 'success');
+          }
           this.render();
         };
       });
@@ -618,10 +732,19 @@ class UIManager {
       const elPol = document.getElementById('obj-policies');
       if (elPol) elPol.onclick = () => { this.gm.screen = 'policies'; this.render(); };
       const elNego = document.getElementById('obj-nego-us');
-      if (elNego) elNego.onclick = () => { this.gm.executePolicy('nego_us_bilateral'); this.render(); };
+      if (elNego) elNego.onclick = () => {
+        if (this.gm.activeNegotiation && this.gm.activeNegotiation.status === 'suspended') {
+          this.gm.activeNegotiation.resumeSession();
+          this.gm.screen = 'negotiation';
+        } else {
+          this.gm.executePolicy('nego_us_bilateral');
+        }
+        this.render();
+      };
       const elPres = document.getElementById('obj-president-call');
       if (elPres) elPres.onclick = () => {
-        alert(`[대통령실 지시]\n\n"${this.gm.scenario.presidentMandate}"\n\n대통령 신임도: ${this.gm.politics.stats.presidentTrust}점 / 100점`);
+        this.presidentModalOpen = true;
+        this.render();
       };
       const elCorp = document.getElementById('obj-corp-dialogue');
       if (elCorp) elCorp.onclick = () => {
@@ -633,12 +756,208 @@ class UIManager {
 
       const btnAdv = document.getElementById('btn-advance-month');
       if (btnAdv) btnAdv.onclick = () => {
+        if (this.gm.actionPoints > 0) {
+          if (!confirm(`아직 행동력 ${this.gm.actionPoints} AP가 남아있습니다. 추가 정책 결재 없이 이번 달 실적을 확정하시겠습니까?`)) {
+            return;
+          }
+        }
         this.gm.advanceTurn();
         this.render();
       };
     }, 0);
 
     return wrap;
+  }
+
+  // 1-minute Inaugural Executive Onboarding
+  renderFirstTurnBriefing() {
+    const box = document.createElement('div');
+    box.className = 'panel';
+    box.style.border = '2px solid var(--gold)';
+    box.style.background = '#fefdfa';
+    box.style.marginBottom = '20px';
+    box.style.boxShadow = '0 6px 18px rgba(177, 145, 88, 0.15)';
+
+    box.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 10px; margin-bottom: 12px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 20px;">📜</span>
+          <div>
+            <span class="eyebrow" style="color: var(--gold); font-weight: 800;">INDEPENDENT ONBOARDING GUIDE</span>
+            <h3 style="margin: 0; font-size: 18px; color: var(--navy); font-family: var(--font-serif);">통상교섭본부장 취임 브리핑: 5대 핵심 가이드</h3>
+          </div>
+        </div>
+        <button class="secondary" id="btn-dismiss-first-guide" style="font-size: 11px; padding: 4px 10px;">가이드 닫기 ✕</button>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; font-size: 13px; margin-bottom: 16px;">
+        <div style="background: var(--white); padding: 10px; border-radius: 4px; border: 1px solid var(--line);">
+          <strong style="color: var(--navy); display: block; margin-bottom: 3px;">1. 직책 (Role)</strong>
+          <p style="margin: 0; font-size: 12px; color: #555;">대한민국 대외 통상 총괄 사령탑. 관세 장벽 방어와 무역흑자를 지휘합니다.</p>
+        </div>
+        <div style="background: var(--white); padding: 10px; border-radius: 4px; border: 1px solid var(--line);">
+          <strong style="color: var(--navy); display: block; margin-bottom: 3px;">2. 최종 목표 (Goal)</strong>
+          <p style="margin: 0; font-size: 12px; color: #555;">2027년 12개월 동안 무역수지 흑자를 수호하고 10대 첨단 주력산업을 지켜내십시오.</p>
+        </div>
+        <div style="background: var(--white); padding: 10px; border-radius: 4px; border: 1px solid var(--line);">
+          <strong style="color: var(--navy); display: block; margin-bottom: 3px;">3. 월간 3 AP (Action)</strong>
+          <p style="margin: 0; font-size: 12px; color: #555;">매월 3회의 정책 행동력(대미 담판, 설비 매칭, 무역금융 등)을 전략적으로 배분합니다.</p>
+        </div>
+        <div style="background: var(--white); padding: 10px; border-radius: 4px; border: 1px solid var(--line);">
+          <strong style="color: var(--navy); display: block; margin-bottom: 3px;">4. 결과 확인 (Feedback)</strong>
+          <p style="margin: 0; font-size: 12px; color: #555;">정책 수립 후 '실적 확정'을 누르면 중앙일보 1면과 관세청 공식 성적표가 발행됩니다.</p>
+        </div>
+        <div style="background: var(--white); padding: 10px; border-radius: 4px; border: 1px solid var(--line);">
+          <strong style="color: var(--navy); display: block; margin-bottom: 3px;">5. 엔딩 판정 (Verdict)</strong>
+          <p style="margin: 0; font-size: 12px; color: #555;">12개월 완주 후 누적 흑자, 지지율, 외교신뢰도에 따라 7대 멀티 엔딩이 판정됩니다.</p>
+        </div>
+      </div>
+
+      <div style="background: rgba(177, 145, 88, 0.08); padding: 12px 16px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <div style="font-size: 13px; color: var(--navy);">
+          <strong>💡 1분 쾌속 시작 가이드:</strong> 첫 번째 조치로 전 산업 수출 탄력을 높이는 무역금융 투입을 추천합니다.
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="primary" id="btn-quickstart-first-action" style="font-size: 13px; padding: 8px 16px;">
+            ⚡ 추천 첫 조치 집행: 무역금융 50조 원 공급 (1 AP)
+          </button>
+          <button class="secondary" id="btn-explore-office" style="font-size: 13px; padding: 8px 14px;">
+            집무실 직접 둘러보기
+          </button>
+        </div>
+      </div>
+    `;
+
+    setTimeout(() => {
+      const btnDismiss = document.getElementById('btn-dismiss-first-guide');
+      if (btnDismiss) btnDismiss.onclick = () => {
+        this.gm.firstTurnBriefingDismissed = true;
+        this.gm.autoSave();
+        this.render();
+      };
+      const btnExplore = document.getElementById('btn-explore-office');
+      if (btnExplore) btnExplore.onclick = () => {
+        this.gm.firstTurnBriefingDismissed = true;
+        this.gm.autoSave();
+        this.render();
+      };
+      const btnQuick = document.getElementById('btn-quickstart-first-action');
+      if (btnQuick) btnQuick.onclick = () => {
+        this.gm.firstTurnBriefingDismissed = true;
+        const res = this.gm.executePolicy('gov_trade_financing_50t');
+        if (res && res.success) {
+          this.showToast('추천 정책 집행 완료', '무역금융 50조 원 긴급 공급 집행 완료 (잔여 2 AP)', 'success');
+        }
+        this.render();
+      };
+    }, 0);
+
+    return box;
+  }
+
+  // Presidential Hotline Modal
+  renderPresidentModal() {
+    const dialog = document.createElement('dialog');
+    dialog.className = 'game-dialog';
+    dialog.open = true;
+    dialog.style.maxWidth = '520px';
+    dialog.style.padding = '22px';
+
+    dialog.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px;">
+        <span class="status-pill" style="background: var(--navy); color: #fff; font-weight: 800;">🏛️ 용산 대통령실 직통 비화 핫라인</span>
+        <button class="secondary" id="btn-close-pres-modal" style="font-size: 11px; padding: 4px 8px;">닫기 ✕</button>
+      </div>
+      <h3 style="font-family: var(--font-serif); font-size: 19px; color: var(--navy); margin-bottom: 8px;">대통령 특별 훈령 및 지시사항</h3>
+      <div style="background: #fcfbf7; border-left: 4px solid var(--navy); padding: 14px; font-size: 14px; line-height: 1.6; font-style: italic; color: #1a1a1a; margin-bottom: 16px; border-radius: 0 4px 4px 0;">
+        "${this.gm.scenario.presidentMandate}"
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13px; padding: 10px 14px; background: #f7f9fa; border: 1px solid var(--line); border-radius: 4px;">
+        <span>대통령실 신임도:</span>
+        <strong style="font-size: 16px; color: ${this.gm.politics.stats.presidentTrust >= 60 ? 'var(--green)' : 'var(--red)'};">
+          ${Math.round(this.gm.politics.stats.presidentTrust)}점 / 100점
+        </strong>
+      </div>
+      <div style="text-align: right; margin-top: 20px;">
+        <button class="primary" id="btn-ack-pres-modal" style="padding: 10px 24px; font-size: 14px;">지시사항 확인</button>
+      </div>
+    `;
+
+    setTimeout(() => {
+      const btnClose = document.getElementById('btn-close-pres-modal');
+      if (btnClose) btnClose.onclick = () => { this.presidentModalOpen = false; this.render(); };
+      const btnAck = document.getElementById('btn-ack-pres-modal');
+      if (btnAck) btnAck.onclick = () => { this.presidentModalOpen = false; this.render(); };
+    }, 0);
+
+    return dialog;
+  }
+
+  // Negotiation Trade-off Summary Modal
+  renderNegotiationTradeOffModal(agreement) {
+    const dialog = document.createElement('dialog');
+    dialog.className = 'game-dialog';
+    dialog.open = true;
+    dialog.style.maxWidth = '640px';
+    dialog.style.padding = '24px';
+    dialog.style.maxHeight = '90vh';
+    dialog.style.overflowY = 'auto';
+
+    const isAgreed = agreement.type === 'agreed';
+    const isBroken = agreement.type === 'broken';
+    const badgeColor = isAgreed ? 'var(--green)' : (isBroken ? 'var(--red)' : 'var(--gold)');
+
+    const summary = agreement.tradeOffSummary || {
+      gains: [agreement.title],
+      concessions: ["상호 타협안 도출"],
+      diplomaticSpillover: "대외 통상 신뢰도 및 양국 거버넌스 유지"
+    };
+
+    dialog.innerHTML = `
+      <div style="text-align: center; margin-bottom: 18px;">
+        <span class="status-pill" style="font-size: 13px; font-weight: 800; background: ${badgeColor}; color: #fff;">
+          ${agreement.grade}
+        </span>
+        <h2 style="font-family: var(--font-display); font-size: 24px; margin: 10px 0 6px; color: var(--navy);">${agreement.title}</h2>
+        <p style="font-size: 14px; color: #333; line-height: 1.6;">${agreement.description}</p>
+      </div>
+
+      <div style="background: rgba(37, 107, 79, 0.08); border: 1px solid var(--green); border-radius: 6px; padding: 14px; margin-bottom: 12px;">
+        <h4 style="font-size: 14px; color: var(--green); margin: 0 0 6px; font-weight: 800;">🏆 대한민국 핵심 획득 성과 (Gains)</h4>
+        <ul style="margin: 0; padding-left: 20px; font-size: 13px; color: #222; line-height: 1.6;">
+          ${summary.gains.map(g => `<li>${g}</li>`).join('')}
+        </ul>
+      </div>
+
+      <div style="background: rgba(175, 81, 71, 0.08); border: 1px solid var(--red); border-radius: 6px; padding: 14px; margin-bottom: 12px;">
+        <h4 style="font-size: 14px; color: var(--red); margin: 0 0 6px; font-weight: 800;">⚖️ 불가피한 양보 및 감수 사항 (Trade-off Concessions)</h4>
+        <ul style="margin: 0; padding-left: 20px; font-size: 13px; color: #222; line-height: 1.6;">
+          ${summary.concessions.map(c => `<li>${c}</li>`).join('')}
+        </ul>
+      </div>
+
+      <div style="background: #fdfbf7; border: 1px solid var(--line); border-left: 4px solid var(--navy); border-radius: 4px; padding: 12px; margin-bottom: 22px; font-size: 13px; line-height: 1.6; color: #333;">
+        <strong style="color: var(--navy); display: block; margin-bottom: 3px;">🌐 제3국 통상 외교 및 국내 파급효과 (Diplomatic Spillover):</strong>
+        ${summary.diplomaticSpillover}
+      </div>
+
+      <div style="text-align: center;">
+        <button class="primary" id="btn-close-tradeoff-modal" style="font-size: 15px; padding: 12px 36px; width: 100%;">
+          결과 확정하고 집무실로 복귀
+        </button>
+      </div>
+    `;
+
+    setTimeout(() => {
+      const btn = document.getElementById('btn-close-tradeoff-modal');
+      if (btn) btn.onclick = () => {
+        this.tradeOffSummaryModal = null;
+        this.gm.screen = 'office';
+        this.render();
+      };
+    }, 0);
+
+    return dialog;
   }
 
   // 6대 국정 통상 독트린 선택 모달
@@ -1005,7 +1324,10 @@ class UIManager {
       wrap.querySelectorAll('.btn-execute-policy').forEach(btn => {
         btn.onclick = () => {
           const pid = btn.getAttribute('data-pid');
-          this.gm.executePolicy(pid);
+          const res = this.gm.executePolicy(pid);
+          if (res && res.lastActionResult) {
+            this.showToast('정책 결재 및 집행 완료', `${res.lastActionResult.title}: ${res.lastActionResult.costText} (잔여: ${res.actionPoints} AP)`, 'success');
+          }
           this.render();
         };
       });
@@ -1170,9 +1492,9 @@ class UIManager {
           const aid = btn.getAttribute('data-aid');
           const res = nego.consultDomestic(aid, this.gm.politics);
           if (res.success) {
-            alert(`[국내 이해관계자 합의 성사]\n\n${res.title}\n\n${res.description}`);
+            this.showToast('국내 당정 합의 성사', `${res.title}: ${res.description}`, 'success');
           } else {
-            alert(`[합의 실패]\n\n${res.reason}`);
+            this.showToast('합의 무산', res.reason, 'danger');
           }
           this.render();
         };
@@ -1183,7 +1505,7 @@ class UIManager {
           const cid = btn.getAttribute('data-cid');
           const stepRes = nego.playCard(cid);
           if (stepRes.domesticNote) {
-            alert(`${stepRes.domesticNote}`);
+            this.showToast('국내 여론 반응', stepRes.domesticNote, stepRes.domesticNote.includes('합의') ? 'success' : 'danger');
           }
           this.render();
         };
@@ -1191,19 +1513,19 @@ class UIManager {
       const btnAgree = document.getElementById('btn-conclude-agree');
       if (btnAgree) btnAgree.onclick = () => {
         const res = this.gm.concludeNegotiation('agree');
-        alert(`[협상 결과 보고: ${res.grade}]\n\n${res.title}\n\n${res.description || res.text}`);
+        this.tradeOffSummaryModal = res;
         this.render();
       };
       const btnDefer = document.getElementById('btn-conclude-defer');
       if (btnDefer) btnDefer.onclick = () => {
         const res = this.gm.concludeNegotiation('defer');
-        alert(`[협상 결과 보고: ${res.grade}]\n\n${res.title}\n\n${res.description || res.text}`);
+        this.tradeOffSummaryModal = res;
         this.render();
       };
       const btnSuspend = document.getElementById('btn-conclude-suspend');
       if (btnSuspend) btnSuspend.onclick = () => {
         const res = nego.suspendSession();
-        alert(`[${res.title}]\n\n${res.description}`);
+        this.showToast('협상 일시 정회', `${res.title}: ${res.description}`, 'warning');
         this.gm.screen = 'office';
         this.render();
       };
@@ -1211,7 +1533,7 @@ class UIManager {
       if (btnBreak) btnBreak.onclick = () => {
         if (confirm('정말로 협상을 결렬시키겠습니까? 상대국의 즉각적인 보복 관세가 발효됩니다.')) {
           const res = this.gm.concludeNegotiation('breakdown');
-          alert(`[협상 결과 보고: ${res.grade}]\n\n${res.title}\n\n${res.description || res.text}`);
+          this.tradeOffSummaryModal = res;
           this.render();
         }
       };
@@ -1305,6 +1627,21 @@ class UIManager {
           <small style="color: var(--muted); font-size: 11px; margin-top: 4px; display: block;">공장 가동률: ${topLoser.utilizationRate}% · 관세 장벽: ${topLoser.tradeBarrierIndex}pt</small>
         </div>
       </div>
+
+      <!-- Delayed Policy Pipeline Callout -->
+      ${this.gm.economy && this.gm.economy.delayedPipeline && this.gm.economy.delayedPipeline.length > 0 ? `
+        <div style="background: #fcf9f2; border: 1px solid var(--gold); border-left: 5px solid var(--gold); border-radius: 6px; padding: 14px; margin: 16px 0; text-align: left;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+            <span class="status-pill" style="background: var(--gold); color: #fff; font-weight: 800; font-size: 11px;">⏳ 정책 효과 지연 파이프라인 (Delayed Policy Pipeline)</span>
+            <small style="color: var(--muted); font-size: 11px;">집행 후 시차 반영 대기</small>
+          </div>
+          <h4 style="font-size: 15px; color: var(--navy); margin: 4px 0 6px;">첨단 전략산업 생산설비 신·증설 보조금 파이프라인 가동 중</h4>
+          <p style="font-size: 13px; color: #444; margin: 0 0 6px; line-height: 1.5;">
+            현재 ${this.gm.economy.delayedPipeline.length}건의 장기 설비 투자가 진행 중입니다. 
+            약 ${this.gm.economy.delayedPipeline[0].monthsRemaining || 2}개월 뒤 평택·용인 반도체 패키징 라인 및 배터리 신증설 설비가 완공되어 국가 생산능력(Capacity Index)에 공식 반영될 예정입니다.
+          </p>
+        </div>
+      ` : ''}
 
       <!-- Policy vs External Shock Decomposition Table -->
       <div style="background: var(--white); border: 1px solid var(--line); border-radius: 6px; padding: 16px; margin: 20px 0; text-align: left;">
@@ -1556,6 +1893,25 @@ class UIManager {
         ` : ''}
       </div>
 
+      <!-- 3 Key Defining Decisions of the Tenure -->
+      ${verdict.keyDecisions && verdict.keyDecisions.length > 0 ? `
+        <div class="panel" style="background: var(--white); border: 1px solid var(--line); border-radius: 6px; padding: 16px; margin: 20px 0; text-align: left;">
+          <h3 style="font-family: var(--font-display); font-size: 18px; color: var(--navy); border: 0; padding: 0; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+            <span>🧭</span> <span>1년간의 3대 핵심 결단 (3 Key Defining Decisions)</span>
+          </h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px;">
+            ${verdict.keyDecisions.map((kd, idx) => `
+              <div style="background: #fbf9f5; border: 1px solid var(--line); border-left: 3px solid var(--gold); border-radius: 4px; padding: 12px;">
+                <span class="status-pill" style="font-size: 10px; margin-bottom: 6px; display: inline-block;">결단 ${idx + 1}</span>
+                <strong style="color: var(--navy); display: block; font-size: 14px; margin-bottom: 4px;">${kd.title}</strong>
+                <p style="font-size: 12px; color: #444; margin: 0 0 6px; line-height: 1.5;">${kd.summary}</p>
+                <div style="font-size: 11px; color: var(--green); font-weight: 700;">파급효과: ${kd.impact}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+
       <div class="front-figures-box" style="margin: 20px 0;">
         <h4>2027년 연간 종합 통상 성적표 (Scorecard)</h4>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
@@ -1568,8 +1924,9 @@ class UIManager {
         </div>
       </div>
 
-      <div style="text-align: center; margin-top: 30px; display: flex; justify-content: center; gap: 14px;">
+      <div style="text-align: center; margin-top: 30px; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
         <button class="primary" id="btn-replay-game" style="font-size: 16px; padding: 12px 36px;">다시 플레이하기 (새 게임)</button>
+        <button class="secondary" id="btn-replay-new-doctrine" style="font-size: 16px; padding: 12px 28px;">다른 독트린으로 재도전 ⚙️</button>
         <button class="secondary" id="btn-title-return" style="font-size: 16px;">타이틀 화면으로</button>
       </div>
     `;
@@ -1578,6 +1935,12 @@ class UIManager {
     setTimeout(() => {
       const btnReplay = document.getElementById('btn-replay-game');
       if (btnReplay) btnReplay.onclick = () => {
+        StorageManager.clear();
+        this.gm.screen = 'scenario_select';
+        this.render();
+      };
+      const btnDoctrineReplay = document.getElementById('btn-replay-new-doctrine');
+      if (btnDoctrineReplay) btnDoctrineReplay.onclick = () => {
         StorageManager.clear();
         this.gm.screen = 'scenario_select';
         this.render();
