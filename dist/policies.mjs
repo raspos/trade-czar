@@ -22,11 +22,14 @@ export const POLICY_ACTIONS = [
     categoryName: "기업 관리",
     title: "수출 실적 부진 기업에 대한 고강도 비상 생산 압박",
     description: "공장 가동률이 저조한 일부 대기업 경영진을 압박하여 재고 소진과 해외 덤핑 방어, 24시간 특별 교대 근무 확대를 강하게 독려합니다.",
-    costText: "단기 수출 +$1.2B, 가동률 +8% / 기업계 신뢰 -15, 관치 논란 촉발",
+    costText: "단기 수출 촉진, 가동률 상승 / 기업계 신뢰 대폭 하락 (반복 시 신뢰 폭락 및 한계 수렴)",
     impact: { presidentTrust: 5, businessTrust: -15, publicApproval: -5, policyMomentum: 5, competitiveness: 2 },
     executeImmediate(engine) {
       for (const ind of Object.values(engine.industryStates)) {
-        ind.utilizationRate = Math.min(100, ind.utilizationRate + 6);
+        ind.repeatedActionCount = (ind.repeatedActionCount || 0) + 1;
+        // Diminishing returns: 6 -> 3 -> 1 -> 0
+        const boost = Math.max(0, 7 - ind.repeatedActionCount * 2);
+        ind.utilizationRate = Math.min(100, ind.utilizationRate + boost);
       }
     }
   },
@@ -92,9 +95,9 @@ export const POLICY_ACTIONS = [
     id: "gov_rnd_tax_credit",
     category: "government",
     categoryName: "정부 정책",
-    title: "국가전략기술 초격차 R&D 세액공제율 상향 (경제부총리 협의)",
-    description: "기획재정부와 협의하여 AI 반도체, 전고체 배터리, 친환경 암모니아 선박 분야 R&D 세액공제율을 40%로 대폭 상향합니다.",
-    costText: "4개월 뒤 장기 산업 기술 경쟁력 +15% 지연 반영, 부처 협의 난이도",
+    title: "국가전략기술 초격차 R&D 세액공제율 상향 (재정경제부·기획예산처 협의)",
+    description: "재정경제부 및 기획예산처와 협의하여 AI 반도체, 전고체 배터리, 친환경 암모니아 선박 분야 R&D 세액공제율을 40%로 대폭 상향하고 예산을 긴급 배정합니다.",
+    costText: "4개월 뒤 장기 산업 기술 경쟁력 +15% 지연 반영, 예산당국 협의 난이도",
     delayMonths: 4,
     impact: { presidentTrust: 8, businessTrust: 12, publicApproval: 5, policyMomentum: 10, competitiveness: 15 },
     executeDelayed(engine) {

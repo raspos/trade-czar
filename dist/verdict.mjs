@@ -13,60 +13,47 @@ export class VerdictEngine {
     const annualGrowth = Math.round(((totalExport - baseTotalExport) / baseTotalExport) * 1000) / 10;
     const stats = politicsManager.stats;
 
-    // Check early dismissal
-    if (politicsManager.isDismissed) {
+    // 1. Check early dismissal or critical failure
+    if (politicsManager.isDismissed || (stats.presidentTrust <= 22 && totalBalance < 200.0)) {
       return this.buildEnding("dismissed", {
         title: "전격 경질 (Dismissal)",
         badge: "불명예 퇴진",
-        headline: "통상교섭본부장 전격 경질…대통령 '무역 적자·외교 실패 문책'",
-        deck: "잇단 무역적자와 대미 관세 협상 결렬로 신임 상실…후임 인선 착수",
-        description: "대통령의 신임이 바닥으로 추락하고 연속된 무역적자와 통상 외교 실패가 겹치며 임기를 채우지 못하고 전격 경질되었습니다.",
+        headline: "통상교섭본부장 전격 경질…대통령 '무역 부진·외교 실패 문책'",
+        deck: "잇단 통상 마찰과 대통령 신임 상실로 중도 낙마…후임 인선 착수",
+        description: "대통령의 신임이 바닥으로 추락하고 누적된 무역 부진과 통상 외교 실패가 겹치며 임기를 채우지 못하고 전격 경질되었습니다.",
         totalExport, totalImport, totalBalance, annualGrowth, stats
       });
     }
 
-    // Presidential Candidate condition:
-    // Super high export, high public approval (>75), high president trust (>75)
-    if (totalBalance >= 75.0 && stats.publicApproval >= 72 && stats.presidentTrust >= 70 && stats.competitiveness >= 65) {
+    // 2. Presidential Candidate condition:
+    // Requires truly extraordinary national hero level: massive export/surplus + top approval (>=80) + top trust (>=80)
+    if (totalBalance >= 520.0 && stats.publicApproval >= 80 && stats.presidentTrust >= 80 && stats.competitiveness >= 75) {
       return this.buildEnding("presidential_candidate", {
         title: "차기 대선주자 등극 (Presidential Hopeful)",
         badge: "국민적 영웅",
-        headline: "'무역 7500억불 신화' 통상교섭본부장, 차기 대선 선두주자로 급부상",
+        headline: "'무역 1조 3000억불 신화' 통상교섭본부장, 차기 대선 선두주자로 급부상",
         deck: "사상 최대 무역흑자·관세 위기 돌파에 국민적 신드롬…여야 모두 영입 쟁탈전",
         description: "사상 초유의 관세 전쟁과 공급망 격변 속에서 대한민국의 무역을 지켜내고 10대 첨단 산업의 경쟁력을 비약적으로 도약시켰습니다. 온 국민의 압도적 지지 속에 차기 대한민국 대통령 후보로 당당히 이름을 올립니다.",
         totalExport, totalImport, totalBalance, annualGrowth, stats
       });
     }
 
-    // Deputy Prime Minister (경제부총리 겸 기획재정부 장관):
+    // 3. Deputy Prime Minister (경제부총리 겸 재정경제부 장관):
     // Strong economy, balanced macroeconomic management, high policy momentum & trust
-    if (totalBalance >= 65.0 && stats.presidentTrust >= 65 && stats.competitiveness >= 65 && stats.businessTrust >= 55) {
+    if (totalBalance >= 440.0 && stats.presidentTrust >= 65 && stats.competitiveness >= 65 && stats.businessTrust >= 55) {
       return this.buildEnding("deputy_pm", {
-        title: "경제부총리 겸 기획재정부 장관 발탁",
+        title: "경제부총리 겸 재정경제부 장관 발탁",
         badge: "경제사령탑 영전",
         headline: "통상교섭본부장, 경제부총리 파격 발탁…'무역 성과로 한국호 지휘'",
-        deck: "대통령, 1년간의 탁월한 무역수지 방어 높이 평가…거시경제 총괄 중책 부여",
-        description: "수출 전선의 승리를 대한민국 경제 전반의 성장으로 연결시킨 공로를 인정받아, 내각을 총괄하는 경제부총리 겸 기획재정부 장관으로 전격 영전했습니다.",
+        deck: "대통령, 1년간의 탁월한 무역흑자 방어 높이 평가…재정경제부 총괄 중책 부여",
+        description: "수출 전선의 승리를 대한민국 경제 전반의 거시적 도약으로 연결시킨 공로를 인정받아, 내각을 총괄하는 경제부총리 겸 재정경제부 장관으로 전격 영전했습니다.",
         totalExport, totalImport, totalBalance, annualGrowth, stats
       });
     }
 
-    // Minister of Trade, Industry & Energy (산업통상자원부 장관):
-    // Solid export growth & solid business trust
-    if (totalBalance >= 50.0 && stats.presidentTrust >= 50 && stats.competitiveness >= 55) {
-      return this.buildEnding("minister", {
-        title: "산업통상자원부 장관 승진",
-        badge: "산업부 장관 영전",
-        headline: "통상교섭본부장, 산업통상자원부 장관 발탁…'수출 1등 공신'",
-        deck: "주력 산업 관세 방어와 수출 다변화 완수…대통령실, 정통 통상 리더십 신뢰",
-        description: "미국·중국의 무역 파고를 슬기롭게 넘기고 자동차·반도체·조선 등 국가 핵심 산업의 생산능력을 수호한 성과를 인정받아 산업통상자원부 장관으로 정식 승진했습니다.",
-        totalExport, totalImport, totalBalance, annualGrowth, stats
-      });
-    }
-
-    // Corporate Titan (재계 영입):
-    // Very high business trust (>75) even if presidential trust was mediocre
-    if (stats.businessTrust >= 75 && totalExport >= 680) {
+    // 4. Corporate Titan (재계 영입):
+    // Prioritizing corporate alliance: Business trust >= 78 and solid export
+    if (stats.businessTrust >= 78 && stats.presidentTrust < 65) {
       return this.buildEnding("corporate_titan", {
         title: "재계 총괄 대외협력 부회장 영입 (Corporate Titan)",
         badge: "민간 경제 리더",
@@ -77,9 +64,9 @@ export class VerdictEngine {
       });
     }
 
-    // Multilateral Statesman (국제기구 진출):
-    // High diplomatic trust (>70)
-    if (stats.diplomaticTrust >= 70) {
+    // 5. Multilateral Statesman (국제기구 진출):
+    // Diplomatic focus: Diplomatic trust >= 78 and solid relations
+    if (stats.diplomaticTrust >= 78 && stats.presidentTrust < 65) {
       return this.buildEnding("multilateral_statesman", {
         title: "WTO(세계무역기구) 사무차장 진출 (Global Statesman)",
         badge: "국제기구 고위직",
@@ -90,12 +77,25 @@ export class VerdictEngine {
       });
     }
 
-    // Default: Honorable Retirement (명예로운 퇴임)
+    // 6. Minister of Industry & Trade (산업통상부 장관):
+    // Solid industrial focus
+    if (totalBalance >= 340.0 && stats.presidentTrust >= 50 && stats.competitiveness >= 50) {
+      return this.buildEnding("minister", {
+        title: "산업통상부 장관 승진",
+        badge: "산업부 장관 영전",
+        headline: "통상교섭본부장, 산업통상부 장관 발탁…'수출 1등 공신'",
+        deck: "주력 산업 관세 방어와 수출 다변화 완수…대통령실, 정통 통상 리더십 신뢰",
+        description: "미국·중국의 무역 파고를 슬기롭게 넘기고 자동차·반도체·조선 등 국가 핵심 산업의 생산능력을 수호한 성과를 인정받아 산업통상부 장관으로 정식 승진했습니다.",
+        totalExport, totalImport, totalBalance, annualGrowth, stats
+      });
+    }
+
+    // 7. Default: Honorable Retirement (명예로운 퇴임)
     return this.buildEnding("honorable_retirement", {
       title: "명예로운 퇴임 (Honorable Retirement)",
       badge: "임기 만료",
       headline: "통상교섭본부장 1년 임기 완주…'격랑의 세계 무역 속 선방한 1년'",
-      deck: "연간 수출 7000억불 안착시키고 명예롭게 용퇴…학계 및 싱크탱크 복귀 전망",
+      deck: "연간 수출 1조 달러 수성하고 명예롭게 용퇴…학계 및 싱크탱크 복귀 전망",
       description: "사상 초유의 관세 충격과 공급망 격변 속에서도 큰 과오 없이 12개월의 통상 임기를 완주하고 명예롭게 자리에서 물러났습니다.",
       totalExport, totalImport, totalBalance, annualGrowth, stats
     });

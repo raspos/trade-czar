@@ -199,7 +199,7 @@ class UIManager {
       <div class="office-card">
         <div class="icon-head">📊</div>
         <h3>실제 무역 데이터 기반</h3>
-        <p>관세청과 산업통상자원부 2026년 기준선 수출입 데이터를 토대로 10대 산업과 7대 교역국의 수치를 오차 없이 정밀 시뮬레이션합니다.</p>
+        <p>관세청과 산업통상부 2026년 기준선 수출입 데이터를 토대로 10대 산업과 7대 교역국의 수치를 오차 없이 정밀 시뮬레이션합니다.</p>
       </div>
       <div class="office-card">
         <div class="icon-head">🤝</div>
@@ -875,7 +875,7 @@ class UIManager {
       <div class="scene-overlay">
         <div>
           <h2>2027년 ${res.month}월 수출입 동향 공식 브리핑</h2>
-          <p>정부서울청사 본관 브리핑룸 · 관세청 및 산업통상자원부 공동 발표</p>
+          <p>정부서울청사 본관 브리핑룸 · 관세청 및 산업통상부 공동 발표</p>
         </div>
       </div>
     `;

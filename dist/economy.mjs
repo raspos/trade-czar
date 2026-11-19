@@ -1,4 +1,4 @@
-// economy.mjs - Core Trade Simulation Engine for 통상교섭본부장 | TRADE CZAR
+// economy.mjs - Common Ledger Matrix Trade Simulation Engine for 통상교섭본부장 | TRADE CZAR
 
 import { BASELINE_2026, HS_MAPPING } from './data.mjs';
 import { INDUSTRIES, PARTNERS } from './constants.mjs';
@@ -9,38 +9,36 @@ export class EconomyEngine {
     this.origin = origin;
     this.prng = prng;
 
-    // Macro variables tracking
     this.macroHistory = [];
     this.monthlyResults = [];
-    
-    // Delayed policy pipeline: array of { executeMonth, applyFn }
     this.delayedPipeline = [];
 
-    // Industry persistent states
+    // Industry persistent states (physical capacity, utilization, technology moat)
     this.industryStates = {};
     HS_MAPPING.industries.forEach(ind => {
       this.industryStates[ind.id] = {
         id: ind.id,
         name: ind.name,
-        capacityIndex: 100.0,
-        utilizationRate: ind.id === 'semiconductor' ? 94.0 : (ind.id === 'automobile' ? 88.0 : 80.0),
+        capacityIndex: 100.0, // Physical plant capacity limit (100 base)
+        utilizationRate: ind.id === 'semiconductor' ? 95.0 : (ind.id === 'automobile' ? 89.0 : 82.0),
         priceCompetitiveness: 100.0,
         tradeBarrierIndex: 100.0,
         supportLevel: 0.0,
         longTermCompetitiveness: 100.0,
-        pendingDeliveries: 0.0 // For shipbuilding/defense lag contracts
+        pendingDeliveries: 0.0, // Order backlog converting to customs shipments after lag
+        repeatedActionCount: 0  // Tracks policy execution to enforce diminishing returns
       };
     });
 
-    // Partner persistent states (tariffs, agreements)
+    // Partner persistent states (bilateral tariffs, relations, special import quotas)
     this.partnerStates = {};
     PARTNERS.forEach(p => {
       this.partnerStates[p.id] = {
         id: p.id,
         name: p.name,
-        tariffs: { ... (scenario.partnerTariffs?.[p.id] || { general: 0.03 }) },
-        relations: 60.0, // 0 - 100
-        specialAgreements: []
+        tariffs: { ...(scenario.partnerTariffs?.[p.id] || { general: 0.03 }) },
+        relations: 60.0,
+        energyQuotaMod: 0.0 // e.g. US LNG purchase commitment ($B/month)
       };
     });
 
@@ -59,16 +57,26 @@ export class EconomyEngine {
     }
   }
 
-  // Queue a delayed policy effect
   queueEffect(delayMonths, fn) {
     this.delayedPipeline.push({ delayMonths, fn });
   }
 
-  // Simulate month (1 to 12)
+  // Deep clone a 2D matrix
+  cloneMatrix(matrix) {
+    const cloned = {};
+    for (const [cId, indMap] of Object.entries(matrix)) {
+      cloned[cId] = {};
+      for (const [iId, val] of Object.entries(indMap)) {
+        cloned[cId][iId] = { export: val.export, import: val.import };
+      }
+    }
+    return cloned;
+  }
+
   simulateMonth(month, policyInterventions = []) {
     const baseMonthData = BASELINE_2026.months[month - 1];
-    
-    // Process policy interventions for this turn
+
+    // Process immediate policies
     policyInterventions.forEach(act => {
       if (act.executeImmediate) act.executeImmediate(this);
       if (act.delayMonths && act.executeDelayed) {
@@ -76,7 +84,7 @@ export class EconomyEngine {
       }
     });
 
-    // Execute any maturing delayed effects
+    // Process delayed policies
     const remainingPipeline = [];
     this.delayedPipeline.forEach(item => {
       item.delayMonths -= 1;
@@ -88,17 +96,16 @@ export class EconomyEngine {
     });
     this.delayedPipeline = remainingPipeline;
 
-    // Macro computation for 2027
+    // Macro environment computation
     const scMacro = this.scenario.initialMacro || {};
-    // Organic monthly drift + PRNG noise
-    const fxNoise = this.prng.range(-8, 8);
-    const oilNoise = this.prng.range(-1.5, 1.5);
-    const demandNoise = this.prng.range(-0.4, 0.4);
+    const fxNoise = this.prng.range(-6, 6);
+    const oilNoise = this.prng.range(-1.2, 1.2);
+    const demandNoise = this.prng.range(-0.3, 0.3);
 
     const fxRate = Math.round((baseMonthData.macro.fxRate + (scMacro.fxRateDelta || 0) + fxNoise) * 10) / 10;
     const brentOil = Math.round((baseMonthData.macro.brentOil + (scMacro.oilDelta || 0) + oilNoise) * 10) / 10;
     const globalDemandIndex = Math.round((baseMonthData.macro.globalDemandIndex + (scMacro.globalDemandDelta || 0) + demandNoise) * 10) / 10;
-    const scfiFreight = Math.max(1000, Math.round(baseMonthData.macro.scfiFreight + (scMacro.scfiDelta || 0) + this.prng.range(-50, 50)));
+    const scfiFreight = Math.max(1000, Math.round(baseMonthData.macro.scfiFreight + (scMacro.scfiDelta || 0) + this.prng.range(-40, 40)));
 
     const currentMacro = {
       month,
@@ -111,165 +118,206 @@ export class EconomyEngine {
     };
     this.macroHistory.push(currentMacro);
 
-    // Compute industry outputs
-    const currentIndustries = {};
-    let totalExport = 0;
-    let totalImport = 0;
+    // =========================================================================
+    // COMMON LEDGER MATRIX CALCULATION (Country x Industry)
+    // =========================================================================
+    // Clone baseline 2D matrix
+    const ledger = this.cloneMatrix(baseMonthData.matrix);
 
-    // First pass: compute each industry's export and import
-    HS_MAPPING.industries.forEach(ind => {
-      const baseInd = baseMonthData.industries[ind.id];
-      const state = this.industryStates[ind.id];
+    const fxRatio = fxRate / 1400.0;
+    const oilRatio = brentOil / 78.0;
+    const demandRatio = globalDemandIndex / 100.0;
 
-      // Demand shock factor from scenario
-      const scShock = this.scenario.industryShocks?.[ind.id] || {};
-      const scDemandMod = scShock.demandMod || 0.0;
+    // First pass: apply macro, bilateral tariffs, and shocks directly to matrix cells E[c, i] and M[c, i]
+    for (const p of PARTNERS) {
+      const pState = this.partnerStates[p.id];
+      const pTariffs = pState.tariffs || {};
 
-      // Price competitiveness impact (FX effect: higher FX helps exports, lower hurts)
-      // J-curve: KRW depreciation (e.g. fxRate > 1400) gives boost to price elasticity
-      const fxRatio = fxRate / 1400.0;
-      const fxExportBoost = (fxRatio - 1.0) * ind.fxSensitivity;
+      for (const ind of HS_MAPPING.industries) {
+        const cell = ledger[p.id][ind.id];
+        const indState = this.industryStates[ind.id];
+        const scShock = this.scenario.industryShocks?.[ind.id] || {};
 
-      // Global demand effect
-      const demandRatio = globalDemandIndex / 100.0;
+        // 1. Export calculation for cell E[c, i]
+        const specificTariff = pTariffs[ind.id] ?? pTariffs.general ?? 0.03;
+        const tariffPenalty = Math.max(0, (specificTariff - 0.03) * ind.priceElasticity * 1.8);
 
-      // Trade barriers effect (higher barrier = lower export)
-      const barrierRatio = state.tradeBarrierIndex / 100.0;
-      const barrierPenalty = (barrierRatio - 1.0) * ind.priceElasticity;
+        // FX boost / drag
+        const fxBoost = (fxRatio - 1.0) * ind.fxSensitivity;
 
-      // Policy support boost
-      const supportBoost = state.supportLevel * 0.04;
+        // Demand shock
+        const demandBoost = (demandRatio - 1.0) * 1.2 + (scShock.demandMod || 0.0);
 
-      // Delayed deliveries for shipbuilding & defense
-      let contractDeliveryBonus = 0;
-      if (ind.id === 'shipbuilding' || ind.id === 'defense') {
-        if (state.pendingDeliveries > 0) {
-          const released = Math.min(state.pendingDeliveries, 0.4); // up to $0.4B per month
-          contractDeliveryBonus = released;
-          state.pendingDeliveries -= released;
+        // Trade barrier index
+        const barrierPenalty = ((indState.tradeBarrierIndex / 100.0) - 1.0) * ind.priceElasticity;
+
+        // Policy support boost (with diminishing returns!)
+        const effectiveSupport = indState.supportLevel / (1.0 + indState.supportLevel * 0.12);
+        const supportBoost = effectiveSupport * 0.035;
+
+        // Total multiplier for cell E[c, i]
+        let cellExpMultiplier = Math.max(0.2, 1.0 + fxBoost + demandBoost - tariffPenalty - barrierPenalty + supportBoost);
+
+        // Calculate intermediate cell export
+        cell.export = Math.round((cell.export * cellExpMultiplier) * 100) / 100;
+
+        // 2. Import calculation for cell M[c, i]
+        let cellImpMultiplier = 1.0;
+
+        // Oil price scales energy / petrochemical imports directly
+        if (ind.id === 'others' || ind.id === 'petrochemical') {
+          cellImpMultiplier += (oilRatio - 1.0) * 0.75;
+          if (p.id === 'ME') {
+            cellImpMultiplier += (oilRatio - 1.0) * 0.40; // Heavy Middle East crude loading
+          }
+        }
+
+        // Special bilateral energy agreements (e.g. US LNG purchase deal)
+        if (p.id === 'US' && ind.id === 'others' && pState.energyQuotaMod > 0) {
+          cell.import = Math.round((cell.import + pState.energyQuotaMod) * 100) / 100;
+        }
+
+        // Chinese dumping shock
+        if (p.id === 'CN' && (ind.id === 'steel' || ind.id === 'petrochemical')) {
+          if (scShock.priceCompMod && scShock.priceCompMod < 0) {
+            cellImpMultiplier += Math.abs(scShock.priceCompMod) * 1.5; // Inflow of dumped imports!
+          }
+        }
+
+        // FX dampen on imports (higher KRW makes imports expensive)
+        const fxImpDampen = (fxRatio - 1.0) * 0.22;
+        cellImpMultiplier = Math.max(0.4, cellImpMultiplier - fxImpDampen);
+
+        cell.import = Math.round((cell.import * cellImpMultiplier) * 100) / 100;
+      }
+    }
+
+    // Apply Shipbuilding & Defense contract lag milestone delivery directly into ledger
+    if (this.industryStates.shipbuilding.pendingDeliveries > 0) {
+      const release = Math.min(this.industryStates.shipbuilding.pendingDeliveries, 0.8);
+      ledger.EU.shipbuilding.export = Math.round((ledger.EU.shipbuilding.export + release * 0.6) * 100) / 100;
+      ledger.ROW.shipbuilding.export = Math.round((ledger.ROW.shipbuilding.export + release * 0.4) * 100) / 100;
+      this.industryStates.shipbuilding.pendingDeliveries -= release;
+    }
+    if (this.industryStates.defense.pendingDeliveries > 0) {
+      const release = Math.min(this.industryStates.defense.pendingDeliveries, 0.6);
+      ledger.EU.defense.export = Math.round((ledger.EU.defense.export + release * 0.7) * 100) / 100;
+      ledger.ME.defense.export = Math.round((ledger.ME.defense.export + release * 0.3) * 100) / 100;
+      this.industryStates.defense.pendingDeliveries -= release;
+    }
+
+    // Enforce Physical Plant Capacity Caps per Industry!
+    // Sum across countries for each industry, cap at physical capacity, scale back if exceeded
+    for (const ind of HS_MAPPING.industries) {
+      const indState = this.industryStates[ind.id];
+      const baseIndExp = baseMonthData.industries[ind.id].export;
+      
+      // Calculate current unconstrained export sum
+      let currentIndExp = 0;
+      for (const p of PARTNERS) {
+        currentIndExp += ledger[p.id][ind.id].export;
+      }
+
+      // Physical capacity ceiling
+      const maxPhysicalCap = (baseIndExp * 1.35) * (indState.capacityIndex / 100.0);
+      if (currentIndExp > maxPhysicalCap) {
+        const scaleDown = maxPhysicalCap / currentIndExp;
+        for (const p of PARTNERS) {
+          ledger[p.id][ind.id].export = Math.round((ledger[p.id][ind.id].export * scaleDown) * 100) / 100;
         }
       }
 
-      // Net export multiplier
-      const exportMultiplier = Math.max(0.4, 1.0 + scDemandMod + fxExportBoost + (demandRatio - 1.0) - barrierPenalty + supportBoost);
-      
-      let expValue = Math.round((baseInd.export * exportMultiplier + contractDeliveryBonus) * 100) / 100;
-      // Cap at physical production capacity
-      const maxCap = (baseInd.export * 1.5) * (state.capacityIndex / 100.0);
-      expValue = Math.min(expValue, Math.round(maxCap * 100) / 100);
+      // Update utilization rate
+      indState.utilizationRate = Math.min(100, Math.max(45, Math.round(85.0 * (currentIndExp / baseIndExp))));
+    }
 
-      // Import calculation
-      // Oil price directly scales petrochemical and others import cost
-      let importCostMultiplier = 1.0;
-      if (ind.id === 'petrochemical' || ind.id === 'others') {
-        const oilRatio = brentOil / 78.0;
-        importCostMultiplier = 1.0 + (oilRatio - 1.0) * 0.65;
+    // =========================================================================
+    // AGGREGATION FROM COMMON LEDGER MATRIX (Mathematically Exact)
+    // =========================================================================
+    const computedIndustries = {};
+    const computedPartners = {};
+    let totalExport = 0;
+    let totalImport = 0;
+
+    // Aggregate by Industry
+    for (const ind of HS_MAPPING.industries) {
+      let eSum = 0;
+      let iSum = 0;
+      for (const p of PARTNERS) {
+        eSum += ledger[p.id][ind.id].export;
+        iSum += ledger[p.id][ind.id].import;
       }
-      if (scShock.importCostMod) {
-        importCostMultiplier += scShock.importCostMod;
-      }
+      eSum = Math.round(eSum * 100) / 100;
+      iSum = Math.round(iSum * 100) / 100;
+      const bSum = Math.round((eSum - iSum) * 100) / 100;
+      const baseInd = baseMonthData.industries[ind.id];
+      const yoy = Math.round(((eSum - baseInd.export) / baseInd.export) * 1000) / 10;
 
-      // FX effect on imports: higher FX rate makes imports more expensive in KRW, slightly dampening volume
-      const fxImportDampen = (fxRatio - 1.0) * 0.25;
-      const netImportMultiplier = Math.max(0.5, importCostMultiplier - fxImportDampen);
-
-      let impValue = Math.round((baseInd.import * netImportMultiplier) * 100) / 100;
-
-      const balanceValue = Math.round((expValue - impValue) * 100) / 100;
-      const yoyGrowth = Math.round(((expValue - baseInd.export) / baseInd.export) * 1000) / 10;
-
-      // Update state profitability
-      state.utilizationRate = Math.min(100, Math.max(50, Math.round(state.utilizationRate * (expValue / baseInd.export))));
-      state.priceCompetitiveness = Math.round((100.0 + (fxRatio - 1.0) * 20.0) * 10) / 10;
-
-      currentIndustries[ind.id] = {
+      computedIndustries[ind.id] = {
         id: ind.id,
         name: ind.name,
-        export: expValue,
-        import: impValue,
-        balance: balanceValue,
-        yoyGrowth,
+        export: eSum,
+        import: iSum,
+        balance: bSum,
+        yoyGrowth: yoy,
         baseExport2026: baseInd.export,
         baseImport2026: baseInd.import,
-        capacityIndex: state.capacityIndex,
-        utilizationRate: state.utilizationRate,
-        tradeBarrierIndex: state.tradeBarrierIndex
+        capacityIndex: this.industryStates[ind.id].capacityIndex,
+        utilizationRate: this.industryStates[ind.id].utilizationRate,
+        tradeBarrierIndex: this.industryStates[ind.id].tradeBarrierIndex
       };
 
-      totalExport += expValue;
-      totalImport += impValue;
-    });
+      totalExport += eSum;
+      totalImport += iSum;
+    }
 
     totalExport = Math.round(totalExport * 100) / 100;
     totalImport = Math.round(totalImport * 100) / 100;
     const tradeBalance = Math.round((totalExport - totalImport) * 100) / 100;
 
-    // Distribute among trading partners proportionally, matching totalExport & totalImport exactly
-    const currentPartners = {};
-    let pExpSum = 0;
-    let pImpSum = 0;
-
-    PARTNERS.forEach((p, idx) => {
-      const basePartner = baseMonthData.partners[p.id];
-      const pState = this.partnerStates[p.id];
-
-      // Partner tariff impact
-      const pTariffRate = pState.tariffs.general || 0.03;
-      const tariffDampener = 1.0 - (pTariffRate - 0.03) * 1.5;
-
-      let pExp = Math.round((basePartner.export * (totalExport / baseMonthData.export) * tariffDampener) * 100) / 100;
-      
-      // Middle East imports scale with oil price
-      let oilPartnerScale = 1.0;
-      if (p.id === 'ME') {
-        oilPartnerScale = brentOil / 78.0;
+    // Aggregate by Country
+    for (const p of PARTNERS) {
+      let eSum = 0;
+      let iSum = 0;
+      for (const ind of HS_MAPPING.industries) {
+        eSum += ledger[p.id][ind.id].export;
+        iSum += ledger[p.id][ind.id].import;
       }
-      let pImp = Math.round((basePartner.import * (totalImport / baseMonthData.import) * oilPartnerScale) * 100) / 100;
+      eSum = Math.round(eSum * 100) / 100;
+      iSum = Math.round(iSum * 100) / 100;
+      const bSum = Math.round((eSum - iSum) * 100) / 100;
+      const basePart = baseMonthData.partners[p.id];
 
-      if (idx === PARTNERS.length - 1) {
-        pExp = Math.round((totalExport - pExpSum) * 100) / 100;
-        pImp = Math.round((totalImport - pImpSum) * 100) / 100;
-      } else {
-        pExpSum += pExp;
-        pImpSum += pImp;
-      }
-
-      currentPartners[p.id] = {
+      computedPartners[p.id] = {
         id: p.id,
         name: p.name,
         flag: p.flag,
-        export: pExp,
-        import: pImp,
-        balance: Math.round((pExp - pImp) * 100) / 100,
-        baseExport2026: basePartner.export,
-        baseImport2026: basePartner.import
+        export: eSum,
+        import: iSum,
+        balance: bSum,
+        baseExport2026: basePart.export,
+        baseImport2026: basePart.import
       };
-    });
-
-    // Total YoY
-    const totalYoY = Math.round(((totalExport - baseMonthData.export) / baseMonthData.export) * 1000) / 10;
-    const importYoY = Math.round(((totalImport - baseMonthData.import) / baseMonthData.import) * 1000) / 10;
+    }
 
     // Cumulative stats
-    const prevCumulativeBalance = this.monthlyResults.length > 0 
-      ? this.monthlyResults[this.monthlyResults.length - 1].cumulativeBalance 
-      : 0;
-    const cumulativeBalance = Math.round((prevCumulativeBalance + tradeBalance) * 100) / 100;
+    const prevCumBal = this.monthlyResults.length > 0 ? this.monthlyResults[this.monthlyResults.length - 1].cumulativeBalance : 0;
+    const cumulativeBalance = Math.round((prevCumBal + tradeBalance) * 100) / 100;
 
-    const prevCumulativeExport = this.monthlyResults.length > 0
-      ? this.monthlyResults[this.monthlyResults.length - 1].cumulativeExport
-      : 0;
-    const cumulativeExport = Math.round((prevCumulativeExport + totalExport) * 100) / 100;
+    const prevCumExp = this.monthlyResults.length > 0 ? this.monthlyResults[this.monthlyResults.length - 1].cumulativeExport : 0;
+    const cumulativeExport = Math.round((prevCumExp + totalExport) * 100) / 100;
 
-    const prevCumulativeImport = this.monthlyResults.length > 0
-      ? this.monthlyResults[this.monthlyResults.length - 1].cumulativeImport
-      : 0;
-    const cumulativeImport = Math.round((prevCumulativeImport + totalImport) * 100) / 100;
+    const prevCumImp = this.monthlyResults.length > 0 ? this.monthlyResults[this.monthlyResults.length - 1].cumulativeImport : 0;
+    const cumulativeImport = Math.round((prevCumImp + totalImport) * 100) / 100;
+
+    const totalYoY = Math.round(((totalExport - baseMonthData.export) / baseMonthData.export) * 1000) / 10;
+    const importYoY = Math.round(((totalImport - baseMonthData.import) / baseMonthData.import) * 1000) / 10;
 
     const result = {
       year: 2027,
       month,
       monthName: `${month}월`,
+      status: baseMonthData.status,
       export: totalExport,
       import: totalImport,
       balance: tradeBalance,
@@ -282,8 +330,9 @@ export class EconomyEngine {
       baseMonthImport: baseMonthData.import,
       baseMonthBalance: baseMonthData.balance,
       macro: currentMacro,
-      industries: currentIndustries,
-      partners: currentPartners
+      industries: computedIndustries,
+      partners: computedPartners,
+      ledger // Exact Matrix ground truth preserved
     };
 
     this.monthlyResults.push(result);

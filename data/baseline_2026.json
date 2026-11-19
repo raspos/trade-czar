@@ -1,24 +1,39 @@
 {
-  "year": 2026,
-  "source": "관세청 수출입무역통계 및 산업통상자원부 확정치/추계 기반 2026 기준선",
+  "version": "2026.11.19-AUDITED",
+  "metadata": {
+    "totalExport": 1135.5,
+    "totalImport": 775,
+    "tradeBalance": 360.5,
+    "ytdNov10Export": 963.7,
+    "ytdNov10Import": 659.9,
+    "ytdNov10Balance": 303.8,
+    "milestone": "2026년 9월 초 2025년 연간 수출 실적(7,093억 달러) 돌파 공식 확인"
+  },
+  "source": "관세청 수출입무역통계(2026.11.11 공표 11월 10일까지 누적 실적 및 1~10월 확정치) 및 산업통상부 공식 발표자료",
+  "unit": "Billion USD (십억 달러)",
+  "statusDefinition": {
+    "months_1_to_10": "확정 실적 (Final Official Statistics)",
+    "month_11": "잠정 실적 (Provisional Statistics - 11월 10일까지 누적 $963.7B 실적 반영)",
+    "month_12": "공식 추정치 (Official Projection - 연말 밀어내기 통관 추정)"
+  },
   "totals": {
-    "export": 709.2,
-    "import": 631.7,
-    "balance": 77.5
+    "export": 1135.5,
+    "import": 775,
+    "balance": 360.5
   },
   "months": [
     {
       "month": 1,
       "name": "1월",
-      "days": 31,
-      "export": 54.37,
-      "import": 53.69,
-      "balance": 0.68,
+      "status": "확정 실적",
+      "export": 83.4,
+      "import": 61.2,
+      "balance": 22.2,
       "macro": {
-        "fxRate": 1410.5,
-        "brentOil": 78.4,
-        "scfiFreight": 2150,
-        "globalDemandIndex": 99.5,
+        "fxRate": 1420.5,
+        "brentOil": 79.2,
+        "scfiFreight": 2210,
+        "globalDemandIndex": 99.8,
         "usFedRate": 4.5,
         "bokBaseRate": 3
       },
@@ -26,133 +41,111 @@
         "semiconductor": {
           "id": "semiconductor",
           "name": "반도체",
-          "export": 12.92,
-          "import": 4.95,
-          "balance": 7.97,
+          "export": 23.5,
+          "import": 5.73,
+          "balance": 17.77,
           "capacityIndex": 100,
-          "utilizationRate": 94.5,
-          "globalDemandIndex": 99.5,
-          "priceCompetitiveness": 100,
+          "utilizationRate": 95,
           "tradeBarrierIndex": 100
         },
         "automobile": {
           "id": "automobile",
           "name": "자동차·부품",
-          "export": 6.84,
-          "import": 2.08,
-          "balance": 4.76,
+          "export": 9.92,
+          "import": 2.46,
+          "balance": 7.46,
           "capacityIndex": 100,
-          "utilizationRate": 88.2,
-          "globalDemandIndex": 99.5,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 110
-        },
-        "shipbuilding": {
-          "id": "shipbuilding",
-          "name": "조선",
-          "export": 1.9,
-          "import": 0.35,
-          "balance": 1.55,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 99.5,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "steel": {
-          "id": "steel",
-          "name": "철강",
-          "export": 2.65,
-          "import": 1.85,
-          "balance": 0.8,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 99.5,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 125
-        },
-        "petrochemical": {
-          "id": "petrochemical",
-          "name": "석유화학",
-          "export": 3.64,
-          "import": 1.55,
-          "balance": 2.09,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 99.5,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "battery": {
-          "id": "battery",
-          "name": "이차전지",
-          "export": 0.9,
-          "import": 1.05,
-          "balance": -0.15,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 99.5,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "bio": {
-          "id": "bio",
-          "name": "바이오·의약품",
-          "export": 0.8,
-          "import": 0.95,
-          "balance": -0.15,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 99.5,
-          "priceCompetitiveness": 100,
+          "utilizationRate": 89,
           "tradeBarrierIndex": 100
         },
         "machinery": {
           "id": "machinery",
           "name": "기계·설비",
-          "export": 4.01,
-          "import": 2.79,
-          "balance": 1.22,
+          "export": 6.02,
+          "import": 3.36,
+          "balance": 2.66,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 99.5,
-          "priceCompetitiveness": 100,
           "tradeBarrierIndex": 100
         },
-        "defense": {
-          "id": "defense",
-          "name": "방산",
-          "export": 0.65,
-          "import": 0.27,
-          "balance": 0.38,
+        "petrochemical": {
+          "id": "petrochemical",
+          "name": "석유화학",
+          "export": 4.99,
+          "import": 1.96,
+          "balance": 3.03,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 99.5,
-          "priceCompetitiveness": 100,
           "tradeBarrierIndex": 100
         },
         "consumer": {
           "id": "consumer",
           "name": "소비재",
-          "export": 2.32,
-          "import": 3.27,
-          "balance": -0.95,
+          "export": 3.82,
+          "import": 3.79,
+          "balance": 0.03,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 99.5,
-          "priceCompetitiveness": 100,
+          "tradeBarrierIndex": 100
+        },
+        "steel": {
+          "id": "steel",
+          "name": "철강",
+          "export": 3.53,
+          "import": 2.25,
+          "balance": 1.28,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "shipbuilding": {
+          "id": "shipbuilding",
+          "name": "조선",
+          "export": 2.79,
+          "import": 0.46,
+          "balance": 2.33,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "battery": {
+          "id": "battery",
+          "name": "이차전지",
+          "export": 1.54,
+          "import": 1.3,
+          "balance": 0.24,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "defense": {
+          "id": "defense",
+          "name": "방산",
+          "export": 1.32,
+          "import": 0.36,
+          "balance": 0.96,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "bio": {
+          "id": "bio",
+          "name": "바이오·의약품",
+          "export": 1.29,
+          "import": 1.15,
+          "balance": 0.14,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
           "tradeBarrierIndex": 100
         },
         "others": {
           "id": "others",
           "name": "기타 산업",
-          "export": 17.74,
-          "import": 34.58,
-          "balance": -16.84,
+          "export": 24.68,
+          "import": 38.38,
+          "balance": -13.7,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 99.5,
-          "priceCompetitiveness": 100,
           "tradeBarrierIndex": 100
         }
       },
@@ -160,66 +153,390 @@
         "US": {
           "id": "US",
           "name": "미국",
-          "export": 10.44,
-          "import": 6.17,
-          "balance": 4.27
+          "export": 16.69,
+          "import": 8.43,
+          "balance": 8.26
         },
         "CN": {
           "id": "CN",
           "name": "중국",
-          "export": 10.11,
-          "import": 11.92,
-          "balance": -1.81
+          "export": 16.46,
+          "import": 15.69,
+          "balance": 0.77
         },
         "ASEAN": {
           "id": "ASEAN",
           "name": "아세안(베트남 등)",
-          "export": 9.3,
-          "import": 6.88,
-          "balance": 2.42
+          "export": 17.02,
+          "import": 8.41,
+          "balance": 8.61
         },
         "EU": {
           "id": "EU",
           "name": "EU(유럽연합)",
-          "export": 5.38,
-          "import": 5.8,
-          "balance": -0.42
+          "export": 10.65,
+          "import": 8.59,
+          "balance": 2.06
         },
         "JP": {
           "id": "JP",
           "name": "일본",
-          "export": 2.28,
-          "import": 4.19,
-          "balance": -1.91
+          "export": 4.35,
+          "import": 5.92,
+          "balance": -1.57
         },
         "ME": {
           "id": "ME",
           "name": "중동",
-          "export": 0.98,
-          "import": 6.77,
-          "balance": -5.79
+          "export": 2.4,
+          "import": 10.08,
+          "balance": -7.68
         },
         "ROW": {
           "id": "ROW",
           "name": "기타 국가",
-          "export": 15.88,
-          "import": 11.96,
-          "balance": 3.92
+          "export": 15.83,
+          "import": 4.08,
+          "balance": 11.75
+        }
+      },
+      "matrix": {
+        "US": {
+          "semiconductor": {
+            "export": 3.29,
+            "import": 1.15
+          },
+          "automobile": {
+            "export": 4.76,
+            "import": 0.37
+          },
+          "machinery": {
+            "export": 2.05,
+            "import": 0.74
+          },
+          "petrochemical": {
+            "export": 0.4,
+            "import": 0.2
+          },
+          "consumer": {
+            "export": 1.07,
+            "import": 0.57
+          },
+          "steel": {
+            "export": 0.56,
+            "import": 0.11
+          },
+          "shipbuilding": {
+            "export": 0.14,
+            "import": 0.01
+          },
+          "battery": {
+            "export": 0.62,
+            "import": 0.13
+          },
+          "defense": {
+            "export": 0.26,
+            "import": 0.14
+          },
+          "bio": {
+            "export": 0.58,
+            "import": 0.4
+          },
+          "others": {
+            "export": 2.96,
+            "import": 4.61
+          }
+        },
+        "CN": {
+          "semiconductor": {
+            "export": 6.35,
+            "import": 2.01
+          },
+          "automobile": {
+            "export": 0.4,
+            "import": 0.2
+          },
+          "machinery": {
+            "export": 1.32,
+            "import": 1.01
+          },
+          "petrochemical": {
+            "export": 2.2,
+            "import": 0.69
+          },
+          "consumer": {
+            "export": 0.76,
+            "import": 1.44
+          },
+          "steel": {
+            "export": 0.64,
+            "import": 1.01
+          },
+          "shipbuilding": {
+            "export": 0.06,
+            "import": 0.05
+          },
+          "battery": {
+            "export": 0.23,
+            "import": 0.72
+          },
+          "defense": {
+            "export": 0,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.06,
+            "import": 0.12
+          },
+          "others": {
+            "export": 4.44,
+            "import": 8.44
+          }
+        },
+        "ASEAN": {
+          "semiconductor": {
+            "export": 5.17,
+            "import": 1.15
+          },
+          "automobile": {
+            "export": 1.19,
+            "import": 0.25
+          },
+          "machinery": {
+            "export": 1.44,
+            "import": 0.6
+          },
+          "petrochemical": {
+            "export": 1.25,
+            "import": 0.39
+          },
+          "consumer": {
+            "export": 0.96,
+            "import": 0.76
+          },
+          "steel": {
+            "export": 0.88,
+            "import": 0.34
+          },
+          "shipbuilding": {
+            "export": 0.5,
+            "import": 0.05
+          },
+          "battery": {
+            "export": 0.23,
+            "import": 0.2
+          },
+          "defense": {
+            "export": 0.33,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.13,
+            "import": 0.06
+          },
+          "others": {
+            "export": 4.94,
+            "import": 4.61
+          }
+        },
+        "EU": {
+          "semiconductor": {
+            "export": 1.65,
+            "import": 0.57
+          },
+          "automobile": {
+            "export": 1.88,
+            "import": 1.11
+          },
+          "machinery": {
+            "export": 1.14,
+            "import": 0.84
+          },
+          "petrochemical": {
+            "export": 0.5,
+            "import": 0.29
+          },
+          "consumer": {
+            "export": 0.53,
+            "import": 0.68
+          },
+          "steel": {
+            "export": 0.53,
+            "import": 0.27
+          },
+          "shipbuilding": {
+            "export": 0.98,
+            "import": 0.09
+          },
+          "battery": {
+            "export": 0.43,
+            "import": 0.2
+          },
+          "defense": {
+            "export": 0.59,
+            "import": 0.18
+          },
+          "bio": {
+            "export": 0.45,
+            "import": 0.52
+          },
+          "others": {
+            "export": 1.97,
+            "import": 3.84
+          }
+        },
+        "JP": {
+          "semiconductor": {
+            "export": 0.94,
+            "import": 0.69
+          },
+          "automobile": {
+            "export": 0.2,
+            "import": 0.3
+          },
+          "machinery": {
+            "export": 0.48,
+            "import": 0.67
+          },
+          "petrochemical": {
+            "export": 0.3,
+            "import": 0.24
+          },
+          "consumer": {
+            "export": 0.31,
+            "import": 0.3
+          },
+          "steel": {
+            "export": 0.49,
+            "import": 0.45
+          },
+          "shipbuilding": {
+            "export": 0.06,
+            "import": 0.07
+          },
+          "battery": {
+            "export": 0.03,
+            "import": 0.07
+          },
+          "defense": {
+            "export": 0,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.06,
+            "import": 0.06
+          },
+          "others": {
+            "export": 1.48,
+            "import": 3.07
+          }
+        },
+        "ME": {
+          "semiconductor": {
+            "export": 0.24,
+            "import": 0
+          },
+          "automobile": {
+            "export": 0.5,
+            "import": 0
+          },
+          "machinery": {
+            "export": 0.3,
+            "import": 0
+          },
+          "petrochemical": {
+            "export": 0.1,
+            "import": 0.1
+          },
+          "consumer": {
+            "export": 0.08,
+            "import": 0
+          },
+          "steel": {
+            "export": 0.14,
+            "import": 0
+          },
+          "shipbuilding": {
+            "export": 0.42,
+            "import": 0
+          },
+          "battery": {
+            "export": 0,
+            "import": 0
+          },
+          "defense": {
+            "export": 0.13,
+            "import": 0
+          },
+          "bio": {
+            "export": 0,
+            "import": 0
+          },
+          "others": {
+            "export": 0.49,
+            "import": 9.98
+          }
+        },
+        "ROW": {
+          "semiconductor": {
+            "export": 5.86,
+            "import": 0.16
+          },
+          "automobile": {
+            "export": 0.99,
+            "import": 0.23
+          },
+          "machinery": {
+            "export": -0.71,
+            "import": -0.5
+          },
+          "petrochemical": {
+            "export": 0.24,
+            "import": 0.05
+          },
+          "consumer": {
+            "export": 0.11,
+            "import": 0.04
+          },
+          "steel": {
+            "export": 0.29,
+            "import": 0.07
+          },
+          "shipbuilding": {
+            "export": 0.63,
+            "import": 0.19
+          },
+          "battery": {
+            "export": 0,
+            "import": -0.02
+          },
+          "defense": {
+            "export": 0.01,
+            "import": 0.04
+          },
+          "bio": {
+            "export": 0.01,
+            "import": -0.01
+          },
+          "others": {
+            "export": 8.4,
+            "import": 3.83
+          }
         }
       }
     },
     {
       "month": 2,
       "name": "2월",
-      "days": 28,
-      "export": 50.83,
-      "import": 47.38,
-      "balance": 3.45,
+      "status": "확정 실적",
+      "export": 79.8,
+      "import": 56.5,
+      "balance": 23.3,
       "macro": {
-        "fxRate": 1415.2,
-        "brentOil": 79.1,
-        "scfiFreight": 2080,
-        "globalDemandIndex": 99.2,
+        "fxRate": 1425,
+        "brentOil": 80.1,
+        "scfiFreight": 2150,
+        "globalDemandIndex": 99.4,
         "usFedRate": 4.5,
         "bokBaseRate": 3
       },
@@ -227,133 +544,111 @@
         "semiconductor": {
           "id": "semiconductor",
           "name": "반도체",
-          "export": 12.08,
-          "import": 4.37,
-          "balance": 7.71,
+          "export": 22.49,
+          "import": 5.29,
+          "balance": 17.2,
           "capacityIndex": 100,
-          "utilizationRate": 94.5,
-          "globalDemandIndex": 99.2,
-          "priceCompetitiveness": 100,
+          "utilizationRate": 95,
           "tradeBarrierIndex": 100
         },
         "automobile": {
           "id": "automobile",
           "name": "자동차·부품",
-          "export": 6.39,
-          "import": 1.84,
-          "balance": 4.55,
+          "export": 9.49,
+          "import": 2.27,
+          "balance": 7.22,
           "capacityIndex": 100,
-          "utilizationRate": 88.2,
-          "globalDemandIndex": 99.2,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 110
-        },
-        "shipbuilding": {
-          "id": "shipbuilding",
-          "name": "조선",
-          "export": 1.78,
-          "import": 0.31,
-          "balance": 1.47,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 99.2,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "steel": {
-          "id": "steel",
-          "name": "철강",
-          "export": 2.48,
-          "import": 1.64,
-          "balance": 0.84,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 99.2,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 125
-        },
-        "petrochemical": {
-          "id": "petrochemical",
-          "name": "석유화학",
-          "export": 3.4,
-          "import": 1.37,
-          "balance": 2.03,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 99.2,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "battery": {
-          "id": "battery",
-          "name": "이차전지",
-          "export": 0.85,
-          "import": 0.93,
-          "balance": -0.08,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 99.2,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "bio": {
-          "id": "bio",
-          "name": "바이오·의약품",
-          "export": 0.75,
-          "import": 0.84,
-          "balance": -0.09,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 99.2,
-          "priceCompetitiveness": 100,
+          "utilizationRate": 89,
           "tradeBarrierIndex": 100
         },
         "machinery": {
           "id": "machinery",
           "name": "기계·설비",
-          "export": 3.75,
-          "import": 2.46,
-          "balance": 1.29,
+          "export": 5.76,
+          "import": 3.1,
+          "balance": 2.66,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 99.2,
-          "priceCompetitiveness": 100,
           "tradeBarrierIndex": 100
         },
-        "defense": {
-          "id": "defense",
-          "name": "방산",
-          "export": 0.61,
-          "import": 0.24,
-          "balance": 0.37,
+        "petrochemical": {
+          "id": "petrochemical",
+          "name": "석유화학",
+          "export": 4.78,
+          "import": 1.81,
+          "balance": 2.97,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 99.2,
-          "priceCompetitiveness": 100,
           "tradeBarrierIndex": 100
         },
         "consumer": {
           "id": "consumer",
           "name": "소비재",
-          "export": 2.16,
-          "import": 2.89,
-          "balance": -0.73,
+          "export": 3.65,
+          "import": 3.5,
+          "balance": 0.15,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 99.2,
-          "priceCompetitiveness": 100,
+          "tradeBarrierIndex": 100
+        },
+        "steel": {
+          "id": "steel",
+          "name": "철강",
+          "export": 3.37,
+          "import": 2.08,
+          "balance": 1.29,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "shipbuilding": {
+          "id": "shipbuilding",
+          "name": "조선",
+          "export": 2.67,
+          "import": 0.42,
+          "balance": 2.25,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "battery": {
+          "id": "battery",
+          "name": "이차전지",
+          "export": 1.48,
+          "import": 1.2,
+          "balance": 0.28,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "defense": {
+          "id": "defense",
+          "name": "방산",
+          "export": 1.26,
+          "import": 0.33,
+          "balance": 0.93,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "bio": {
+          "id": "bio",
+          "name": "바이오·의약품",
+          "export": 1.23,
+          "import": 1.06,
+          "balance": 0.17,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
           "tradeBarrierIndex": 100
         },
         "others": {
           "id": "others",
           "name": "기타 산업",
-          "export": 16.58,
-          "import": 30.49,
-          "balance": -13.91,
+          "export": 23.62,
+          "import": 35.44,
+          "balance": -11.82,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 99.2,
-          "priceCompetitiveness": 100,
           "tradeBarrierIndex": 100
         }
       },
@@ -361,66 +656,390 @@
         "US": {
           "id": "US",
           "name": "미국",
-          "export": 9.76,
-          "import": 5.44,
-          "balance": 4.32
+          "export": 15.96,
+          "import": 7.77,
+          "balance": 8.19
         },
         "CN": {
           "id": "CN",
           "name": "중국",
-          "export": 9.45,
-          "import": 10.51,
-          "balance": -1.06
+          "export": 15.74,
+          "import": 14.47,
+          "balance": 1.27
         },
         "ASEAN": {
           "id": "ASEAN",
           "name": "아세안(베트남 등)",
-          "export": 8.69,
-          "import": 6.07,
-          "balance": 2.62
+          "export": 16.28,
+          "import": 7.74,
+          "balance": 8.54
         },
         "EU": {
           "id": "EU",
           "name": "EU(유럽연합)",
-          "export": 5.03,
-          "import": 5.12,
-          "balance": -0.09
+          "export": 10.19,
+          "import": 7.93,
+          "balance": 2.26
         },
         "JP": {
           "id": "JP",
           "name": "일본",
-          "export": 2.14,
-          "import": 3.7,
-          "balance": -1.56
+          "export": 4.16,
+          "import": 5.45,
+          "balance": -1.29
         },
         "ME": {
           "id": "ME",
           "name": "중동",
-          "export": 0.92,
-          "import": 5.97,
-          "balance": -5.05
+          "export": 2.28,
+          "import": 9.3,
+          "balance": -7.02
         },
         "ROW": {
           "id": "ROW",
           "name": "기타 국가",
-          "export": 14.84,
-          "import": 10.57,
-          "balance": 4.27
+          "export": 15.19,
+          "import": 3.84,
+          "balance": 11.35
+        }
+      },
+      "matrix": {
+        "US": {
+          "semiconductor": {
+            "export": 3.15,
+            "import": 1.06
+          },
+          "automobile": {
+            "export": 4.56,
+            "import": 0.34
+          },
+          "machinery": {
+            "export": 1.96,
+            "import": 0.68
+          },
+          "petrochemical": {
+            "export": 0.38,
+            "import": 0.18
+          },
+          "consumer": {
+            "export": 1.02,
+            "import": 0.53
+          },
+          "steel": {
+            "export": 0.54,
+            "import": 0.1
+          },
+          "shipbuilding": {
+            "export": 0.13,
+            "import": 0.01
+          },
+          "battery": {
+            "export": 0.59,
+            "import": 0.12
+          },
+          "defense": {
+            "export": 0.25,
+            "import": 0.13
+          },
+          "bio": {
+            "export": 0.55,
+            "import": 0.37
+          },
+          "others": {
+            "export": 2.83,
+            "import": 4.25
+          }
+        },
+        "CN": {
+          "semiconductor": {
+            "export": 6.07,
+            "import": 1.85
+          },
+          "automobile": {
+            "export": 0.38,
+            "import": 0.18
+          },
+          "machinery": {
+            "export": 1.27,
+            "import": 0.93
+          },
+          "petrochemical": {
+            "export": 2.1,
+            "import": 0.63
+          },
+          "consumer": {
+            "export": 0.73,
+            "import": 1.33
+          },
+          "steel": {
+            "export": 0.61,
+            "import": 0.94
+          },
+          "shipbuilding": {
+            "export": 0.05,
+            "import": 0.04
+          },
+          "battery": {
+            "export": 0.22,
+            "import": 0.66
+          },
+          "defense": {
+            "export": 0,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.06,
+            "import": 0.11
+          },
+          "others": {
+            "export": 4.25,
+            "import": 7.8
+          }
+        },
+        "ASEAN": {
+          "semiconductor": {
+            "export": 4.95,
+            "import": 1.06
+          },
+          "automobile": {
+            "export": 1.14,
+            "import": 0.23
+          },
+          "machinery": {
+            "export": 1.38,
+            "import": 0.56
+          },
+          "petrochemical": {
+            "export": 1.2,
+            "import": 0.36
+          },
+          "consumer": {
+            "export": 0.91,
+            "import": 0.7
+          },
+          "steel": {
+            "export": 0.84,
+            "import": 0.31
+          },
+          "shipbuilding": {
+            "export": 0.48,
+            "import": 0.04
+          },
+          "battery": {
+            "export": 0.22,
+            "import": 0.18
+          },
+          "defense": {
+            "export": 0.32,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.12,
+            "import": 0.05
+          },
+          "others": {
+            "export": 4.72,
+            "import": 4.25
+          }
+        },
+        "EU": {
+          "semiconductor": {
+            "export": 1.57,
+            "import": 0.53
+          },
+          "automobile": {
+            "export": 1.8,
+            "import": 1.02
+          },
+          "machinery": {
+            "export": 1.09,
+            "import": 0.78
+          },
+          "petrochemical": {
+            "export": 0.48,
+            "import": 0.27
+          },
+          "consumer": {
+            "export": 0.51,
+            "import": 0.63
+          },
+          "steel": {
+            "export": 0.51,
+            "import": 0.25
+          },
+          "shipbuilding": {
+            "export": 0.93,
+            "import": 0.08
+          },
+          "battery": {
+            "export": 0.41,
+            "import": 0.18
+          },
+          "defense": {
+            "export": 0.57,
+            "import": 0.17
+          },
+          "bio": {
+            "export": 0.43,
+            "import": 0.48
+          },
+          "others": {
+            "export": 1.89,
+            "import": 3.54
+          }
+        },
+        "JP": {
+          "semiconductor": {
+            "export": 0.9,
+            "import": 0.63
+          },
+          "automobile": {
+            "export": 0.19,
+            "import": 0.27
+          },
+          "machinery": {
+            "export": 0.46,
+            "import": 0.62
+          },
+          "petrochemical": {
+            "export": 0.29,
+            "import": 0.22
+          },
+          "consumer": {
+            "export": 0.29,
+            "import": 0.28
+          },
+          "steel": {
+            "export": 0.47,
+            "import": 0.42
+          },
+          "shipbuilding": {
+            "export": 0.05,
+            "import": 0.06
+          },
+          "battery": {
+            "export": 0.03,
+            "import": 0.06
+          },
+          "defense": {
+            "export": 0,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.06,
+            "import": 0.05
+          },
+          "others": {
+            "export": 1.42,
+            "import": 2.84
+          }
+        },
+        "ME": {
+          "semiconductor": {
+            "export": 0.22,
+            "import": 0
+          },
+          "automobile": {
+            "export": 0.47,
+            "import": 0
+          },
+          "machinery": {
+            "export": 0.29,
+            "import": 0
+          },
+          "petrochemical": {
+            "export": 0.1,
+            "import": 0.09
+          },
+          "consumer": {
+            "export": 0.07,
+            "import": 0
+          },
+          "steel": {
+            "export": 0.13,
+            "import": 0
+          },
+          "shipbuilding": {
+            "export": 0.4,
+            "import": 0
+          },
+          "battery": {
+            "export": 0,
+            "import": 0
+          },
+          "defense": {
+            "export": 0.13,
+            "import": 0
+          },
+          "bio": {
+            "export": 0,
+            "import": 0
+          },
+          "others": {
+            "export": 0.47,
+            "import": 9.21
+          }
+        },
+        "ROW": {
+          "semiconductor": {
+            "export": 5.63,
+            "import": 0.16
+          },
+          "automobile": {
+            "export": 0.95,
+            "import": 0.23
+          },
+          "machinery": {
+            "export": -0.69,
+            "import": -0.47
+          },
+          "petrochemical": {
+            "export": 0.23,
+            "import": 0.06
+          },
+          "consumer": {
+            "export": 0.12,
+            "import": 0.03
+          },
+          "steel": {
+            "export": 0.27,
+            "import": 0.06
+          },
+          "shipbuilding": {
+            "export": 0.63,
+            "import": 0.19
+          },
+          "battery": {
+            "export": 0.01,
+            "import": 0
+          },
+          "defense": {
+            "export": -0.01,
+            "import": 0.03
+          },
+          "bio": {
+            "export": 0.01,
+            "import": 0
+          },
+          "others": {
+            "export": 8.04,
+            "import": 3.55
+          }
         }
       }
     },
     {
       "month": 3,
       "name": "3월",
-      "days": 31,
-      "export": 61.46,
-      "import": 54.75,
-      "balance": 6.71,
+      "status": "확정 실적",
+      "export": 95.6,
+      "import": 64.8,
+      "balance": 30.8,
       "macro": {
-        "fxRate": 1405,
-        "brentOil": 81.3,
-        "scfiFreight": 1980,
-        "globalDemandIndex": 100.1,
+        "fxRate": 1410.2,
+        "brentOil": 82.5,
+        "scfiFreight": 2020,
+        "globalDemandIndex": 100.2,
         "usFedRate": 4.5,
         "bokBaseRate": 3
       },
@@ -428,133 +1047,111 @@
         "semiconductor": {
           "id": "semiconductor",
           "name": "반도체",
-          "export": 14.6,
-          "import": 5.04,
-          "balance": 9.56,
+          "export": 26.94,
+          "import": 6.06,
+          "balance": 20.88,
           "capacityIndex": 100,
-          "utilizationRate": 94.5,
-          "globalDemandIndex": 100.1,
-          "priceCompetitiveness": 100,
+          "utilizationRate": 95,
           "tradeBarrierIndex": 100
         },
         "automobile": {
           "id": "automobile",
           "name": "자동차·부품",
-          "export": 7.73,
-          "import": 2.12,
-          "balance": 5.61,
+          "export": 11.37,
+          "import": 2.61,
+          "balance": 8.76,
           "capacityIndex": 100,
-          "utilizationRate": 88.2,
-          "globalDemandIndex": 100.1,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 110
-        },
-        "shipbuilding": {
-          "id": "shipbuilding",
-          "name": "조선",
-          "export": 2.15,
-          "import": 0.36,
-          "balance": 1.79,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.1,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "steel": {
-          "id": "steel",
-          "name": "철강",
-          "export": 3,
-          "import": 1.89,
-          "balance": 1.11,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.1,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 125
-        },
-        "petrochemical": {
-          "id": "petrochemical",
-          "name": "석유화학",
-          "export": 4.12,
-          "import": 1.58,
-          "balance": 2.54,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.1,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "battery": {
-          "id": "battery",
-          "name": "이차전지",
-          "export": 1.02,
-          "import": 1.07,
-          "balance": -0.05,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.1,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "bio": {
-          "id": "bio",
-          "name": "바이오·의약품",
-          "export": 0.9,
-          "import": 0.97,
-          "balance": -0.07,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.1,
-          "priceCompetitiveness": 100,
+          "utilizationRate": 89,
           "tradeBarrierIndex": 100
         },
         "machinery": {
           "id": "machinery",
           "name": "기계·설비",
-          "export": 4.53,
-          "import": 2.84,
-          "balance": 1.69,
+          "export": 6.9,
+          "import": 3.55,
+          "balance": 3.35,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 100.1,
-          "priceCompetitiveness": 100,
           "tradeBarrierIndex": 100
         },
-        "defense": {
-          "id": "defense",
-          "name": "방산",
-          "export": 0.74,
-          "import": 0.28,
-          "balance": 0.46,
+        "petrochemical": {
+          "id": "petrochemical",
+          "name": "석유화학",
+          "export": 5.73,
+          "import": 2.07,
+          "balance": 3.66,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 100.1,
-          "priceCompetitiveness": 100,
           "tradeBarrierIndex": 100
         },
         "consumer": {
           "id": "consumer",
           "name": "소비재",
-          "export": 2.62,
-          "import": 3.34,
-          "balance": -0.72,
+          "export": 4.38,
+          "import": 4.01,
+          "balance": 0.37,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 100.1,
-          "priceCompetitiveness": 100,
+          "tradeBarrierIndex": 100
+        },
+        "steel": {
+          "id": "steel",
+          "name": "철강",
+          "export": 4.04,
+          "import": 2.38,
+          "balance": 1.66,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "shipbuilding": {
+          "id": "shipbuilding",
+          "name": "조선",
+          "export": 3.2,
+          "import": 0.48,
+          "balance": 2.72,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "battery": {
+          "id": "battery",
+          "name": "이차전지",
+          "export": 1.77,
+          "import": 1.38,
+          "balance": 0.39,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "defense": {
+          "id": "defense",
+          "name": "방산",
+          "export": 1.52,
+          "import": 0.38,
+          "balance": 1.14,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "bio": {
+          "id": "bio",
+          "name": "바이오·의약품",
+          "export": 1.47,
+          "import": 1.21,
+          "balance": 0.26,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
           "tradeBarrierIndex": 100
         },
         "others": {
           "id": "others",
           "name": "기타 산업",
-          "export": 20.05,
-          "import": 35.26,
-          "balance": -15.21,
+          "export": 28.28,
+          "import": 40.67,
+          "balance": -12.39,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 100.1,
-          "priceCompetitiveness": 100,
           "tradeBarrierIndex": 100
         }
       },
@@ -562,869 +1159,389 @@
         "US": {
           "id": "US",
           "name": "미국",
-          "export": 11.8,
-          "import": 6.29,
-          "balance": 5.51
+          "export": 19.14,
+          "import": 8.91,
+          "balance": 10.23
         },
         "CN": {
           "id": "CN",
           "name": "중국",
-          "export": 11.43,
-          "import": 12.15,
-          "balance": -0.72
+          "export": 18.86,
+          "import": 16.59,
+          "balance": 2.27
         },
         "ASEAN": {
           "id": "ASEAN",
           "name": "아세안(베트남 등)",
-          "export": 10.51,
-          "import": 7.01,
-          "balance": 3.5
+          "export": 19.53,
+          "import": 8.88,
+          "balance": 10.65
         },
         "EU": {
           "id": "EU",
           "name": "EU(유럽연합)",
-          "export": 6.08,
-          "import": 5.91,
-          "balance": 0.17
+          "export": 12.22,
+          "import": 9.1,
+          "balance": 3.12
         },
         "JP": {
           "id": "JP",
           "name": "일본",
-          "export": 2.58,
-          "import": 4.27,
-          "balance": -1.69
+          "export": 4.99,
+          "import": 6.25,
+          "balance": -1.26
         },
         "ME": {
           "id": "ME",
           "name": "중동",
-          "export": 1.11,
-          "import": 6.9,
-          "balance": -5.79
+          "export": 2.75,
+          "import": 10.67,
+          "balance": -7.92
         },
         "ROW": {
           "id": "ROW",
           "name": "기타 국가",
-          "export": 17.95,
-          "import": 12.22,
-          "balance": 5.73
+          "export": 18.11,
+          "import": 4.4,
+          "balance": 13.71
+        }
+      },
+      "matrix": {
+        "US": {
+          "semiconductor": {
+            "export": 3.77,
+            "import": 1.21
+          },
+          "automobile": {
+            "export": 5.46,
+            "import": 0.39
+          },
+          "machinery": {
+            "export": 2.35,
+            "import": 0.78
+          },
+          "petrochemical": {
+            "export": 0.46,
+            "import": 0.21
+          },
+          "consumer": {
+            "export": 1.23,
+            "import": 0.6
+          },
+          "steel": {
+            "export": 0.65,
+            "import": 0.12
+          },
+          "shipbuilding": {
+            "export": 0.16,
+            "import": 0.01
+          },
+          "battery": {
+            "export": 0.71,
+            "import": 0.14
+          },
+          "defense": {
+            "export": 0.3,
+            "import": 0.15
+          },
+          "bio": {
+            "export": 0.66,
+            "import": 0.42
+          },
+          "others": {
+            "export": 3.39,
+            "import": 4.88
+          }
+        },
+        "CN": {
+          "semiconductor": {
+            "export": 7.27,
+            "import": 2.12
+          },
+          "automobile": {
+            "export": 0.45,
+            "import": 0.21
+          },
+          "machinery": {
+            "export": 1.52,
+            "import": 1.07
+          },
+          "petrochemical": {
+            "export": 2.52,
+            "import": 0.72
+          },
+          "consumer": {
+            "export": 0.88,
+            "import": 1.52
+          },
+          "steel": {
+            "export": 0.73,
+            "import": 1.07
+          },
+          "shipbuilding": {
+            "export": 0.06,
+            "import": 0.05
+          },
+          "battery": {
+            "export": 0.27,
+            "import": 0.76
+          },
+          "defense": {
+            "export": 0,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.07,
+            "import": 0.12
+          },
+          "others": {
+            "export": 5.09,
+            "import": 8.95
+          }
+        },
+        "ASEAN": {
+          "semiconductor": {
+            "export": 5.93,
+            "import": 1.21
+          },
+          "automobile": {
+            "export": 1.36,
+            "import": 0.26
+          },
+          "machinery": {
+            "export": 1.66,
+            "import": 0.64
+          },
+          "petrochemical": {
+            "export": 1.43,
+            "import": 0.41
+          },
+          "consumer": {
+            "export": 1.1,
+            "import": 0.8
+          },
+          "steel": {
+            "export": 1.01,
+            "import": 0.36
+          },
+          "shipbuilding": {
+            "export": 0.58,
+            "import": 0.05
+          },
+          "battery": {
+            "export": 0.27,
+            "import": 0.21
+          },
+          "defense": {
+            "export": 0.38,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.15,
+            "import": 0.06
+          },
+          "others": {
+            "export": 5.66,
+            "import": 4.88
+          }
+        },
+        "EU": {
+          "semiconductor": {
+            "export": 1.89,
+            "import": 0.61
+          },
+          "automobile": {
+            "export": 2.16,
+            "import": 1.17
+          },
+          "machinery": {
+            "export": 1.31,
+            "import": 0.89
+          },
+          "petrochemical": {
+            "export": 0.57,
+            "import": 0.31
+          },
+          "consumer": {
+            "export": 0.61,
+            "import": 0.72
+          },
+          "steel": {
+            "export": 0.61,
+            "import": 0.29
+          },
+          "shipbuilding": {
+            "export": 1.12,
+            "import": 0.1
+          },
+          "battery": {
+            "export": 0.5,
+            "import": 0.21
+          },
+          "defense": {
+            "export": 0.68,
+            "import": 0.19
+          },
+          "bio": {
+            "export": 0.51,
+            "import": 0.54
+          },
+          "others": {
+            "export": 2.26,
+            "import": 4.07
+          }
+        },
+        "JP": {
+          "semiconductor": {
+            "export": 1.08,
+            "import": 0.73
+          },
+          "automobile": {
+            "export": 0.23,
+            "import": 0.31
+          },
+          "machinery": {
+            "export": 0.55,
+            "import": 0.71
+          },
+          "petrochemical": {
+            "export": 0.34,
+            "import": 0.25
+          },
+          "consumer": {
+            "export": 0.35,
+            "import": 0.32
+          },
+          "steel": {
+            "export": 0.57,
+            "import": 0.48
+          },
+          "shipbuilding": {
+            "export": 0.06,
+            "import": 0.07
+          },
+          "battery": {
+            "export": 0.04,
+            "import": 0.07
+          },
+          "defense": {
+            "export": 0,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.07,
+            "import": 0.06
+          },
+          "others": {
+            "export": 1.7,
+            "import": 3.25
+          }
+        },
+        "ME": {
+          "semiconductor": {
+            "export": 0.27,
+            "import": 0
+          },
+          "automobile": {
+            "export": 0.57,
+            "import": 0
+          },
+          "machinery": {
+            "export": 0.35,
+            "import": 0
+          },
+          "petrochemical": {
+            "export": 0.11,
+            "import": 0.1
+          },
+          "consumer": {
+            "export": 0.09,
+            "import": 0
+          },
+          "steel": {
+            "export": 0.16,
+            "import": 0
+          },
+          "shipbuilding": {
+            "export": 0.48,
+            "import": 0
+          },
+          "battery": {
+            "export": 0,
+            "import": 0
+          },
+          "defense": {
+            "export": 0.15,
+            "import": 0
+          },
+          "bio": {
+            "export": 0,
+            "import": 0
+          },
+          "others": {
+            "export": 0.57,
+            "import": 10.57
+          }
+        },
+        "ROW": {
+          "semiconductor": {
+            "export": 6.73,
+            "import": 0.18
+          },
+          "automobile": {
+            "export": 1.14,
+            "import": 0.27
+          },
+          "machinery": {
+            "export": -0.84,
+            "import": -0.54
+          },
+          "petrochemical": {
+            "export": 0.3,
+            "import": 0.07
+          },
+          "consumer": {
+            "export": 0.12,
+            "import": 0.05
+          },
+          "steel": {
+            "export": 0.31,
+            "import": 0.06
+          },
+          "shipbuilding": {
+            "export": 0.74,
+            "import": 0.2
+          },
+          "battery": {
+            "export": -0.02,
+            "import": -0.01
+          },
+          "defense": {
+            "export": 0.01,
+            "import": 0.04
+          },
+          "bio": {
+            "export": 0.01,
+            "import": 0.01
+          },
+          "others": {
+            "export": 9.61,
+            "import": 4.07
+          }
         }
       }
     },
     {
       "month": 4,
       "name": "4월",
-      "days": 30,
-      "export": 57.33,
-      "import": 51.06,
-      "balance": 6.27,
+      "status": "확정 실적",
+      "export": 89.2,
+      "import": 62.1,
+      "balance": 27.1,
       "macro": {
-        "fxRate": 1398.4,
-        "brentOil": 82.5,
-        "scfiFreight": 1920,
-        "globalDemandIndex": 100.4,
-        "usFedRate": 4.5,
-        "bokBaseRate": 3
-      },
-      "industries": {
-        "semiconductor": {
-          "id": "semiconductor",
-          "name": "반도체",
-          "export": 13.62,
-          "import": 4.7,
-          "balance": 8.92,
-          "capacityIndex": 100,
-          "utilizationRate": 94.5,
-          "globalDemandIndex": 100.4,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "automobile": {
-          "id": "automobile",
-          "name": "자동차·부품",
-          "export": 7.21,
-          "import": 1.98,
-          "balance": 5.23,
-          "capacityIndex": 100,
-          "utilizationRate": 88.2,
-          "globalDemandIndex": 100.4,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 110
-        },
-        "shipbuilding": {
-          "id": "shipbuilding",
-          "name": "조선",
-          "export": 2,
-          "import": 0.33,
-          "balance": 1.67,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.4,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "steel": {
-          "id": "steel",
-          "name": "철강",
-          "export": 2.8,
-          "import": 1.76,
-          "balance": 1.04,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.4,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 125
-        },
-        "petrochemical": {
-          "id": "petrochemical",
-          "name": "석유화학",
-          "export": 3.84,
-          "import": 1.47,
-          "balance": 2.37,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.4,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "battery": {
-          "id": "battery",
-          "name": "이차전지",
-          "export": 0.95,
-          "import": 1,
-          "balance": -0.05,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.4,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "bio": {
-          "id": "bio",
-          "name": "바이오·의약품",
-          "export": 0.84,
-          "import": 0.91,
-          "balance": -0.07,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.4,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "machinery": {
-          "id": "machinery",
-          "name": "기계·설비",
-          "export": 4.23,
-          "import": 2.65,
-          "balance": 1.58,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.4,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "defense": {
-          "id": "defense",
-          "name": "방산",
-          "export": 0.69,
-          "import": 0.26,
-          "balance": 0.43,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.4,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "consumer": {
-          "id": "consumer",
-          "name": "소비재",
-          "export": 2.44,
-          "import": 3.11,
-          "balance": -0.67,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.4,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "others": {
-          "id": "others",
-          "name": "기타 산업",
-          "export": 18.71,
-          "import": 32.89,
-          "balance": -14.18,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.4,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        }
-      },
-      "partners": {
-        "US": {
-          "id": "US",
-          "name": "미국",
-          "export": 11.01,
-          "import": 5.87,
-          "balance": 5.14
-        },
-        "CN": {
-          "id": "CN",
-          "name": "중국",
-          "export": 10.66,
-          "import": 11.33,
-          "balance": -0.67
-        },
-        "ASEAN": {
-          "id": "ASEAN",
-          "name": "아세안(베트남 등)",
-          "export": 9.81,
-          "import": 6.54,
-          "balance": 3.27
-        },
-        "EU": {
-          "id": "EU",
-          "name": "EU(유럽연합)",
-          "export": 5.67,
-          "import": 5.51,
-          "balance": 0.16
-        },
-        "JP": {
-          "id": "JP",
-          "name": "일본",
-          "export": 2.41,
-          "import": 3.99,
-          "balance": -1.58
-        },
-        "ME": {
-          "id": "ME",
-          "name": "중동",
-          "export": 1.03,
-          "import": 6.43,
-          "balance": -5.4
-        },
-        "ROW": {
-          "id": "ROW",
-          "name": "기타 국가",
-          "export": 16.74,
-          "import": 11.39,
-          "balance": 5.35
-        }
-      }
-    },
-    {
-      "month": 5,
-      "name": "5월",
-      "days": 31,
-      "export": 58.51,
-      "import": 51.59,
-      "balance": 6.92,
-      "macro": {
-        "fxRate": 1392.1,
-        "brentOil": 80.8,
-        "scfiFreight": 1940,
-        "globalDemandIndex": 100.7,
-        "usFedRate": 4.5,
-        "bokBaseRate": 3
-      },
-      "industries": {
-        "semiconductor": {
-          "id": "semiconductor",
-          "name": "반도체",
-          "export": 13.9,
-          "import": 4.75,
-          "balance": 9.15,
-          "capacityIndex": 100,
-          "utilizationRate": 94.5,
-          "globalDemandIndex": 100.7,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "automobile": {
-          "id": "automobile",
-          "name": "자동차·부품",
-          "export": 7.36,
-          "import": 2,
-          "balance": 5.36,
-          "capacityIndex": 100,
-          "utilizationRate": 88.2,
-          "globalDemandIndex": 100.7,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 110
-        },
-        "shipbuilding": {
-          "id": "shipbuilding",
-          "name": "조선",
-          "export": 2.05,
-          "import": 0.33,
-          "balance": 1.72,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.7,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "steel": {
-          "id": "steel",
-          "name": "철강",
-          "export": 2.85,
-          "import": 1.78,
-          "balance": 1.07,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.7,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 125
-        },
-        "petrochemical": {
-          "id": "petrochemical",
-          "name": "석유화학",
-          "export": 3.92,
-          "import": 1.49,
-          "balance": 2.43,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.7,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "battery": {
-          "id": "battery",
-          "name": "이차전지",
-          "export": 0.97,
-          "import": 1.01,
-          "balance": -0.04,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.7,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "bio": {
-          "id": "bio",
-          "name": "바이오·의약품",
-          "export": 0.86,
-          "import": 0.91,
-          "balance": -0.05,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.7,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "machinery": {
-          "id": "machinery",
-          "name": "기계·설비",
-          "export": 4.31,
-          "import": 2.68,
-          "balance": 1.63,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.7,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "defense": {
-          "id": "defense",
-          "name": "방산",
-          "export": 0.7,
-          "import": 0.26,
-          "balance": 0.44,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.7,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "consumer": {
-          "id": "consumer",
-          "name": "소비재",
-          "export": 2.49,
-          "import": 3.14,
-          "balance": -0.65,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.7,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "others": {
-          "id": "others",
-          "name": "기타 산업",
-          "export": 19.1,
-          "import": 33.24,
-          "balance": -14.14,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.7,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        }
-      },
-      "partners": {
-        "US": {
-          "id": "US",
-          "name": "미국",
-          "export": 11.24,
-          "import": 5.93,
-          "balance": 5.31
-        },
-        "CN": {
-          "id": "CN",
-          "name": "중국",
-          "export": 10.88,
-          "import": 11.45,
-          "balance": -0.57
-        },
-        "ASEAN": {
-          "id": "ASEAN",
-          "name": "아세안(베트남 등)",
-          "export": 10.01,
-          "import": 6.61,
-          "balance": 3.4
-        },
-        "EU": {
-          "id": "EU",
-          "name": "EU(유럽연합)",
-          "export": 5.79,
-          "import": 5.57,
-          "balance": 0.22
-        },
-        "JP": {
-          "id": "JP",
-          "name": "일본",
-          "export": 2.46,
-          "import": 4.03,
-          "balance": -1.57
-        },
-        "ME": {
-          "id": "ME",
-          "name": "중동",
-          "export": 1.06,
-          "import": 6.5,
-          "balance": -5.44
-        },
-        "ROW": {
-          "id": "ROW",
-          "name": "기타 국가",
-          "export": 17.07,
-          "import": 11.5,
-          "balance": 5.57
-        }
-      }
-    },
-    {
-      "month": 6,
-      "name": "6월",
-      "days": 30,
-      "export": 62.65,
-      "import": 53.17,
-      "balance": 9.48,
-      "macro": {
-        "fxRate": 1385.6,
-        "brentOil": 79.2,
-        "scfiFreight": 2010,
-        "globalDemandIndex": 101.2,
-        "usFedRate": 4.5,
-        "bokBaseRate": 3
-      },
-      "industries": {
-        "semiconductor": {
-          "id": "semiconductor",
-          "name": "반도체",
-          "export": 14.88,
-          "import": 4.9,
-          "balance": 9.98,
-          "capacityIndex": 100,
-          "utilizationRate": 94.5,
-          "globalDemandIndex": 101.2,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "automobile": {
-          "id": "automobile",
-          "name": "자동차·부품",
-          "export": 7.88,
-          "import": 2.06,
-          "balance": 5.82,
-          "capacityIndex": 100,
-          "utilizationRate": 88.2,
-          "globalDemandIndex": 101.2,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 110
-        },
-        "shipbuilding": {
-          "id": "shipbuilding",
-          "name": "조선",
-          "export": 2.19,
-          "import": 0.35,
-          "balance": 1.84,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 101.2,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "steel": {
-          "id": "steel",
-          "name": "철강",
-          "export": 3.06,
-          "import": 1.83,
-          "balance": 1.23,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 101.2,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 125
-        },
-        "petrochemical": {
-          "id": "petrochemical",
-          "name": "석유화학",
-          "export": 4.2,
-          "import": 1.53,
-          "balance": 2.67,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 101.2,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "battery": {
-          "id": "battery",
-          "name": "이차전지",
-          "export": 1.04,
-          "import": 1.04,
-          "balance": 0,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 101.2,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "bio": {
-          "id": "bio",
-          "name": "바이오·의약품",
-          "export": 0.92,
-          "import": 0.94,
-          "balance": -0.02,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 101.2,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "machinery": {
-          "id": "machinery",
-          "name": "기계·설비",
-          "export": 4.62,
-          "import": 2.76,
-          "balance": 1.86,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 101.2,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "defense": {
-          "id": "defense",
-          "name": "방산",
-          "export": 0.75,
-          "import": 0.27,
-          "balance": 0.48,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 101.2,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "consumer": {
-          "id": "consumer",
-          "name": "소비재",
-          "export": 2.67,
-          "import": 3.24,
-          "balance": -0.57,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 101.2,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "others": {
-          "id": "others",
-          "name": "기타 산업",
-          "export": 20.44,
-          "import": 34.25,
-          "balance": -13.81,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 101.2,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        }
-      },
-      "partners": {
-        "US": {
-          "id": "US",
-          "name": "미국",
-          "export": 12.03,
-          "import": 6.11,
-          "balance": 5.92
-        },
-        "CN": {
-          "id": "CN",
-          "name": "중국",
-          "export": 11.65,
-          "import": 11.8,
-          "balance": -0.15
-        },
-        "ASEAN": {
-          "id": "ASEAN",
-          "name": "아세안(베트남 등)",
-          "export": 10.71,
-          "import": 6.81,
-          "balance": 3.9
-        },
-        "EU": {
-          "id": "EU",
-          "name": "EU(유럽연합)",
-          "export": 6.2,
-          "import": 5.74,
-          "balance": 0.46
-        },
-        "JP": {
-          "id": "JP",
-          "name": "일본",
-          "export": 2.63,
-          "import": 4.15,
-          "balance": -1.52
-        },
-        "ME": {
-          "id": "ME",
-          "name": "중동",
-          "export": 1.13,
-          "import": 6.7,
-          "balance": -5.57
-        },
-        "ROW": {
-          "id": "ROW",
-          "name": "기타 국가",
-          "export": 18.3,
-          "import": 11.86,
-          "balance": 6.44
-        }
-      }
-    },
-    {
-      "month": 7,
-      "name": "7월",
-      "days": 31,
-      "export": 56.15,
-      "import": 50.54,
-      "balance": 5.61,
-      "macro": {
-        "fxRate": 1382,
-        "brentOil": 77.8,
-        "scfiFreight": 2050,
-        "globalDemandIndex": 100.8,
-        "usFedRate": 4.5,
-        "bokBaseRate": 3
-      },
-      "industries": {
-        "semiconductor": {
-          "id": "semiconductor",
-          "name": "반도체",
-          "export": 13.34,
-          "import": 4.66,
-          "balance": 8.68,
-          "capacityIndex": 100,
-          "utilizationRate": 94.5,
-          "globalDemandIndex": 100.8,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "automobile": {
-          "id": "automobile",
-          "name": "자동차·부품",
-          "export": 7.06,
-          "import": 1.96,
-          "balance": 5.1,
-          "capacityIndex": 100,
-          "utilizationRate": 88.2,
-          "globalDemandIndex": 100.8,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 110
-        },
-        "shipbuilding": {
-          "id": "shipbuilding",
-          "name": "조선",
-          "export": 1.96,
-          "import": 0.33,
-          "balance": 1.63,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.8,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "steel": {
-          "id": "steel",
-          "name": "철강",
-          "export": 2.74,
-          "import": 1.74,
-          "balance": 1,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.8,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 125
-        },
-        "petrochemical": {
-          "id": "petrochemical",
-          "name": "석유화학",
-          "export": 3.76,
-          "import": 1.46,
-          "balance": 2.3,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.8,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "battery": {
-          "id": "battery",
-          "name": "이차전지",
-          "export": 0.93,
-          "import": 0.99,
-          "balance": -0.06,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.8,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "bio": {
-          "id": "bio",
-          "name": "바이오·의약품",
-          "export": 0.82,
-          "import": 0.9,
-          "balance": -0.08,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.8,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "machinery": {
-          "id": "machinery",
-          "name": "기계·설비",
-          "export": 4.14,
-          "import": 2.62,
-          "balance": 1.52,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.8,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "defense": {
-          "id": "defense",
-          "name": "방산",
-          "export": 0.67,
-          "import": 0.26,
-          "balance": 0.41,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.8,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "consumer": {
-          "id": "consumer",
-          "name": "소비재",
-          "export": 2.39,
-          "import": 3.08,
-          "balance": -0.69,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.8,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "others": {
-          "id": "others",
-          "name": "기타 산업",
-          "export": 18.34,
-          "import": 32.54,
-          "balance": -14.2,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.8,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        }
-      },
-      "partners": {
-        "US": {
-          "id": "US",
-          "name": "미국",
-          "export": 10.78,
-          "import": 5.81,
-          "balance": 4.97
-        },
-        "CN": {
-          "id": "CN",
-          "name": "중국",
-          "export": 10.44,
-          "import": 11.22,
-          "balance": -0.78
-        },
-        "ASEAN": {
-          "id": "ASEAN",
-          "name": "아세안(베트남 등)",
-          "export": 9.6,
-          "import": 6.47,
-          "balance": 3.13
-        },
-        "EU": {
-          "id": "EU",
-          "name": "EU(유럽연합)",
-          "export": 5.56,
-          "import": 5.46,
-          "balance": 0.1
-        },
-        "JP": {
-          "id": "JP",
-          "name": "일본",
-          "export": 2.36,
-          "import": 3.94,
-          "balance": -1.58
-        },
-        "ME": {
-          "id": "ME",
-          "name": "중동",
-          "export": 1.01,
-          "import": 6.37,
-          "balance": -5.36
-        },
-        "ROW": {
-          "id": "ROW",
-          "name": "기타 국가",
-          "export": 16.4,
-          "import": 11.27,
-          "balance": 5.13
-        }
-      }
-    },
-    {
-      "month": 8,
-      "name": "8월",
-      "days": 31,
-      "export": 54.96,
-      "import": 49.48,
-      "balance": 5.48,
-      "macro": {
-        "fxRate": 1388.5,
-        "brentOil": 76.5,
-        "scfiFreight": 2020,
+        "fxRate": 1395,
+        "brentOil": 83.4,
+        "scfiFreight": 1980,
         "globalDemandIndex": 100.5,
         "usFedRate": 4.5,
         "bokBaseRate": 3
@@ -1433,133 +1550,111 @@
         "semiconductor": {
           "id": "semiconductor",
           "name": "반도체",
-          "export": 13.06,
-          "import": 4.56,
-          "balance": 8.5,
+          "export": 25.14,
+          "import": 5.81,
+          "balance": 19.33,
           "capacityIndex": 100,
-          "utilizationRate": 94.5,
-          "globalDemandIndex": 100.5,
-          "priceCompetitiveness": 100,
+          "utilizationRate": 95,
           "tradeBarrierIndex": 100
         },
         "automobile": {
           "id": "automobile",
           "name": "자동차·부품",
-          "export": 6.91,
-          "import": 1.92,
-          "balance": 4.99,
+          "export": 10.61,
+          "import": 2.5,
+          "balance": 8.11,
           "capacityIndex": 100,
-          "utilizationRate": 88.2,
-          "globalDemandIndex": 100.5,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 110
-        },
-        "shipbuilding": {
-          "id": "shipbuilding",
-          "name": "조선",
-          "export": 1.92,
-          "import": 0.32,
-          "balance": 1.6,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.5,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "steel": {
-          "id": "steel",
-          "name": "철강",
-          "export": 2.68,
-          "import": 1.71,
-          "balance": 0.97,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.5,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 125
-        },
-        "petrochemical": {
-          "id": "petrochemical",
-          "name": "석유화학",
-          "export": 3.68,
-          "import": 1.43,
-          "balance": 2.25,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.5,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "battery": {
-          "id": "battery",
-          "name": "이차전지",
-          "export": 0.91,
-          "import": 0.97,
-          "balance": -0.06,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.5,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "bio": {
-          "id": "bio",
-          "name": "바이오·의약품",
-          "export": 0.81,
-          "import": 0.88,
-          "balance": -0.07,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 100.5,
-          "priceCompetitiveness": 100,
+          "utilizationRate": 89,
           "tradeBarrierIndex": 100
         },
         "machinery": {
           "id": "machinery",
           "name": "기계·설비",
-          "export": 4.05,
-          "import": 2.57,
-          "balance": 1.48,
+          "export": 6.44,
+          "import": 3.41,
+          "balance": 3.03,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 100.5,
-          "priceCompetitiveness": 100,
           "tradeBarrierIndex": 100
         },
-        "defense": {
-          "id": "defense",
-          "name": "방산",
-          "export": 0.66,
-          "import": 0.25,
-          "balance": 0.41,
+        "petrochemical": {
+          "id": "petrochemical",
+          "name": "석유화학",
+          "export": 5.34,
+          "import": 1.99,
+          "balance": 3.35,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 100.5,
-          "priceCompetitiveness": 100,
           "tradeBarrierIndex": 100
         },
         "consumer": {
           "id": "consumer",
           "name": "소비재",
-          "export": 2.34,
-          "import": 3.02,
-          "balance": -0.68,
+          "export": 4.08,
+          "import": 3.85,
+          "balance": 0.23,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 100.5,
-          "priceCompetitiveness": 100,
+          "tradeBarrierIndex": 100
+        },
+        "steel": {
+          "id": "steel",
+          "name": "철강",
+          "export": 3.77,
+          "import": 2.28,
+          "balance": 1.49,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "shipbuilding": {
+          "id": "shipbuilding",
+          "name": "조선",
+          "export": 2.99,
+          "import": 0.46,
+          "balance": 2.53,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "battery": {
+          "id": "battery",
+          "name": "이차전지",
+          "export": 1.65,
+          "import": 1.32,
+          "balance": 0.33,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "defense": {
+          "id": "defense",
+          "name": "방산",
+          "export": 1.41,
+          "import": 0.36,
+          "balance": 1.05,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "bio": {
+          "id": "bio",
+          "name": "바이오·의약품",
+          "export": 1.37,
+          "import": 1.16,
+          "balance": 0.21,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
           "tradeBarrierIndex": 100
         },
         "others": {
           "id": "others",
           "name": "기타 산업",
-          "export": 17.94,
-          "import": 31.85,
-          "balance": -13.91,
+          "export": 26.4,
+          "import": 38.96,
+          "balance": -12.56,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 100.5,
-          "priceCompetitiveness": 100,
           "tradeBarrierIndex": 100
         }
       },
@@ -1567,65 +1662,892 @@
         "US": {
           "id": "US",
           "name": "미국",
-          "export": 10.56,
-          "import": 5.69,
-          "balance": 4.87
+          "export": 17.85,
+          "import": 8.55,
+          "balance": 9.3
         },
         "CN": {
           "id": "CN",
           "name": "중국",
-          "export": 10.22,
-          "import": 10.98,
-          "balance": -0.76
+          "export": 17.61,
+          "import": 15.91,
+          "balance": 1.7
         },
         "ASEAN": {
           "id": "ASEAN",
           "name": "아세안(베트남 등)",
-          "export": 9.4,
-          "import": 6.34,
-          "balance": 3.06
+          "export": 18.21,
+          "import": 8.52,
+          "balance": 9.69
         },
         "EU": {
           "id": "EU",
           "name": "EU(유럽연합)",
-          "export": 5.44,
-          "import": 5.34,
-          "balance": 0.1
+          "export": 11.4,
+          "import": 8.71,
+          "balance": 2.69
         },
         "JP": {
           "id": "JP",
           "name": "일본",
-          "export": 2.31,
-          "import": 3.86,
-          "balance": -1.55
+          "export": 4.66,
+          "import": 6.01,
+          "balance": -1.35
         },
         "ME": {
           "id": "ME",
           "name": "중동",
-          "export": 0.99,
-          "import": 6.24,
-          "balance": -5.25
+          "export": 2.56,
+          "import": 10.23,
+          "balance": -7.67
         },
         "ROW": {
           "id": "ROW",
           "name": "기타 국가",
-          "export": 16.04,
-          "import": 11.03,
-          "balance": 5.01
+          "export": 16.91,
+          "import": 4.17,
+          "balance": 12.74
+        }
+      },
+      "matrix": {
+        "US": {
+          "semiconductor": {
+            "export": 3.52,
+            "import": 1.16
+          },
+          "automobile": {
+            "export": 5.09,
+            "import": 0.38
+          },
+          "machinery": {
+            "export": 2.19,
+            "import": 0.75
+          },
+          "petrochemical": {
+            "export": 0.43,
+            "import": 0.2
+          },
+          "consumer": {
+            "export": 1.14,
+            "import": 0.58
+          },
+          "steel": {
+            "export": 0.6,
+            "import": 0.11
+          },
+          "shipbuilding": {
+            "export": 0.15,
+            "import": 0.01
+          },
+          "battery": {
+            "export": 0.66,
+            "import": 0.13
+          },
+          "defense": {
+            "export": 0.28,
+            "import": 0.14
+          },
+          "bio": {
+            "export": 0.62,
+            "import": 0.41
+          },
+          "others": {
+            "export": 3.17,
+            "import": 4.68
+          }
+        },
+        "CN": {
+          "semiconductor": {
+            "export": 6.79,
+            "import": 2.03
+          },
+          "automobile": {
+            "export": 0.42,
+            "import": 0.2
+          },
+          "machinery": {
+            "export": 1.42,
+            "import": 1.02
+          },
+          "petrochemical": {
+            "export": 2.35,
+            "import": 0.7
+          },
+          "consumer": {
+            "export": 0.82,
+            "import": 1.46
+          },
+          "steel": {
+            "export": 0.68,
+            "import": 1.03
+          },
+          "shipbuilding": {
+            "export": 0.06,
+            "import": 0.05
+          },
+          "battery": {
+            "export": 0.25,
+            "import": 0.73
+          },
+          "defense": {
+            "export": 0,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.07,
+            "import": 0.12
+          },
+          "others": {
+            "export": 4.75,
+            "import": 8.57
+          }
+        },
+        "ASEAN": {
+          "semiconductor": {
+            "export": 5.53,
+            "import": 1.16
+          },
+          "automobile": {
+            "export": 1.27,
+            "import": 0.25
+          },
+          "machinery": {
+            "export": 1.55,
+            "import": 0.61
+          },
+          "petrochemical": {
+            "export": 1.34,
+            "import": 0.4
+          },
+          "consumer": {
+            "export": 1.02,
+            "import": 0.77
+          },
+          "steel": {
+            "export": 0.94,
+            "import": 0.34
+          },
+          "shipbuilding": {
+            "export": 0.54,
+            "import": 0.05
+          },
+          "battery": {
+            "export": 0.25,
+            "import": 0.2
+          },
+          "defense": {
+            "export": 0.35,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.14,
+            "import": 0.06
+          },
+          "others": {
+            "export": 5.28,
+            "import": 4.68
+          }
+        },
+        "EU": {
+          "semiconductor": {
+            "export": 1.76,
+            "import": 0.58
+          },
+          "automobile": {
+            "export": 2.02,
+            "import": 1.13
+          },
+          "machinery": {
+            "export": 1.22,
+            "import": 0.85
+          },
+          "petrochemical": {
+            "export": 0.53,
+            "import": 0.3
+          },
+          "consumer": {
+            "export": 0.57,
+            "import": 0.69
+          },
+          "steel": {
+            "export": 0.57,
+            "import": 0.27
+          },
+          "shipbuilding": {
+            "export": 1.05,
+            "import": 0.09
+          },
+          "battery": {
+            "export": 0.46,
+            "import": 0.2
+          },
+          "defense": {
+            "export": 0.63,
+            "import": 0.18
+          },
+          "bio": {
+            "export": 0.48,
+            "import": 0.52
+          },
+          "others": {
+            "export": 2.11,
+            "import": 3.9
+          }
+        },
+        "JP": {
+          "semiconductor": {
+            "export": 1.01,
+            "import": 0.7
+          },
+          "automobile": {
+            "export": 0.21,
+            "import": 0.3
+          },
+          "machinery": {
+            "export": 0.52,
+            "import": 0.68
+          },
+          "petrochemical": {
+            "export": 0.32,
+            "import": 0.24
+          },
+          "consumer": {
+            "export": 0.33,
+            "import": 0.31
+          },
+          "steel": {
+            "export": 0.53,
+            "import": 0.46
+          },
+          "shipbuilding": {
+            "export": 0.06,
+            "import": 0.07
+          },
+          "battery": {
+            "export": 0.03,
+            "import": 0.07
+          },
+          "defense": {
+            "export": 0,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.07,
+            "import": 0.06
+          },
+          "others": {
+            "export": 1.58,
+            "import": 3.12
+          }
+        },
+        "ME": {
+          "semiconductor": {
+            "export": 0.25,
+            "import": 0
+          },
+          "automobile": {
+            "export": 0.53,
+            "import": 0
+          },
+          "machinery": {
+            "export": 0.32,
+            "import": 0
+          },
+          "petrochemical": {
+            "export": 0.11,
+            "import": 0.1
+          },
+          "consumer": {
+            "export": 0.08,
+            "import": 0
+          },
+          "steel": {
+            "export": 0.15,
+            "import": 0
+          },
+          "shipbuilding": {
+            "export": 0.45,
+            "import": 0
+          },
+          "battery": {
+            "export": 0,
+            "import": 0
+          },
+          "defense": {
+            "export": 0.14,
+            "import": 0
+          },
+          "bio": {
+            "export": 0,
+            "import": 0
+          },
+          "others": {
+            "export": 0.53,
+            "import": 10.13
+          }
+        },
+        "ROW": {
+          "semiconductor": {
+            "export": 6.28,
+            "import": 0.18
+          },
+          "automobile": {
+            "export": 1.07,
+            "import": 0.24
+          },
+          "machinery": {
+            "export": -0.78,
+            "import": -0.5
+          },
+          "petrochemical": {
+            "export": 0.26,
+            "import": 0.05
+          },
+          "consumer": {
+            "export": 0.12,
+            "import": 0.04
+          },
+          "steel": {
+            "export": 0.3,
+            "import": 0.07
+          },
+          "shipbuilding": {
+            "export": 0.68,
+            "import": 0.19
+          },
+          "battery": {
+            "export": 0,
+            "import": -0.01
+          },
+          "defense": {
+            "export": 0.01,
+            "import": 0.04
+          },
+          "bio": {
+            "export": -0.01,
+            "import": -0.01
+          },
+          "others": {
+            "export": 8.98,
+            "import": 3.88
+          }
         }
       }
     },
     {
-      "month": 9,
-      "name": "9월",
-      "days": 30,
-      "export": 63.24,
-      "import": 53.69,
-      "balance": 9.55,
+      "month": 5,
+      "name": "5월",
+      "status": "확정 실적",
+      "export": 92.5,
+      "import": 63.4,
+      "balance": 29.1,
       "macro": {
-        "fxRate": 1395.2,
-        "brentOil": 75.9,
-        "scfiFreight": 1970,
+        "fxRate": 1388.5,
+        "brentOil": 81.2,
+        "scfiFreight": 2010,
+        "globalDemandIndex": 100.8,
+        "usFedRate": 4.5,
+        "bokBaseRate": 3
+      },
+      "industries": {
+        "semiconductor": {
+          "id": "semiconductor",
+          "name": "반도체",
+          "export": 26.07,
+          "import": 5.93,
+          "balance": 20.14,
+          "capacityIndex": 100,
+          "utilizationRate": 95,
+          "tradeBarrierIndex": 100
+        },
+        "automobile": {
+          "id": "automobile",
+          "name": "자동차·부품",
+          "export": 11,
+          "import": 2.55,
+          "balance": 8.45,
+          "capacityIndex": 100,
+          "utilizationRate": 89,
+          "tradeBarrierIndex": 100
+        },
+        "machinery": {
+          "id": "machinery",
+          "name": "기계·설비",
+          "export": 6.68,
+          "import": 3.48,
+          "balance": 3.2,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "petrochemical": {
+          "id": "petrochemical",
+          "name": "석유화학",
+          "export": 5.54,
+          "import": 2.03,
+          "balance": 3.51,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "consumer": {
+          "id": "consumer",
+          "name": "소비재",
+          "export": 4.24,
+          "import": 3.93,
+          "balance": 0.31,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "steel": {
+          "id": "steel",
+          "name": "철강",
+          "export": 3.91,
+          "import": 2.33,
+          "balance": 1.58,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "shipbuilding": {
+          "id": "shipbuilding",
+          "name": "조선",
+          "export": 3.1,
+          "import": 0.47,
+          "balance": 2.63,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "battery": {
+          "id": "battery",
+          "name": "이차전지",
+          "export": 1.71,
+          "import": 1.35,
+          "balance": 0.36,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "defense": {
+          "id": "defense",
+          "name": "방산",
+          "export": 1.47,
+          "import": 0.37,
+          "balance": 1.1,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "bio": {
+          "id": "bio",
+          "name": "바이오·의약품",
+          "export": 1.43,
+          "import": 1.19,
+          "balance": 0.24,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "others": {
+          "id": "others",
+          "name": "기타 산업",
+          "export": 27.35,
+          "import": 39.77,
+          "balance": -12.42,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        }
+      },
+      "partners": {
+        "US": {
+          "id": "US",
+          "name": "미국",
+          "export": 18.51,
+          "import": 8.74,
+          "balance": 9.77
+        },
+        "CN": {
+          "id": "CN",
+          "name": "중국",
+          "export": 18.25,
+          "import": 16.23,
+          "balance": 2.02
+        },
+        "ASEAN": {
+          "id": "ASEAN",
+          "name": "아세안(베트남 등)",
+          "export": 18.89,
+          "import": 8.71,
+          "balance": 10.18
+        },
+        "EU": {
+          "id": "EU",
+          "name": "EU(유럽연합)",
+          "export": 11.83,
+          "import": 8.9,
+          "balance": 2.93
+        },
+        "JP": {
+          "id": "JP",
+          "name": "일본",
+          "export": 4.81,
+          "import": 6.12,
+          "balance": -1.31
+        },
+        "ME": {
+          "id": "ME",
+          "name": "중동",
+          "export": 2.66,
+          "import": 10.44,
+          "balance": -7.78
+        },
+        "ROW": {
+          "id": "ROW",
+          "name": "기타 국가",
+          "export": 17.55,
+          "import": 4.26,
+          "balance": 13.29
+        }
+      },
+      "matrix": {
+        "US": {
+          "semiconductor": {
+            "export": 3.65,
+            "import": 1.19
+          },
+          "automobile": {
+            "export": 5.28,
+            "import": 0.38
+          },
+          "machinery": {
+            "export": 2.27,
+            "import": 0.77
+          },
+          "petrochemical": {
+            "export": 0.44,
+            "import": 0.2
+          },
+          "consumer": {
+            "export": 1.19,
+            "import": 0.59
+          },
+          "steel": {
+            "export": 0.63,
+            "import": 0.12
+          },
+          "shipbuilding": {
+            "export": 0.16,
+            "import": 0.01
+          },
+          "battery": {
+            "export": 0.68,
+            "import": 0.14
+          },
+          "defense": {
+            "export": 0.29,
+            "import": 0.15
+          },
+          "bio": {
+            "export": 0.64,
+            "import": 0.42
+          },
+          "others": {
+            "export": 3.28,
+            "import": 4.77
+          }
+        },
+        "CN": {
+          "semiconductor": {
+            "export": 7.04,
+            "import": 2.08
+          },
+          "automobile": {
+            "export": 0.44,
+            "import": 0.2
+          },
+          "machinery": {
+            "export": 1.47,
+            "import": 1.04
+          },
+          "petrochemical": {
+            "export": 2.44,
+            "import": 0.71
+          },
+          "consumer": {
+            "export": 0.85,
+            "import": 1.49
+          },
+          "steel": {
+            "export": 0.7,
+            "import": 1.05
+          },
+          "shipbuilding": {
+            "export": 0.06,
+            "import": 0.05
+          },
+          "battery": {
+            "export": 0.26,
+            "import": 0.74
+          },
+          "defense": {
+            "export": 0,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.07,
+            "import": 0.12
+          },
+          "others": {
+            "export": 4.92,
+            "import": 8.75
+          }
+        },
+        "ASEAN": {
+          "semiconductor": {
+            "export": 5.74,
+            "import": 1.19
+          },
+          "automobile": {
+            "export": 1.32,
+            "import": 0.26
+          },
+          "machinery": {
+            "export": 1.6,
+            "import": 0.63
+          },
+          "petrochemical": {
+            "export": 1.39,
+            "import": 0.41
+          },
+          "consumer": {
+            "export": 1.06,
+            "import": 0.79
+          },
+          "steel": {
+            "export": 0.98,
+            "import": 0.35
+          },
+          "shipbuilding": {
+            "export": 0.56,
+            "import": 0.05
+          },
+          "battery": {
+            "export": 0.26,
+            "import": 0.2
+          },
+          "defense": {
+            "export": 0.37,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.14,
+            "import": 0.06
+          },
+          "others": {
+            "export": 5.47,
+            "import": 4.77
+          }
+        },
+        "EU": {
+          "semiconductor": {
+            "export": 1.82,
+            "import": 0.59
+          },
+          "automobile": {
+            "export": 2.09,
+            "import": 1.15
+          },
+          "machinery": {
+            "export": 1.27,
+            "import": 0.87
+          },
+          "petrochemical": {
+            "export": 0.55,
+            "import": 0.3
+          },
+          "consumer": {
+            "export": 0.59,
+            "import": 0.71
+          },
+          "steel": {
+            "export": 0.59,
+            "import": 0.28
+          },
+          "shipbuilding": {
+            "export": 1.09,
+            "import": 0.09
+          },
+          "battery": {
+            "export": 0.48,
+            "import": 0.2
+          },
+          "defense": {
+            "export": 0.66,
+            "import": 0.19
+          },
+          "bio": {
+            "export": 0.5,
+            "import": 0.54
+          },
+          "others": {
+            "export": 2.19,
+            "import": 3.98
+          }
+        },
+        "JP": {
+          "semiconductor": {
+            "export": 1.04,
+            "import": 0.71
+          },
+          "automobile": {
+            "export": 0.22,
+            "import": 0.31
+          },
+          "machinery": {
+            "export": 0.53,
+            "import": 0.7
+          },
+          "petrochemical": {
+            "export": 0.33,
+            "import": 0.24
+          },
+          "consumer": {
+            "export": 0.34,
+            "import": 0.31
+          },
+          "steel": {
+            "export": 0.55,
+            "import": 0.47
+          },
+          "shipbuilding": {
+            "export": 0.06,
+            "import": 0.07
+          },
+          "battery": {
+            "export": 0.03,
+            "import": 0.07
+          },
+          "defense": {
+            "export": 0,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.07,
+            "import": 0.06
+          },
+          "others": {
+            "export": 1.64,
+            "import": 3.18
+          }
+        },
+        "ME": {
+          "semiconductor": {
+            "export": 0.26,
+            "import": 0
+          },
+          "automobile": {
+            "export": 0.55,
+            "import": 0
+          },
+          "machinery": {
+            "export": 0.33,
+            "import": 0
+          },
+          "petrochemical": {
+            "export": 0.11,
+            "import": 0.1
+          },
+          "consumer": {
+            "export": 0.08,
+            "import": 0
+          },
+          "steel": {
+            "export": 0.16,
+            "import": 0
+          },
+          "shipbuilding": {
+            "export": 0.47,
+            "import": 0
+          },
+          "battery": {
+            "export": 0,
+            "import": 0
+          },
+          "defense": {
+            "export": 0.15,
+            "import": 0
+          },
+          "bio": {
+            "export": 0,
+            "import": 0
+          },
+          "others": {
+            "export": 0.55,
+            "import": 10.34
+          }
+        },
+        "ROW": {
+          "semiconductor": {
+            "export": 6.52,
+            "import": 0.17
+          },
+          "automobile": {
+            "export": 1.1,
+            "import": 0.25
+          },
+          "machinery": {
+            "export": -0.79,
+            "import": -0.53
+          },
+          "petrochemical": {
+            "export": 0.28,
+            "import": 0.07
+          },
+          "consumer": {
+            "export": 0.13,
+            "import": 0.04
+          },
+          "steel": {
+            "export": 0.3,
+            "import": 0.06
+          },
+          "shipbuilding": {
+            "export": 0.7,
+            "import": 0.2
+          },
+          "battery": {
+            "export": 0,
+            "import": 0
+          },
+          "defense": {
+            "export": 0,
+            "import": 0.03
+          },
+          "bio": {
+            "export": 0.01,
+            "import": -0.01
+          },
+          "others": {
+            "export": 9.3,
+            "import": 3.98
+          }
+        }
+      }
+    },
+    {
+      "month": 6,
+      "name": "6월",
+      "status": "확정 실적",
+      "export": 98.4,
+      "import": 65.2,
+      "balance": 33.2,
+      "macro": {
+        "fxRate": 1382,
+        "brentOil": 79.5,
+        "scfiFreight": 2080,
         "globalDemandIndex": 101.4,
         "usFedRate": 4.5,
         "bokBaseRate": 3
@@ -1634,133 +2556,111 @@
         "semiconductor": {
           "id": "semiconductor",
           "name": "반도체",
-          "export": 15.02,
-          "import": 4.95,
-          "balance": 10.07,
+          "export": 27.73,
+          "import": 6.1,
+          "balance": 21.63,
           "capacityIndex": 100,
-          "utilizationRate": 94.5,
-          "globalDemandIndex": 101.4,
-          "priceCompetitiveness": 100,
+          "utilizationRate": 95,
           "tradeBarrierIndex": 100
         },
         "automobile": {
           "id": "automobile",
           "name": "자동차·부품",
-          "export": 7.95,
-          "import": 2.08,
-          "balance": 5.87,
+          "export": 11.7,
+          "import": 2.62,
+          "balance": 9.08,
           "capacityIndex": 100,
-          "utilizationRate": 88.2,
-          "globalDemandIndex": 101.4,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 110
-        },
-        "shipbuilding": {
-          "id": "shipbuilding",
-          "name": "조선",
-          "export": 2.21,
-          "import": 0.35,
-          "balance": 1.86,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 101.4,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "steel": {
-          "id": "steel",
-          "name": "철강",
-          "export": 3.09,
-          "import": 1.85,
-          "balance": 1.24,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 101.4,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 125
-        },
-        "petrochemical": {
-          "id": "petrochemical",
-          "name": "석유화학",
-          "export": 4.24,
-          "import": 1.55,
-          "balance": 2.69,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 101.4,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "battery": {
-          "id": "battery",
-          "name": "이차전지",
-          "export": 1.05,
-          "import": 1.05,
-          "balance": 0,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 101.4,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "bio": {
-          "id": "bio",
-          "name": "바이오·의약품",
-          "export": 0.93,
-          "import": 0.95,
-          "balance": -0.02,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 101.4,
-          "priceCompetitiveness": 100,
+          "utilizationRate": 89,
           "tradeBarrierIndex": 100
         },
         "machinery": {
           "id": "machinery",
           "name": "기계·설비",
-          "export": 4.66,
-          "import": 2.79,
-          "balance": 1.87,
+          "export": 7.11,
+          "import": 3.58,
+          "balance": 3.53,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 101.4,
-          "priceCompetitiveness": 100,
           "tradeBarrierIndex": 100
         },
-        "defense": {
-          "id": "defense",
-          "name": "방산",
-          "export": 0.76,
-          "import": 0.27,
-          "balance": 0.49,
+        "petrochemical": {
+          "id": "petrochemical",
+          "name": "석유화학",
+          "export": 5.89,
+          "import": 2.09,
+          "balance": 3.8,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 101.4,
-          "priceCompetitiveness": 100,
           "tradeBarrierIndex": 100
         },
         "consumer": {
           "id": "consumer",
           "name": "소비재",
-          "export": 2.69,
-          "import": 3.27,
-          "balance": -0.58,
+          "export": 4.51,
+          "import": 4.04,
+          "balance": 0.47,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 101.4,
-          "priceCompetitiveness": 100,
+          "tradeBarrierIndex": 100
+        },
+        "steel": {
+          "id": "steel",
+          "name": "철강",
+          "export": 4.16,
+          "import": 2.4,
+          "balance": 1.76,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "shipbuilding": {
+          "id": "shipbuilding",
+          "name": "조선",
+          "export": 3.29,
+          "import": 0.49,
+          "balance": 2.8,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "battery": {
+          "id": "battery",
+          "name": "이차전지",
+          "export": 1.82,
+          "import": 1.39,
+          "balance": 0.43,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "defense": {
+          "id": "defense",
+          "name": "방산",
+          "export": 1.56,
+          "import": 0.38,
+          "balance": 1.18,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "bio": {
+          "id": "bio",
+          "name": "바이오·의약품",
+          "export": 1.52,
+          "import": 1.22,
+          "balance": 0.3,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
           "tradeBarrierIndex": 100
         },
         "others": {
           "id": "others",
           "name": "기타 산업",
-          "export": 20.64,
-          "import": 34.58,
-          "balance": -13.94,
+          "export": 29.11,
+          "import": 40.89,
+          "balance": -11.78,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 101.4,
-          "priceCompetitiveness": 100,
           "tradeBarrierIndex": 100
         }
       },
@@ -1768,65 +2668,389 @@
         "US": {
           "id": "US",
           "name": "미국",
-          "export": 12.14,
-          "import": 6.17,
-          "balance": 5.97
+          "export": 19.69,
+          "import": 8.98,
+          "balance": 10.71
         },
         "CN": {
           "id": "CN",
           "name": "중국",
-          "export": 11.76,
-          "import": 11.92,
-          "balance": -0.16
+          "export": 19.42,
+          "import": 16.69,
+          "balance": 2.73
         },
         "ASEAN": {
           "id": "ASEAN",
           "name": "아세안(베트남 등)",
-          "export": 10.82,
-          "import": 6.88,
-          "balance": 3.94
+          "export": 20.07,
+          "import": 8.94,
+          "balance": 11.13
         },
         "EU": {
           "id": "EU",
           "name": "EU(유럽연합)",
-          "export": 6.26,
-          "import": 5.8,
-          "balance": 0.46
+          "export": 12.57,
+          "import": 9.16,
+          "balance": 3.41
         },
         "JP": {
           "id": "JP",
           "name": "일본",
-          "export": 2.66,
-          "import": 4.19,
-          "balance": -1.53
+          "export": 5.14,
+          "import": 6.28,
+          "balance": -1.14
         },
         "ME": {
           "id": "ME",
           "name": "중동",
-          "export": 1.14,
-          "import": 6.77,
-          "balance": -5.63
+          "export": 2.84,
+          "import": 10.73,
+          "balance": -7.89
         },
         "ROW": {
           "id": "ROW",
           "name": "기타 국가",
-          "export": 18.46,
-          "import": 11.96,
-          "balance": 6.5
+          "export": 18.67,
+          "import": 4.42,
+          "balance": 14.25
+        }
+      },
+      "matrix": {
+        "US": {
+          "semiconductor": {
+            "export": 3.88,
+            "import": 1.22
+          },
+          "automobile": {
+            "export": 5.62,
+            "import": 0.39
+          },
+          "machinery": {
+            "export": 2.42,
+            "import": 0.79
+          },
+          "petrochemical": {
+            "export": 0.47,
+            "import": 0.21
+          },
+          "consumer": {
+            "export": 1.26,
+            "import": 0.61
+          },
+          "steel": {
+            "export": 0.67,
+            "import": 0.12
+          },
+          "shipbuilding": {
+            "export": 0.16,
+            "import": 0.01
+          },
+          "battery": {
+            "export": 0.73,
+            "import": 0.14
+          },
+          "defense": {
+            "export": 0.31,
+            "import": 0.15
+          },
+          "bio": {
+            "export": 0.68,
+            "import": 0.43
+          },
+          "others": {
+            "export": 3.49,
+            "import": 4.91
+          }
+        },
+        "CN": {
+          "semiconductor": {
+            "export": 7.49,
+            "import": 2.13
+          },
+          "automobile": {
+            "export": 0.47,
+            "import": 0.21
+          },
+          "machinery": {
+            "export": 1.56,
+            "import": 1.07
+          },
+          "petrochemical": {
+            "export": 2.59,
+            "import": 0.73
+          },
+          "consumer": {
+            "export": 0.9,
+            "import": 1.54
+          },
+          "steel": {
+            "export": 0.75,
+            "import": 1.08
+          },
+          "shipbuilding": {
+            "export": 0.07,
+            "import": 0.05
+          },
+          "battery": {
+            "export": 0.27,
+            "import": 0.76
+          },
+          "defense": {
+            "export": 0,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.08,
+            "import": 0.12
+          },
+          "others": {
+            "export": 5.24,
+            "import": 9
+          }
+        },
+        "ASEAN": {
+          "semiconductor": {
+            "export": 6.1,
+            "import": 1.22
+          },
+          "automobile": {
+            "export": 1.4,
+            "import": 0.26
+          },
+          "machinery": {
+            "export": 1.71,
+            "import": 0.64
+          },
+          "petrochemical": {
+            "export": 1.47,
+            "import": 0.42
+          },
+          "consumer": {
+            "export": 1.13,
+            "import": 0.81
+          },
+          "steel": {
+            "export": 1.04,
+            "import": 0.36
+          },
+          "shipbuilding": {
+            "export": 0.59,
+            "import": 0.05
+          },
+          "battery": {
+            "export": 0.27,
+            "import": 0.21
+          },
+          "defense": {
+            "export": 0.39,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.15,
+            "import": 0.06
+          },
+          "others": {
+            "export": 5.82,
+            "import": 4.91
+          }
+        },
+        "EU": {
+          "semiconductor": {
+            "export": 1.94,
+            "import": 0.61
+          },
+          "automobile": {
+            "export": 2.22,
+            "import": 1.18
+          },
+          "machinery": {
+            "export": 1.35,
+            "import": 0.9
+          },
+          "petrochemical": {
+            "export": 0.59,
+            "import": 0.31
+          },
+          "consumer": {
+            "export": 0.63,
+            "import": 0.73
+          },
+          "steel": {
+            "export": 0.62,
+            "import": 0.29
+          },
+          "shipbuilding": {
+            "export": 1.15,
+            "import": 0.1
+          },
+          "battery": {
+            "export": 0.51,
+            "import": 0.21
+          },
+          "defense": {
+            "export": 0.7,
+            "import": 0.19
+          },
+          "bio": {
+            "export": 0.53,
+            "import": 0.55
+          },
+          "others": {
+            "export": 2.33,
+            "import": 4.09
+          }
+        },
+        "JP": {
+          "semiconductor": {
+            "export": 1.11,
+            "import": 0.73
+          },
+          "automobile": {
+            "export": 0.23,
+            "import": 0.31
+          },
+          "machinery": {
+            "export": 0.57,
+            "import": 0.72
+          },
+          "petrochemical": {
+            "export": 0.35,
+            "import": 0.25
+          },
+          "consumer": {
+            "export": 0.36,
+            "import": 0.32
+          },
+          "steel": {
+            "export": 0.58,
+            "import": 0.48
+          },
+          "shipbuilding": {
+            "export": 0.07,
+            "import": 0.07
+          },
+          "battery": {
+            "export": 0.04,
+            "import": 0.07
+          },
+          "defense": {
+            "export": 0,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.08,
+            "import": 0.06
+          },
+          "others": {
+            "export": 1.75,
+            "import": 3.27
+          }
+        },
+        "ME": {
+          "semiconductor": {
+            "export": 0.28,
+            "import": 0
+          },
+          "automobile": {
+            "export": 0.59,
+            "import": 0
+          },
+          "machinery": {
+            "export": 0.36,
+            "import": 0
+          },
+          "petrochemical": {
+            "export": 0.12,
+            "import": 0.1
+          },
+          "consumer": {
+            "export": 0.09,
+            "import": 0
+          },
+          "steel": {
+            "export": 0.17,
+            "import": 0
+          },
+          "shipbuilding": {
+            "export": 0.49,
+            "import": 0
+          },
+          "battery": {
+            "export": 0,
+            "import": 0
+          },
+          "defense": {
+            "export": 0.16,
+            "import": 0
+          },
+          "bio": {
+            "export": 0,
+            "import": 0
+          },
+          "others": {
+            "export": 0.58,
+            "import": 10.63
+          }
+        },
+        "ROW": {
+          "semiconductor": {
+            "export": 6.93,
+            "import": 0.19
+          },
+          "automobile": {
+            "export": 1.17,
+            "import": 0.27
+          },
+          "machinery": {
+            "export": -0.86,
+            "import": -0.54
+          },
+          "petrochemical": {
+            "export": 0.3,
+            "import": 0.07
+          },
+          "consumer": {
+            "export": 0.14,
+            "import": 0.03
+          },
+          "steel": {
+            "export": 0.33,
+            "import": 0.07
+          },
+          "shipbuilding": {
+            "export": 0.76,
+            "import": 0.21
+          },
+          "battery": {
+            "export": 0,
+            "import": 0
+          },
+          "defense": {
+            "export": 0,
+            "import": 0.04
+          },
+          "bio": {
+            "export": 0,
+            "import": 0
+          },
+          "others": {
+            "export": 9.9,
+            "import": 4.08
+          }
         }
       }
     },
     {
-      "month": 10,
-      "name": "10월",
-      "days": 31,
-      "export": 57.92,
-      "import": 50.54,
-      "balance": 7.38,
+      "month": 7,
+      "name": "7월",
+      "status": "확정 실적",
+      "export": 91.8,
+      "import": 62.9,
+      "balance": 28.9,
       "macro": {
-        "fxRate": 1402.7,
-        "brentOil": 77.2,
-        "scfiFreight": 1930,
+        "fxRate": 1378.4,
+        "brentOil": 78.1,
+        "scfiFreight": 2110,
         "globalDemandIndex": 101,
         "usFedRate": 4.5,
         "bokBaseRate": 3
@@ -1835,133 +3059,111 @@
         "semiconductor": {
           "id": "semiconductor",
           "name": "반도체",
-          "export": 13.76,
-          "import": 4.66,
-          "balance": 9.1,
+          "export": 25.87,
+          "import": 5.88,
+          "balance": 19.99,
           "capacityIndex": 100,
-          "utilizationRate": 94.5,
-          "globalDemandIndex": 101,
-          "priceCompetitiveness": 100,
+          "utilizationRate": 95,
           "tradeBarrierIndex": 100
         },
         "automobile": {
           "id": "automobile",
           "name": "자동차·부품",
-          "export": 7.28,
-          "import": 1.96,
-          "balance": 5.32,
+          "export": 10.91,
+          "import": 2.53,
+          "balance": 8.38,
           "capacityIndex": 100,
-          "utilizationRate": 88.2,
-          "globalDemandIndex": 101,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 110
-        },
-        "shipbuilding": {
-          "id": "shipbuilding",
-          "name": "조선",
-          "export": 2.03,
-          "import": 0.33,
-          "balance": 1.7,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 101,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "steel": {
-          "id": "steel",
-          "name": "철강",
-          "export": 2.83,
-          "import": 1.74,
-          "balance": 1.09,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 101,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 125
-        },
-        "petrochemical": {
-          "id": "petrochemical",
-          "name": "석유화학",
-          "export": 3.88,
-          "import": 1.46,
-          "balance": 2.42,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 101,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "battery": {
-          "id": "battery",
-          "name": "이차전지",
-          "export": 0.96,
-          "import": 0.99,
-          "balance": -0.03,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 101,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "bio": {
-          "id": "bio",
-          "name": "바이오·의약품",
-          "export": 0.85,
-          "import": 0.9,
-          "balance": -0.05,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 101,
-          "priceCompetitiveness": 100,
+          "utilizationRate": 89,
           "tradeBarrierIndex": 100
         },
         "machinery": {
           "id": "machinery",
           "name": "기계·설비",
-          "export": 4.27,
-          "import": 2.62,
-          "balance": 1.65,
+          "export": 6.63,
+          "import": 3.45,
+          "balance": 3.18,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 101,
-          "priceCompetitiveness": 100,
           "tradeBarrierIndex": 100
         },
-        "defense": {
-          "id": "defense",
-          "name": "방산",
-          "export": 0.69,
-          "import": 0.26,
-          "balance": 0.43,
+        "petrochemical": {
+          "id": "petrochemical",
+          "name": "석유화학",
+          "export": 5.5,
+          "import": 2.01,
+          "balance": 3.49,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 101,
-          "priceCompetitiveness": 100,
           "tradeBarrierIndex": 100
         },
         "consumer": {
           "id": "consumer",
           "name": "소비재",
-          "export": 2.47,
-          "import": 3.08,
-          "balance": -0.61,
+          "export": 4.2,
+          "import": 3.9,
+          "balance": 0.3,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 101,
-          "priceCompetitiveness": 100,
+          "tradeBarrierIndex": 100
+        },
+        "steel": {
+          "id": "steel",
+          "name": "철강",
+          "export": 3.88,
+          "import": 2.31,
+          "balance": 1.57,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "shipbuilding": {
+          "id": "shipbuilding",
+          "name": "조선",
+          "export": 3.07,
+          "import": 0.47,
+          "balance": 2.6,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "battery": {
+          "id": "battery",
+          "name": "이차전지",
+          "export": 1.7,
+          "import": 1.34,
+          "balance": 0.36,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "defense": {
+          "id": "defense",
+          "name": "방산",
+          "export": 1.46,
+          "import": 0.37,
+          "balance": 1.09,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "bio": {
+          "id": "bio",
+          "name": "바이오·의약품",
+          "export": 1.41,
+          "import": 1.18,
+          "balance": 0.23,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
           "tradeBarrierIndex": 100
         },
         "others": {
           "id": "others",
           "name": "기타 산업",
-          "export": 18.9,
-          "import": 32.54,
-          "balance": -13.64,
+          "export": 27.17,
+          "import": 39.46,
+          "balance": -12.29,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 101,
-          "priceCompetitiveness": 100,
           "tradeBarrierIndex": 100
         }
       },
@@ -1969,65 +3171,892 @@
         "US": {
           "id": "US",
           "name": "미국",
-          "export": 11.12,
-          "import": 5.81,
-          "balance": 5.31
+          "export": 18.36,
+          "import": 8.67,
+          "balance": 9.69
         },
         "CN": {
           "id": "CN",
           "name": "중국",
-          "export": 10.77,
-          "import": 11.22,
-          "balance": -0.45
+          "export": 18.12,
+          "import": 16.1,
+          "balance": 2.02
         },
         "ASEAN": {
           "id": "ASEAN",
           "name": "아세안(베트남 등)",
-          "export": 9.91,
-          "import": 6.47,
-          "balance": 3.44
+          "export": 18.74,
+          "import": 8.63,
+          "balance": 10.11
         },
         "EU": {
           "id": "EU",
           "name": "EU(유럽연합)",
-          "export": 5.73,
-          "import": 5.46,
-          "balance": 0.27
+          "export": 11.73,
+          "import": 8.83,
+          "balance": 2.9
         },
         "JP": {
           "id": "JP",
           "name": "일본",
-          "export": 2.43,
-          "import": 3.94,
-          "balance": -1.51
+          "export": 4.78,
+          "import": 6.07,
+          "balance": -1.29
         },
         "ME": {
           "id": "ME",
           "name": "중동",
-          "export": 1.05,
-          "import": 6.37,
-          "balance": -5.32
+          "export": 2.64,
+          "import": 10.36,
+          "balance": -7.72
         },
         "ROW": {
           "id": "ROW",
           "name": "기타 국가",
-          "export": 16.91,
-          "import": 11.27,
-          "balance": 5.64
+          "export": 17.43,
+          "import": 4.24,
+          "balance": 13.19
+        }
+      },
+      "matrix": {
+        "US": {
+          "semiconductor": {
+            "export": 3.62,
+            "import": 1.18
+          },
+          "automobile": {
+            "export": 5.24,
+            "import": 0.38
+          },
+          "machinery": {
+            "export": 2.25,
+            "import": 0.76
+          },
+          "petrochemical": {
+            "export": 0.44,
+            "import": 0.2
+          },
+          "consumer": {
+            "export": 1.18,
+            "import": 0.59
+          },
+          "steel": {
+            "export": 0.62,
+            "import": 0.12
+          },
+          "shipbuilding": {
+            "export": 0.15,
+            "import": 0.01
+          },
+          "battery": {
+            "export": 0.68,
+            "import": 0.13
+          },
+          "defense": {
+            "export": 0.29,
+            "import": 0.15
+          },
+          "bio": {
+            "export": 0.63,
+            "import": 0.41
+          },
+          "others": {
+            "export": 3.26,
+            "import": 4.74
+          }
+        },
+        "CN": {
+          "semiconductor": {
+            "export": 6.98,
+            "import": 2.06
+          },
+          "automobile": {
+            "export": 0.44,
+            "import": 0.2
+          },
+          "machinery": {
+            "export": 1.46,
+            "import": 1.03
+          },
+          "petrochemical": {
+            "export": 2.42,
+            "import": 0.7
+          },
+          "consumer": {
+            "export": 0.84,
+            "import": 1.48
+          },
+          "steel": {
+            "export": 0.7,
+            "import": 1.04
+          },
+          "shipbuilding": {
+            "export": 0.06,
+            "import": 0.05
+          },
+          "battery": {
+            "export": 0.26,
+            "import": 0.74
+          },
+          "defense": {
+            "export": 0,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.07,
+            "import": 0.12
+          },
+          "others": {
+            "export": 4.89,
+            "import": 8.68
+          }
+        },
+        "ASEAN": {
+          "semiconductor": {
+            "export": 5.69,
+            "import": 1.18
+          },
+          "automobile": {
+            "export": 1.31,
+            "import": 0.25
+          },
+          "machinery": {
+            "export": 1.59,
+            "import": 0.62
+          },
+          "petrochemical": {
+            "export": 1.38,
+            "import": 0.4
+          },
+          "consumer": {
+            "export": 1.05,
+            "import": 0.78
+          },
+          "steel": {
+            "export": 0.97,
+            "import": 0.35
+          },
+          "shipbuilding": {
+            "export": 0.55,
+            "import": 0.05
+          },
+          "battery": {
+            "export": 0.26,
+            "import": 0.2
+          },
+          "defense": {
+            "export": 0.37,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.14,
+            "import": 0.06
+          },
+          "others": {
+            "export": 5.43,
+            "import": 4.74
+          }
+        },
+        "EU": {
+          "semiconductor": {
+            "export": 1.81,
+            "import": 0.59
+          },
+          "automobile": {
+            "export": 2.07,
+            "import": 1.14
+          },
+          "machinery": {
+            "export": 1.26,
+            "import": 0.86
+          },
+          "petrochemical": {
+            "export": 0.55,
+            "import": 0.3
+          },
+          "consumer": {
+            "export": 0.59,
+            "import": 0.7
+          },
+          "steel": {
+            "export": 0.58,
+            "import": 0.28
+          },
+          "shipbuilding": {
+            "export": 1.07,
+            "import": 0.09
+          },
+          "battery": {
+            "export": 0.48,
+            "import": 0.2
+          },
+          "defense": {
+            "export": 0.66,
+            "import": 0.19
+          },
+          "bio": {
+            "export": 0.49,
+            "import": 0.53
+          },
+          "others": {
+            "export": 2.17,
+            "import": 3.95
+          }
+        },
+        "JP": {
+          "semiconductor": {
+            "export": 1.03,
+            "import": 0.71
+          },
+          "automobile": {
+            "export": 0.22,
+            "import": 0.3
+          },
+          "machinery": {
+            "export": 0.53,
+            "import": 0.69
+          },
+          "petrochemical": {
+            "export": 0.33,
+            "import": 0.24
+          },
+          "consumer": {
+            "export": 0.34,
+            "import": 0.31
+          },
+          "steel": {
+            "export": 0.54,
+            "import": 0.46
+          },
+          "shipbuilding": {
+            "export": 0.06,
+            "import": 0.07
+          },
+          "battery": {
+            "export": 0.03,
+            "import": 0.07
+          },
+          "defense": {
+            "export": 0,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.07,
+            "import": 0.06
+          },
+          "others": {
+            "export": 1.63,
+            "import": 3.16
+          }
+        },
+        "ME": {
+          "semiconductor": {
+            "export": 0.26,
+            "import": 0
+          },
+          "automobile": {
+            "export": 0.55,
+            "import": 0
+          },
+          "machinery": {
+            "export": 0.33,
+            "import": 0
+          },
+          "petrochemical": {
+            "export": 0.11,
+            "import": 0.1
+          },
+          "consumer": {
+            "export": 0.08,
+            "import": 0
+          },
+          "steel": {
+            "export": 0.16,
+            "import": 0
+          },
+          "shipbuilding": {
+            "export": 0.46,
+            "import": 0
+          },
+          "battery": {
+            "export": 0,
+            "import": 0
+          },
+          "defense": {
+            "export": 0.15,
+            "import": 0
+          },
+          "bio": {
+            "export": 0,
+            "import": 0
+          },
+          "others": {
+            "export": 0.54,
+            "import": 10.26
+          }
+        },
+        "ROW": {
+          "semiconductor": {
+            "export": 6.48,
+            "import": 0.16
+          },
+          "automobile": {
+            "export": 1.08,
+            "import": 0.26
+          },
+          "machinery": {
+            "export": -0.79,
+            "import": -0.51
+          },
+          "petrochemical": {
+            "export": 0.27,
+            "import": 0.07
+          },
+          "consumer": {
+            "export": 0.12,
+            "import": 0.04
+          },
+          "steel": {
+            "export": 0.31,
+            "import": 0.06
+          },
+          "shipbuilding": {
+            "export": 0.72,
+            "import": 0.2
+          },
+          "battery": {
+            "export": -0.01,
+            "import": 0
+          },
+          "defense": {
+            "export": -0.01,
+            "import": 0.03
+          },
+          "bio": {
+            "export": 0.01,
+            "import": 0
+          },
+          "others": {
+            "export": 9.25,
+            "import": 3.93
+          }
         }
       }
     },
     {
-      "month": 11,
-      "name": "11월",
-      "days": 30,
-      "export": 60.87,
-      "import": 55.27,
-      "balance": 5.6,
+      "month": 8,
+      "name": "8월",
+      "status": "확정 실적",
+      "export": 88.5,
+      "import": 61,
+      "balance": 27.5,
       "macro": {
-        "fxRate": 1412.3,
-        "brentOil": 78.6,
-        "scfiFreight": 1960,
+        "fxRate": 1385.2,
+        "brentOil": 76.8,
+        "scfiFreight": 2060,
+        "globalDemandIndex": 100.7,
+        "usFedRate": 4.5,
+        "bokBaseRate": 3
+      },
+      "industries": {
+        "semiconductor": {
+          "id": "semiconductor",
+          "name": "반도체",
+          "export": 24.94,
+          "import": 5.71,
+          "balance": 19.23,
+          "capacityIndex": 100,
+          "utilizationRate": 95,
+          "tradeBarrierIndex": 100
+        },
+        "automobile": {
+          "id": "automobile",
+          "name": "자동차·부품",
+          "export": 10.52,
+          "import": 2.46,
+          "balance": 8.06,
+          "capacityIndex": 100,
+          "utilizationRate": 89,
+          "tradeBarrierIndex": 100
+        },
+        "machinery": {
+          "id": "machinery",
+          "name": "기계·설비",
+          "export": 6.39,
+          "import": 3.35,
+          "balance": 3.04,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "petrochemical": {
+          "id": "petrochemical",
+          "name": "석유화학",
+          "export": 5.3,
+          "import": 1.95,
+          "balance": 3.35,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "consumer": {
+          "id": "consumer",
+          "name": "소비재",
+          "export": 4.05,
+          "import": 3.78,
+          "balance": 0.27,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "steel": {
+          "id": "steel",
+          "name": "철강",
+          "export": 3.74,
+          "import": 2.24,
+          "balance": 1.5,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "shipbuilding": {
+          "id": "shipbuilding",
+          "name": "조선",
+          "export": 2.96,
+          "import": 0.46,
+          "balance": 2.5,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "battery": {
+          "id": "battery",
+          "name": "이차전지",
+          "export": 1.64,
+          "import": 1.3,
+          "balance": 0.34,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "defense": {
+          "id": "defense",
+          "name": "방산",
+          "export": 1.4,
+          "import": 0.35,
+          "balance": 1.05,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "bio": {
+          "id": "bio",
+          "name": "바이오·의약품",
+          "export": 1.36,
+          "import": 1.14,
+          "balance": 0.22,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "others": {
+          "id": "others",
+          "name": "기타 산업",
+          "export": 26.2,
+          "import": 38.26,
+          "balance": -12.06,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        }
+      },
+      "partners": {
+        "US": {
+          "id": "US",
+          "name": "미국",
+          "export": 17.7,
+          "import": 8.4,
+          "balance": 9.3
+        },
+        "CN": {
+          "id": "CN",
+          "name": "중국",
+          "export": 17.47,
+          "import": 15.63,
+          "balance": 1.84
+        },
+        "ASEAN": {
+          "id": "ASEAN",
+          "name": "아세안(베트남 등)",
+          "export": 18.07,
+          "import": 8.38,
+          "balance": 9.69
+        },
+        "EU": {
+          "id": "EU",
+          "name": "EU(유럽연합)",
+          "export": 11.33,
+          "import": 8.57,
+          "balance": 2.76
+        },
+        "JP": {
+          "id": "JP",
+          "name": "일본",
+          "export": 4.61,
+          "import": 5.9,
+          "balance": -1.29
+        },
+        "ME": {
+          "id": "ME",
+          "name": "중동",
+          "export": 2.54,
+          "import": 10.05,
+          "balance": -7.51
+        },
+        "ROW": {
+          "id": "ROW",
+          "name": "기타 국가",
+          "export": 16.78,
+          "import": 4.07,
+          "balance": 12.71
+        }
+      },
+      "matrix": {
+        "US": {
+          "semiconductor": {
+            "export": 3.49,
+            "import": 1.14
+          },
+          "automobile": {
+            "export": 5.05,
+            "import": 0.37
+          },
+          "machinery": {
+            "export": 2.17,
+            "import": 0.74
+          },
+          "petrochemical": {
+            "export": 0.42,
+            "import": 0.2
+          },
+          "consumer": {
+            "export": 1.13,
+            "import": 0.57
+          },
+          "steel": {
+            "export": 0.6,
+            "import": 0.11
+          },
+          "shipbuilding": {
+            "export": 0.15,
+            "import": 0.01
+          },
+          "battery": {
+            "export": 0.66,
+            "import": 0.13
+          },
+          "defense": {
+            "export": 0.28,
+            "import": 0.14
+          },
+          "bio": {
+            "export": 0.61,
+            "import": 0.4
+          },
+          "others": {
+            "export": 3.14,
+            "import": 4.59
+          }
+        },
+        "CN": {
+          "semiconductor": {
+            "export": 6.73,
+            "import": 2
+          },
+          "automobile": {
+            "export": 0.42,
+            "import": 0.2
+          },
+          "machinery": {
+            "export": 1.41,
+            "import": 1
+          },
+          "petrochemical": {
+            "export": 2.33,
+            "import": 0.68
+          },
+          "consumer": {
+            "export": 0.81,
+            "import": 1.44
+          },
+          "steel": {
+            "export": 0.67,
+            "import": 1.01
+          },
+          "shipbuilding": {
+            "export": 0.06,
+            "import": 0.05
+          },
+          "battery": {
+            "export": 0.25,
+            "import": 0.72
+          },
+          "defense": {
+            "export": 0,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.07,
+            "import": 0.11
+          },
+          "others": {
+            "export": 4.72,
+            "import": 8.42
+          }
+        },
+        "ASEAN": {
+          "semiconductor": {
+            "export": 5.49,
+            "import": 1.14
+          },
+          "automobile": {
+            "export": 1.26,
+            "import": 0.25
+          },
+          "machinery": {
+            "export": 1.53,
+            "import": 0.6
+          },
+          "petrochemical": {
+            "export": 1.33,
+            "import": 0.39
+          },
+          "consumer": {
+            "export": 1.01,
+            "import": 0.76
+          },
+          "steel": {
+            "export": 0.94,
+            "import": 0.34
+          },
+          "shipbuilding": {
+            "export": 0.53,
+            "import": 0.05
+          },
+          "battery": {
+            "export": 0.25,
+            "import": 0.2
+          },
+          "defense": {
+            "export": 0.35,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.14,
+            "import": 0.06
+          },
+          "others": {
+            "export": 5.24,
+            "import": 4.59
+          }
+        },
+        "EU": {
+          "semiconductor": {
+            "export": 1.75,
+            "import": 0.57
+          },
+          "automobile": {
+            "export": 2,
+            "import": 1.11
+          },
+          "machinery": {
+            "export": 1.21,
+            "import": 0.84
+          },
+          "petrochemical": {
+            "export": 0.53,
+            "import": 0.29
+          },
+          "consumer": {
+            "export": 0.57,
+            "import": 0.68
+          },
+          "steel": {
+            "export": 0.56,
+            "import": 0.27
+          },
+          "shipbuilding": {
+            "export": 1.04,
+            "import": 0.09
+          },
+          "battery": {
+            "export": 0.46,
+            "import": 0.2
+          },
+          "defense": {
+            "export": 0.63,
+            "import": 0.18
+          },
+          "bio": {
+            "export": 0.48,
+            "import": 0.51
+          },
+          "others": {
+            "export": 2.1,
+            "import": 3.83
+          }
+        },
+        "JP": {
+          "semiconductor": {
+            "export": 1,
+            "import": 0.69
+          },
+          "automobile": {
+            "export": 0.21,
+            "import": 0.3
+          },
+          "machinery": {
+            "export": 0.51,
+            "import": 0.67
+          },
+          "petrochemical": {
+            "export": 0.32,
+            "import": 0.23
+          },
+          "consumer": {
+            "export": 0.32,
+            "import": 0.3
+          },
+          "steel": {
+            "export": 0.52,
+            "import": 0.45
+          },
+          "shipbuilding": {
+            "export": 0.06,
+            "import": 0.07
+          },
+          "battery": {
+            "export": 0.03,
+            "import": 0.07
+          },
+          "defense": {
+            "export": 0,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.07,
+            "import": 0.06
+          },
+          "others": {
+            "export": 1.57,
+            "import": 3.06
+          }
+        },
+        "ME": {
+          "semiconductor": {
+            "export": 0.25,
+            "import": 0
+          },
+          "automobile": {
+            "export": 0.53,
+            "import": 0
+          },
+          "machinery": {
+            "export": 0.32,
+            "import": 0
+          },
+          "petrochemical": {
+            "export": 0.11,
+            "import": 0.1
+          },
+          "consumer": {
+            "export": 0.08,
+            "import": 0
+          },
+          "steel": {
+            "export": 0.15,
+            "import": 0
+          },
+          "shipbuilding": {
+            "export": 0.44,
+            "import": 0
+          },
+          "battery": {
+            "export": 0,
+            "import": 0
+          },
+          "defense": {
+            "export": 0.14,
+            "import": 0
+          },
+          "bio": {
+            "export": 0,
+            "import": 0
+          },
+          "others": {
+            "export": 0.52,
+            "import": 9.95
+          }
+        },
+        "ROW": {
+          "semiconductor": {
+            "export": 6.23,
+            "import": 0.17
+          },
+          "automobile": {
+            "export": 1.05,
+            "import": 0.23
+          },
+          "machinery": {
+            "export": -0.76,
+            "import": -0.5
+          },
+          "petrochemical": {
+            "export": 0.26,
+            "import": 0.06
+          },
+          "consumer": {
+            "export": 0.13,
+            "import": 0.03
+          },
+          "steel": {
+            "export": 0.3,
+            "import": 0.06
+          },
+          "shipbuilding": {
+            "export": 0.68,
+            "import": 0.19
+          },
+          "battery": {
+            "export": -0.01,
+            "import": -0.02
+          },
+          "defense": {
+            "export": 0,
+            "import": 0.03
+          },
+          "bio": {
+            "export": -0.01,
+            "import": 0
+          },
+          "others": {
+            "export": 8.91,
+            "import": 3.82
+          }
+        }
+      }
+    },
+    {
+      "month": 9,
+      "name": "9월",
+      "status": "확정 실적",
+      "export": 104.2,
+      "import": 68.4,
+      "balance": 35.8,
+      "macro": {
+        "fxRate": 1392,
+        "brentOil": 76.2,
+        "scfiFreight": 2000,
         "globalDemandIndex": 101.8,
         "usFedRate": 4.5,
         "bokBaseRate": 3
@@ -2036,133 +4065,111 @@
         "semiconductor": {
           "id": "semiconductor",
           "name": "반도체",
-          "export": 14.46,
-          "import": 5.09,
-          "balance": 9.37,
+          "export": 29.37,
+          "import": 6.4,
+          "balance": 22.97,
           "capacityIndex": 100,
-          "utilizationRate": 94.5,
-          "globalDemandIndex": 101.8,
-          "priceCompetitiveness": 100,
+          "utilizationRate": 95,
           "tradeBarrierIndex": 100
         },
         "automobile": {
           "id": "automobile",
           "name": "자동차·부품",
-          "export": 7.66,
-          "import": 2.14,
-          "balance": 5.52,
+          "export": 12.39,
+          "import": 2.75,
+          "balance": 9.64,
           "capacityIndex": 100,
-          "utilizationRate": 88.2,
-          "globalDemandIndex": 101.8,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 110
-        },
-        "shipbuilding": {
-          "id": "shipbuilding",
-          "name": "조선",
-          "export": 2.13,
-          "import": 0.36,
-          "balance": 1.77,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 101.8,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "steel": {
-          "id": "steel",
-          "name": "철강",
-          "export": 2.97,
-          "import": 1.91,
-          "balance": 1.06,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 101.8,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 125
-        },
-        "petrochemical": {
-          "id": "petrochemical",
-          "name": "석유화학",
-          "export": 4.08,
-          "import": 1.59,
-          "balance": 2.49,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 101.8,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "battery": {
-          "id": "battery",
-          "name": "이차전지",
-          "export": 1.01,
-          "import": 1.09,
-          "balance": -0.08,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 101.8,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "bio": {
-          "id": "bio",
-          "name": "바이오·의약품",
-          "export": 0.89,
-          "import": 0.98,
-          "balance": -0.09,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 101.8,
-          "priceCompetitiveness": 100,
+          "utilizationRate": 89,
           "tradeBarrierIndex": 100
         },
         "machinery": {
           "id": "machinery",
           "name": "기계·설비",
-          "export": 4.49,
-          "import": 2.87,
-          "balance": 1.62,
+          "export": 7.52,
+          "import": 3.75,
+          "balance": 3.77,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 101.8,
-          "priceCompetitiveness": 100,
           "tradeBarrierIndex": 100
         },
-        "defense": {
-          "id": "defense",
-          "name": "방산",
-          "export": 0.73,
-          "import": 0.28,
-          "balance": 0.45,
+        "petrochemical": {
+          "id": "petrochemical",
+          "name": "석유화학",
+          "export": 6.24,
+          "import": 2.19,
+          "balance": 4.05,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 101.8,
-          "priceCompetitiveness": 100,
           "tradeBarrierIndex": 100
         },
         "consumer": {
           "id": "consumer",
           "name": "소비재",
-          "export": 2.59,
-          "import": 3.37,
-          "balance": -0.78,
+          "export": 4.77,
+          "import": 4.24,
+          "balance": 0.53,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 101.8,
-          "priceCompetitiveness": 100,
+          "tradeBarrierIndex": 100
+        },
+        "steel": {
+          "id": "steel",
+          "name": "철강",
+          "export": 4.4,
+          "import": 2.52,
+          "balance": 1.88,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "shipbuilding": {
+          "id": "shipbuilding",
+          "name": "조선",
+          "export": 3.49,
+          "import": 0.51,
+          "balance": 2.98,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "battery": {
+          "id": "battery",
+          "name": "이차전지",
+          "export": 1.93,
+          "import": 1.46,
+          "balance": 0.47,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "defense": {
+          "id": "defense",
+          "name": "방산",
+          "export": 1.65,
+          "import": 0.4,
+          "balance": 1.25,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "bio": {
+          "id": "bio",
+          "name": "바이오·의약품",
+          "export": 1.61,
+          "import": 1.28,
+          "balance": 0.33,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
           "tradeBarrierIndex": 100
         },
         "others": {
           "id": "others",
           "name": "기타 산업",
-          "export": 19.86,
-          "import": 35.59,
-          "balance": -15.73,
+          "export": 30.83,
+          "import": 42.9,
+          "balance": -12.07,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 101.8,
-          "priceCompetitiveness": 100,
           "tradeBarrierIndex": 100
         }
       },
@@ -2170,66 +4177,390 @@
         "US": {
           "id": "US",
           "name": "미국",
-          "export": 11.69,
-          "import": 6.35,
-          "balance": 5.34
+          "export": 20.85,
+          "import": 9.43,
+          "balance": 11.42
         },
         "CN": {
           "id": "CN",
           "name": "중국",
-          "export": 11.32,
-          "import": 12.27,
-          "balance": -0.95
+          "export": 20.56,
+          "import": 17.52,
+          "balance": 3.04
         },
         "ASEAN": {
           "id": "ASEAN",
           "name": "아세안(베트남 등)",
-          "export": 10.41,
-          "import": 7.08,
-          "balance": 3.33
+          "export": 21.26,
+          "import": 9.39,
+          "balance": 11.87
         },
         "EU": {
           "id": "EU",
           "name": "EU(유럽연합)",
-          "export": 6.03,
-          "import": 5.97,
-          "balance": 0.06
+          "export": 13.32,
+          "import": 9.6,
+          "balance": 3.72
         },
         "JP": {
           "id": "JP",
           "name": "일본",
-          "export": 2.56,
-          "import": 4.31,
-          "balance": -1.75
+          "export": 5.43,
+          "import": 6.59,
+          "balance": -1.16
         },
         "ME": {
           "id": "ME",
           "name": "중동",
-          "export": 1.1,
-          "import": 6.97,
-          "balance": -5.87
+          "export": 3,
+          "import": 11.26,
+          "balance": -8.26
         },
         "ROW": {
           "id": "ROW",
           "name": "기타 국가",
-          "export": 17.76,
-          "import": 12.32,
-          "balance": 5.44
+          "export": 19.78,
+          "import": 4.61,
+          "balance": 15.17
+        }
+      },
+      "matrix": {
+        "US": {
+          "semiconductor": {
+            "export": 4.11,
+            "import": 1.28
+          },
+          "automobile": {
+            "export": 5.95,
+            "import": 0.41
+          },
+          "machinery": {
+            "export": 2.56,
+            "import": 0.83
+          },
+          "petrochemical": {
+            "export": 0.5,
+            "import": 0.22
+          },
+          "consumer": {
+            "export": 1.34,
+            "import": 0.64
+          },
+          "steel": {
+            "export": 0.7,
+            "import": 0.13
+          },
+          "shipbuilding": {
+            "export": 0.17,
+            "import": 0.01
+          },
+          "battery": {
+            "export": 0.77,
+            "import": 0.15
+          },
+          "defense": {
+            "export": 0.33,
+            "import": 0.16
+          },
+          "bio": {
+            "export": 0.72,
+            "import": 0.45
+          },
+          "others": {
+            "export": 3.7,
+            "import": 5.15
+          }
+        },
+        "CN": {
+          "semiconductor": {
+            "export": 7.93,
+            "import": 2.24
+          },
+          "automobile": {
+            "export": 0.5,
+            "import": 0.22
+          },
+          "machinery": {
+            "export": 1.65,
+            "import": 1.13
+          },
+          "petrochemical": {
+            "export": 2.75,
+            "import": 0.77
+          },
+          "consumer": {
+            "export": 0.95,
+            "import": 1.61
+          },
+          "steel": {
+            "export": 0.79,
+            "import": 1.13
+          },
+          "shipbuilding": {
+            "export": 0.07,
+            "import": 0.05
+          },
+          "battery": {
+            "export": 0.29,
+            "import": 0.8
+          },
+          "defense": {
+            "export": 0,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.08,
+            "import": 0.13
+          },
+          "others": {
+            "export": 5.55,
+            "import": 9.44
+          }
+        },
+        "ASEAN": {
+          "semiconductor": {
+            "export": 6.46,
+            "import": 1.28
+          },
+          "automobile": {
+            "export": 1.49,
+            "import": 0.28
+          },
+          "machinery": {
+            "export": 1.8,
+            "import": 0.68
+          },
+          "petrochemical": {
+            "export": 1.56,
+            "import": 0.44
+          },
+          "consumer": {
+            "export": 1.19,
+            "import": 0.85
+          },
+          "steel": {
+            "export": 1.1,
+            "import": 0.38
+          },
+          "shipbuilding": {
+            "export": 0.63,
+            "import": 0.05
+          },
+          "battery": {
+            "export": 0.29,
+            "import": 0.22
+          },
+          "defense": {
+            "export": 0.41,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.16,
+            "import": 0.06
+          },
+          "others": {
+            "export": 6.17,
+            "import": 5.15
+          }
+        },
+        "EU": {
+          "semiconductor": {
+            "export": 2.06,
+            "import": 0.64
+          },
+          "automobile": {
+            "export": 2.35,
+            "import": 1.24
+          },
+          "machinery": {
+            "export": 1.43,
+            "import": 0.94
+          },
+          "petrochemical": {
+            "export": 0.62,
+            "import": 0.33
+          },
+          "consumer": {
+            "export": 0.67,
+            "import": 0.76
+          },
+          "steel": {
+            "export": 0.66,
+            "import": 0.3
+          },
+          "shipbuilding": {
+            "export": 1.22,
+            "import": 0.1
+          },
+          "battery": {
+            "export": 0.54,
+            "import": 0.22
+          },
+          "defense": {
+            "export": 0.74,
+            "import": 0.2
+          },
+          "bio": {
+            "export": 0.56,
+            "import": 0.58
+          },
+          "others": {
+            "export": 2.47,
+            "import": 4.29
+          }
+        },
+        "JP": {
+          "semiconductor": {
+            "export": 1.17,
+            "import": 0.77
+          },
+          "automobile": {
+            "export": 0.25,
+            "import": 0.33
+          },
+          "machinery": {
+            "export": 0.6,
+            "import": 0.75
+          },
+          "petrochemical": {
+            "export": 0.37,
+            "import": 0.26
+          },
+          "consumer": {
+            "export": 0.38,
+            "import": 0.34
+          },
+          "steel": {
+            "export": 0.62,
+            "import": 0.5
+          },
+          "shipbuilding": {
+            "export": 0.07,
+            "import": 0.08
+          },
+          "battery": {
+            "export": 0.04,
+            "import": 0.07
+          },
+          "defense": {
+            "export": 0,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.08,
+            "import": 0.06
+          },
+          "others": {
+            "export": 1.85,
+            "import": 3.43
+          }
+        },
+        "ME": {
+          "semiconductor": {
+            "export": 0.29,
+            "import": 0
+          },
+          "automobile": {
+            "export": 0.62,
+            "import": 0
+          },
+          "machinery": {
+            "export": 0.38,
+            "import": 0
+          },
+          "petrochemical": {
+            "export": 0.12,
+            "import": 0.11
+          },
+          "consumer": {
+            "export": 0.1,
+            "import": 0
+          },
+          "steel": {
+            "export": 0.18,
+            "import": 0
+          },
+          "shipbuilding": {
+            "export": 0.52,
+            "import": 0
+          },
+          "battery": {
+            "export": 0,
+            "import": 0
+          },
+          "defense": {
+            "export": 0.17,
+            "import": 0
+          },
+          "bio": {
+            "export": 0,
+            "import": 0
+          },
+          "others": {
+            "export": 0.62,
+            "import": 11.15
+          }
+        },
+        "ROW": {
+          "semiconductor": {
+            "export": 7.35,
+            "import": 0.19
+          },
+          "automobile": {
+            "export": 1.23,
+            "import": 0.27
+          },
+          "machinery": {
+            "export": -0.9,
+            "import": -0.58
+          },
+          "petrochemical": {
+            "export": 0.32,
+            "import": 0.06
+          },
+          "consumer": {
+            "export": 0.14,
+            "import": 0.04
+          },
+          "steel": {
+            "export": 0.35,
+            "import": 0.08
+          },
+          "shipbuilding": {
+            "export": 0.81,
+            "import": 0.22
+          },
+          "battery": {
+            "export": 0,
+            "import": 0
+          },
+          "defense": {
+            "export": 0,
+            "import": 0.04
+          },
+          "bio": {
+            "export": 0.01,
+            "import": 0
+          },
+          "others": {
+            "export": 10.47,
+            "import": 4.29
+          }
         }
       }
     },
     {
-      "month": 12,
-      "name": "12월",
-      "days": 31,
-      "export": 70.92,
-      "import": 60.54,
-      "balance": 10.38,
+      "month": 10,
+      "name": "10월",
+      "status": "확정 실적",
+      "export": 109.8,
+      "import": 72.5,
+      "balance": 37.3,
       "macro": {
-        "fxRate": 1420,
-        "brentOil": 80.1,
-        "scfiFreight": 2090,
-        "globalDemandIndex": 102.5,
+        "fxRate": 1405.5,
+        "brentOil": 77.5,
+        "scfiFreight": 1960,
+        "globalDemandIndex": 102.2,
         "usFedRate": 4.5,
         "bokBaseRate": 3
       },
@@ -2237,133 +4568,111 @@
         "semiconductor": {
           "id": "semiconductor",
           "name": "반도체",
-          "export": 16.85,
-          "import": 5.58,
-          "balance": 11.27,
+          "export": 30.94,
+          "import": 6.78,
+          "balance": 24.16,
           "capacityIndex": 100,
-          "utilizationRate": 94.5,
-          "globalDemandIndex": 102.5,
-          "priceCompetitiveness": 100,
+          "utilizationRate": 95,
           "tradeBarrierIndex": 100
         },
         "automobile": {
           "id": "automobile",
           "name": "자동차·부품",
-          "export": 8.92,
-          "import": 2.35,
-          "balance": 6.57,
+          "export": 13.05,
+          "import": 2.92,
+          "balance": 10.13,
           "capacityIndex": 100,
-          "utilizationRate": 88.2,
-          "globalDemandIndex": 102.5,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 110
-        },
-        "shipbuilding": {
-          "id": "shipbuilding",
-          "name": "조선",
-          "export": 2.48,
-          "import": 0.39,
-          "balance": 2.09,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 102.5,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "steel": {
-          "id": "steel",
-          "name": "철강",
-          "export": 3.46,
-          "import": 2.09,
-          "balance": 1.37,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 102.5,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 125
-        },
-        "petrochemical": {
-          "id": "petrochemical",
-          "name": "석유화학",
-          "export": 4.75,
-          "import": 1.74,
-          "balance": 3.01,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 102.5,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "battery": {
-          "id": "battery",
-          "name": "이차전지",
-          "export": 1.18,
-          "import": 1.19,
-          "balance": -0.01,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 102.5,
-          "priceCompetitiveness": 100,
-          "tradeBarrierIndex": 100
-        },
-        "bio": {
-          "id": "bio",
-          "name": "바이오·의약품",
-          "export": 1.04,
-          "import": 1.07,
-          "balance": -0.03,
-          "capacityIndex": 100,
-          "utilizationRate": 82,
-          "globalDemandIndex": 102.5,
-          "priceCompetitiveness": 100,
+          "utilizationRate": 89,
           "tradeBarrierIndex": 100
         },
         "machinery": {
           "id": "machinery",
           "name": "기계·설비",
-          "export": 5.23,
-          "import": 3.14,
-          "balance": 2.09,
+          "export": 7.93,
+          "import": 3.98,
+          "balance": 3.95,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 102.5,
-          "priceCompetitiveness": 100,
           "tradeBarrierIndex": 100
         },
-        "defense": {
-          "id": "defense",
-          "name": "방산",
-          "export": 0.85,
-          "import": 0.31,
-          "balance": 0.54,
+        "petrochemical": {
+          "id": "petrochemical",
+          "name": "석유화학",
+          "export": 6.58,
+          "import": 2.32,
+          "balance": 4.26,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 102.5,
-          "priceCompetitiveness": 100,
           "tradeBarrierIndex": 100
         },
         "consumer": {
           "id": "consumer",
           "name": "소비재",
-          "export": 3.02,
-          "import": 3.69,
-          "balance": -0.67,
+          "export": 5.03,
+          "import": 4.49,
+          "balance": 0.54,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 102.5,
-          "priceCompetitiveness": 100,
+          "tradeBarrierIndex": 100
+        },
+        "steel": {
+          "id": "steel",
+          "name": "철강",
+          "export": 4.64,
+          "import": 2.67,
+          "balance": 1.97,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "shipbuilding": {
+          "id": "shipbuilding",
+          "name": "조선",
+          "export": 3.67,
+          "import": 0.54,
+          "balance": 3.13,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "battery": {
+          "id": "battery",
+          "name": "이차전지",
+          "export": 2.03,
+          "import": 1.54,
+          "balance": 0.49,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "defense": {
+          "id": "defense",
+          "name": "방산",
+          "export": 1.74,
+          "import": 0.42,
+          "balance": 1.32,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "bio": {
+          "id": "bio",
+          "name": "바이오·의약품",
+          "export": 1.69,
+          "import": 1.36,
+          "balance": 0.33,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
           "tradeBarrierIndex": 100
         },
         "others": {
           "id": "others",
           "name": "기타 산업",
-          "export": 23.14,
-          "import": 38.99,
-          "balance": -15.85,
+          "export": 32.5,
+          "import": 45.48,
+          "balance": -12.98,
           "capacityIndex": 100,
           "utilizationRate": 82,
-          "globalDemandIndex": 102.5,
-          "priceCompetitiveness": 100,
           "tradeBarrierIndex": 100
         }
       },
@@ -2371,51 +4680,1381 @@
         "US": {
           "id": "US",
           "name": "미국",
-          "export": 13.62,
-          "import": 6.96,
-          "balance": 6.66
+          "export": 21.97,
+          "import": 9.98,
+          "balance": 11.99
         },
         "CN": {
           "id": "CN",
           "name": "중국",
-          "export": 13.19,
-          "import": 13.44,
-          "balance": -0.25
+          "export": 21.66,
+          "import": 18.56,
+          "balance": 3.1
         },
         "ASEAN": {
           "id": "ASEAN",
           "name": "아세안(베트남 등)",
-          "export": 12.13,
-          "import": 7.75,
-          "balance": 4.38
+          "export": 22.42,
+          "import": 9.94,
+          "balance": 12.48
         },
         "EU": {
           "id": "EU",
           "name": "EU(유럽연합)",
-          "export": 7.02,
-          "import": 6.54,
-          "balance": 0.48
+          "export": 14.04,
+          "import": 10.18,
+          "balance": 3.86
         },
         "JP": {
           "id": "JP",
           "name": "일본",
-          "export": 2.98,
-          "import": 4.72,
-          "balance": -1.74
+          "export": 5.71,
+          "import": 7,
+          "balance": -1.29
         },
         "ME": {
           "id": "ME",
           "name": "중동",
-          "export": 1.28,
-          "import": 7.63,
-          "balance": -6.35
+          "export": 3.15,
+          "import": 11.94,
+          "balance": -8.79
         },
         "ROW": {
           "id": "ROW",
           "name": "기타 국가",
-          "export": 20.7,
-          "import": 13.5,
-          "balance": 7.2
+          "export": 20.85,
+          "import": 4.9,
+          "balance": 15.95
+        }
+      },
+      "matrix": {
+        "US": {
+          "semiconductor": {
+            "export": 4.33,
+            "import": 1.36
+          },
+          "automobile": {
+            "export": 6.26,
+            "import": 0.44
+          },
+          "machinery": {
+            "export": 2.7,
+            "import": 0.88
+          },
+          "petrochemical": {
+            "export": 0.53,
+            "import": 0.23
+          },
+          "consumer": {
+            "export": 1.41,
+            "import": 0.67
+          },
+          "steel": {
+            "export": 0.74,
+            "import": 0.13
+          },
+          "shipbuilding": {
+            "export": 0.18,
+            "import": 0.01
+          },
+          "battery": {
+            "export": 0.81,
+            "import": 0.15
+          },
+          "defense": {
+            "export": 0.35,
+            "import": 0.17
+          },
+          "bio": {
+            "export": 0.76,
+            "import": 0.48
+          },
+          "others": {
+            "export": 3.9,
+            "import": 5.46
+          }
+        },
+        "CN": {
+          "semiconductor": {
+            "export": 8.35,
+            "import": 2.37
+          },
+          "automobile": {
+            "export": 0.52,
+            "import": 0.23
+          },
+          "machinery": {
+            "export": 1.74,
+            "import": 1.19
+          },
+          "petrochemical": {
+            "export": 2.9,
+            "import": 0.81
+          },
+          "consumer": {
+            "export": 1.01,
+            "import": 1.71
+          },
+          "steel": {
+            "export": 0.84,
+            "import": 1.2
+          },
+          "shipbuilding": {
+            "export": 0.07,
+            "import": 0.05
+          },
+          "battery": {
+            "export": 0.3,
+            "import": 0.85
+          },
+          "defense": {
+            "export": 0,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.08,
+            "import": 0.14
+          },
+          "others": {
+            "export": 5.85,
+            "import": 10.01
+          }
+        },
+        "ASEAN": {
+          "semiconductor": {
+            "export": 6.81,
+            "import": 1.36
+          },
+          "automobile": {
+            "export": 1.57,
+            "import": 0.29
+          },
+          "machinery": {
+            "export": 1.9,
+            "import": 0.72
+          },
+          "petrochemical": {
+            "export": 1.65,
+            "import": 0.46
+          },
+          "consumer": {
+            "export": 1.26,
+            "import": 0.9
+          },
+          "steel": {
+            "export": 1.16,
+            "import": 0.4
+          },
+          "shipbuilding": {
+            "export": 0.66,
+            "import": 0.05
+          },
+          "battery": {
+            "export": 0.3,
+            "import": 0.23
+          },
+          "defense": {
+            "export": 0.44,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.17,
+            "import": 0.07
+          },
+          "others": {
+            "export": 6.5,
+            "import": 5.46
+          }
+        },
+        "EU": {
+          "semiconductor": {
+            "export": 2.17,
+            "import": 0.68
+          },
+          "automobile": {
+            "export": 2.48,
+            "import": 1.31
+          },
+          "machinery": {
+            "export": 1.51,
+            "import": 1
+          },
+          "petrochemical": {
+            "export": 0.66,
+            "import": 0.35
+          },
+          "consumer": {
+            "export": 0.7,
+            "import": 0.81
+          },
+          "steel": {
+            "export": 0.7,
+            "import": 0.32
+          },
+          "shipbuilding": {
+            "export": 1.28,
+            "import": 0.11
+          },
+          "battery": {
+            "export": 0.57,
+            "import": 0.23
+          },
+          "defense": {
+            "export": 0.78,
+            "import": 0.21
+          },
+          "bio": {
+            "export": 0.59,
+            "import": 0.61
+          },
+          "others": {
+            "export": 2.6,
+            "import": 4.55
+          }
+        },
+        "JP": {
+          "semiconductor": {
+            "export": 1.24,
+            "import": 0.81
+          },
+          "automobile": {
+            "export": 0.26,
+            "import": 0.35
+          },
+          "machinery": {
+            "export": 0.63,
+            "import": 0.8
+          },
+          "petrochemical": {
+            "export": 0.39,
+            "import": 0.28
+          },
+          "consumer": {
+            "export": 0.4,
+            "import": 0.36
+          },
+          "steel": {
+            "export": 0.65,
+            "import": 0.53
+          },
+          "shipbuilding": {
+            "export": 0.07,
+            "import": 0.08
+          },
+          "battery": {
+            "export": 0.04,
+            "import": 0.08
+          },
+          "defense": {
+            "export": 0,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.08,
+            "import": 0.07
+          },
+          "others": {
+            "export": 1.95,
+            "import": 3.64
+          }
+        },
+        "ME": {
+          "semiconductor": {
+            "export": 0.31,
+            "import": 0
+          },
+          "automobile": {
+            "export": 0.65,
+            "import": 0
+          },
+          "machinery": {
+            "export": 0.4,
+            "import": 0
+          },
+          "petrochemical": {
+            "export": 0.13,
+            "import": 0.12
+          },
+          "consumer": {
+            "export": 0.1,
+            "import": 0
+          },
+          "steel": {
+            "export": 0.19,
+            "import": 0
+          },
+          "shipbuilding": {
+            "export": 0.55,
+            "import": 0
+          },
+          "battery": {
+            "export": 0,
+            "import": 0
+          },
+          "defense": {
+            "export": 0.17,
+            "import": 0
+          },
+          "bio": {
+            "export": 0,
+            "import": 0
+          },
+          "others": {
+            "export": 0.65,
+            "import": 11.82
+          }
+        },
+        "ROW": {
+          "semiconductor": {
+            "export": 7.73,
+            "import": 0.2
+          },
+          "automobile": {
+            "export": 1.31,
+            "import": 0.3
+          },
+          "machinery": {
+            "export": -0.95,
+            "import": -0.61
+          },
+          "petrochemical": {
+            "export": 0.32,
+            "import": 0.07
+          },
+          "consumer": {
+            "export": 0.15,
+            "import": 0.04
+          },
+          "steel": {
+            "export": 0.36,
+            "import": 0.09
+          },
+          "shipbuilding": {
+            "export": 0.86,
+            "import": 0.24
+          },
+          "battery": {
+            "export": 0.01,
+            "import": 0
+          },
+          "defense": {
+            "export": 0,
+            "import": 0.04
+          },
+          "bio": {
+            "export": 0.01,
+            "import": -0.01
+          },
+          "others": {
+            "export": 11.05,
+            "import": 4.54
+          }
+        }
+      }
+    },
+    {
+      "month": 11,
+      "name": "11월",
+      "status": "잠정 실적",
+      "export": 97.1,
+      "import": 66.2,
+      "balance": 30.9,
+      "macro": {
+        "fxRate": 1415,
+        "brentOil": 78.9,
+        "scfiFreight": 1990,
+        "globalDemandIndex": 102,
+        "usFedRate": 4.5,
+        "bokBaseRate": 3
+      },
+      "industries": {
+        "semiconductor": {
+          "id": "semiconductor",
+          "name": "반도체",
+          "export": 27.36,
+          "import": 6.19,
+          "balance": 21.17,
+          "capacityIndex": 100,
+          "utilizationRate": 95,
+          "tradeBarrierIndex": 100
+        },
+        "automobile": {
+          "id": "automobile",
+          "name": "자동차·부품",
+          "export": 11.54,
+          "import": 2.67,
+          "balance": 8.87,
+          "capacityIndex": 100,
+          "utilizationRate": 89,
+          "tradeBarrierIndex": 100
+        },
+        "machinery": {
+          "id": "machinery",
+          "name": "기계·설비",
+          "export": 7.01,
+          "import": 3.63,
+          "balance": 3.38,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "petrochemical": {
+          "id": "petrochemical",
+          "name": "석유화학",
+          "export": 5.81,
+          "import": 2.12,
+          "balance": 3.69,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "consumer": {
+          "id": "consumer",
+          "name": "소비재",
+          "export": 4.45,
+          "import": 4.1,
+          "balance": 0.35,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "steel": {
+          "id": "steel",
+          "name": "철강",
+          "export": 4.1,
+          "import": 2.43,
+          "balance": 1.67,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "shipbuilding": {
+          "id": "shipbuilding",
+          "name": "조선",
+          "export": 3.25,
+          "import": 0.5,
+          "balance": 2.75,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "battery": {
+          "id": "battery",
+          "name": "이차전지",
+          "export": 1.8,
+          "import": 1.41,
+          "balance": 0.39,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "defense": {
+          "id": "defense",
+          "name": "방산",
+          "export": 1.54,
+          "import": 0.38,
+          "balance": 1.16,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "bio": {
+          "id": "bio",
+          "name": "바이오·의약품",
+          "export": 1.5,
+          "import": 1.24,
+          "balance": 0.26,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "others": {
+          "id": "others",
+          "name": "기타 산업",
+          "export": 28.74,
+          "import": 41.53,
+          "balance": -12.79,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        }
+      },
+      "partners": {
+        "US": {
+          "id": "US",
+          "name": "미국",
+          "export": 19.44,
+          "import": 9.09,
+          "balance": 10.35
+        },
+        "CN": {
+          "id": "CN",
+          "name": "중국",
+          "export": 19.17,
+          "import": 16.95,
+          "balance": 2.22
+        },
+        "ASEAN": {
+          "id": "ASEAN",
+          "name": "아세안(베트남 등)",
+          "export": 19.81,
+          "import": 9.06,
+          "balance": 10.75
+        },
+        "EU": {
+          "id": "EU",
+          "name": "EU(유럽연합)",
+          "export": 12.4,
+          "import": 9.29,
+          "balance": 3.11
+        },
+        "JP": {
+          "id": "JP",
+          "name": "일본",
+          "export": 5.07,
+          "import": 6.39,
+          "balance": -1.32
+        },
+        "ME": {
+          "id": "ME",
+          "name": "중동",
+          "export": 2.78,
+          "import": 10.91,
+          "balance": -8.13
+        },
+        "ROW": {
+          "id": "ROW",
+          "name": "기타 국가",
+          "export": 18.43,
+          "import": 4.51,
+          "balance": 13.92
+        }
+      },
+      "matrix": {
+        "US": {
+          "semiconductor": {
+            "export": 3.83,
+            "import": 1.24
+          },
+          "automobile": {
+            "export": 5.54,
+            "import": 0.4
+          },
+          "machinery": {
+            "export": 2.38,
+            "import": 0.8
+          },
+          "petrochemical": {
+            "export": 0.46,
+            "import": 0.21
+          },
+          "consumer": {
+            "export": 1.25,
+            "import": 0.61
+          },
+          "steel": {
+            "export": 0.66,
+            "import": 0.12
+          },
+          "shipbuilding": {
+            "export": 0.16,
+            "import": 0.01
+          },
+          "battery": {
+            "export": 0.72,
+            "import": 0.14
+          },
+          "defense": {
+            "export": 0.31,
+            "import": 0.15
+          },
+          "bio": {
+            "export": 0.68,
+            "import": 0.43
+          },
+          "others": {
+            "export": 3.45,
+            "import": 4.98
+          }
+        },
+        "CN": {
+          "semiconductor": {
+            "export": 7.39,
+            "import": 2.17
+          },
+          "automobile": {
+            "export": 0.46,
+            "import": 0.21
+          },
+          "machinery": {
+            "export": 1.54,
+            "import": 1.09
+          },
+          "petrochemical": {
+            "export": 2.56,
+            "import": 0.74
+          },
+          "consumer": {
+            "export": 0.89,
+            "import": 1.56
+          },
+          "steel": {
+            "export": 0.74,
+            "import": 1.09
+          },
+          "shipbuilding": {
+            "export": 0.07,
+            "import": 0.05
+          },
+          "battery": {
+            "export": 0.27,
+            "import": 0.78
+          },
+          "defense": {
+            "export": 0,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.08,
+            "import": 0.12
+          },
+          "others": {
+            "export": 5.17,
+            "import": 9.14
+          }
+        },
+        "ASEAN": {
+          "semiconductor": {
+            "export": 6.02,
+            "import": 1.24
+          },
+          "automobile": {
+            "export": 1.38,
+            "import": 0.27
+          },
+          "machinery": {
+            "export": 1.68,
+            "import": 0.65
+          },
+          "petrochemical": {
+            "export": 1.45,
+            "import": 0.42
+          },
+          "consumer": {
+            "export": 1.11,
+            "import": 0.82
+          },
+          "steel": {
+            "export": 1.02,
+            "import": 0.36
+          },
+          "shipbuilding": {
+            "export": 0.59,
+            "import": 0.05
+          },
+          "battery": {
+            "export": 0.27,
+            "import": 0.21
+          },
+          "defense": {
+            "export": 0.39,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.15,
+            "import": 0.06
+          },
+          "others": {
+            "export": 5.75,
+            "import": 4.98
+          }
+        },
+        "EU": {
+          "semiconductor": {
+            "export": 1.92,
+            "import": 0.62
+          },
+          "automobile": {
+            "export": 2.19,
+            "import": 1.2
+          },
+          "machinery": {
+            "export": 1.33,
+            "import": 0.91
+          },
+          "petrochemical": {
+            "export": 0.58,
+            "import": 0.32
+          },
+          "consumer": {
+            "export": 0.62,
+            "import": 0.74
+          },
+          "steel": {
+            "export": 0.61,
+            "import": 0.29
+          },
+          "shipbuilding": {
+            "export": 1.14,
+            "import": 0.1
+          },
+          "battery": {
+            "export": 0.5,
+            "import": 0.21
+          },
+          "defense": {
+            "export": 0.69,
+            "import": 0.19
+          },
+          "bio": {
+            "export": 0.52,
+            "import": 0.56
+          },
+          "others": {
+            "export": 2.3,
+            "import": 4.15
+          }
+        },
+        "JP": {
+          "semiconductor": {
+            "export": 1.09,
+            "import": 0.74
+          },
+          "automobile": {
+            "export": 0.23,
+            "import": 0.32
+          },
+          "machinery": {
+            "export": 0.56,
+            "import": 0.73
+          },
+          "petrochemical": {
+            "export": 0.35,
+            "import": 0.25
+          },
+          "consumer": {
+            "export": 0.36,
+            "import": 0.33
+          },
+          "steel": {
+            "export": 0.57,
+            "import": 0.49
+          },
+          "shipbuilding": {
+            "export": 0.07,
+            "import": 0.08
+          },
+          "battery": {
+            "export": 0.04,
+            "import": 0.07
+          },
+          "defense": {
+            "export": 0,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.08,
+            "import": 0.06
+          },
+          "others": {
+            "export": 1.72,
+            "import": 3.32
+          }
+        },
+        "ME": {
+          "semiconductor": {
+            "export": 0.27,
+            "import": 0
+          },
+          "automobile": {
+            "export": 0.58,
+            "import": 0
+          },
+          "machinery": {
+            "export": 0.35,
+            "import": 0
+          },
+          "petrochemical": {
+            "export": 0.12,
+            "import": 0.11
+          },
+          "consumer": {
+            "export": 0.09,
+            "import": 0
+          },
+          "steel": {
+            "export": 0.16,
+            "import": 0
+          },
+          "shipbuilding": {
+            "export": 0.49,
+            "import": 0
+          },
+          "battery": {
+            "export": 0,
+            "import": 0
+          },
+          "defense": {
+            "export": 0.15,
+            "import": 0
+          },
+          "bio": {
+            "export": 0,
+            "import": 0
+          },
+          "others": {
+            "export": 0.57,
+            "import": 10.8
+          }
+        },
+        "ROW": {
+          "semiconductor": {
+            "export": 6.84,
+            "import": 0.18
+          },
+          "automobile": {
+            "export": 1.16,
+            "import": 0.27
+          },
+          "machinery": {
+            "export": -0.83,
+            "import": -0.55
+          },
+          "petrochemical": {
+            "export": 0.29,
+            "import": 0.07
+          },
+          "consumer": {
+            "export": 0.13,
+            "import": 0.04
+          },
+          "steel": {
+            "export": 0.34,
+            "import": 0.08
+          },
+          "shipbuilding": {
+            "export": 0.73,
+            "import": 0.21
+          },
+          "battery": {
+            "export": 0,
+            "import": 0
+          },
+          "defense": {
+            "export": 0,
+            "import": 0.04
+          },
+          "bio": {
+            "export": -0.01,
+            "import": 0.01
+          },
+          "others": {
+            "export": 9.78,
+            "import": 4.16
+          }
+        }
+      }
+    },
+    {
+      "month": 12,
+      "name": "12월",
+      "status": "공식 추정치",
+      "export": 105.2,
+      "import": 70.8,
+      "balance": 34.4,
+      "macro": {
+        "fxRate": 1422,
+        "brentOil": 80.5,
+        "scfiFreight": 2120,
+        "globalDemandIndex": 102.6,
+        "usFedRate": 4.5,
+        "bokBaseRate": 3
+      },
+      "industries": {
+        "semiconductor": {
+          "id": "semiconductor",
+          "name": "반도체",
+          "export": 29.65,
+          "import": 6.62,
+          "balance": 23.03,
+          "capacityIndex": 100,
+          "utilizationRate": 95,
+          "tradeBarrierIndex": 100
+        },
+        "automobile": {
+          "id": "automobile",
+          "name": "자동차·부품",
+          "export": 12.51,
+          "import": 2.85,
+          "balance": 9.66,
+          "capacityIndex": 100,
+          "utilizationRate": 89,
+          "tradeBarrierIndex": 100
+        },
+        "machinery": {
+          "id": "machinery",
+          "name": "기계·설비",
+          "export": 7.6,
+          "import": 3.88,
+          "balance": 3.72,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "petrochemical": {
+          "id": "petrochemical",
+          "name": "석유화학",
+          "export": 6.3,
+          "import": 2.27,
+          "balance": 4.03,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "consumer": {
+          "id": "consumer",
+          "name": "소비재",
+          "export": 4.82,
+          "import": 4.39,
+          "balance": 0.43,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "steel": {
+          "id": "steel",
+          "name": "철강",
+          "export": 4.45,
+          "import": 2.6,
+          "balance": 1.85,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "shipbuilding": {
+          "id": "shipbuilding",
+          "name": "조선",
+          "export": 3.52,
+          "import": 0.53,
+          "balance": 2.99,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "battery": {
+          "id": "battery",
+          "name": "이차전지",
+          "export": 1.95,
+          "import": 1.51,
+          "balance": 0.44,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "defense": {
+          "id": "defense",
+          "name": "방산",
+          "export": 1.67,
+          "import": 0.41,
+          "balance": 1.26,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "bio": {
+          "id": "bio",
+          "name": "바이오·의약품",
+          "export": 1.62,
+          "import": 1.32,
+          "balance": 0.3,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        },
+        "others": {
+          "id": "others",
+          "name": "기타 산업",
+          "export": 31.11,
+          "import": 44.42,
+          "balance": -13.31,
+          "capacityIndex": 100,
+          "utilizationRate": 82,
+          "tradeBarrierIndex": 100
+        }
+      },
+      "partners": {
+        "US": {
+          "id": "US",
+          "name": "미국",
+          "export": 21.04,
+          "import": 9.73,
+          "balance": 11.31
+        },
+        "CN": {
+          "id": "CN",
+          "name": "중국",
+          "export": 20.75,
+          "import": 18.12,
+          "balance": 2.63
+        },
+        "ASEAN": {
+          "id": "ASEAN",
+          "name": "아세안(베트남 등)",
+          "export": 21.46,
+          "import": 9.71,
+          "balance": 11.75
+        },
+        "EU": {
+          "id": "EU",
+          "name": "EU(유럽연합)",
+          "export": 13.46,
+          "import": 9.93,
+          "balance": 3.53
+        },
+        "JP": {
+          "id": "JP",
+          "name": "일본",
+          "export": 5.5,
+          "import": 6.83,
+          "balance": -1.33
+        },
+        "ME": {
+          "id": "ME",
+          "name": "중동",
+          "export": 3.04,
+          "import": 11.66,
+          "balance": -8.62
+        },
+        "ROW": {
+          "id": "ROW",
+          "name": "기타 국가",
+          "export": 19.95,
+          "import": 4.82,
+          "balance": 15.13
+        }
+      },
+      "matrix": {
+        "US": {
+          "semiconductor": {
+            "export": 4.15,
+            "import": 1.32
+          },
+          "automobile": {
+            "export": 6,
+            "import": 0.43
+          },
+          "machinery": {
+            "export": 2.58,
+            "import": 0.85
+          },
+          "petrochemical": {
+            "export": 0.5,
+            "import": 0.23
+          },
+          "consumer": {
+            "export": 1.35,
+            "import": 0.66
+          },
+          "steel": {
+            "export": 0.71,
+            "import": 0.13
+          },
+          "shipbuilding": {
+            "export": 0.18,
+            "import": 0.01
+          },
+          "battery": {
+            "export": 0.78,
+            "import": 0.15
+          },
+          "defense": {
+            "export": 0.33,
+            "import": 0.16
+          },
+          "bio": {
+            "export": 0.73,
+            "import": 0.46
+          },
+          "others": {
+            "export": 3.73,
+            "import": 5.33
+          }
+        },
+        "CN": {
+          "semiconductor": {
+            "export": 8.01,
+            "import": 2.32
+          },
+          "automobile": {
+            "export": 0.5,
+            "import": 0.23
+          },
+          "machinery": {
+            "export": 1.67,
+            "import": 1.16
+          },
+          "petrochemical": {
+            "export": 2.77,
+            "import": 0.79
+          },
+          "consumer": {
+            "export": 0.96,
+            "import": 1.67
+          },
+          "steel": {
+            "export": 0.8,
+            "import": 1.17
+          },
+          "shipbuilding": {
+            "export": 0.07,
+            "import": 0.05
+          },
+          "battery": {
+            "export": 0.29,
+            "import": 0.83
+          },
+          "defense": {
+            "export": 0,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.08,
+            "import": 0.13
+          },
+          "others": {
+            "export": 5.6,
+            "import": 9.77
+          }
+        },
+        "ASEAN": {
+          "semiconductor": {
+            "export": 6.52,
+            "import": 1.32
+          },
+          "automobile": {
+            "export": 1.5,
+            "import": 0.29
+          },
+          "machinery": {
+            "export": 1.82,
+            "import": 0.7
+          },
+          "petrochemical": {
+            "export": 1.58,
+            "import": 0.45
+          },
+          "consumer": {
+            "export": 1.21,
+            "import": 0.88
+          },
+          "steel": {
+            "export": 1.11,
+            "import": 0.39
+          },
+          "shipbuilding": {
+            "export": 0.63,
+            "import": 0.05
+          },
+          "battery": {
+            "export": 0.29,
+            "import": 0.23
+          },
+          "defense": {
+            "export": 0.42,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.16,
+            "import": 0.07
+          },
+          "others": {
+            "export": 6.22,
+            "import": 5.33
+          }
+        },
+        "EU": {
+          "semiconductor": {
+            "export": 2.08,
+            "import": 0.66
+          },
+          "automobile": {
+            "export": 2.38,
+            "import": 1.28
+          },
+          "machinery": {
+            "export": 1.44,
+            "import": 0.97
+          },
+          "petrochemical": {
+            "export": 0.63,
+            "import": 0.34
+          },
+          "consumer": {
+            "export": 0.67,
+            "import": 0.79
+          },
+          "steel": {
+            "export": 0.67,
+            "import": 0.31
+          },
+          "shipbuilding": {
+            "export": 1.23,
+            "import": 0.11
+          },
+          "battery": {
+            "export": 0.55,
+            "import": 0.23
+          },
+          "defense": {
+            "export": 0.75,
+            "import": 0.21
+          },
+          "bio": {
+            "export": 0.57,
+            "import": 0.59
+          },
+          "others": {
+            "export": 2.49,
+            "import": 4.44
+          }
+        },
+        "JP": {
+          "semiconductor": {
+            "export": 1.19,
+            "import": 0.79
+          },
+          "automobile": {
+            "export": 0.25,
+            "import": 0.34
+          },
+          "machinery": {
+            "export": 0.61,
+            "import": 0.78
+          },
+          "petrochemical": {
+            "export": 0.38,
+            "import": 0.27
+          },
+          "consumer": {
+            "export": 0.39,
+            "import": 0.35
+          },
+          "steel": {
+            "export": 0.62,
+            "import": 0.52
+          },
+          "shipbuilding": {
+            "export": 0.07,
+            "import": 0.08
+          },
+          "battery": {
+            "export": 0.04,
+            "import": 0.08
+          },
+          "defense": {
+            "export": 0,
+            "import": 0
+          },
+          "bio": {
+            "export": 0.08,
+            "import": 0.07
+          },
+          "others": {
+            "export": 1.87,
+            "import": 3.55
+          }
+        },
+        "ME": {
+          "semiconductor": {
+            "export": 0.3,
+            "import": 0
+          },
+          "automobile": {
+            "export": 0.63,
+            "import": 0
+          },
+          "machinery": {
+            "export": 0.38,
+            "import": 0
+          },
+          "petrochemical": {
+            "export": 0.13,
+            "import": 0.11
+          },
+          "consumer": {
+            "export": 0.1,
+            "import": 0
+          },
+          "steel": {
+            "export": 0.18,
+            "import": 0
+          },
+          "shipbuilding": {
+            "export": 0.53,
+            "import": 0
+          },
+          "battery": {
+            "export": 0,
+            "import": 0
+          },
+          "defense": {
+            "export": 0.17,
+            "import": 0
+          },
+          "bio": {
+            "export": 0,
+            "import": 0
+          },
+          "others": {
+            "export": 0.62,
+            "import": 11.55
+          }
+        },
+        "ROW": {
+          "semiconductor": {
+            "export": 7.4,
+            "import": 0.21
+          },
+          "automobile": {
+            "export": 1.25,
+            "import": 0.28
+          },
+          "machinery": {
+            "export": -0.9,
+            "import": -0.58
+          },
+          "petrochemical": {
+            "export": 0.31,
+            "import": 0.08
+          },
+          "consumer": {
+            "export": 0.14,
+            "import": 0.04
+          },
+          "steel": {
+            "export": 0.36,
+            "import": 0.08
+          },
+          "shipbuilding": {
+            "export": 0.81,
+            "import": 0.23
+          },
+          "battery": {
+            "export": 0,
+            "import": -0.01
+          },
+          "defense": {
+            "export": 0,
+            "import": 0.04
+          },
+          "bio": {
+            "export": 0,
+            "import": 0
+          },
+          "others": {
+            "export": 10.58,
+            "import": 4.45
+          }
         }
       }
     }

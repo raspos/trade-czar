@@ -315,6 +315,7 @@ export class NegotiationEngine {
         pState.tariffs.automobile = 0.025; // successfully eliminated 25% tariff!
         pState.tariffs.steel = 0.05;
         pState.tariffs.general = 0.03;
+        pState.energyQuotaMod = 1.0; // Korea imports $1.0B/month of US LNG, fulfilling US trade deficit reduction
         // reduce barrier for autos
         economyEngine.industryStates.automobile.tradeBarrierIndex = Math.max(80, economyEngine.industryStates.automobile.tradeBarrierIndex - 25);
         economyEngine.industryStates.steel.tradeBarrierIndex = Math.max(80, economyEngine.industryStates.steel.tradeBarrierIndex - 20);
@@ -331,12 +332,14 @@ export class NegotiationEngine {
     } else if (this.finalAgreement.type === 'partial') {
       if (this.scenario.partnerId === 'US') {
         pState.tariffs.automobile = 0.08; // moderate compromise
+        pState.energyQuotaMod = 0.5; // partial LNG purchase
         economyEngine.industryStates.automobile.tradeBarrierIndex = Math.max(90, economyEngine.industryStates.automobile.tradeBarrierIndex - 12);
       }
       pState.relations = Math.min(100, pState.relations + 5);
     } else if (this.finalAgreement.type === 'broken') {
       if (this.scenario.partnerId === 'US') {
         pState.tariffs.automobile = 0.25; // disaster 25% tariff hits!
+        pState.energyQuotaMod = 0.0;
         economyEngine.industryStates.automobile.tradeBarrierIndex += 35;
         economyEngine.industryStates.steel.tradeBarrierIndex += 25;
       } else if (this.scenario.partnerId === 'CN') {

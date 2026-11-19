@@ -54,7 +54,7 @@ export class NewspaperEngine {
 
     // Lead paragraph
     body.push(
-      `관세청과 산업통상자원부는 1일 발표한 '${month}월 수출입 동향'에서 지난달 우리나라 총수출액이 ${exp}억 달러, 수입액이 ${imp}억 달러를 기록해 무역수지 ${bal}억 달러 ${monthlyResult.balance >= 0 ? '흑자' : '적자'}를 기록했다고 공식 발표했다. 연간 누적 무역흑자는 ${cumBal}억 달러로 집계됐다.`
+      `관세청과 산업통상부는 1일 발표한 '${month}월 수출입 동향'에서 지난달 우리나라 총수출액이 ${exp}억 달러, 수입액이 ${imp}억 달러를 기록해 무역수지 ${bal}억 달러 ${monthlyResult.balance >= 0 ? '흑자' : '적자'}를 기록했다고 공식 발표했다. 연간 누적 무역흑자는 ${cumBal}억 달러로 집계됐다.`
     );
 
     // Industry analysis
