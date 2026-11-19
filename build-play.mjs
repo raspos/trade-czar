@@ -56,13 +56,22 @@ const styles = availableArtwork.reduce((source, name, i) => {
 }, css);
 
 // Combine modules stripping import/export
-const js = modules.map(source => 
+let js = modules.map(source => 
   source
     .replace(/^import .*;\r?\n/gm, '')
     .replace(/^export (const|class|function|let|var) /gm, '$1 ')
     .replace(/^export default /gm, '')
     .replace(/^export \{[^}]*\};\r?\n/gm, '')
 ).join('\n');
+
+// Also replace artwork in JS (except fonts) with base64 data URIs
+for (let i = 0; i < availableArtwork.length; i++) {
+  const name = availableArtwork[i];
+  if (name.endsWith('.woff2')) continue;
+  const mime = name.endsWith('.png') ? 'data:image/png' : 'data:image/jpeg';
+  const base64 = assets[i].toString('base64');
+  js = js.replaceAll('./' + name, `${mime};base64,${base64}`);
+}
 
 const page = html
   .replace('<link rel="stylesheet" href="./style.css">', () => '<style>' + styles + '</style>')
