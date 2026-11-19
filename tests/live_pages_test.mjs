@@ -28,6 +28,7 @@ const desktopContext = await browser.newContext({
   viewport: { width: 1440, height: 900 }
 });
 const page = await desktopContext.newPage();
+page.on('dialog', dialog => dialog.accept());
 
 page.on('console', msg => {
   if (msg.type() === 'error') {
@@ -111,7 +112,7 @@ for (let m = 1; m <= 12; m++) {
     await page.waitForTimeout(200);
   }
 
-  // Optional: In month 1, negotiate with US
+  // Month 1: Engage in US negotiation
   if (m === 1) {
     const usNegoBtn = page.locator('#obj-nego-us');
     if (await usNegoBtn.isVisible()) {
@@ -135,11 +136,25 @@ for (let m = 1; m <= 12; m++) {
     }
   }
 
+  // Execute a policy
+  const policiesBtn = page.locator('#obj-policies');
+  if (await policiesBtn.isVisible()) {
+    await policiesBtn.click();
+    await page.waitForTimeout(200);
+    const execBtn = page.locator('.btn-execute-policy:not([disabled])').first();
+    if (await execBtn.isVisible()) {
+      await execBtn.click();
+      await page.waitForTimeout(200);
+    }
+    await page.click('button:has-text("집무실")');
+    await page.waitForTimeout(200);
+  }
+
   // Advance Month
   const advBtn = page.locator('#btn-advance-month');
   if (await advBtn.isVisible()) {
     await advBtn.click();
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(400);
   }
 
   if (await page.locator('#btn-title-return').isVisible()) {
@@ -158,7 +173,12 @@ for (let m = 1; m <= 12; m++) {
   const nextMonthBtn = page.locator('#btn-next-month-flow');
   if (await nextMonthBtn.isVisible()) {
     await nextMonthBtn.click();
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(400);
+  }
+
+  if (await page.locator('#btn-title-return').isVisible()) {
+    console.log(`Verdict screen reached after month ${m} flow`);
+    break;
   }
 }
 
@@ -187,8 +207,13 @@ const mobileContext = await browser.newContext({
   hasTouch: true
 });
 const mobilePage = await mobileContext.newPage();
+mobilePage.on('dialog', dialog => dialog.accept());
+
 mobilePage.on('console', msg => {
   if (msg.type() === 'error') consoleErrors.push(`[Mobile Console Error]: ${msg.text()}`);
+});
+mobilePage.on('pageerror', err => {
+  consoleErrors.push(`[Mobile Page Error]: ${err.message}`);
 });
 
 await mobilePage.goto(LIVE_URL, { waitUntil: 'networkidle' });
