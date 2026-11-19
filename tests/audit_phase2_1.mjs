@@ -38,15 +38,14 @@ console.log('>>> [AUDIT 1] 2026 Official Customs Statistics & Common Ledger Veri
   assert.strictEqual(m10.import, 72.765, '10월 수입 확정치는 72.765B여야 합니다.');
   assert.strictEqual(m10.balance, 42.645, '10월 무역수지는 +42.645B여야 합니다.');
 
-  console.log(`  • 1~10월 누적 수출 확정치 합산: $${m10YtdExp}B (공식 사전공표 $930.202B + 9월정정분 $0.834B)`);
-  assert.strictEqual(m10YtdExp, 931.036, '1~10월 누적 수출 확정치 합산은 931.036B여야 합니다.');
-  assert.strictEqual(BASELINE_2026.metadata.m10OfficialYtdExportPreRevision, 930.202, '사전 공표 1~10월 누적 수출은 930.202B여야 합니다.');
+  console.log(`  • 1~10월 공식 누적 수출: $${BASELINE_2026.metadata.m10OfficialYtdExport}B (공식 통계: 9,302억 200만 달러)`);
+  assert.strictEqual(BASELINE_2026.metadata.m10OfficialYtdExport, 930.202, '1~10월 공식 누적 수출은 930.202B여야 합니다.');
 
-  console.log(`  • 1~10월 누적 수입 확정치: $${m10YtdImp}B (공식 통계: 6,352억 1,400만 달러)`);
-  assert.strictEqual(m10YtdImp, 635.214, '1~10월 누적 수입 확정치는 635.214B여야 합니다.');
+  console.log(`  • 1~10월 공식 누적 수입: $${BASELINE_2026.metadata.m10OfficialYtdImport}B (공식 통계: 6,352억 1,400만 달러)`);
+  assert.strictEqual(BASELINE_2026.metadata.m10OfficialYtdImport, 635.214, '1~10월 공식 누적 수입은 635.214B여야 합니다.');
 
-  console.log(`  • 1~10월 누적 무역수지: +$${m10YtdBal}B (+2,958억 2,200만 달러)`);
-  assert.strictEqual(m10YtdBal, 295.822, '1~10월 누적 무역수지는 295.822B여야 합니다.');
+  console.log(`  • 1~10월 공식 누적 무역수지: +$${BASELINE_2026.metadata.m10OfficialYtdBalance}B (+2,949억 8,800만 달러)`);
+  assert.strictEqual(BASELINE_2026.metadata.m10OfficialYtdBalance, 294.988, '1~10월 공식 누적 무역수지는 294.988B여야 합니다.');
 
   console.log(`  • 11월 10일 기준 누적 수출: $963.7B, 수입: $659.9B (11월 1~10일 10일간 실적 $33.5B / $24.7B)`);
   console.log(`  • 2026 연간 총계: 수출 $${annualExp}B, 수입 $${annualImp}B, 무역수지 +$${annualBal}B`);

@@ -1,6 +1,7 @@
-// storage.mjs - LocalStorage Auto-save & Load Manager
+// storage.mjs - LocalStorage Auto-save & Load Manager with safe namespacing
 
-const STORAGE_KEY = 'trade_czar_savegame_v1';
+export const STORAGE_PREFIX = 'trade-czar:';
+export const STORAGE_KEY = 'trade-czar:savegame_v1';
 const memoryStore = new Map();
 
 function getStorage() {
@@ -15,6 +16,14 @@ function getStorage() {
 }
 
 export class StorageManager {
+  static get storageKey() {
+    return STORAGE_KEY;
+  }
+
+  static get prefix() {
+    return STORAGE_PREFIX;
+  }
+
   static save(gameState) {
     try {
       const serialized = JSON.stringify({
@@ -46,12 +55,28 @@ export class StorageManager {
     return Boolean(getStorage().getItem(STORAGE_KEY));
   }
 
+  // Safe removal of ONLY trade-czar: prefixed keys, never touching other projects
   static clear() {
     try {
-      getStorage().removeItem(STORAGE_KEY);
+      if (typeof localStorage !== 'undefined') {
+        const toRemove = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const k = localStorage.key(i);
+          if (k && k.startsWith(STORAGE_PREFIX)) {
+            toRemove.push(k);
+          }
+        }
+        toRemove.forEach(k => localStorage.removeItem(k));
+      } else {
+        for (const k of Array.from(memoryStore.keys())) {
+          if (k.startsWith(STORAGE_PREFIX)) {
+            memoryStore.delete(k);
+          }
+        }
+      }
       return true;
     } catch (e) {
-      console.error("Failed to clear save state:", e);
+      console.error("Failed to clear trade-czar save state:", e);
       return false;
     }
   }

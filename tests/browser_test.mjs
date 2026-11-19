@@ -84,7 +84,12 @@ try {
 
     // 1. Visit Title Screen
     await page.goto(`${baseUrl}/dist/index.html`);
-    await page.evaluate(() => localStorage.clear());
+    await page.evaluate(() => {
+      for (let i = localStorage.length - 1; i >= 0; i--) {
+        const k = localStorage.key(i);
+        if (k && k.startsWith('trade-czar:')) localStorage.removeItem(k);
+      }
+    });
     await page.reload();
     await page.waitForLoadState('networkidle');
     console.log('PAGE CONTENT LENGTH:', (await page.content()).length);
@@ -168,7 +173,12 @@ try {
   standalonePage.on('pageerror', err => console.log('STANDALONE PAGE ERROR:', err.message));
   standalonePage.on('console', msg => console.log('STANDALONE PAGE LOG:', msg.text()));
   await standalonePage.goto(`${baseUrl}/play.html`);
-  await standalonePage.evaluate(() => localStorage.clear());
+  await standalonePage.evaluate(() => {
+    for (let i = localStorage.length - 1; i >= 0; i--) {
+      const k = localStorage.key(i);
+      if (k && k.startsWith('trade-czar:')) localStorage.removeItem(k);
+    }
+  });
   await standalonePage.reload();
   await standalonePage.waitForLoadState('networkidle');
   console.log('STANDALONE CONTENT LENGTH:', (await standalonePage.content()).length);

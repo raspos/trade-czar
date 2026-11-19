@@ -89,7 +89,12 @@ try {
 
     // 1. Visit title screen
     await page.goto(`${baseUrl}/dist/index.html`);
-    await page.evaluate(() => localStorage.clear());
+    await page.evaluate(() => {
+      for (let i = localStorage.length - 1; i >= 0; i--) {
+        const k = localStorage.key(i);
+        if (k && k.startsWith('trade-czar:')) localStorage.removeItem(k);
+      }
+    });
     await page.reload();
     await page.waitForLoadState('networkidle');
 

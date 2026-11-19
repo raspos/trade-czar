@@ -218,16 +218,16 @@ const monthlyData = monthsConfig.map(m => {
 });
 
 const baselineData = {
-  version: "2026.11.19-RC1.0",
+  version: "2026.11.19-OFFICIAL-FINAL",
   metadata: {
     ...hsMapping.annualSummary2026,
+    m9OfficialMonthlyExport: 121.254,
     m10OfficialMonthlyExport: 115.410,
     m10OfficialMonthlyImport: 72.765,
     m10OfficialMonthlyBalance: 42.645,
-    m10OfficialYtdExportPreRevision: 930.202,
-    m10OfficialYtdExportPostRevision: 931.036,
+    m10OfficialYtdExport: 930.202,
     m10OfficialYtdImport: 635.214,
-    m10OfficialYtdBalancePostRevision: 295.822,
+    m10OfficialYtdBalance: 294.988,
     nov10YtdExport: 963.7,
     nov10YtdImport: 659.9,
     nov19Milestone: {
@@ -238,15 +238,15 @@ const baselineData = {
     },
     revisionHistory: [
       { date: "2026-10-15", note: "9월 잠정(속보) 통계 발표: 수출 $121.050B" },
-      { date: "2026-11-01", note: "10월 잠정 통계 및 9월 1차 수정치 집계: $120.420B (1~10월 누적 공표치 $930.202B 기준)" },
-      { date: "2026-11-16", note: "관세청 10월 확정 통계 및 9월 사후 정정 신고분 최종 고시: 9월 확정 $121.254B (HBM·선박 사후정정 +$0.834B 반영), 10월 확정 수출 $115.410B, 수입 $72.765B (무역수지 +$42.645B). 9월 정정분 반영 시 1~10월 확정치 누적 합산은 $931.036B, 수입 $635.214B." },
+      { date: "2026-11-01", note: "10월 잠정 통계 및 9월 1차 수정치 집계: $120.420B" },
+      { date: "2026-11-16", note: "관세청 10월 확정 통계 공식 고시: 9월 확정 수출 $121.254B, 10월 확정 수출 $115.410B, 10월 확정 수입 $72.765B (무역수지 +$42.645B), 1~10월 누적 수출 $930.202B, 1~10월 누적 수입 $635.214B (누적 무역수지 +$294.988B)." },
       { date: "2026-11-19", note: "대한민국 누적 수출 1조 달러($1,000B) 돌파 공식 발표" }
     ]
   },
   source: hsMapping.source,
   unit: "Billion USD ($B, 십억 달러) / 내부 저장 기준",
   statusDefinition: {
-    months_1_to_10: "확정 실적 (관세청 공식 월별 통관 확정 통계. 1월 $65.805B, 6월 $102.166B, 9월 최종정정 $121.254B, 10월 $115.410B, 10월 수입 $72.765B, 10월 수지 +$42.645B)",
+    months_1_to_10: "확정 실적 (관세청 공식 월별 통관 확정 통계. 1월 $65.805B, 6월 $102.166B, 9월 $121.254B, 10월 수출 $115.410B, 10월 수입 $72.765B, 10월 수지 +$42.645B, 1~10월 누적 수출 $930.202B, 수입 $635.214B, 수지 +$294.988B)",
     month_11: "잠정 실적 전망치 (11월 10일까지 누적 $963.7B 실적 기반 월간 환산 전망 기준선 $100.500B)",
     month_12: "공식 추정 전망치 (연말 밀어내기 통관 추정 전망 기준선 $104.798B)"
   },
@@ -275,6 +275,6 @@ console.log(`  • 1월 수출 확정치: $${monthsConfig[0].exp}B (658억 500�
 console.log(`  • 6월 수출 확정치: $${monthsConfig[5].exp}B (1,021억 6,600만 달러)`);
 console.log(`  • 9월 최종 정정 수출 확정치: $${monthsConfig[8].exp}B (1,212억 5,400만 달러, 11월 16일 관세청 최종 고시)`);
 console.log(`  • 10월 수출 확정치: $${monthsConfig[9].exp}B (1,154억 1,000만 달러), 수입: $${monthsConfig[9].imp}B, 수지: +$${Math.round((monthsConfig[9].exp - monthsConfig[9].imp)*1000)/1000}B`);
-console.log(`  • 1~10월 누적 수출 확정치 합산: $${sum1_10_exp}B (사전공표치 $930.202B + 9월정정분 $0.834B), 수입: $${sum1_10_imp}B (공식치 $635.214B와 0% 오차 일치)`);
+console.log(`  • 1~10월 공식 누적 통계: 수출 $${baselineData.metadata.m10OfficialYtdExport}B (9,302억 200만 달러), 수입 $${baselineData.metadata.m10OfficialYtdImport}B, 수지 +$${baselineData.metadata.m10OfficialYtdBalance}B`);
 console.log(`  • 11월 19일 마일스톤: 누적 수출 사상 최초 1조 달러 돌파 ($1,000B Milestone)`);
 console.log(`  • 2026 연간 전망 기준선: 수출 $${totalExportAnnual}B, 수입 $${totalImportAnnual}B, 무역수지 +$${totalBalanceAnnual}B`);

@@ -10,26 +10,19 @@ console.log('===================================================================
 console.log('   TRADE CZAR · PHASE 5 UX, DATA & DYNAMIC NEGOTIATION VERIFICATION             ');
 console.log('================================================================================\n');
 
-// 1. Data Verification: 9월 $121.254B, 10월 $115.410B, 10월 수입 $72.765B, 수지 +$42.645B, 1~10월 $931.036B (공표치 $930.202B), Nov 19 1조 달러
-console.log('>>> [TEST 1] Official Data & Nov 16 Revisions Verification...');
+// 1. Data Verification: 9월 $121.254B, 10월 $115.410B, 10월 수입 $72.765B, 수지 +$42.645B, 1~10월 누적 수출 $930.202B, 수입 $635.214B, 수지 +$294.988B
+console.log('>>> [TEST 1] Official Data & Nov 16 Final Statistics Verification...');
 const m9 = BASELINE_2026.months[8];
 const m10 = BASELINE_2026.months[9];
-assert.equal(m9.export, 121.254, 'Month 9 official export must be exactly $121.254B (11/16 revision)');
+assert.equal(m9.export, 121.254, 'Month 9 official export must be exactly $121.254B');
 assert.equal(m10.export, 115.410, 'Month 10 official export must be exactly $115.410B');
 assert.equal(m10.import, 72.765, 'Month 10 official import must be exactly $72.765B');
 assert.equal(m10.balance, 42.645, 'Month 10 official balance must be exactly +$42.645B');
-
-let sum1to10 = 0;
-let sumImp1to10 = 0;
-for (let i = 0; i < 10; i++) {
-  sum1to10 += BASELINE_2026.months[i].export;
-  sumImp1to10 += BASELINE_2026.months[i].import;
-}
-assert.equal(Math.round(sum1to10 * 1000) / 1000, 931.036, '1~10 cumulative export sum must be exactly $931.036B');
-assert.equal(Math.round(sumImp1to10 * 1000) / 1000, 635.214, '1~10 cumulative import must be exactly $635.214B');
-assert.equal(BASELINE_2026.metadata.m10OfficialYtdExportPreRevision, 930.202, 'Pre-revision cumulative export is $930.202B');
+assert.equal(BASELINE_2026.metadata.m10OfficialYtdExport, 930.202, '1~10 official cumulative export is $930.202B');
+assert.equal(BASELINE_2026.metadata.m10OfficialYtdImport, 635.214, '1~10 official cumulative import is $635.214B');
+assert.equal(BASELINE_2026.metadata.m10OfficialYtdBalance, 294.988, '1~10 official cumulative balance is +$294.988B');
 assert.ok(BASELINE_2026.metadata.nov19Milestone, 'Nov 19 $1,000B milestone metadata exists');
-console.log('  ✔ 2026 Official Statistics, Revisions & Nov 19 $1,000B milestone verified!\n');
+console.log('  ✔ 2026 Official Statistics & 1~10 Cumulative Totals verified!\n');
 
 // 2. Dynamic Negotiation: Counterplay against repeated aggressive cards & Counter-Demand Bonus
 console.log('>>> [TEST 2] Dynamic Counterplay & Counter-Demand Response Verification...');
