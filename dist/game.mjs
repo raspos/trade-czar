@@ -6,9 +6,9 @@ import { getOrigin } from './origins.mjs';
 import { PRNG } from './prng.mjs';
 import { BASELINE_2026 } from './data.mjs';
 import { EconomyEngine } from './economy.mjs';
-import { NegotiationEngine } from './negotiations.mjs';
-import { POLICY_ACTIONS, getPolicy } from './policies.mjs';
-import { CORPORATIONS, getCorporation } from './corporations.mjs';
+import { NegotiationEngine, ForeignPolicyManager } from './negotiations.mjs';
+import { POLICY_ACTIONS, getPolicy, DOCTRINES, getDoctrine } from './policies.mjs';
+import { CORPORATIONS, getCorporation, CorporateAgencyManager } from './corporations.mjs';
 import { EventEngine } from './events.mjs';
 import { PoliticsManager } from './politics.mjs';
 import { NewspaperEngine } from './newspaper.mjs';
@@ -29,6 +29,13 @@ export class GameManager {
     this.activeEvent = null;
     this.activeNegotiation = null;
     this.lastNegotiationAgreement = null;
+
+    this.doctrine = null;
+    this.foreignPolicyEngine = new ForeignPolicyManager();
+    this.corporateAgencyManager = new CorporateAgencyManager();
+    this.monthlyThreats = [];
+    this.pendingCorporateActions = [];
+    this.activeCorporateAction = null;
 
     this.economy = null;
     this.politics = null;
@@ -61,6 +68,11 @@ export class GameManager {
     this.economy = new EconomyEngine(this.scenario, this.origin, this.prng);
     this.politics = new PoliticsManager(originCfg);
     this.eventEngine = new EventEngine(this.prng);
+    this.foreignPolicyEngine = new ForeignPolicyManager();
+    this.corporateAgencyManager = new CorporateAgencyManager();
+
+    // Default Doctrine
+    this.doctrine = DOCTRINES[0];
 
     this.currentMonth = 1;
     this.actionPoints = 3;
@@ -68,6 +80,9 @@ export class GameManager {
     this.activeEvent = null;
     this.activeNegotiation = null;
     this.lastNegotiationAgreement = null;
+    this.monthlyThreats = [];
+    this.pendingCorporateActions = [];
+    this.activeCorporateAction = null;
     this.latestMonthlyResult = null;
     this.latestNewspaper = null;
     this.finalVerdict = null;
@@ -79,10 +94,46 @@ export class GameManager {
     return this;
   }
 
+  setDoctrine(doctrineId) {
+    const doc = getDoctrine(doctrineId);
+    if (!doc) return;
+    this.doctrine = doc;
+    if (doc.id === 'semiconductor_supremacy') {
+      this.economy.industryStates.semiconductor.competitivenessIndex += 4;
+    } else if (doc.id === 'us_alliance_first') {
+      this.politics.stats.diplomaticTrust = Math.min(100, this.politics.stats.diplomaticTrust + 5);
+    } else if (doc.id === 'inclusive_sme_trade') {
+      this.politics.stats.publicApproval = Math.min(100, this.politics.stats.publicApproval + 5);
+    }
+    this.gameLog.push({
+      month: this.currentMonth,
+      type: "doctrine_change",
+      doctrineName: doc.name
+    });
+    this.autoSave();
+  }
+
   prepareMonth() {
     this.actionPoints = 3;
     this.usedPoliciesThisMonth = [];
     this.lastNegotiationAgreement = null;
+
+    // Check proactive foreign threats (US universal tariff, China dumping, EU CBAM)
+    this.monthlyThreats = this.foreignPolicyEngine.checkMonthlyProactiveThreats(
+      this.currentMonth,
+      this.economy,
+      this.politics,
+      this.gameLog.filter(g => g.type === 'negotiation')
+    );
+
+    // Check autonomous corporate decisions (Hyundai Georgia shift, Posco furnace shutdown, Samsung cut)
+    this.pendingCorporateActions = this.corporateAgencyManager.evaluateCorporateAutonomousActions(
+      this.currentMonth,
+      this.economy,
+      this.politics,
+      this.gameLog.filter(g => g.type === 'negotiation')
+    );
+    this.activeCorporateAction = this.pendingCorporateActions.length > 0 ? this.pendingCorporateActions[0] : null;
 
     // Check for random event for this month
     const stateForEvent = {
@@ -92,6 +143,29 @@ export class GameManager {
     };
 
     this.activeEvent = this.eventEngine.rollEvent(stateForEvent);
+  }
+
+  resolveCorporateAction(corpId, actionKey, optionId) {
+    if (!this.activeCorporateAction || this.activeCorporateAction.actionKey !== actionKey) return null;
+    const resolvedChoice = this.corporateAgencyManager.resolveActionResponse(
+      this.activeCorporateAction,
+      optionId,
+      this.economy,
+      this.politics
+    );
+
+    this.gameLog.push({
+      month: this.currentMonth,
+      type: "corporate_agency_response",
+      actionKey,
+      corpId,
+      chosenOption: resolvedChoice.text
+    });
+
+    this.pendingCorporateActions = this.pendingCorporateActions.filter(a => a.actionKey !== actionKey);
+    this.activeCorporateAction = this.pendingCorporateActions.length > 0 ? this.pendingCorporateActions[0] : null;
+    this.autoSave();
+    return resolvedChoice;
   }
 
   // Handle active event choice
@@ -232,17 +306,24 @@ export class GameManager {
 
     // 3. Generate Virtual JoongAng Ilbo front page
     const lastPol = this.usedPoliciesThisMonth.length > 0 ? getPolicy(this.usedPoliciesThisMonth[this.usedPoliciesThisMonth.length - 1]) : null;
+    const extraContext = {
+      corporateAction: this.corporateAgencyManager.actionHistory.length > 0 ? this.corporateAgencyManager.actionHistory[this.corporateAgencyManager.actionHistory.length - 1] : null,
+      proactiveThreat: this.monthlyThreats.length > 0 ? this.monthlyThreats[this.monthlyThreats.length - 1] : null,
+      twoLevelNote: this.activeNegotiation?.history?.slice(-1)[0]?.domesticNote,
+      doctrine: this.doctrine
+    };
     const newspaper = this.newspaperEngine.generateFrontPage(
       monthlyResult,
       this.politics.stats,
       lastPol,
-      this.lastNegotiationAgreement
+      this.lastNegotiationAgreement,
+      extraContext
     );
     this.latestNewspaper = newspaper;
 
     // 4. Check for dismissal
     if (polEval.isDismissed) {
-      this.finalVerdict = this.verdictEngine.evaluateFinal(this.economy.monthlyResults, this.politics, this.origin, this.gameLog);
+      this.finalVerdict = this.verdictEngine.evaluateFinal(this.economy.monthlyResults, this.politics, this.origin, this.gameLog, this.economy);
       this.screen = "verdict";
       this.autoSave();
       return { status: "dismissed" };
@@ -250,7 +331,7 @@ export class GameManager {
 
     // 5. Check if 12 months finished
     if (this.currentMonth === 12) {
-      this.finalVerdict = this.verdictEngine.evaluateFinal(this.economy.monthlyResults, this.politics, this.origin, this.gameLog);
+      this.finalVerdict = this.verdictEngine.evaluateFinal(this.economy.monthlyResults, this.politics, this.origin, this.gameLog, this.economy);
       this.screen = "result_briefing";
       this.autoSave();
       return { status: "year_end" };
@@ -313,6 +394,7 @@ export class GameManager {
       latestMonthlyResult: this.latestMonthlyResult,
       latestNewspaper: this.latestNewspaper,
       finalVerdict: this.finalVerdict,
+      doctrine: this.doctrine ? this.doctrine.id : null,
       gameLog: this.gameLog
     };
   }
@@ -323,6 +405,7 @@ export class GameManager {
     this.scenario = saved.scenario;
     this.origin = saved.origin;
     this.seed = saved.seed;
+    this.doctrine = saved.doctrine ? getDoctrine(saved.doctrine) : DOCTRINES[0];
     this.prng = new PRNG(this.seed);
     if (saved.prngState) this.prng.setState(saved.prngState);
 

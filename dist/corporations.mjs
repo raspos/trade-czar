@@ -172,3 +172,148 @@ export const CORPORATIONS = [
 export function getCorporation(id) {
   return CORPORATIONS.find(c => c.id === id);
 }
+
+// Autonomous Corporate Decision Engine (PHASE 4: 기업의 독립적 의사결정 시스템)
+export class CorporateAgencyManager {
+  constructor() {
+    this.actionHistory = [];
+    this.triggeredActions = new Set();
+  }
+
+  evaluateCorporateAutonomousActions(month, engine, politicsManager, activeAgreements = []) {
+    const actions = [];
+    if (!engine) return actions;
+    const usAgreed = activeAgreements.some(a => a.partnerId === 'US' && a.type === 'agreed');
+    const autoTariff = engine.partnerStates?.US?.tariffs?.automobile ?? 0.25;
+
+    // 1. Hyundai Georgia Shift (대미 관세 장기화 시 현대차 조지아 공장 확대 및 울산 특근 중단)
+    if (month >= 4 && autoTariff >= 0.15 && !this.triggeredActions.has('hyundai_georgia_shift')) {
+      this.triggeredActions.add('hyundai_georgia_shift');
+      actions.push({
+        corpId: 'hyundai',
+        actionKey: 'hyundai_georgia_shift',
+        corpName: '현대자동차그룹',
+        title: '현대차 이사회, "조지아 메타플랜트 3교대 전격 확대 및 울산 5공장 주말 특근 중단" 의결!',
+        description: '미국의 25% 자동차 고율 관세가 장기화 조짐을 보이자, 현대차 경영진이 국내 생산분의 관세 비용을 감내할 수 없다고 판단하고 미국 현지 조립 비중을 대폭 늘리기로 결정했습니다. 울산 및 아산 부품 협력사들의 연쇄 가동 중단 우려가 커집니다.',
+        economicPenalty: {
+          domesticCapacity: -4,
+          autoPartsGrowth: -0.06
+        },
+        options: [
+          {
+            id: 'hyundai_support_parts',
+            text: '국내 1·2차 협력사 북미 동반진출 긴급 금융지원 및 미래차 바우처 지급',
+            cost: '정치자산 -8, 예산 추진력 -1',
+            stakeholderImpact: { businessTrust: 6, publicApproval: 2, diplomaticTrust: 2 },
+            resolveText: '정부의 신속한 협력사 지원책에 재계가 안도하며, 국내 부품사들의 북미 납품 공급망이 유지됩니다.'
+          },
+          {
+            id: 'hyundai_press_employment',
+            text: '국내 고용 유지 협약 위반을 경고하며 해외 유보금 세무조사 검토 압박',
+            cost: '재계 신뢰 -12, 언론 리스크',
+            stakeholderImpact: { businessTrust: -14, publicApproval: -4, presidentTrust: 2 },
+            resolveText: '재계가 "통상 실패를 민간 기업에 전가한다"며 강력 반발, 기업가치와 투자 심리가 급랭합니다.'
+          },
+          {
+            id: 'hyundai_accept_shift',
+            text: '불가피한 글로벌 공급망 재배치로 인정하고 관세 외교 협상 타결에 총력 집중',
+            cost: '여론 지지율 -5 (국내 일자리 유출 비판)',
+            stakeholderImpact: { businessTrust: 1, publicApproval: -6, diplomaticTrust: 5 },
+            resolveText: '국내 노동계와 지역사회의 비판이 고조되었으나, 현대차는 대미 수출 마진을 방어했습니다.'
+          }
+        ]
+      });
+    }
+
+    // 2. Posco Blast Furnace Shutdown (중국 철강 덤핑 지속 시 포항 1선재공장 휴풍)
+    if (month >= 5 && engine.partnerStates?.CN?.tariffs?.steel > 0.04 && !this.triggeredActions.has('posco_furnace_shutdown')) {
+      this.triggeredActions.add('posco_furnace_shutdown');
+      actions.push({
+        corpId: 'posco',
+        actionKey: 'posco_furnace_shutdown',
+        corpName: '포스코·현대제철',
+        title: '포스코 경영회의, "포항 1선재공장 및 당진 전기로 가동 잠정 중단" 비상 결의!',
+        description: '중국산 저가 덤핑 후판의 국내 침투와 유럽 CBAM 압박으로 적자가 누적되자, 철강업계가 노후 고로와 전기로 가동을 중단하고 감산에 돌입했습니다. 조선·건설업계 공급망 불안이 고조됩니다.',
+        economicPenalty: {
+          domesticCapacity: -5,
+          steelExportGrowth: -0.05
+        },
+        options: [
+          {
+            id: 'posco_antidumping_suit',
+            text: '무역위원회 통해 중국산 덤핑 후판에 35% 잠정 상계관세 긴급 부과',
+            cost: '중국 반발 (외교신뢰 -5), 산업통상부 추진력 -1',
+            stakeholderImpact: { businessTrust: 7, publicApproval: 4, diplomaticTrust: -6 },
+            resolveText: '국내 유통 가격이 빠르게 정상화되며 포항 제철소 공장 가동이 재개되었습니다.'
+          },
+          {
+            id: 'posco_green_conversion',
+            text: '수소환원제철 및 고망간강 특수재 R&D 특별 국고보조금 3,000억 원 교부',
+            cost: '정치자산 -10',
+            stakeholderImpact: { businessTrust: 5, competitiveness: 6, diplomaticTrust: 3 },
+            resolveText: '유럽 CBAM 기준을 충족하는 저탄소 고급강 생산 체제로의 전환이 가속화됩니다.'
+          },
+          {
+            id: 'posco_market_standby',
+            text: '시장 원리에 맡기고 업계 자체 한계설비 구조조정 촉구',
+            cost: '재계 신뢰 -8, 철강 노동조합 상경투쟁',
+            stakeholderImpact: { businessTrust: -9, publicApproval: -5 },
+            resolveText: '포항 및 당진 지역 경제가 위축되고 국내 철강 자급률이 하락했습니다.'
+          }
+        ]
+      });
+    }
+
+    // 3. Samsung Legacy DRAM cut & HBM focus (반도체 다운사이클 방어)
+    const semiDownturn = (engine.scenario?.industryShocks?.semiconductor?.demandMod || 0) < 0 || engine.scenario?.id === 'china_supply_chain';
+    if (month >= 6 && semiDownturn && !this.triggeredActions.has('samsung_dram_cut')) {
+      this.triggeredActions.add('samsung_dram_cut');
+      actions.push({
+        corpId: 'samsung',
+        actionKey: 'samsung_dram_cut',
+        corpName: '삼성전자·SK하이닉스',
+        title: '삼성·SK 반도체 경영진, "레거시 D램 15% 감산 및 AI HBM3E 설비 집중" 발표',
+        description: '글로벌 IT 수요 둔화와 재고 누적으로 가격이 하락하자, 메모리 2사가 수익성 방어를 위해 구형 라인을 대대적으로 감산하고 HBM 라인으로 전환했습니다. 단기 통관 수출 물량은 감소하지만 단가는 방어됩니다.',
+        economicPenalty: {
+          shortTermExportVol: -0.04
+        },
+        options: [
+          {
+            id: 'semi_package_rnd',
+            text: '차세대 첨단 패키징 및 용인 클러스터 기반시설 국비 조기 집행 지원',
+            cost: '정치자산 -5',
+            stakeholderImpact: { businessTrust: 8, competitiveness: 7 },
+            resolveText: '메모리 대기업들이 기술 초격차를 공고히 하며 글로벌 빅테크 주문을 선점했습니다.'
+          },
+          {
+            id: 'semi_push_volume',
+            text: '무역수지 방어를 위해 구형 D램 재고 헐값 밀어내기 수출 종용',
+            cost: '재계 신뢰 -10, D램 시장가 폭락 유발',
+            stakeholderImpact: { businessTrust: -12, competitiveness: -5 },
+            resolveText: '반도체 재고 평가손실이 천문학적으로 불어나며 2분기 영업이익이 급감했습니다.'
+          }
+        ]
+      });
+    }
+
+    return actions;
+  }
+
+  resolveActionResponse(action, choiceId, engine, politicsManager) {
+    const choice = action.options.find(o => o.id === choiceId) || action.options[0];
+    if (choice.stakeholderImpact && politicsManager) {
+      if (choice.stakeholderImpact.businessTrust) politicsManager.stats.businessTrust = Math.max(0, Math.min(100, politicsManager.stats.businessTrust + choice.stakeholderImpact.businessTrust));
+      if (choice.stakeholderImpact.diplomaticTrust) politicsManager.stats.diplomaticTrust = Math.max(0, Math.min(100, politicsManager.stats.diplomaticTrust + choice.stakeholderImpact.diplomaticTrust));
+      if (choice.stakeholderImpact.publicApproval) politicsManager.stats.publicApproval = Math.max(0, Math.min(100, politicsManager.stats.publicApproval + choice.stakeholderImpact.publicApproval));
+      if (choice.stakeholderImpact.presidentTrust) politicsManager.stats.presidentTrust = Math.max(0, Math.min(100, politicsManager.stats.presidentTrust + choice.stakeholderImpact.presidentTrust));
+    }
+    this.actionHistory.push({
+      actionKey: action.actionKey,
+      corpName: action.corpName,
+      title: action.title,
+      chosenText: choice.text,
+      resolveText: choice.resolveText
+    });
+    return choice;
+  }
+}

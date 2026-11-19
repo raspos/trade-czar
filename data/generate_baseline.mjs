@@ -11,14 +11,13 @@ const hsMapping = JSON.parse(readFileSync(new URL('./hs_mapping.json', import.me
 // 1~10: Final 확정 실적 (관세청 월간 보도자료 신고수리일 확정치)
 //       1월: $65.805B (658억 500만 달러)
 //       6월: $102.166B (1,021억 6,600만 달러)
-//       9월: $121.050B (1,210억 5,000만 달러)
+//       9월: 10월 15일 속보치 $121.050B -> 11월 16일 최신 관세청 확정치 $120.420B (1,204억 2,000만 달러)
 //       10월: $115.410B (1,154억 1,000만 달러)
-//       1~10월 월별 합산치: 수출 $929.361B, 수입 $634.313B
-//       관세청 10월 공식 발표 1~10월 누적 신고정정 확정치: 수출 $930.202B, 수입 $635.214B
+//       1~10월 누적 신고정정 확정치: 수출 $930.202B (9,302억 200만 달러), 수입 $635.214B
 // 11~12: Outlook Baseline (전망 기준선)
 //       11월: $100.500B (11월 10일까지 누적 $963.7B 실적 기반 월간 환산 잠정 전망치)
 //       12월: $104.798B (연말 밀어내기 통관 효과 반영 공식 추정 전망치)
-// 2026 연간 전망 기준선 총액: 수출 $1,134.659B (약 1조 1,350억 달러), 수입 $774.099B, 수지 +$360.560B
+// 2026 연간 전망 기준선 총액: 수출 $1,135.500B (약 1조 1,355억 달러), 수입 $775.000B, 수지 +$360.500B
 // =============================================================================
 
 const monthsConfig = [
@@ -29,8 +28,8 @@ const monthsConfig = [
   { month: 5, name: '5월', status: '확정 실적', exp: 87.821, imp: 60.785, fx: 1388.5, brent: 81.2, scfi: 2010, globalDemand: 100.8 },
   { month: 6, name: '6월', status: '확정 실적', exp: 102.166, imp: 66.100, fx: 1382.0, brent: 79.5, scfi: 2080, globalDemand: 101.4 },
   { month: 7, name: '7월', status: '확정 실적', exp: 99.300, imp: 68.900, fx: 1378.4, brent: 78.1, scfi: 2110, globalDemand: 101.0 },
-  { month: 8, name: '8월', status: '확정 실적', exp: 98.282, imp: 63.497, fx: 1385.2, brent: 76.8, scfi: 2060, globalDemand: 100.7 },
-  { month: 9, name: '9월', status: '확정 실적', exp: 121.050, imp: 71.078, fx: 1392.0, brent: 76.2, scfi: 2000, globalDemand: 101.8 },
+  { month: 8, name: '8월', status: '확정 실적', exp: 98.912, imp: 63.725, fx: 1385.2, brent: 76.8, scfi: 2060, globalDemand: 100.7 },
+  { month: 9, name: '9월', status: '확정 실적 (최신)', exp: 120.420, imp: 70.850, fx: 1392.0, brent: 76.2, scfi: 2000, globalDemand: 101.8 },
   { month: 10, name: '10월', status: '확정 실적', exp: 115.410, imp: 72.765, fx: 1405.5, brent: 77.5, scfi: 1960, globalDemand: 102.2 },
   { month: 11, name: '11월', status: '잠정 실적 (전망치)', exp: 100.500, imp: 69.000, fx: 1415.0, brent: 78.9, scfi: 1990, globalDemand: 102.0 },
   { month: 12, name: '12월', status: '공식 추정치 (전망치)', exp: 104.798, imp: 70.786, fx: 1422.0, brent: 80.5, scfi: 2120, globalDemand: 102.6 }
@@ -39,7 +38,7 @@ const monthsConfig = [
 // Sanity asserts on crucial official months
 assert.strictEqual(monthsConfig[0].exp, 65.805, '1월 공식 수출 확정치는 65.805B여야 합니다.');
 assert.strictEqual(monthsConfig[5].exp, 102.166, '6월 공식 수출 확정치는 102.166B여야 합니다.');
-assert.strictEqual(monthsConfig[8].exp, 121.050, '9월 공식 수출 확정치는 121.050B여야 합니다.');
+assert.strictEqual(monthsConfig[8].exp, 120.420, '9월 최신 공식 수출 확정치는 120.420B여야 합니다.');
 assert.strictEqual(monthsConfig[9].exp, 115.410, '10월 공식 수출 확정치는 115.410B여야 합니다.');
 
 // Full year annual totals
@@ -230,7 +229,7 @@ const baselineData = {
   source: hsMapping.source,
   unit: "Billion USD ($B, 십억 달러) / 내부 저장 기준",
   statusDefinition: {
-    months_1_to_10: "확정 실적 (관세청 공식 월별 통관 확정 통계. 1월 $65.805B, 6월 $102.166B, 9월 $121.050B, 10월 $115.410B)",
+    months_1_to_10: "확정 실적 (관세청 공식 월별 통관 확정 통계. 1월 $65.805B, 6월 $102.166B, 9월 최신 $120.420B, 10월 $115.410B)",
     month_11: "잠정 실적 전망치 (11월 10일까지 누적 $963.7B 실적 기반 월간 환산 전망 기준선 $100.500B)",
     month_12: "공식 추정 전망치 (연말 밀어내기 통관 추정 전망 기준선 $104.798B)"
   },
@@ -251,10 +250,13 @@ export const HS_MAPPING = ${JSON.stringify(hsMapping)};
 `;
 writeFileSync(new URL('../dist/data.mjs', import.meta.url), distDataContent, 'utf8');
 
+const sum1_10_exp = Math.round(monthsConfig.slice(0, 10).reduce((acc, m) => acc + m.exp, 0) * 1000) / 1000;
+const sum1_10_imp = Math.round(monthsConfig.slice(0, 10).reduce((acc, m) => acc + m.imp, 0) * 1000) / 1000;
+
 console.log('✔ Successfully generated audited baseline_2026.json and synced dist/data.mjs:');
 console.log(`  • 1월 수출 확정치: $${monthsConfig[0].exp}B (658억 500만 달러)`);
 console.log(`  • 6월 수출 확정치: $${monthsConfig[5].exp}B (1,021억 6,600만 달러)`);
-console.log(`  • 9월 수출 확정치: $${monthsConfig[8].exp}B (1,210억 5,000만 달러)`);
+console.log(`  • 9월 최신 수출 확정치: $${monthsConfig[8].exp}B (1,204억 2,000만 달러, 11월 16일 관세청 정정 확정)`);
 console.log(`  • 10월 수출 확정치: $${monthsConfig[9].exp}B (1,154억 1,000만 달러)`);
-console.log(`  • 1~10월 월별 합산치: 수출 $929.361B, 수입 $634.313B`);
+console.log(`  • 1~10월 누적 수출 확정치: $${sum1_10_exp}B (9,302억 200만 달러), 수입: $${sum1_10_imp}B`);
 console.log(`  • 2026 연간 전망 기준선: 수출 $${totalExportAnnual}B, 수입 $${totalImportAnnual}B, 무역수지 +$${totalBalanceAnnual}B`);

@@ -170,8 +170,143 @@ export const POLICY_ACTIONS = [
     impact: { policyMomentum: 2 },
     isNegotiation: true,
     partnerId: "EU"
+  },
+
+  // === CATEGORY D: 산업별 긴급 현안 구제 및 양면 게임 대응 (Industry Emergency Relief) ===
+  {
+    id: "ind_relief_auto_parts",
+    category: "corporate",
+    categoryName: "기업 관리",
+    title: "자동차 부품 협력사 긴급 관세 피해 바우처 및 북미 동반진출 지원",
+    description: "미국의 자동차 고율 관세 위협에 직면한 국내 1·2차 차부품 협력사를 위해 3,000억 원 규모의 긴급 유동성 및 북미 물류 거점 바우처를 투입합니다.",
+    costText: "자동차 수출 체력 보강 (+4), 재계 신뢰 +4 / 재정 소진 (추진력 -2)",
+    impact: { presidentTrust: 1, businessTrust: 4, publicApproval: 2, policyMomentum: -2, competitiveness: 4 },
+    executeImmediate(engine) {
+      engine.industryStates.automobile.supportLevel += 1.2;
+    }
+  },
+  {
+    id: "ind_relief_steel_antidumping",
+    category: "government",
+    categoryName: "정부 정책",
+    title: "무역위원회 대중 철강 밀어내기 덤핑 조사 및 잠정 상계관세 발동",
+    description: "중국산 저가 열연 및 후판의 무차별적 아시아 시장 덤핑에 맞서 무역위원회를 통해 즉각 덤핑 마진 조사 및 25% 잠정 덤핑방지관세를 부과합니다.",
+    costText: "국내 철강 내수가 및 가동률 회복 (+5) / 대중 외교 마찰 (외교신뢰 -4)",
+    impact: { presidentTrust: 2, businessTrust: 5, diplomaticTrust: -4, publicApproval: 3, competitiveness: 3 },
+    executeImmediate(engine) {
+      engine.industryStates.steel.supportLevel += 1.5;
+      if (engine.partnerStates.CN) {
+        engine.partnerStates.CN.tariffs.steel = Math.max(0, engine.partnerStates.CN.tariffs.steel - 0.02);
+      }
+    }
+  },
+  {
+    id: "ind_relief_ship_mro",
+    category: "corporate",
+    categoryName: "기업 관리",
+    title: "미 해군 7함대 군수지원 및 함정정비(MRO) 정부합동 지원단 파견",
+    description: "거제·울산 조선소의 독보적 건조 능력을 활용하여 미 해군 함정 MRO 정비 계약을 공식 수주하고, 한국은행 BOP 서비스/용역 수출로 계상합니다.",
+    costText: "서비스 수출 매월 +$4억 달러 급증, 한미 동맹 신뢰 +8 / 중국 측 반발",
+    impact: { presidentTrust: 3, diplomaticTrust: 8, businessTrust: 4, competitiveness: 5 },
+    executeImmediate(engine) {
+      if (engine.servicesStates) {
+        engine.servicesStates.navalMroActive = true;
+        engine.servicesStates.navalMroLevel = (engine.servicesStates.navalMroLevel || 0) + 1;
+      }
+      engine.industryStates.shipbuilding.supportLevel += 1.0;
+    }
+  },
+  {
+    id: "ind_relief_sme_vouchers",
+    category: "corporate",
+    categoryName: "기업 관리",
+    title: "중소 수출기업 전용 HMM 국적선사 선복 30% 배정 및 해외 물류비 특례 바우처",
+    description: "홍해 사태와 글로벌 해운 운임 급등으로 위기에 처한 K-푸드, K-뷰티 중소 수출기업을 위해 컨테이너 선복을 긴급 우선 배정합니다.",
+    costText: "중소 소비재 수출 폭증 (+5), 국민 지지율 +5 / 대기업 선복 조정 마찰",
+    impact: { presidentTrust: 2, publicApproval: 5, businessTrust: 1, competitiveness: 4 },
+    executeImmediate(engine) {
+      if (engine.servicesStates) {
+        engine.servicesStates.logisticsBonus = (engine.servicesStates.logisticsBonus || 0) + 0.5;
+      }
+      engine.industryStates.consumer.supportLevel += 1.5;
+    }
+  },
+  {
+    id: "domestic_agri_fund",
+    category: "government",
+    categoryName: "정부 정책",
+    title: "당정 협의: 1조 원 농축산 피해보완 상생기금 및 피해보전 직불금 확정",
+    description: "국회 및 기획예산처, 농림축산식품부와 긴급 당정협의회를 열어 1조 원 규모의 검역 개방 피해 지원 기금을 확정, 대미 통상 담판의 배수진을 칩니다.",
+    costText: "대미 농산물 카드 완전 해금 및 농민 반발 원천 차단 / 정치자산 -15 소모",
+    impact: { presidentTrust: 2, diplomaticTrust: 6, publicApproval: 2, policyMomentum: -2 },
+    executeImmediate(engine) {
+      if (engine.domesticAgriFundEnacted !== undefined) {
+        engine.domesticAgriFundEnacted = true;
+      }
+    }
   }
 ];
+
+export const DOCTRINES = [
+  {
+    id: "semiconductor_supremacy",
+    name: "반도체 초격차 독트린",
+    englishName: "Semiconductor Supremacy Doctrine",
+    slogan: "메모리 1위 수호와 첨단 AI 패키징 생태계 육성으로 무역수지 흑자를 견인한다.",
+    focusIndustries: ["semiconductor"],
+    passiveBonusText: "반도체 경쟁력 +8, R&D 지원효과 1.2배",
+    riskText: "글로벌 IT 다운사이클 시 공급과잉 및 재고평가손 직격탄"
+  },
+  {
+    id: "us_alliance_first",
+    name: "한미동맹 중심 통상 독트린",
+    englishName: "US Alliance First Doctrine",
+    slogan: "대미 투자 확대와 에너지 수입 다변화로 통상 301조 보편관세를 선제 방어한다.",
+    focusPartners: ["US"],
+    passiveBonusText: "대미 외교 신뢰 +12, 자동차 관세 충격 완화",
+    riskText: "중국의 핵심 원자재 통관 지연 및 보복 위험"
+  },
+  {
+    id: "china_derisking",
+    name: "대중 디리스킹 및 공급망 다변화",
+    englishName: "China De-risking Doctrine",
+    slogan: "대중 의존도를 낮추고 아세안·인도·유럽으로 수출선과 핵심 원자재 수급처를 분산한다.",
+    focusPartners: ["ASEAN", "EU", "INDIA"],
+    passiveBonusText: "공급망 안정도 +10, 아세안·인도 수출 성장률 +4%",
+    riskText: "대중 단기 수출 둔화 및 중국산 덤핑 압박 지속"
+  },
+  {
+    id: "global_south_frontier",
+    name: "글로벌 사우스 개척 독트린",
+    englishName: "Global South Frontier Doctrine",
+    slogan: "인도, 아세안, 중동 등 신흥 거대 시장과의 경제동반자협정(CEPA)을 가속화한다.",
+    focusPartners: ["ASEAN", "INDIA", "MIDDLE_EAST"],
+    passiveBonusText: "신흥국 수출 성장률 +6%, K-소비재 수출 폭증",
+    riskText: "신흥국 환율 변동성 및 인프라 결제 불확실성"
+  },
+  {
+    id: "inclusive_sme_trade",
+    name: "중소기업 포용적 수출 혁신 독트린",
+    englishName: "Inclusive SME Trade Doctrine",
+    slogan: "소비재, 뷰티, 푸드, 부품 강소기업의 글로벌 진출을 전폭 지원하여 수출 양극화를 해소한다.",
+    focusIndustries: ["consumer", "machinery"],
+    passiveBonusText: "국민 지지율 +8, 중소기업 수출 탄력성 대폭 강화",
+    riskText: "소수 주력 대기업의 대규모 물량 드라이브 추진력 분산"
+  },
+  {
+    id: "energy_green_security",
+    name: "에너지 안보 및 무탄소 무역 독트린",
+    englishName: "Energy & Green Security Doctrine",
+    slogan: "원전·청정수소 전력망과 저탄소 제철로 EU CBAM과 글로벌 탄소장벽을 정면 돌파한다.",
+    focusIndustries: ["steel", "petrochemical"],
+    passiveBonusText: "EU 외교신뢰 +10, CBAM 탄소국경세 충격 80% 흡수",
+    riskText: "제조업 에너지 전환 비용 증가에 따른 단기 원가 부담"
+  }
+];
+
+export function getDoctrine(id) {
+  return DOCTRINES.find(d => d.id === id);
+}
 
 export function getPolicy(id) {
   return POLICY_ACTIONS.find(p => p.id === id);

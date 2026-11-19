@@ -218,9 +218,16 @@ export class NegotiationEngine {
     this.totalScore = 0;
     this.history = [];
     this.usedCards = new Set();
-    this.status = "in_progress"; // in_progress, agreed, partial, deferred, broken
+    this.status = "in_progress"; // in_progress, agreed, partial, deferred, broken, suspended
     this.finalAgreement = null;
     this.currentCounterDemand = null;
+
+    // Two-Level Game (국내 이해관계자 재협의 체계)
+    this.domesticState = {
+      agriConsensus: false,
+      parliamentConsensus: false,
+      chaebolBurdenShare: false
+    };
 
     // Origin bonus
     if (origin === 'bureaucrat') {
@@ -256,6 +263,20 @@ export class NegotiationEngine {
     this.totalScore += cardScore;
     this.tension = Math.max(0, Math.min(100, this.tension + cardTension));
 
+    // Two-Level Game adjustments for sensitive cards
+    let domesticNote = "";
+    if (cardId === 'us_agri_concession') {
+      if (this.domesticState.agriConsensus) {
+        // Protected by 1조원 relief fund
+        card.stakeholderImpact = { businessTrust: 2, diplomaticTrust: 15, publicApproval: -2 };
+        domesticNote = "[국내 당정 합의] 1조 원 피해 보완 직불금 및 상생기금 합의에 따라 전국농민총연맹이 대승적으로 검역 합리화를 양해했습니다.";
+      } else {
+        // Severe domestic blowback
+        card.stakeholderImpact = { businessTrust: -2, diplomaticTrust: 15, publicApproval: -14 };
+        domesticNote = "[국내 여론 폭발] 사전 협의 없는 일방적 농산물 양보에 전국 농민 5만 명이 트랙터를 몰고 광화문 상경 투쟁에 돌입했습니다!";
+      }
+    }
+
     // Dynamic partner counter-demand based on score
     let partnerReaction = "";
     if (cardScore >= 28) {
@@ -279,7 +300,8 @@ export class NegotiationEngine {
       currentTension: this.tension,
       currentScore: this.totalScore,
       partnerReaction,
-      counterDemand: this.currentCounterDemand
+      counterDemand: this.currentCounterDemand,
+      domesticNote
     };
 
     this.history.push(stepResult);
@@ -289,6 +311,61 @@ export class NegotiationEngine {
     }
 
     return stepResult;
+  }
+
+  consultDomestic(actionId, politicsManager) {
+    if (actionId === 'agri_relief_fund') {
+      if (politicsManager && politicsManager.stats.politicalCapital < 15) {
+        return { success: false, reason: "국회 및 당정 설득을 위한 정치적 자산(최소 15pt)이 부족합니다." };
+      }
+      if (politicsManager) politicsManager.stats.politicalCapital -= 15;
+      this.domesticState.agriConsensus = true;
+      return {
+        success: true,
+        actionId,
+        title: "당정 협의: 1조 원 농축산 피해보완 직불금 및 상생기금 조성",
+        description: "기획예산처 및 농림축산식품부와 긴급 당정협의회를 열어 1조 원 규모의 검역 개방 피해보완 기금을 확정했습니다. 농민단체의 극단적 반발을 완화하고 통상 협상 카드를 확보했습니다."
+      };
+    } else if (actionId === 'parliament_pre_ratify') {
+      if (politicsManager && politicsManager.stats.politicalCapital < 10) {
+        return { success: false, reason: "국회 상임위 조율을 위한 정치적 자산(최소 10pt)이 부족합니다." };
+      }
+      if (politicsManager) politicsManager.stats.politicalCapital -= 10;
+      this.domesticState.parliamentConsensus = true;
+      return {
+        success: true,
+        actionId,
+        title: "국회 여야 통상소위 사전설명 및 비준 공감대 확보",
+        description: "산업통상자원중소벤처기업위원회 비공개 간담회를 통해 여야 원내대표단에 불가피한 통상 양보의 필요성을 설명하고 초당적 비준 협력을 약속받았습니다."
+      };
+    } else if (actionId === 'chaebol_burden_share') {
+      this.domesticState.chaebolBurdenShare = true;
+      if (politicsManager) politicsManager.stats.businessTrust = Math.max(0, politicsManager.stats.businessTrust - 5);
+      return {
+        success: true,
+        actionId,
+        title: "4대 그룹 총수 간담회: 대미 투자 펀드 매칭 및 협력사 상생 협약",
+        description: "재계 총수들과 긴급 조찬 회동을 갖고 미국 현지 투자 집행 일정 공개와 2·3차 부품 협력사 동반진출 지원 펀드 5,000억 원 조성을 합의했습니다."
+      };
+    }
+    return { success: false, reason: "유효하지 않은 국내 협의 항목입니다." };
+  }
+
+  suspendSession() {
+    this.status = "suspended";
+    return {
+      status: "suspended",
+      title: "협상 일시 정회 및 차월 재개 합의",
+      description: "양국 수석대표 간 추가 조율과 본국 훈령 갱신을 위해 협상 회기를 다음 달로 공식 이월했습니다. 기존 협상 점수와 긴장도는 동결됩니다."
+    };
+  }
+
+  resumeSession() {
+    if (this.status === "suspended") {
+      this.status = "in_progress";
+      return { success: true, message: "회담이 속개되었습니다." };
+    }
+    return { success: false, message: "정회 상태가 아닙니다." };
   }
 
   conclude(choice = 'agree') {
@@ -387,3 +464,120 @@ export class NegotiationEngine {
     }
   }
 }
+
+export class ForeignPolicyManager {
+  constructor() {
+    this.proactiveThreatHistory = [];
+    this.threatFlags = {
+      usUltimatumIssued: false,
+      usHbmPressureIssued: false,
+      chinaSteelDumpingIssued: false,
+      chinaRareEarthRetaliationIssued: false,
+      euCbamNoticeIssued: false
+    };
+  }
+
+  checkMonthlyProactiveThreats(month, economyEngine, politicsManager, activeAgreements = []) {
+    const threats = [];
+
+    // 1. Month 3: US Universal Tariff Ultimatum (미국의 능동적 통상 공세)
+    if (month === 3 && !this.threatFlags.usUltimatumIssued) {
+      const usAgreed = activeAgreements.some(a => a.partnerId === 'US' && a.type === 'agreed');
+      if (!usAgreed) {
+        this.threatFlags.usUltimatumIssued = true;
+        const threat = {
+          partnerId: 'US',
+          partnerName: '미국 USTR (무역대표부)',
+          severity: 'critical',
+          headline: '미 USTR, "60일 내 대미 무역흑자 축소 로드맵 미제출 시 보편관세 25% 전면 발효" 공식 최후통첩!',
+          description: '워싱턴 통상 당국이 한국의 2026년 대미 무역흑자(약 550억 달러)를 정조준하며 통상법 301조에 근거한 상호주의 보편관세 부과 시한을 5월 1일로 못박았습니다.',
+          economicImpactText: '대미 자동차·부품 수출 채산성 붕괴 위험, 환율 변동성 확대',
+          actionPrompt: '4월 이전 대미 고위급 협상 개시 또는 에너지 수입 쿼터 다변화 검토 요망'
+        };
+        threats.push(threat);
+        this.proactiveThreatHistory.push({ month, ...threat });
+      }
+    }
+
+    // 2. Month 2: China Steel & Petrochemical Dumping (중국의 저가 밀어내기 공세)
+    if (month === 2 && !this.threatFlags.chinaSteelDumpingIssued) {
+      this.threatFlags.chinaSteelDumpingIssued = true;
+      // Slight downward pressure on petrochemical/steel margins
+      if (economyEngine && economyEngine.partnerStates.CN) {
+        const cnTariffs = economyEngine.partnerStates.CN.tariffs;
+        cnTariffs.petrochemical = (cnTariffs.petrochemical ?? cnTariffs.general ?? 0.03) + 0.02;
+        cnTariffs.steel = (cnTariffs.steel ?? cnTariffs.general ?? 0.03) + 0.02;
+      }
+      const threat = {
+        partnerId: 'CN',
+        partnerName: '중국 상무부 및 국유 철강·석화사',
+        severity: 'high',
+        headline: '중국 내수 침체발 헐값 철강·석화 밀어내기 수출 폭증, 아시아 현물가 20% 폭락',
+        description: '중국 부동산 경기 둔화로 남아도는 잉여 철강과 에틸렌이 한국과 동남아 시장에 원가 이하로 쏟아지며 국내 여수·울산 석유화학 콤플렉스와 포항 제철소 가동률이 급락하고 있습니다.',
+        economicImpactText: '국내 석화·철강업계 분기 적자 전환 및 가동률 저하',
+        actionPrompt: '대중 반덤핑 상계관세 제소 및 고부가가치 특수강 전환 긴급 지원 필요'
+      };
+      threats.push(threat);
+      this.proactiveThreatHistory.push({ month, ...threat });
+    }
+
+    // 3. Month 5: EU CBAM Carbon Border Tax Rejection (EU의 선제적 규제 공세)
+    if (month === 5 && !this.threatFlags.euCbamNoticeIssued) {
+      const euAgreed = activeAgreements.some(a => a.partnerId === 'EU' && a.type === 'agreed');
+      if (!euAgreed) {
+        this.threatFlags.euCbamNoticeIssued = true;
+        if (economyEngine && economyEngine.partnerStates.EU) {
+          const euTariffs = economyEngine.partnerStates.EU.tariffs;
+          euTariffs.steel = (euTariffs.steel ?? euTariffs.general ?? 0.03) + 0.03;
+        }
+        const threat = {
+          partnerId: 'EU',
+          partnerName: 'EU 집행위원회 (탄소총국)',
+          severity: 'high',
+          headline: 'EU 집행위, "한국 배출권거래제(K-ETS) 탄소단가 불인정... 2027 CBAM 전면 과세 강행" 통보',
+          description: '브뤼셀이 한국의 K-ETS 무상할당 비율과 낮은 탄소 시장가격을 문제 삼으며 차액 전액을 CBAM 인증서로 납부할 것을 요구했습니다. 철강 1톤당 약 85유로의 추가 관세가 불가피해집니다.',
+          economicImpactText: '대EU 철강 및 알루미늄 수출 가격경쟁력 심각한 훼손',
+          actionPrompt: 'EU 양자 실무협상 개시 및 국내 철강 수소환원제철 R&D 전환 바우처 가동'
+        };
+        threats.push(threat);
+        this.proactiveThreatHistory.push({ month, ...threat });
+      }
+    }
+
+    // 4. Month 7: US HBM Export Control to China (미국의 기술동맹 이행 압박)
+    if (month === 7 && !this.threatFlags.usHbmPressureIssued) {
+      this.threatFlags.usHbmPressureIssued = true;
+      const threat = {
+        partnerId: 'US',
+        partnerName: '미 상무부 산업안보국(BIS)',
+        severity: 'critical',
+        headline: '미 BIS, "한국산 최첨단 AI 반도체(HBM3E) 중국 우회 공급 즉각 차단하라" 비공식 통보',
+        description: '미 정부가 한국 메모리 반도체 대기업의 중국향 HBM 수출 전수조사 및 미국의 대중 수출통제 품목군 일치화를 요구했습니다. 불응 시 미국 장비 반입 라이선스 취소를 시사했습니다.',
+        economicImpactText: '대중 반도체 수출 단기 급감 vs 미국 시장 신뢰 수호의 갈림길',
+        actionPrompt: '미국 고위급 통상채널 가동 및 기업 수출허가제 유예 협상 급선무'
+      };
+      threats.push(threat);
+      this.proactiveThreatHistory.push({ month, ...threat });
+    }
+
+    // 5. China Rare Earth retaliation if Korea aligns heavily with US
+    const usDeal = activeAgreements.find(a => a.partnerId === 'US' && a.type === 'agreed');
+    if (month >= 8 && usDeal && !this.threatFlags.chinaRareEarthRetaliationIssued) {
+      this.threatFlags.chinaRareEarthRetaliationIssued = true;
+      const threat = {
+        partnerId: 'CN',
+        partnerName: '중국 세관총서 및 상무부',
+        severity: 'high',
+        headline: '중국 세관총서, "한국행 배터리용 구형흑연·희토류 수출 통관 전수검사" 전격 착수',
+        description: '한미 통상 협력 및 대미 투자 확대에 대한 보복 조치로, 중국 세관이 한국 2차전지 및 방산 부품용 핵심 광물에 대해 이중용도 품목 수출 허가 심사를 대폭 지연시키기 시작했습니다.',
+        economicImpactText: '국내 배터리·영구자석 원자재 재고 45일치로 위험 수준 근접',
+        actionPrompt: '호주·베트남·인니 대체 공급망 바우처 발동 및 한중 통상장관급 대화 타진'
+      };
+      threats.push(threat);
+      this.proactiveThreatHistory.push({ month, ...threat });
+    }
+
+    return threats;
+  }
+}
+

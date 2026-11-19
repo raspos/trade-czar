@@ -3,7 +3,7 @@
 import { GameManager } from './game.mjs';
 import { SCENARIOS } from './scenarios.mjs';
 import { ORIGINS, INDUSTRIES, PARTNERS } from './constants.mjs';
-import { POLICY_ACTIONS } from './policies.mjs';
+import { POLICY_ACTIONS, DOCTRINES } from './policies.mjs';
 import { CORPORATIONS } from './corporations.mjs';
 import { StorageManager } from './storage.mjs';
 
@@ -15,6 +15,7 @@ class UIManager {
     this.pendingScenario = 'baseline';
     this.activePolicyTab = 'corporate'; // corporate, government, negotiation
     this.corporateModalOpen = false;
+    this.doctrineModalOpen = false;
     this.selectedCorpId = 'samsung';
     this.lastCorpResponse = null;
 
@@ -372,6 +373,74 @@ class UIManager {
     `;
     wrap.appendChild(scene);
 
+    // National Doctrine Banner
+    const doc = this.gm.doctrine || DOCTRINES[0];
+    const docBanner = document.createElement('div');
+    docBanner.className = 'panel';
+    docBanner.style.background = '#fdfbf7';
+    docBanner.style.borderLeft = '4px solid var(--navy)';
+    docBanner.style.marginBottom = '16px';
+    docBanner.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+        <div>
+          <span class="eyebrow" style="color: var(--navy); font-weight: 800;">6대 국정 통상 독트린 (National Trade Doctrine)</span>
+          <h3 style="margin: 2px 0 4px; font-size: 18px; color: var(--navy); font-family: var(--font-serif);">${doc.name}</h3>
+          <p style="margin: 0; font-size: 12px; color: #555;">"${doc.slogan}" · <strong style="color: var(--green);">${doc.passiveBonusText}</strong></p>
+        </div>
+        <button class="secondary" id="btn-open-doctrine-modal" style="font-size: 12px; padding: 6px 14px;">독트린 전환 ⚙️</button>
+      </div>
+    `;
+    wrap.appendChild(docBanner);
+
+    // Proactive Foreign Threats Wire
+    if (this.gm.monthlyThreats && this.gm.monthlyThreats.length > 0) {
+      const threatBox = document.createElement('div');
+      threatBox.className = 'panel';
+      threatBox.style.borderLeft = '5px solid var(--red)';
+      threatBox.style.background = '#fff8f8';
+      threatBox.style.marginBottom = '16px';
+      threatBox.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+          <span class="status-pill" style="background: var(--red); color: #fff; font-weight: 800;">⚡ 외국의 능동적 통상 공세 경보</span>
+          <small style="color: var(--muted); font-size: 11px;">상대국 선제적 조치</small>
+        </div>
+        ${this.gm.monthlyThreats.map(t => `
+          <h3 style="font-size: 16px; color: #881313; margin: 4px 0 6px; font-family: var(--font-serif);">${t.headline}</h3>
+          <p style="font-size: 13px; color: #333; margin: 0 0 6px; line-height: 1.5;">${t.description}</p>
+          <div style="font-size: 12px; color: #881313; font-weight: 700;">대응 권고: ${t.actionPrompt}</div>
+        `).join('<hr style="margin: 10px 0; border: 0; border-top: 1px dashed #fca5a5;">')}
+      `;
+      wrap.appendChild(threatBox);
+    }
+
+    // Autonomous Corporate Action Alert
+    if (this.gm.activeCorporateAction) {
+      const corpAct = this.gm.activeCorporateAction;
+      const corpBox = document.createElement('div');
+      corpBox.className = 'panel';
+      corpBox.style.borderLeft = '5px solid var(--gold)';
+      corpBox.style.background = '#fdfaf2';
+      corpBox.style.marginBottom = '16px';
+      corpBox.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+          <span class="status-pill" style="background: var(--gold); color: #fff; font-weight: 800;">🏢 기업의 독립적 의사결정 긴급 통보</span>
+          <small style="color: var(--muted);">${corpAct.corpName}</small>
+        </div>
+        <h3 style="font-size: 17px; color: var(--navy); margin: 4px 0 6px; font-family: var(--font-serif);">${corpAct.title}</h3>
+        <p style="font-size: 13px; color: #333; margin: 0 0 10px; line-height: 1.5;">${corpAct.description}</p>
+        <div style="font-size: 12px; font-weight: 700; color: var(--navy); margin-bottom: 8px;">정부 대응 전략 선택:</div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          ${corpAct.options.map(opt => `
+            <button class="secondary btn-corp-agency-opt" data-cid="${corpAct.corpId}" data-akey="${corpAct.actionKey}" data-oid="${opt.id}" style="text-align: left; padding: 10px 14px; border: 1px solid var(--line);">
+              <strong>${opt.text}</strong>
+              <div style="font-size: 11px; color: var(--muted); margin-top: 2px;">비용/영향: ${opt.cost}</div>
+            </button>
+          `).join('')}
+        </div>
+      `;
+      wrap.appendChild(corpBox);
+    }
+
     // Active random event modal trigger if present
     if (this.gm.activeEvent) {
       const evtCard = document.createElement('div');
@@ -516,12 +585,34 @@ class UIManager {
     `;
     wrap.appendChild(actionBanner);
 
+    // Render Doctrine Selector Modal if opened
+    if (this.doctrineModalOpen) {
+      wrap.appendChild(this.renderDoctrineModal());
+    }
+
     // Render Corporate Modal if opened
     if (this.corporateModalOpen) {
       wrap.appendChild(this.renderCorporateModal());
     }
 
     setTimeout(() => {
+      const btnDoc = document.getElementById('btn-open-doctrine-modal');
+      if (btnDoc) btnDoc.onclick = () => {
+        this.doctrineModalOpen = true;
+        this.render();
+      };
+
+      wrap.querySelectorAll('.btn-corp-agency-opt').forEach(btn => {
+        btn.onclick = () => {
+          const cid = btn.getAttribute('data-cid');
+          const akey = btn.getAttribute('data-akey');
+          const oid = btn.getAttribute('data-oid');
+          const res = this.gm.resolveCorporateAction(cid, akey, oid);
+          if (res) alert(`[정부 대응 조치 확정]\n\n${res.resolveText}`);
+          this.render();
+        };
+      });
+
       const elWar = document.getElementById('obj-war-room');
       if (elWar) elWar.onclick = () => { this.gm.screen = 'war_room'; this.render(); };
       const elPol = document.getElementById('obj-policies');
@@ -548,6 +639,70 @@ class UIManager {
     }, 0);
 
     return wrap;
+  }
+
+  // 6대 국정 통상 독트린 선택 모달
+  renderDoctrineModal() {
+    const dialog = document.createElement('dialog');
+    dialog.className = 'game-dialog';
+    dialog.open = true;
+    dialog.style.maxHeight = '90vh';
+    dialog.style.overflowY = 'auto';
+
+    dialog.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; border-bottom: 2px solid var(--navy); padding-bottom: 8px;">
+        <div>
+          <span class="eyebrow" style="color: var(--navy); font-weight: 800;">NATIONAL STRATEGIC DOCTRINE</span>
+          <h2 style="font-family: var(--font-serif); font-size: 22px; color: var(--navy); margin-top: 4px;">대한민국 6대 국정 통상 독트린 선포 및 전환</h2>
+        </div>
+        <button class="secondary" id="btn-close-doc-modal" style="padding: 6px 12px; font-size: 14px;">닫기 ✕</button>
+      </div>
+      <p style="font-size: 13px; color: var(--muted); margin-bottom: 16px;">
+        선택한 독트린은 12개월간 상시 지속 패시브 효과를 발휘하며 무역 외교와 산업 구조에 지대한 영향을 미칩니다.
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        ${DOCTRINES.map(d => {
+          const isCurrent = this.gm.doctrine && this.gm.doctrine.id === d.id;
+          return `
+            <div style="border: 2px solid ${isCurrent ? 'var(--navy)' : 'var(--line)'}; background: ${isCurrent ? '#f0f4f8' : 'var(--white)'}; border-radius: 6px; padding: 14px; display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+              <div style="flex: 1;">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                  <strong style="font-size: 16px; color: var(--navy); font-family: var(--font-serif);">${d.name}</strong>
+                  ${isCurrent ? '<span class="status-pill" style="background: var(--navy); color: #fff; font-size: 11px;">현재 적용 중</span>' : ''}
+                </div>
+                <p style="margin: 0 0 6px; font-size: 12px; color: #444;">"${d.slogan}"</p>
+                <div style="font-size: 11px; display: flex; gap: 12px; flex-wrap: wrap;">
+                  <span style="color: var(--green); font-weight: 700;">✨ 혜택: ${d.passiveBonusText}</span>
+                  <span style="color: var(--red);">⚠️ 기회비용/리스크: ${d.riskText}</span>
+                </div>
+              </div>
+              <button class="btn-select-doc ${isCurrent ? 'secondary' : 'primary'}" data-did="${d.id}" ${isCurrent ? 'disabled' : ''} style="padding: 10px 18px; font-size: 13px; white-space: nowrap;">
+                ${isCurrent ? '선택됨' : '선포하기 →'}
+              </button>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+
+    setTimeout(() => {
+      const btnClose = dialog.querySelector('#btn-close-doc-modal');
+      if (btnClose) btnClose.onclick = () => {
+        this.doctrineModalOpen = false;
+        this.render();
+      };
+      dialog.querySelectorAll('.btn-select-doc').forEach(btn => {
+        btn.onclick = () => {
+          const did = btn.getAttribute('data-did');
+          this.gm.setDoctrine(did);
+          this.doctrineModalOpen = false;
+          this.render();
+        };
+      });
+    }, 0);
+
+    return dialog;
   }
 
   // Interactive Corporate Dialogue Modal
@@ -954,6 +1109,25 @@ class UIManager {
     // Right Column: Hand of Strategic Cards & Conclude Options
     const rightCol = document.createElement('div');
     rightCol.innerHTML = `
+      <!-- Two-Level Game: Domestic Stakeholder Consultations -->
+      <div style="background: var(--paper-card); border: 1px solid var(--line); border-radius: 6px; padding: 14px; margin-bottom: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <h4 style="margin: 0; font-size: 14px; color: var(--navy); font-family: var(--font-serif);">🏛️ 양면 게임: 국내 이해관계자 긴급 조율 (Two-Level Game)</h4>
+          <span style="font-size: 11px; color: var(--muted);">정치적 자산: <b>${this.gm.politics.stats.politicalCapital}pt</b></span>
+        </div>
+        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+          <button class="secondary btn-domestic-consult" data-aid="agri_relief_fund" ${nego.domesticState.agriConsensus ? 'disabled' : ''} style="font-size: 11px; padding: 6px 10px;">
+            ${nego.domesticState.agriConsensus ? '✅ 당정 1조원 상생기금 확보됨' : '🌾 당정 1조원 상생기금 조성 (자산 -15)'}
+          </button>
+          <button class="secondary btn-domestic-consult" data-aid="parliament_pre_ratify" ${nego.domesticState.parliamentConsensus ? 'disabled' : ''} style="font-size: 11px; padding: 6px 10px;">
+            ${nego.domesticState.parliamentConsensus ? '✅ 국회 사전비준 공감대 확보' : '🏛️ 국회 통상소위 사전설명 (자산 -10)'}
+          </button>
+          <button class="secondary btn-domestic-consult" data-aid="chaebol_burden_share" ${nego.domesticState.chaebolBurdenShare ? 'disabled' : ''} style="font-size: 11px; padding: 6px 10px;">
+            ${nego.domesticState.chaebolBurdenShare ? '✅ 4대 그룹 대미투자 매칭됨' : '💼 4대 그룹 대미투자 매칭'}
+          </button>
+        </div>
+      </div>
+
       <div class="panel" style="margin-bottom: 16px;">
         <h3 style="border: 0; padding: 0; margin-bottom: 8px; font-size: 18px;">한국 측 협상 카드 선택</h3>
         <p style="font-size: 13px; color: var(--muted); margin-bottom: 14px;">전략 카드를 제시하여 상대국 수용도를 올리고 긴장도를 관리하십시오.</p>
@@ -978,6 +1152,7 @@ class UIManager {
         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
           <button class="primary" id="btn-conclude-agree" style="flex: 1.5; font-weight: 700;">타결안 서명 시도</button>
           <button class="secondary" id="btn-conclude-defer" style="flex: 1;">협상 3개월 유예</button>
+          <button class="secondary" id="btn-conclude-suspend" style="flex: 1;">협상 일시 정회</button>
           <button class="danger" id="btn-conclude-break" style="flex: 1;">협상 결렬 감수</button>
         </div>
         <div style="font-size: 11px; color: var(--muted); line-height: 1.4; text-align: center;">
@@ -990,10 +1165,26 @@ class UIManager {
     wrap.appendChild(stageWrap);
 
     setTimeout(() => {
+      wrap.querySelectorAll('.btn-domestic-consult').forEach(btn => {
+        btn.onclick = () => {
+          const aid = btn.getAttribute('data-aid');
+          const res = nego.consultDomestic(aid, this.gm.politics);
+          if (res.success) {
+            alert(`[국내 이해관계자 합의 성사]\n\n${res.title}\n\n${res.description}`);
+          } else {
+            alert(`[합의 실패]\n\n${res.reason}`);
+          }
+          this.render();
+        };
+      });
+
       wrap.querySelectorAll('.btn-play-card').forEach(btn => {
         btn.onclick = () => {
           const cid = btn.getAttribute('data-cid');
-          nego.playCard(cid);
+          const stepRes = nego.playCard(cid);
+          if (stepRes.domesticNote) {
+            alert(`${stepRes.domesticNote}`);
+          }
           this.render();
         };
       });
@@ -1007,6 +1198,13 @@ class UIManager {
       if (btnDefer) btnDefer.onclick = () => {
         const res = this.gm.concludeNegotiation('defer');
         alert(`[협상 결과 보고: ${res.grade}]\n\n${res.title}\n\n${res.description || res.text}`);
+        this.render();
+      };
+      const btnSuspend = document.getElementById('btn-conclude-suspend');
+      if (btnSuspend) btnSuspend.onclick = () => {
+        const res = nego.suspendSession();
+        alert(`[${res.title}]\n\n${res.description}`);
+        this.gm.screen = 'office';
         this.render();
       };
       const btnBreak = document.getElementById('btn-conclude-break');
@@ -1064,9 +1262,14 @@ class UIManager {
       </h3>
       <div class="metrics-strip">
         <div class="metric-card">
-          <small>총수출액</small>
-          <strong>$${res.export.toFixed(1)}B</strong>
+          <small>통관 상품수출</small>
+          <strong>$${res.goodsExport !== undefined ? res.goodsExport.toFixed(1) : res.export.toFixed(1)}B</strong>
           <div class="delta ${res.yoyExportGrowth >= 0 ? 'plus' : 'minus'}">전년비 ${res.yoyExportGrowth >= 0 ? '+' : ''}${res.yoyExportGrowth}%</div>
+        </div>
+        <div class="metric-card">
+          <small>BOP 서비스수출</small>
+          <strong style="color: var(--navy);">$${(res.servicesExport || 0).toFixed(1)}B</strong>
+          <div style="font-size: 11px; color: var(--muted); margin-top: 2px;">MRO·물류·기술</div>
         </div>
         <div class="metric-card">
           <small>총수입액</small>
@@ -1074,8 +1277,12 @@ class UIManager {
           <div class="delta ${res.yoyImportGrowth >= 0 ? 'plus' : 'minus'}">전년비 ${res.yoyImportGrowth >= 0 ? '+' : ''}${res.yoyImportGrowth}%</div>
         </div>
         <div class="metric-card">
-          <small>당월 무역수지</small>
+          <small>통관 무역수지</small>
           <strong style="color: ${res.balance >= 0 ? 'var(--green)' : 'var(--red)'};">${res.balance >= 0 ? '+' : ''}$${res.balance.toFixed(1)}B</strong>
+        </div>
+        <div class="metric-card">
+          <small>월간 경상수지</small>
+          <strong style="color: ${(res.currentAccountBalance || res.balance) >= 0 ? 'var(--green)' : 'var(--red)'};">${(res.currentAccountBalance || res.balance) >= 0 ? '+' : ''}$${(res.currentAccountBalance || res.balance).toFixed(1)}B</strong>
         </div>
         <div class="metric-card">
           <small>연간 누적 흑자</small>
@@ -1309,10 +1516,48 @@ class UIManager {
           최종 엔딩: ${verdict.title}
         </h3>
         <p style="font-size: 15px; line-height: 1.7; color: #222;">${verdict.description}</p>
+        ${verdict.structuralLegacy ? `
+          <div style="margin-top: 12px; padding: 12px; background: rgba(255,255,255,0.7); border-radius: 4px; border-left: 3px solid var(--navy); font-size: 13px; line-height: 1.6; color: #333;">
+            <strong style="color: var(--navy); display: block; margin-bottom: 4px;">🏛️ 1년간의 정책이 남긴 대한민국 산업 구조적 유산 (Structural Legacy):</strong>
+            ${verdict.structuralLegacy}
+          </div>
+        ` : ''}
+      </div>
+
+      <!-- Industry & Policy Highlights -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin: 20px 0;">
+        ${verdict.bestIndustry ? `
+          <div style="background: rgba(37, 107, 79, 0.08); border: 1px solid var(--green); border-radius: 6px; padding: 12px;">
+            <span class="status-pill" style="background: var(--green); color: #fff; font-size: 10px;">🏆 연간 최우수 성장 산업 (Best Industry)</span>
+            <h4 style="font-size: 16px; margin: 6px 0 2px; color: var(--navy);">${verdict.bestIndustry.name}</h4>
+            <div style="font-size: 12px; color: #333;">성장률: <b style="color: var(--green);">+${verdict.bestIndustry.yoyGrowth || 0}%</b> · 총수출 견인</div>
+          </div>
+        ` : ''}
+        ${verdict.worstIndustry ? `
+          <div style="background: rgba(175, 81, 71, 0.08); border: 1px solid var(--red); border-radius: 6px; padding: 12px;">
+            <span class="status-pill" style="background: var(--red); color: #fff; font-size: 10px;">⚠️ 연간 최대 고전 산업 (Worst Industry)</span>
+            <h4 style="font-size: 16px; margin: 6px 0 2px; color: var(--navy);">${verdict.worstIndustry.name}</h4>
+            <div style="font-size: 12px; color: #333;">성장률: <b style="color: var(--red);">${verdict.worstIndustry.yoyGrowth || 0}%</b> · 통상 장벽 타격</div>
+          </div>
+        ` : ''}
+        ${verdict.topPolicy ? `
+          <div style="background: var(--white); border: 1px solid var(--line); border-radius: 6px; padding: 12px;">
+            <span class="status-pill" style="background: var(--navy); color: #fff; font-size: 10px;">⭐ 최대 성과 정책 (Top Performing Policy)</span>
+            <h4 style="font-size: 15px; margin: 6px 0 2px; color: var(--navy);">${verdict.topPolicy.name}</h4>
+            <div style="font-size: 12px; color: #555;">${verdict.topPolicy.desc}</div>
+          </div>
+        ` : ''}
+        ${verdict.worstPolicy ? `
+          <div style="background: var(--white); border: 1px solid var(--line); border-radius: 6px; padding: 12px;">
+            <span class="status-pill" style="background: #666; color: #fff; font-size: 10px;">📉 최대 부작용 정책 (Highest Cost Policy)</span>
+            <h4 style="font-size: 15px; margin: 6px 0 2px; color: #444;">${verdict.worstPolicy.name}</h4>
+            <div style="font-size: 12px; color: #555;">${verdict.worstPolicy.desc}</div>
+          </div>
+        ` : ''}
       </div>
 
       <div class="front-figures-box" style="margin: 20px 0;">
-        <h4>2027년 연간 통상 성적표</h4>
+        <h4>2027년 연간 종합 통상 성적표 (Scorecard)</h4>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
           ${verdict.scoreCard.map(sc => `
             <div style="background: var(--white); padding: 10px; border-radius: 4px; border: 1px solid var(--line);">

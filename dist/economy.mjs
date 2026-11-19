@@ -32,6 +32,14 @@ export class EconomyEngine {
       };
     });
 
+    // Services Export Telemetry (BOP Services Export separate from Customs Clearance Goods)
+    this.servicesStates = {
+      navalMroActive: false,
+      navalMroLevel: 0.0,
+      logisticsBonus: 0.0,
+      techRoyaltyBonus: 0.0
+    };
+
     // Partner persistent states (bilateral tariffs, relations, special import quotas)
     this.partnerStates = {};
     PARTNERS.forEach(p => {
@@ -148,7 +156,8 @@ export class EconomyEngine {
         const scShock = this.scenario.industryShocks?.[ind.id] || {};
 
         // 1. Export calculation for cell E[c, i]
-        const specificTariff = pTariffs[ind.id] ?? pTariffs.general ?? 0.03;
+        const rawTariff = pTariffs[ind.id] ?? pTariffs.general ?? 0.03;
+        const specificTariff = isNaN(rawTariff) ? 0.03 : rawTariff;
         // Automobile tariff has lag effect (2 months)
         let effTariff = specificTariff;
         if (ind.id === 'automobile' && p.id === 'US' && specificTariff > 0.03) {
@@ -256,6 +265,18 @@ export class EconomyEngine {
         }
       }
 
+      // Anti-Silver Bullet: Downturn overcapacity price penalty & inventory buildup
+      if (ind.id === 'semiconductor' && demandRatio < 0.995 && indState.capacityIndex > 105.0) {
+        // Pushing capacity during downcycle causes price deflation
+        const penaltyRatio = Math.min(0.05, (indState.capacityIndex - 105.0) * 0.005);
+        for (const p of PARTNERS) {
+          ledger[p.id].semiconductor.export = Math.round((ledger[p.id].semiconductor.export * (1.0 - penaltyRatio)) * 1000) / 1000;
+        }
+        indState.inventoryStress = true;
+      } else {
+        indState.inventoryStress = false;
+      }
+
       // Update utilization rate
       indState.utilizationRate = Math.min(100, Math.max(40, Math.round(85.0 * (currentIndExp / baseIndExp))));
     }
@@ -283,12 +304,15 @@ export class EconomyEngine {
       }
       eSum = Math.round(eSum * 1000) / 1000;
       iSum = Math.round(iSum * 1000) / 1000;
+      const baseIndExp = baseMonthData.industries[ind.id] ? baseMonthData.industries[ind.id].export : eSum;
+      const indYoyGrowth = baseIndExp > 0 ? Math.round(((eSum - baseIndExp) / baseIndExp) * 1000) / 10 : 0.0;
       computedIndustries[ind.id] = {
         id: ind.id,
         name: ind.name,
         export: eSum,
         import: iSum,
         balance: Math.round((eSum - iSum) * 1000) / 1000,
+        yoyGrowth: indYoyGrowth,
         capacityIndex: this.industryStates[ind.id].capacityIndex,
         utilizationRate: this.industryStates[ind.id].utilizationRate,
         tradeBarrierIndex: this.industryStates[ind.id].tradeBarrierIndex
@@ -320,6 +344,13 @@ export class EconomyEngine {
     totalImport = Math.round(totalImport * 1000) / 1000;
     const balance = Math.round((totalExport - totalImport) * 1000) / 1000;
 
+    // BOP Services Export (BOP Services separate from Goods Customs Clearance)
+    const navalMro = this.servicesStates.navalMroActive ? Math.round((0.35 + (this.servicesStates.navalMroLevel || 0.1)) * 1000) / 1000 : 0.0;
+    const shippingFreight = Math.round(((currentMacro.scfiFreight / 2000.0) * 1.6 + this.servicesStates.logisticsBonus) * 1000) / 1000;
+    const techRoyalties = Math.round(((computedIndustries.semiconductor.export * 0.015) + this.servicesStates.techRoyaltyBonus) * 1000) / 1000;
+    const totalServicesExport = Math.round((navalMro + shippingFreight + techRoyalties) * 1000) / 1000;
+    const currentAccountBalance = Math.round((balance + totalServicesExport - (totalImport * 0.035)) * 1000) / 1000;
+
     // YoY growth against 2026 baseline
     const yoyExportGrowth = Math.round(((totalExport - baseMonthData.export) / baseMonthData.export) * 1000) / 10;
     const yoyImportGrowth = Math.round(((totalImport - baseMonthData.import) / baseMonthData.import) * 1000) / 10;
@@ -347,7 +378,11 @@ export class EconomyEngine {
     const result = {
       month,
       name: baseMonthData.name,
-      export: totalExport,
+      export: totalExport, // Goods Customs Clearance ($B)
+      goodsExport: totalExport,
+      servicesExport: totalServicesExport,
+      servicesBreakdown: { navalMro, shippingFreight, techRoyalties },
+      currentAccountBalance,
       import: totalImport,
       balance,
       yoyExportGrowth,
