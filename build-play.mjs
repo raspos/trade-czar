@@ -70,4 +70,5 @@ const page = html
   .replace('</body>', () => '<script>' + js.replaceAll('</script', '<\\/script') + '</script></body>');
 
 await writeFile(new URL('./play.html', import.meta.url), page);
-console.log('Successfully generated standalone play.html (' + Math.round(page.length / 1024) + ' KB)');
+await writeFile(new URL('./index.html', import.meta.url), page);
+console.log('Successfully generated standalone play.html and index.html (' + Math.round(page.length / 1024) + ' KB)');
