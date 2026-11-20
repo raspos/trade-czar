@@ -230,7 +230,7 @@ export class CorporateAgencyManager {
           {
             id: 'hyundai_support_parts',
             text: '국내 1·2차 협력사 북미 동반진출 긴급 금융지원 및 미래차 바우처 지급',
-            cost: '정치자산 -8, 예산 추진력 -1',
+            cost: '정부 재정 지원 및 예산 소모',
             stakeholderImpact: { businessTrust: 6, publicApproval: 2, diplomaticTrust: 2 },
             resolveText: '정부의 신속한 협력사 지원책에 재계가 안도하며, 국내 부품사들의 북미 납품 공급망이 유지됩니다.'
           },
@@ -269,7 +269,7 @@ export class CorporateAgencyManager {
           {
             id: 'posco_antidumping_suit',
             text: '무역위원회 통해 중국산 덤핑 후판에 35% 잠정 상계관세 긴급 부과',
-            cost: '중국 반발 (외교신뢰 -5), 산업통상부 추진력 -1',
+            cost: '중국 측 통상 반발 및 외교 마찰',
             stakeholderImpact: { businessTrust: 7, publicApproval: 4, diplomaticTrust: -6 },
             resolveText: '국내 유통 가격이 빠르게 정상화되며 포항 제철소 공장 가동이 재개되었습니다.'
           },

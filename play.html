@@ -1793,12 +1793,12 @@ const MONTHLY_CHAPTERS = {
         {
           text: "워싱턴에 고위급 특사단을 급파하여 '100일 관세 유예'를 우선 공식 확보한다.",
           impact: { diplomaticTrust: 6, presidentTrust: 3, businessTrust: 4 },
-          summary: "외교신뢰 +6 · 대통령신임 +3 · 기업신뢰 +4"
+          summary: "대미 관세 유예 협상 개시 및 민관 원팀 대응"
         },
         {
           text: "일방적 보호무역에 유감을 표명하고 WTO 다자 규범을 준수하라는 원칙적 성명을 발표한다.",
           impact: { publicApproval: 6, diplomaticTrust: -6, businessTrust: -3 },
-          summary: "국민여론 +6% · 외교신뢰 -6 · 기업신뢰 -3"
+          summary: "원칙적 유감 표명 및 다자 공조 탐색"
         }
       ]
     },
@@ -1811,7 +1811,7 @@ const MONTHLY_CHAPTERS = {
       category: "government",
       categoryName: "이달의 긴급 특별 결재",
       title: "[1월 특별 결재] 워싱턴 고위급 통상 사절단 급파 및 100일 관세 유예 협정",
-      costText: "대미 외교신뢰 +10, 미국 관세 발효 공식 3개월 유예 / 협상 추진력 -2",
+      costText: "미국 관세 발효 공식 3개월 유예 및 한미 채널 복원 / 대외 교섭 부담",
       impact: { diplomaticTrust: 10, presidentTrust: 4, policyMomentum: -2 },
       executeImmediate(engine) {
         if (engine.industryStates.automobile) {
@@ -1850,12 +1850,12 @@ const MONTHLY_CHAPTERS = {
         {
           text: "용인·평택 메가 클러스터 송전망을 전폭 승인해 차세대 HBM 국내 생산능력을 극대화한다.",
           impact: { businessTrust: 8, competitiveness: 6, policyMomentum: -2 },
-          summary: "기업신뢰 +8 · 산업경쟁력 +6 · 추진력 -2"
+          summary: "국내 팹 긴급 패스트트랙 및 인허가 즉시 완화"
         },
         {
           text: "미 상무부에 '검증된 최종 사용자(VEU)' 유예를 강력히 요구해 중국 공장 가동을 사수한다.",
           impact: { diplomaticTrust: -4, businessTrust: 5, competitiveness: 3 },
-          summary: "외교신뢰 -4 · 기업신뢰 +5 · 산업경쟁력 +3"
+          summary: "워싱턴 통상팀 급파 및 대미 관세 유예 조항 개정 교섭"
         }
       ]
     },
@@ -1868,7 +1868,7 @@ const MONTHLY_CHAPTERS = {
       category: "government",
       categoryName: "이달의 긴급 특별 결재",
       title: "[2월 특별 결재] 용인 반도체 메가 클러스터 국가 송전망 직권 패스트트랙 인허가",
-      costText: "반도체 생산능력(Capacity) +6% 즉시 상승 / 기획예산처 마찰 (추진력 -3)",
+      costText: "반도체 생산능력(Capacity) 대폭 확충 / 기획예산처 및 지자체 마찰",
       impact: { businessTrust: 8, competitiveness: 6, policyMomentum: -3 },
       executeImmediate(engine) {
         if (engine.industryStates.semiconductor) {
@@ -1908,12 +1908,12 @@ const MONTHLY_CHAPTERS = {
         {
           text: "국가 비축 흑연을 즉시 방출하고 호주·인도네시아 대체 공급선 긴급 바우처를 투입한다.",
           impact: { businessTrust: 7, competitiveness: 5, policyMomentum: -3 },
-          summary: "기업신뢰 +7 · 산업경쟁력 +5 · 추진력 -3"
+          summary: "국가 비축 원자재 긴급 방출 및 수입선 다변화"
         },
         {
           text: "베이징과 고위급 핫라인을 열어 한국 기업에 대한 특별 통관 승인을 교섭한다.",
           impact: { diplomaticTrust: 6, businessTrust: 4, publicApproval: -2 },
-          summary: "외교신뢰 +6 · 기업신뢰 +4 · 여론 -2%"
+          summary: "베이징 고위급 핫라인 가동 및 특별 통관 교섭"
         }
       ]
     },
@@ -1926,7 +1926,7 @@ const MONTHLY_CHAPTERS = {
       category: "government",
       categoryName: "이달의 긴급 특별 결재",
       title: "[3월 특별 결재] 국가 비축 핵심광물 60일분 비상 방출 및 대체 공급선 관세 면제",
-      costText: "배터리 셧다운 위기 차단, 가동률 정상화 / 비축 예산 소모 (추진력 -3)",
+      costText: "배터리 셧다운 위기 차단, 공장 가동률 정상화 / 정부 비축 자원 소모",
       impact: { businessTrust: 7, competitiveness: 5, policyMomentum: -3 },
       executeImmediate(engine) {
         if (engine.industryStates.battery) {
@@ -1966,12 +1966,12 @@ const MONTHLY_CHAPTERS = {
         {
           text: "미국산 LNG 100억 달러 장기구매를 확약하고 자동차 관세를 2.5%로 최종 방어한다.",
           impact: { diplomaticTrust: 10, businessTrust: 7, publicApproval: -3, policyMomentum: -2 },
-          summary: "외교신뢰 +10 · 기업신뢰 +7 · 여론 -3% · 추진력 -2"
+          summary: "대미 에너지 구매 확대 및 자동차 관세 방어"
         },
         {
           text: "무리한 에너지 강매 요구를 단호히 거부하고 자동차 관세 분쟁 WTO 맞제소를 불사한다.",
           impact: { publicApproval: 8, diplomaticTrust: -10, businessTrust: -8 },
-          summary: "국민여론 +8% · 외교신뢰 -10 · 기업신뢰 -8"
+          summary: "강경 원칙 고수 및 다자 제소 절차 착수"
         }
       ]
     },
@@ -2024,12 +2024,12 @@ const MONTHLY_CHAPTERS = {
         {
           text: "농어촌 상생 특별 피해 보전 기금 3조 원을 즉시 편성해 농가 피해를 전액 보전한다.",
           impact: { publicApproval: 8, presidentTrust: 4, policyMomentum: -5 },
-          summary: "국민여론 +8% · 대통령신임 +4 · 추진력 -5"
+          summary: "국회 통상 비상대책위 수용 및 소통 강화"
         },
         {
           text: "'국민 경제 전체를 위한 불가피한 결단'임을 호소하며 대국민 담화로 정면 돌파한다.",
           impact: { policyMomentum: 5, publicApproval: -6, presidentTrust: -3 },
-          summary: "추진력 +5 · 국민여론 -6% · 대통령신임 -3"
+          summary: "행정부 전권 추진 및 국정 흔들림 차단"
         }
       ]
     },
@@ -2042,7 +2042,7 @@ const MONTHLY_CHAPTERS = {
       category: "government",
       categoryName: "이달의 긴급 특별 결재",
       title: "[5월 특별 결재] 농어촌 상생 발전 특별 피해 보전 기금 3조 원 긴급 편성",
-      costText: "광화문 시위 해산 및 국회 탄핵안 철회 / 막대한 재정 소모로 정책 추진력 -4",
+      costText: "광화문 시위 해산 및 국회 탄핵안 철회 / 대규모 긴급 예산 소모",
       impact: { publicApproval: 9, presidentTrust: 5, policyMomentum: -4 },
       executeImmediate(engine) {
         if (engine.industryStates.consumer) {
@@ -2081,12 +2081,12 @@ const MONTHLY_CHAPTERS = {
         {
           text: "중국산 덤핑 철강에 즉각 28% 잠정 반덤핑 관세를 때려 국내 고로를 방어한다.",
           impact: { businessTrust: 7, competitiveness: 5, diplomaticTrust: -4 },
-          summary: "기업신뢰 +7 · 산업경쟁력 +5 · 외교신뢰 -4"
+          summary: "대미 파운드리 초격차 협력 체계 공고화"
         },
         {
           text: "브뤼셀로 날아가 한국의 K-ETS 배출권 비용을 100% 공제받는 탄소 동등성 협약을 맺는다.",
           impact: { diplomaticTrust: 8, businessTrust: 6, competitiveness: 4 },
-          summary: "외교신뢰 +8 · 기업신뢰 +6 · 산업경쟁력 +4"
+          summary: "대중 공급망 실무 채널 가동 및 균형 외교"
         }
       ]
     },
@@ -2139,12 +2139,12 @@ const MONTHLY_CHAPTERS = {
         {
           text: "HMM 국적 컨테이너선 선복 25%를 중소기업에 강제 배정하고 물류 바우처를 투입한다.",
           impact: { publicApproval: 8, businessTrust: 5, policyMomentum: -2 },
-          summary: "국민여론 +8% · 기업신뢰 +5 · 추진력 -2"
+          summary: "대중 수출입 통제 검토 및 경제안보 강화"
         },
         {
           text: "항공 화물 전세기를 즉시 띄워 유통기한이 임박한 K-푸드와 긴급 부품을 공수한다.",
           impact: { competitiveness: 6, businessTrust: 4, policyMomentum: -3 },
-          summary: "산업경쟁력 +6 · 기업신뢰 +4 · 추진력 -3"
+          summary: "국내 소부장 자립화 긴급 예산 투입"
         }
       ]
     },
@@ -2197,12 +2197,12 @@ const MONTHLY_CHAPTERS = {
         {
           text: "필수 원자재 무관세 할당관세를 전면 확대해 수입 물가를 잡고 수지 방어선을 친다.",
           impact: { presidentTrust: 6, publicApproval: 5, businessTrust: 3 },
-          summary: "대통령신임 +6 · 국민여론 +5% · 기업신뢰 +3"
+          summary: "청와대·내각 긴급 경제안보회의 소집"
         },
         {
           text: "고환율 가격경쟁력을 지렛대 삼아 수출 드라이브를 걸고 시장 점유율 확대로 맞선다.",
           impact: { businessTrust: 6, diplomaticTrust: -6, policyMomentum: 3 },
-          summary: "기업신뢰 +6 · 외교신뢰 -6 · 추진력 +3"
+          summary: "민관 긴급 점검회의 및 현장 대책 마련"
         }
       ]
     },
@@ -2254,12 +2254,12 @@ const MONTHLY_CHAPTERS = {
         {
           text: "선수금환급보증(RG) 5조 원 특례를 즉시 승인하고 특수선 전용 도크 보안을 직권 허가한다.",
           impact: { businessTrust: 8, diplomaticTrust: 7, competitiveness: 6 },
-          summary: "기업신뢰 +8 · 외교신뢰 +7 · 산업경쟁력 +6"
+          summary: "동남아·인도 신흥 거점 진출 총력 지원"
         },
         {
           text: "미 해군과의 장기 파트너십을 지렛대 삼아 철강·자동차 관세 추가 인하를 압박한다.",
           impact: { diplomaticTrust: 5, businessTrust: 6, policyMomentum: 4 },
-          summary: "외교신뢰 +5 · 기업신뢰 +6 · 추진력 +4"
+          summary: "유럽·중동 시장 집중 및 수출선 다변화"
         }
       ]
     },
@@ -2312,12 +2312,12 @@ const MONTHLY_CHAPTERS = {
         {
           text: "한·인도 CEPA 개정 및 한·아세안 FTA 업그레이드를 즉시 패스트트랙 비준한다.",
           impact: { competitiveness: 8, businessTrust: 7, diplomaticTrust: 6 },
-          summary: "산업경쟁력 +8 · 기업신뢰 +7 · 외교신뢰 +6"
+          summary: "차세대 반도체 R&D 세제 혜택 총동원"
         },
         {
           text: "원전·방산·K-소비재 패키지 수주 사절단을 직접 이끌고 중동·동남아를 순방한다.",
           impact: { publicApproval: 7, presidentTrust: 6, policyMomentum: 4 },
-          summary: "국민여론 +7% · 대통령신임 +6 · 추진력 +4"
+          summary: "대국민 통상 성과 설명회 및 상생 강화"
         }
       ]
     },
@@ -2369,12 +2369,12 @@ const MONTHLY_CHAPTERS = {
         {
           text: "1년간의 에너지 구매와 50조 대미 투자를 묶어 '보편관세 영구 면제'에 당당히 서명한다.",
           impact: { diplomaticTrust: 15, businessTrust: 12, presidentTrust: 10, publicApproval: 6 },
-          summary: "외교신뢰 +15 · 기업신뢰 +12 · 대통령신임 +10 · 여론 +6%"
+          summary: "연간 목표 달성을 위한 막판 수출 밀어내기 총력전"
         },
         {
           text: "미국의 일방적 기술 안보 독소조항을 끝까지 거부하고 주권적 타협안을 고수한다.",
           impact: { publicApproval: 10, policyMomentum: 6, diplomaticTrust: -8 },
-          summary: "국민여론 +10% · 추진력 +6 · 외교신뢰 -8"
+          summary: "질적 체질 개선 및 무역 구조 개혁 선언"
         }
       ]
     },
@@ -2427,12 +2427,12 @@ const MONTHLY_CHAPTERS = {
         {
           text: "대국민 담화문을 발표하고 지난 1년간 피땀 흘려 경제를 지켜낸 기업과 국민에게 감사한다.",
           impact: { publicApproval: 8, presidentTrust: 8, businessTrust: 8 },
-          summary: "국민여론 +8% · 대통령신임 +8 · 기업신뢰 +8"
+          summary: "초격차 수출 강국 청사진 발표 및 대국민 보고"
         },
         {
           text: "차기 정권을 위해 10년 대계의 '국가 신통상 안보 백서'를 국무회의에 헌정한다.",
           impact: { policyMomentum: 10, competitiveness: 8, presidentTrust: 6 },
-          summary: "추진력 +10 · 산업경쟁력 +8 · 대통령신임 +6"
+          summary: "차기 연도 무역 드라이브 로드맵 공식 확정"
         }
       ]
     },
@@ -3381,7 +3381,7 @@ class CorporateAgencyManager {
           {
             id: 'hyundai_support_parts',
             text: '국내 1·2차 협력사 북미 동반진출 긴급 금융지원 및 미래차 바우처 지급',
-            cost: '정치자산 -8, 예산 추진력 -1',
+            cost: '정부 재정 지원 및 예산 소모',
             stakeholderImpact: { businessTrust: 6, publicApproval: 2, diplomaticTrust: 2 },
             resolveText: '정부의 신속한 협력사 지원책에 재계가 안도하며, 국내 부품사들의 북미 납품 공급망이 유지됩니다.'
           },
@@ -3420,7 +3420,7 @@ class CorporateAgencyManager {
           {
             id: 'posco_antidumping_suit',
             text: '무역위원회 통해 중국산 덤핑 후판에 35% 잠정 상계관세 긴급 부과',
-            cost: '중국 반발 (외교신뢰 -5), 산업통상부 추진력 -1',
+            cost: '중국 측 통상 반발 및 외교 마찰',
             stakeholderImpact: { businessTrust: 7, publicApproval: 4, diplomaticTrust: -6 },
             resolveText: '국내 유통 가격이 빠르게 정상화되며 포항 제철소 공장 가동이 재개되었습니다.'
           },
@@ -4609,7 +4609,7 @@ const POLICY_ACTIONS = [
     categoryName: "기업 관리",
     title: "10대 그룹 총수 긴급 수출전략 간담회 소집",
     description: "삼성, 현대차, SK, 포스코, 한화 등 주요 수출 대기업 총수들을 직접 불러 상반기 수출 목표 조기 달성과 공급망 비상 대책을 협의합니다.",
-    costText: "기업계 신뢰 +2, 정책 추진력 +3 / 대기업 밀실 회동 비판으로 국민 지지율 -2",
+    costText: "기업계 신뢰 제고, 정책 추진력 확보 / 대기업 밀실 회동 비판으로 국민 여론 부담",
     impact: { presidentTrust: 1, businessTrust: 2, publicApproval: -2, policyMomentum: 3, competitiveness: 2 },
     executeImmediate(engine) {
       const mult = engine.origin === 'industry_expert' ? 1.4 : (engine.origin === 'bureaucrat' ? 0.8 : 1.0);
@@ -4624,7 +4624,7 @@ const POLICY_ACTIONS = [
     categoryName: "기업 관리",
     title: "수출 실적 부진 기업에 대한 고강도 비상 생산 압박",
     description: "공장 가동률이 저조한 일부 대기업 경영진을 압박하여 재고 소진과 해외 덤핑 방어, 24시간 특별 교대 근무 확대를 강하게 독려합니다.",
-    costText: "단기 수출 촉진, 가동률 상승 / 기업계 신뢰 대폭 하락 (-14), 반복 시 공장 해외 이전 트리거",
+    costText: "단기 수출 촉진, 가동률 상승 / 기업계 신뢰 대폭 하락 및 생산기지 해외 이전 리스크",
     impact: { presidentTrust: 2, businessTrust: -14, publicApproval: -3, policyMomentum: 2, competitiveness: -1 },
     executeImmediate(engine) {
       for (const ind of Object.values(engine.industryStates)) {
@@ -4641,7 +4641,7 @@ const POLICY_ACTIONS = [
     categoryName: "기업 관리",
     title: "대·중소기업 수출 상생 공급망 공동 전선 구축",
     description: "대기업의 해외 판매망과 글로벌 물류 네트워크를 중소 협력업체 및 K-소비재 기업에 전면 개방하는 상생 협약을 체결합니다.",
-    costText: "소비재·부품 수출 경쟁력 +5, 국민 지지율 +4 / 대기업 부담 증가로 기업 신뢰 -2",
+    costText: "소비재·부품 수출 경쟁력 강화, 상생 지지 / 대기업 부담 증가로 기업 신뢰 일부 저하",
     impact: { presidentTrust: 2, businessTrust: -2, publicApproval: 4, policyMomentum: 2, competitiveness: 4 },
     executeImmediate(engine) {
       engine.industryStates.consumer.supportLevel += 1.2;
@@ -4654,7 +4654,7 @@ const POLICY_ACTIONS = [
     categoryName: "기업 관리",
     title: "국내 첨단 전략산업 생산설비 신·증설 보조금 매칭",
     description: "반도체, 배터리, 바이오 기업의 국내 최첨단 생산 라인 증설에 대해 정부 보조금과 세제 인센티브를 일대일로 매칭합니다.",
-    costText: "3개월 뒤 생산능력(Capacity) +6% 지연 반영 / 기획예산처 재정 마찰 (추진력 -4), 대기업 특혜 논란 (지지율 -4)",
+    costText: "첨단 팹 생산능력(Capacity) 중기 확충 / 재정 당국과의 마찰 및 대기업 특혜 논란",
     delayMonths: 3,
     impact: { presidentTrust: 2, businessTrust: 5, publicApproval: -4, policyMomentum: -4, competitiveness: 6 },
     executeDelayed(engine) {
@@ -4671,7 +4671,7 @@ const POLICY_ACTIONS = [
     categoryName: "정부 정책",
     title: "무역금융 50조 원 긴급 공급 및 환변동 보험 확대",
     description: "무역보험공사, 수출입은행을 통해 중소·중견 수출기업에 특별 저금리 제작금융 및 환차손 100% 보장 보험을 즉각 투입합니다.",
-    costText: "전 산업 수출 탄력 (+1.5%), 기업계 신뢰 +4 / 재정 건전성 우려로 정책 추진력 -4",
+    costText: "전 산업 수출 금융 탄력성 제고, 기업계 호응 / 재정 건전성 우려 및 정책 추진력 소모",
     impact: { presidentTrust: 2, businessTrust: 4, publicApproval: 1, policyMomentum: -4, competitiveness: 4 },
     executeImmediate(engine) {
       for (const ind of Object.values(engine.industryStates)) {
@@ -4685,7 +4685,7 @@ const POLICY_ACTIONS = [
     categoryName: "정부 정책",
     title: "해외 물류비 특별 바우처 및 국적선사 선복 우선 배정",
     description: "홍해 사태 및 해운 운임 급등으로 고통받는 중소 수출기업들을 위해 HMM 등 국적 컨테이너선 선복 20%를 특별 배정하고 운임을 지원합니다.",
-    costText: "중소기업·소비재 물류 애로 해소, 기업 신뢰 +3 / 재정 소모로 정책 추진력 -2",
+    costText: "중소기업·소비재 물류 애로 해소, 수출선 확보 / 정부 물류 보조금 재정 소모",
     impact: { presidentTrust: 1, businessTrust: 3, publicApproval: 2, policyMomentum: -2, competitiveness: 2 },
     executeImmediate(engine) {
       engine.industryStates.consumer.supportLevel += 1.0;
@@ -4699,7 +4699,7 @@ const POLICY_ACTIONS = [
     categoryName: "정부 정책",
     title: "첨단 전략기술 핵심 연구인력 소득세 50% 감면",
     description: "반도체, 배터리, 바이오 분야 석·박사급 글로벌 인재 유치와 해외 유출 방지를 위해 파격적인 소득세 감면과 정주 여건을 제공합니다.",
-    costText: "산업 초격차 경쟁력 +5 / 고소득 연구원 특혜 논란으로 국민 지지율 -3",
+    costText: "산업 초격차 원천기술 경쟁력 확보 / 고급 인력 편중 및 특혜성 시비 부담",
     impact: { presidentTrust: 1, businessTrust: 3, publicApproval: -3, policyMomentum: 1, competitiveness: 5 },
     executeImmediate(engine) {
       engine.industryStates.semiconductor.longTermCompetitiveness += 3;
@@ -4713,7 +4713,7 @@ const POLICY_ACTIONS = [
     categoryName: "정부 정책",
     title: "환율 급변동 대응 외환시장 안정화 및 기업 결제 지원",
     description: "재정경제부, 한국은행과 협력하여 환율 변동성 완화 메시지를 발신하고 원자재 수입 결제용 긴급 외화 유동성을 공급합니다.",
-    costText: "환율 충격 완화, 기업 신뢰 +2 / 통화 당국과의 조율 비용 (추진력 -3)",
+    costText: "환율 충격 완화, 기업 신뢰 제고 / 통화 당국과의 거시 정책 조율 비용",
     impact: { presidentTrust: 1, businessTrust: 2, publicApproval: 1, policyMomentum: -3, competitiveness: 1 },
     executeImmediate(engine) {
       // Dampens FX shock volatility
@@ -4729,7 +4729,7 @@ const POLICY_ACTIONS = [
     categoryName: "정부 정책",
     title: "국내 첨단 신기술(K-Tech) 공공기관 우선구매 의무화",
     description: "중앙부처, 지자체, 공공기관의 정보화 및 설비 구축 사업 시 국내 벤처·혁신기업의 전략물자를 최소 30% 이상 우선 구매하도록 강제합니다.",
-    costText: "내수 기반 및 중소기업 혁신 (+3) / 민간 시장 왜곡 비판으로 기업계 신뢰 -2",
+    costText: "내수 기반 및 중소기업 혁신 생태계 강화 / 시장 개입 비판 및 민간 자율성 위축",
     impact: { presidentTrust: 1, businessTrust: -2, publicApproval: 2, policyMomentum: -2, competitiveness: 3 },
     executeImmediate(engine) {
       engine.industryStates.machinery.supportLevel += 0.8;
@@ -4779,7 +4779,7 @@ const POLICY_ACTIONS = [
     categoryName: "기업 관리",
     title: "자동차 부품 협력사 긴급 관세 피해 바우처 및 북미 동반진출 지원",
     description: "미국의 자동차 고율 관세 위협에 직면한 국내 1·2차 차부품 협력사를 위해 3,000억 원 규모의 긴급 유동성 및 북미 물류 거점 바우처를 투입합니다.",
-    costText: "자동차 수출 체력 보강 (+4), 재계 신뢰 +4 / 재정 소진 (추진력 -2)",
+    costText: "자동차 수출 체력 보강, 재계 호응 / 긴급 정책자금 재정 소진",
     impact: { presidentTrust: 1, businessTrust: 4, publicApproval: 2, policyMomentum: -2, competitiveness: 4 },
     executeImmediate(engine) {
       engine.industryStates.automobile.supportLevel += 1.2;
@@ -4791,7 +4791,7 @@ const POLICY_ACTIONS = [
     categoryName: "정부 정책",
     title: "무역위원회 대중 철강 밀어내기 덤핑 조사 및 잠정 상계관세 발동",
     description: "중국산 저가 열연 및 후판의 무차별적 아시아 시장 덤핑에 맞서 무역위원회를 통해 즉각 덤핑 마진 조사 및 25% 잠정 덤핑방지관세를 부과합니다.",
-    costText: "국내 철강 내수가 및 가동률 회복 (+5) / 대중 외교 마찰 (외교신뢰 -4)",
+    costText: "국내 철강 내수가 및 가동률 회복 / 중국 상무부 마찰 및 외교적 긴장",
     impact: { presidentTrust: 2, businessTrust: 5, diplomaticTrust: -4, publicApproval: 3, competitiveness: 3 },
     executeImmediate(engine) {
       engine.industryStates.steel.supportLevel += 1.5;
@@ -4806,7 +4806,7 @@ const POLICY_ACTIONS = [
     categoryName: "기업 관리",
     title: "미 해군 7함대 군수지원 및 함정정비(MRO) 정부합동 지원단 파견",
     description: "거제·울산 조선소의 독보적 건조 능력을 활용하여 미 해군 함정 MRO 정비 계약을 공식 수주하고, 한국은행 BOP 서비스/용역 수출로 계상합니다.",
-    costText: "서비스 수출 매월 +$4억 달러 급증, 한미 동맹 신뢰 +8 / 중국 측 반발",
+    costText: "서비스 수출 급증 및 한미 안보 동맹 결속 / 중국 측의 역내 반발",
     impact: { presidentTrust: 3, diplomaticTrust: 8, businessTrust: 4, competitiveness: 5 },
     executeImmediate(engine) {
       if (engine.servicesStates) {
@@ -4822,7 +4822,7 @@ const POLICY_ACTIONS = [
     categoryName: "기업 관리",
     title: "중소 수출기업 전용 HMM 국적선사 선복 30% 배정 및 해외 물류비 특례 바우처",
     description: "홍해 사태와 글로벌 해운 운임 급등으로 위기에 처한 K-푸드, K-뷰티 중소 수출기업을 위해 컨테이너 선복을 긴급 우선 배정합니다.",
-    costText: "중소 소비재 수출 폭증 (+5), 국민 지지율 +5 / 대기업 선복 조정 마찰",
+    costText: "중소 소비재 수출 급반등, 국민적 체감 성과 / 대기업 선복 조정 마찰",
     impact: { presidentTrust: 2, publicApproval: 5, businessTrust: 1, competitiveness: 4 },
     executeImmediate(engine) {
       if (engine.servicesStates) {
@@ -4837,7 +4837,7 @@ const POLICY_ACTIONS = [
     categoryName: "정부 정책",
     title: "당정 협의: 1조 원 농축산 피해보완 상생기금 및 피해보전 직불금 확정",
     description: "국회 및 기획예산처, 농림축산식품부와 긴급 당정협의회를 열어 1조 원 규모의 검역 개방 피해 지원 기금을 확정, 대미 통상 담판의 배수진을 칩니다.",
-    costText: "대미 농산물 카드 완전 해금 및 농민 반발 원천 차단 / 정치자산 -15 소모",
+    costText: "대미 농산물 카드 완전 해금 및 농민 반발 원천 차단 / 정치자산 소모",
     impact: { presidentTrust: 2, diplomaticTrust: 6, publicApproval: 2, policyMomentum: -2 },
     executeImmediate(engine) {
       if (engine.domesticAgriFundEnacted !== undefined) {
@@ -5776,8 +5776,8 @@ function getPressConferenceQA(monthlyResult, politicsStats = {}, lastNegotiation
   if (bal < 0 || fx >= 1445) {
     return {
       scenarioId: 'fx_deficit_crisis',
-      outlet: '한국경제',
-      reporter: '이현욱 거시금융팀장',
+      outlet: '연합뉴스',
+      reporter: '경제부 기자',
       question: `원·달러 환율이 1,440원을 넘나들고 이달 무역수지가 적자로 돌아섰습니다. 환율 방어와 수출 부양 중 어디에 우선순위를 두시겠습니까?`,
       choices: [
         {
@@ -5785,7 +5785,7 @@ function getPressConferenceQA(monthlyResult, politicsStats = {}, lastNegotiation
           label: '수출 총력전',
           quote: '고환율을 기회 삼아 하반기 공격적인 수출 총력전에 나서겠습니다.',
           deltas: { businessTrust: 4, publicApproval: -3, policyMomentum: 3 },
-          deltaSummary: '기업신뢰 +4 · 국민여론 -3% · 추진력 +3',
+          deltaSummary: '',
           headline: `본부장 "환율 위기를 수출 기회로"…공격적 수출 드라이브 선언`,
           deck: `무역금융 50조 긴급 투입…고환율 물가 부담 속 정면돌파 선택`
         },
@@ -5794,7 +5794,7 @@ function getPressConferenceQA(monthlyResult, politicsStats = {}, lastNegotiation
           label: '거시 수지 방어',
           quote: '핵심 원자재 관세 긴급 인하와 외환 공조로 거시 경제 불확실성을 차단하겠습니다.',
           deltas: { presidentTrust: 4, publicApproval: 3, businessTrust: -2 },
-          deltaSummary: '대통령신임 +4 · 국민여론 +3% · 기업신뢰 -2',
+          deltaSummary: '',
           headline: `통상 당국, 긴급 수지 방어선 가동…"거시 안정 최우선"`,
           deck: `원자재 관세 완화 및 수입 다변화 착수…재계 "수출 활력 대책도 병행해야"`
         },
@@ -5803,7 +5803,7 @@ function getPressConferenceQA(monthlyResult, politicsStats = {}, lastNegotiation
           label: '고부가 체질 개선',
           quote: '단기 환율에 연연하지 않고, 고부가가치 첨단 제품 수출로 체질을 바꾸겠습니다.',
           deltas: { businessTrust: 3, policyMomentum: 4, competitiveness: 3 },
-          deltaSummary: '기업신뢰 +3 · 추진력 +4 · 산업경쟁력 +3',
+          deltaSummary: '',
           headline: `본부장 "단기 환율 연연 안 해…고부가 수출로 체질 개선"`,
           deck: `저가 범용 상품 축소 및 첨단 품목 집중…통상 구조개혁 청사진 제시`
         }
@@ -5824,7 +5824,7 @@ function getPressConferenceQA(monthlyResult, politicsStats = {}, lastNegotiation
           label: '강경 원칙',
           quote: '부당한 일방주의 관세 압박에 한 치도 굴복하지 않겠습니다. WTO 제소와 맞불 관세도 불사합니다.',
           deltas: { publicApproval: 5, diplomaticTrust: -6, businessTrust: -3, policyMomentum: 2 },
-          deltaSummary: '국민여론 +5% · 외교신뢰 -6 · 기업신뢰 -3',
+          deltaSummary: '',
           headline: `본부장 "美 관세 압박에 절대 굴복 없다"…통상 전쟁 불사 천명`,
           deck: `정부서울청사 긴급 회견서 정면승부 선언…워싱턴 마찰·기업 긴장 고조`
         },
@@ -5833,7 +5833,7 @@ function getPressConferenceQA(monthlyResult, politicsStats = {}, lastNegotiation
           label: '실용 타협',
           quote: '미국산 에너지·농산물 구매를 확대해 대미 흑자를 전략적으로 조율하고 관세 폭탄을 피하겠습니다.',
           deltas: { diplomaticTrust: 6, publicApproval: -5, policyMomentum: -2 },
-          deltaSummary: '외교신뢰 +6 · 국민여론 -5% · 추진력 -2',
+          deltaSummary: '',
           headline: `본부장 "美 에너지 대거 구매"…실용 카드로 관세 폭탄 피한다`,
           deck: `알래스카 LNG 등 수입 확대 약정…국내 농가·야권 거센 반발`
         },
@@ -5842,7 +5842,7 @@ function getPressConferenceQA(monthlyResult, politicsStats = {}, lastNegotiation
           label: '기술 초격차',
           quote: '정치적 장벽을 넘는 열쇠는 압도적 기술입니다. AI 반도체·조선 초격차에 사활을 걸겠습니다.',
           deltas: { businessTrust: 6, presidentTrust: 3, competitiveness: 3 },
-          deltaSummary: '기업신뢰 +6 · 대통령신임 +3 · 산업경쟁력 +3',
+          deltaSummary: '',
           headline: `본부장 "정치 흔들려도 기술은 안 흔들린다"…초격차 승부수`,
           deck: `첨단 반도체·조선 MRO에 정책 역량 총동원…"대체 불가 파트너 될 것"`
         }
@@ -5855,7 +5855,7 @@ function getPressConferenceQA(monthlyResult, politicsStats = {}, lastNegotiation
     return {
       scenarioId: 'supply_chain_dilemma',
       outlet: '블룸버그',
-      reporter: '김소희 서울지국장',
+      reporter: '서울지국 통상팀',
       question: `미·중 통상 패권 전쟁의 틈바구니에서 한국 공급망 분열 우려가 커지고 있습니다. 어느 쪽에 무게를 싣고 계십니까?`,
       choices: [
         {
@@ -5863,7 +5863,7 @@ function getPressConferenceQA(monthlyResult, politicsStats = {}, lastNegotiation
           label: '가치 동맹 우선',
           quote: '한미 동맹과 경제 안보를 최우선 가치로 두고 글로벌 공급망 재편에 확고히 동참하겠습니다.',
           deltas: { diplomaticTrust: 4, businessTrust: -3, publicApproval: 2 },
-          deltaSummary: '외교신뢰 +4 · 기업신뢰 -3 · 국민여론 +2%',
+          deltaSummary: '',
           headline: `본부장 "한미 경제동맹 확고 동참"…글로벌 공급망 재편 가속`,
           deck: `대중 수출 비중 축소 불가피…대중 의존 기업들 비상 대책 촉구`
         },
@@ -5872,7 +5872,7 @@ function getPressConferenceQA(monthlyResult, politicsStats = {}, lastNegotiation
           label: '대중 실용 균형',
           quote: '이념보다 국익이 먼저입니다. 대중 실무 통상 대화를 가동해 불필요한 마찰을 차단하겠습니다.',
           deltas: { diplomaticTrust: -3, businessTrust: 4, publicApproval: 2 },
-          deltaSummary: '외교신뢰 -3 · 기업신뢰 +4 · 국민여론 +2%',
+          deltaSummary: '',
           headline: `본부장 "대중 통상 채널 즉각 가동…불필요한 갈등 차단"`,
           deck: `원자재·핵심광물 공급망 실무 협의 제안…워싱턴 기류 예의주시`
         },
@@ -5881,7 +5881,7 @@ function getPressConferenceQA(monthlyResult, politicsStats = {}, lastNegotiation
           label: '소부장 국산 자립',
           quote: '양자택일 압박을 벗어나는 유일한 길은 핵심 소재·부품 국산화와 기술 자립뿐입니다.',
           deltas: { businessTrust: 5, publicApproval: 4, competitiveness: 4 },
-          deltaSummary: '기업신뢰 +5 · 국민여론 +4% · 산업경쟁력 +4',
+          deltaSummary: '',
           headline: `본부장 "소부장 자립만이 살길"…수출 공급망 독립 선언`,
           deck: `핵심 광물·소재 국산화 로드맵 가동…재계 "R&D 세제 지원 대폭 확대 환영"`
         }
@@ -5892,8 +5892,8 @@ function getPressConferenceQA(monthlyResult, politicsStats = {}, lastNegotiation
   // 4. General Steady Growth & Target Achievement
   return {
     scenarioId: 'annual_target_strategy',
-    outlet: '중앙일보',
-    reporter: '정원석 통상전문기자',
+    outlet: '로이터',
+    reporter: '통상전문기자',
     question: `월간 무역흑자가 견조한 흐름을 보이고 있습니다만, 연간 무역 목표 달성을 위한 본부장님의 핵심 카드는 무엇입니까?`,
     choices: [
       {
@@ -5901,7 +5901,7 @@ function getPressConferenceQA(monthlyResult, politicsStats = {}, lastNegotiation
         label: '신시장 영토 확장',
         quote: '미·중 편중에서 벗어나 아세안·인도·중동으로 우리 수출 영토를 전방위 확장하겠습니다.',
         deltas: { publicApproval: 3, businessTrust: 4, policyMomentum: 3 },
-        deltaSummary: '국민여론 +3% · 기업신뢰 +4 · 추진력 +3',
+        deltaSummary: '',
         headline: `본부장 "미·중 쏠림 벗어난다"…글로벌 사우스 신시장 총공세`,
         deck: `아세안·인도·중동과 전방위 경제동반자협정(CEPA) 추진…수출 영토 확장`
       },
@@ -5910,7 +5910,7 @@ function getPressConferenceQA(monthlyResult, politicsStats = {}, lastNegotiation
         label: '초격차 R&D 투자',
         quote: '반도체·모빌리티 R&D 세제 지원을 총동원해 세계 시장에서 절대적 초격차를 굳히겠습니다.',
         deltas: { businessTrust: 6, presidentTrust: 3, competitiveness: 4 },
-        deltaSummary: '기업신뢰 +6 · 대통령신임 +3 · 산업경쟁력 +4',
+        deltaSummary: '',
         headline: `본부장 "R&D 세제 혜택 총동원…기술 절대 우위 굳힌다"`,
         deck: `차세대 반도체·배터리 거점 구축…기업 설비투자 세액공제 확대 건의`
       },
@@ -5919,7 +5919,7 @@ function getPressConferenceQA(monthlyResult, politicsStats = {}, lastNegotiation
         label: '상생·체감형 통상',
         quote: '수출의 온기가 골목상권과 청년 일자리까지 이어지도록 국민 체감형 상생 무역을 실현하겠습니다.',
         deltas: { publicApproval: 6, businessTrust: -2, policyMomentum: 2 },
-        deltaSummary: '국민여론 +6% · 기업신뢰 -2 · 추진력 +2',
+        deltaSummary: '',
         headline: `본부장 "수출 온기, 청년 일자리로"…상생 통상 대전환 선언`,
         deck: `대·중소 상생 수출 컨소시엄 출범…국민 체감형 통상 정책으로 대전환`
       }
@@ -7924,7 +7924,7 @@ class UIManager {
             <div style="background: rgba(34, 197, 94, 0.1); border: 1.5px solid #16a34a; border-radius: 6px; padding: 12px 16px; margin-top: 14px;">
               <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; flex-wrap: wrap; gap: 6px;">
                 <span style="font-size: 11px; font-weight: 800; color: #166534; text-transform: uppercase;">✅ 통상 결단 완료 · ${chapter.urgentCrisis.title}</span>
-                <span style="font-size: 11px; color: #15803d; font-weight: 700;">${chapterCrisisDecision.summary || ''}</span>
+                <span style="font-size: 11px; color: #15803d; font-weight: 700;">결단 확정</span>
               </div>
               <div style="font-size: 13.5px; font-weight: 700; color: #14532d;">
                 "${chapterCrisisDecision.chosenText}"
@@ -7949,11 +7949,8 @@ class UIManager {
               <div style="display: flex; flex-direction: column; gap: 8px;">
                 ${chapter.urgentCrisis.choices.map((c, idx) => `
                   <button class="secondary btn-chapter-crisis-choice" data-choice="${idx}" style="text-align: left; padding: 10px 14px; border: 1.5px solid #e5e7eb; border-radius: 6px; background: #fafaf9; cursor: pointer; transition: all 0.2s ease;">
-                    <div style="font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 3px;">
+                    <div style="font-size: 13.5px; font-weight: 700; color: var(--navy); line-height: 1.5;">
                       선택 ${idx + 1}. ${c.text}
-                    </div>
-                    <div style="font-size: 11px; color: #b45309; font-weight: 600;">
-                      📊 영향: ${c.summary}
                     </div>
                   </button>
                 `).join('')}
@@ -8150,7 +8147,7 @@ class UIManager {
           const idx = Number(btn.getAttribute('data-choice'));
           const res = this.gm.resolveChapterCrisis(idx);
           if (res && res.decision) {
-            this.showToast('통상 결단 확정', `"${res.decision.chosenText}" (${res.decision.summary})`, 'success');
+            this.showToast('통상 결단 확정', `"${res.decision.chosenText}"`, 'success');
           }
           this.render();
         };
@@ -8538,8 +8535,7 @@ class UIManager {
           <div style="display: flex; flex-direction: column; gap: 10px;">
             ${corp.dialogue.options.map((opt, idx) => `
               <button class="secondary btn-corp-opt" data-opt="${idx}" ${this.gm.actionPoints <= 0 ? 'disabled' : ''} style="text-align: left; padding: 12px 14px; border: 1px solid var(--line); line-height: 1.5;">
-                <strong style="color: var(--navy); display: block; margin-bottom: 4px;">지침 ${idx + 1}. ${opt.text}</strong>
-                <span style="font-size: 12px; color: var(--muted);">예상 파급효과: 기업신뢰 ${opt.impact?.businessTrust ? (opt.impact.businessTrust > 0 ? '+' : '') + opt.impact.businessTrust : '0'}pt, 산업 경쟁력 ${opt.impact?.competitiveness ? (opt.impact.competitiveness > 0 ? '+' : '') + opt.impact.competitiveness : '0'}pt</span>
+                <strong style="color: var(--navy); display: block; font-size: 13.5px; line-height: 1.5;">지침 ${idx + 1}. ${opt.text}</strong>
               </button>
             `).join('')}
           </div>
@@ -9119,7 +9115,7 @@ class UIManager {
         </div>
 
         <div style="font-size: 13px; color: var(--muted); margin-bottom: 10px; font-weight: 700;">
-          ⚡ 본부장 공식 입장 선택 (선택 즉시 지표 반영 및 내일 아침 중앙일보 1면 특종 보도):
+          ⚡ 본부장 공식 입장 표명 (익일 조간 1면 머리기사 및 대외 통상 협상력에 직결):
         </div>
 
         <div class="press-choices-list" style="display: flex; flex-direction: column; gap: 10px;">
@@ -9127,15 +9123,12 @@ class UIManager {
             const isSelected = selectedChoice?.id === c.id;
             return `
               <div class="press-choice-card ${isSelected ? 'selected' : ''}" data-idx="${idx}" style="background: ${isSelected ? 'rgba(37, 107, 79, 0.06)' : 'var(--paper-card)'}; border: ${isSelected ? '2px solid var(--green)' : '1px solid var(--line)'}; border-radius: 6px; padding: 12px 14px; cursor: pointer; transition: all 0.2s ease;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; flex-wrap: wrap; gap: 6px;">
-                  <span class="status-pill" style="background: ${isSelected ? 'var(--green)' : 'var(--gold)'}; color: #fff; font-size: 11px; font-weight: 800;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 6px;">
+                  <span class="status-pill" style="background: ${isSelected ? 'var(--green)' : 'var(--navy)'}; color: #fff; font-size: 11px; font-weight: 800;">
                     ${idx + 1}. ${c.label} ${isSelected ? '✓ 발표 완료' : ''}
                   </span>
-                  <span style="font-size: 12px; font-weight: 700; color: ${isSelected ? 'var(--green)' : 'var(--navy)'};">
-                    ${c.deltaSummary}
-                  </span>
                 </div>
-                <p style="font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 4px; line-height: 1.5;">
+                <p style="font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 6px; line-height: 1.5;">
                   "${c.quote}"
                 </p>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
@@ -9152,7 +9145,7 @@ class UIManager {
 
       <div style="margin: 20px 0; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
         <button class="primary" id="btn-view-newspaper" style="font-size: 16px; padding: 14px 34px; box-shadow: 0 4px 12px rgba(177,145,88,0.3);">
-          📰 기자회견 보도 중앙일보 1면 보기 →
+          📰 기자회견 보도 조간 1면 보기 →
         </button>
       </div>
     `;

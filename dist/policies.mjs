@@ -9,7 +9,7 @@ export const POLICY_ACTIONS = [
     categoryName: "기업 관리",
     title: "10대 그룹 총수 긴급 수출전략 간담회 소집",
     description: "삼성, 현대차, SK, 포스코, 한화 등 주요 수출 대기업 총수들을 직접 불러 상반기 수출 목표 조기 달성과 공급망 비상 대책을 협의합니다.",
-    costText: "기업계 신뢰 +2, 정책 추진력 +3 / 대기업 밀실 회동 비판으로 국민 지지율 -2",
+    costText: "기업계 신뢰 제고, 정책 추진력 확보 / 대기업 밀실 회동 비판으로 국민 여론 부담",
     impact: { presidentTrust: 1, businessTrust: 2, publicApproval: -2, policyMomentum: 3, competitiveness: 2 },
     executeImmediate(engine) {
       const mult = engine.origin === 'industry_expert' ? 1.4 : (engine.origin === 'bureaucrat' ? 0.8 : 1.0);
@@ -24,7 +24,7 @@ export const POLICY_ACTIONS = [
     categoryName: "기업 관리",
     title: "수출 실적 부진 기업에 대한 고강도 비상 생산 압박",
     description: "공장 가동률이 저조한 일부 대기업 경영진을 압박하여 재고 소진과 해외 덤핑 방어, 24시간 특별 교대 근무 확대를 강하게 독려합니다.",
-    costText: "단기 수출 촉진, 가동률 상승 / 기업계 신뢰 대폭 하락 (-14), 반복 시 공장 해외 이전 트리거",
+    costText: "단기 수출 촉진, 가동률 상승 / 기업계 신뢰 대폭 하락 및 생산기지 해외 이전 리스크",
     impact: { presidentTrust: 2, businessTrust: -14, publicApproval: -3, policyMomentum: 2, competitiveness: -1 },
     executeImmediate(engine) {
       for (const ind of Object.values(engine.industryStates)) {
@@ -41,7 +41,7 @@ export const POLICY_ACTIONS = [
     categoryName: "기업 관리",
     title: "대·중소기업 수출 상생 공급망 공동 전선 구축",
     description: "대기업의 해외 판매망과 글로벌 물류 네트워크를 중소 협력업체 및 K-소비재 기업에 전면 개방하는 상생 협약을 체결합니다.",
-    costText: "소비재·부품 수출 경쟁력 +5, 국민 지지율 +4 / 대기업 부담 증가로 기업 신뢰 -2",
+    costText: "소비재·부품 수출 경쟁력 강화, 상생 지지 / 대기업 부담 증가로 기업 신뢰 일부 저하",
     impact: { presidentTrust: 2, businessTrust: -2, publicApproval: 4, policyMomentum: 2, competitiveness: 4 },
     executeImmediate(engine) {
       engine.industryStates.consumer.supportLevel += 1.2;
@@ -54,7 +54,7 @@ export const POLICY_ACTIONS = [
     categoryName: "기업 관리",
     title: "국내 첨단 전략산업 생산설비 신·증설 보조금 매칭",
     description: "반도체, 배터리, 바이오 기업의 국내 최첨단 생산 라인 증설에 대해 정부 보조금과 세제 인센티브를 일대일로 매칭합니다.",
-    costText: "3개월 뒤 생산능력(Capacity) +6% 지연 반영 / 기획예산처 재정 마찰 (추진력 -4), 대기업 특혜 논란 (지지율 -4)",
+    costText: "첨단 팹 생산능력(Capacity) 중기 확충 / 재정 당국과의 마찰 및 대기업 특혜 논란",
     delayMonths: 3,
     impact: { presidentTrust: 2, businessTrust: 5, publicApproval: -4, policyMomentum: -4, competitiveness: 6 },
     executeDelayed(engine) {
@@ -71,7 +71,7 @@ export const POLICY_ACTIONS = [
     categoryName: "정부 정책",
     title: "무역금융 50조 원 긴급 공급 및 환변동 보험 확대",
     description: "무역보험공사, 수출입은행을 통해 중소·중견 수출기업에 특별 저금리 제작금융 및 환차손 100% 보장 보험을 즉각 투입합니다.",
-    costText: "전 산업 수출 탄력 (+1.5%), 기업계 신뢰 +4 / 재정 건전성 우려로 정책 추진력 -4",
+    costText: "전 산업 수출 금융 탄력성 제고, 기업계 호응 / 재정 건전성 우려 및 정책 추진력 소모",
     impact: { presidentTrust: 2, businessTrust: 4, publicApproval: 1, policyMomentum: -4, competitiveness: 4 },
     executeImmediate(engine) {
       for (const ind of Object.values(engine.industryStates)) {
@@ -85,7 +85,7 @@ export const POLICY_ACTIONS = [
     categoryName: "정부 정책",
     title: "해외 물류비 특별 바우처 및 국적선사 선복 우선 배정",
     description: "홍해 사태 및 해운 운임 급등으로 고통받는 중소 수출기업들을 위해 HMM 등 국적 컨테이너선 선복 20%를 특별 배정하고 운임을 지원합니다.",
-    costText: "중소기업·소비재 물류 애로 해소, 기업 신뢰 +3 / 재정 소모로 정책 추진력 -2",
+    costText: "중소기업·소비재 물류 애로 해소, 수출선 확보 / 정부 물류 보조금 재정 소모",
     impact: { presidentTrust: 1, businessTrust: 3, publicApproval: 2, policyMomentum: -2, competitiveness: 2 },
     executeImmediate(engine) {
       engine.industryStates.consumer.supportLevel += 1.0;
@@ -99,7 +99,7 @@ export const POLICY_ACTIONS = [
     categoryName: "정부 정책",
     title: "첨단 전략기술 핵심 연구인력 소득세 50% 감면",
     description: "반도체, 배터리, 바이오 분야 석·박사급 글로벌 인재 유치와 해외 유출 방지를 위해 파격적인 소득세 감면과 정주 여건을 제공합니다.",
-    costText: "산업 초격차 경쟁력 +5 / 고소득 연구원 특혜 논란으로 국민 지지율 -3",
+    costText: "산업 초격차 원천기술 경쟁력 확보 / 고급 인력 편중 및 특혜성 시비 부담",
     impact: { presidentTrust: 1, businessTrust: 3, publicApproval: -3, policyMomentum: 1, competitiveness: 5 },
     executeImmediate(engine) {
       engine.industryStates.semiconductor.longTermCompetitiveness += 3;
@@ -113,7 +113,7 @@ export const POLICY_ACTIONS = [
     categoryName: "정부 정책",
     title: "환율 급변동 대응 외환시장 안정화 및 기업 결제 지원",
     description: "재정경제부, 한국은행과 협력하여 환율 변동성 완화 메시지를 발신하고 원자재 수입 결제용 긴급 외화 유동성을 공급합니다.",
-    costText: "환율 충격 완화, 기업 신뢰 +2 / 통화 당국과의 조율 비용 (추진력 -3)",
+    costText: "환율 충격 완화, 기업 신뢰 제고 / 통화 당국과의 거시 정책 조율 비용",
     impact: { presidentTrust: 1, businessTrust: 2, publicApproval: 1, policyMomentum: -3, competitiveness: 1 },
     executeImmediate(engine) {
       // Dampens FX shock volatility
@@ -129,7 +129,7 @@ export const POLICY_ACTIONS = [
     categoryName: "정부 정책",
     title: "국내 첨단 신기술(K-Tech) 공공기관 우선구매 의무화",
     description: "중앙부처, 지자체, 공공기관의 정보화 및 설비 구축 사업 시 국내 벤처·혁신기업의 전략물자를 최소 30% 이상 우선 구매하도록 강제합니다.",
-    costText: "내수 기반 및 중소기업 혁신 (+3) / 민간 시장 왜곡 비판으로 기업계 신뢰 -2",
+    costText: "내수 기반 및 중소기업 혁신 생태계 강화 / 시장 개입 비판 및 민간 자율성 위축",
     impact: { presidentTrust: 1, businessTrust: -2, publicApproval: 2, policyMomentum: -2, competitiveness: 3 },
     executeImmediate(engine) {
       engine.industryStates.machinery.supportLevel += 0.8;
@@ -179,7 +179,7 @@ export const POLICY_ACTIONS = [
     categoryName: "기업 관리",
     title: "자동차 부품 협력사 긴급 관세 피해 바우처 및 북미 동반진출 지원",
     description: "미국의 자동차 고율 관세 위협에 직면한 국내 1·2차 차부품 협력사를 위해 3,000억 원 규모의 긴급 유동성 및 북미 물류 거점 바우처를 투입합니다.",
-    costText: "자동차 수출 체력 보강 (+4), 재계 신뢰 +4 / 재정 소진 (추진력 -2)",
+    costText: "자동차 수출 체력 보강, 재계 호응 / 긴급 정책자금 재정 소진",
     impact: { presidentTrust: 1, businessTrust: 4, publicApproval: 2, policyMomentum: -2, competitiveness: 4 },
     executeImmediate(engine) {
       engine.industryStates.automobile.supportLevel += 1.2;
@@ -191,7 +191,7 @@ export const POLICY_ACTIONS = [
     categoryName: "정부 정책",
     title: "무역위원회 대중 철강 밀어내기 덤핑 조사 및 잠정 상계관세 발동",
     description: "중국산 저가 열연 및 후판의 무차별적 아시아 시장 덤핑에 맞서 무역위원회를 통해 즉각 덤핑 마진 조사 및 25% 잠정 덤핑방지관세를 부과합니다.",
-    costText: "국내 철강 내수가 및 가동률 회복 (+5) / 대중 외교 마찰 (외교신뢰 -4)",
+    costText: "국내 철강 내수가 및 가동률 회복 / 중국 상무부 마찰 및 외교적 긴장",
     impact: { presidentTrust: 2, businessTrust: 5, diplomaticTrust: -4, publicApproval: 3, competitiveness: 3 },
     executeImmediate(engine) {
       engine.industryStates.steel.supportLevel += 1.5;
@@ -206,7 +206,7 @@ export const POLICY_ACTIONS = [
     categoryName: "기업 관리",
     title: "미 해군 7함대 군수지원 및 함정정비(MRO) 정부합동 지원단 파견",
     description: "거제·울산 조선소의 독보적 건조 능력을 활용하여 미 해군 함정 MRO 정비 계약을 공식 수주하고, 한국은행 BOP 서비스/용역 수출로 계상합니다.",
-    costText: "서비스 수출 매월 +$4억 달러 급증, 한미 동맹 신뢰 +8 / 중국 측 반발",
+    costText: "서비스 수출 급증 및 한미 안보 동맹 결속 / 중국 측의 역내 반발",
     impact: { presidentTrust: 3, diplomaticTrust: 8, businessTrust: 4, competitiveness: 5 },
     executeImmediate(engine) {
       if (engine.servicesStates) {
@@ -222,7 +222,7 @@ export const POLICY_ACTIONS = [
     categoryName: "기업 관리",
     title: "중소 수출기업 전용 HMM 국적선사 선복 30% 배정 및 해외 물류비 특례 바우처",
     description: "홍해 사태와 글로벌 해운 운임 급등으로 위기에 처한 K-푸드, K-뷰티 중소 수출기업을 위해 컨테이너 선복을 긴급 우선 배정합니다.",
-    costText: "중소 소비재 수출 폭증 (+5), 국민 지지율 +5 / 대기업 선복 조정 마찰",
+    costText: "중소 소비재 수출 급반등, 국민적 체감 성과 / 대기업 선복 조정 마찰",
     impact: { presidentTrust: 2, publicApproval: 5, businessTrust: 1, competitiveness: 4 },
     executeImmediate(engine) {
       if (engine.servicesStates) {
@@ -237,7 +237,7 @@ export const POLICY_ACTIONS = [
     categoryName: "정부 정책",
     title: "당정 협의: 1조 원 농축산 피해보완 상생기금 및 피해보전 직불금 확정",
     description: "국회 및 기획예산처, 농림축산식품부와 긴급 당정협의회를 열어 1조 원 규모의 검역 개방 피해 지원 기금을 확정, 대미 통상 담판의 배수진을 칩니다.",
-    costText: "대미 농산물 카드 완전 해금 및 농민 반발 원천 차단 / 정치자산 -15 소모",
+    costText: "대미 농산물 카드 완전 해금 및 농민 반발 원천 차단 / 정치자산 소모",
     impact: { presidentTrust: 2, diplomaticTrust: 6, publicApproval: 2, policyMomentum: -2 },
     executeImmediate(engine) {
       if (engine.domesticAgriFundEnacted !== undefined) {

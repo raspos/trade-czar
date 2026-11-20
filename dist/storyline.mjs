@@ -15,12 +15,12 @@ export const MONTHLY_CHAPTERS = {
         {
           text: "워싱턴에 고위급 특사단을 급파하여 '100일 관세 유예'를 우선 공식 확보한다.",
           impact: { diplomaticTrust: 6, presidentTrust: 3, businessTrust: 4 },
-          summary: "외교신뢰 +6 · 대통령신임 +3 · 기업신뢰 +4"
+          summary: "대미 관세 유예 협상 개시 및 민관 원팀 대응"
         },
         {
           text: "일방적 보호무역에 유감을 표명하고 WTO 다자 규범을 준수하라는 원칙적 성명을 발표한다.",
           impact: { publicApproval: 6, diplomaticTrust: -6, businessTrust: -3 },
-          summary: "국민여론 +6% · 외교신뢰 -6 · 기업신뢰 -3"
+          summary: "원칙적 유감 표명 및 다자 공조 탐색"
         }
       ]
     },
@@ -33,7 +33,7 @@ export const MONTHLY_CHAPTERS = {
       category: "government",
       categoryName: "이달의 긴급 특별 결재",
       title: "[1월 특별 결재] 워싱턴 고위급 통상 사절단 급파 및 100일 관세 유예 협정",
-      costText: "대미 외교신뢰 +10, 미국 관세 발효 공식 3개월 유예 / 협상 추진력 -2",
+      costText: "미국 관세 발효 공식 3개월 유예 및 한미 채널 복원 / 대외 교섭 부담",
       impact: { diplomaticTrust: 10, presidentTrust: 4, policyMomentum: -2 },
       executeImmediate(engine) {
         if (engine.industryStates.automobile) {
@@ -72,12 +72,12 @@ export const MONTHLY_CHAPTERS = {
         {
           text: "용인·평택 메가 클러스터 송전망을 전폭 승인해 차세대 HBM 국내 생산능력을 극대화한다.",
           impact: { businessTrust: 8, competitiveness: 6, policyMomentum: -2 },
-          summary: "기업신뢰 +8 · 산업경쟁력 +6 · 추진력 -2"
+          summary: "국내 팹 긴급 패스트트랙 및 인허가 즉시 완화"
         },
         {
           text: "미 상무부에 '검증된 최종 사용자(VEU)' 유예를 강력히 요구해 중국 공장 가동을 사수한다.",
           impact: { diplomaticTrust: -4, businessTrust: 5, competitiveness: 3 },
-          summary: "외교신뢰 -4 · 기업신뢰 +5 · 산업경쟁력 +3"
+          summary: "워싱턴 통상팀 급파 및 대미 관세 유예 조항 개정 교섭"
         }
       ]
     },
@@ -90,7 +90,7 @@ export const MONTHLY_CHAPTERS = {
       category: "government",
       categoryName: "이달의 긴급 특별 결재",
       title: "[2월 특별 결재] 용인 반도체 메가 클러스터 국가 송전망 직권 패스트트랙 인허가",
-      costText: "반도체 생산능력(Capacity) +6% 즉시 상승 / 기획예산처 마찰 (추진력 -3)",
+      costText: "반도체 생산능력(Capacity) 대폭 확충 / 기획예산처 및 지자체 마찰",
       impact: { businessTrust: 8, competitiveness: 6, policyMomentum: -3 },
       executeImmediate(engine) {
         if (engine.industryStates.semiconductor) {
@@ -130,12 +130,12 @@ export const MONTHLY_CHAPTERS = {
         {
           text: "국가 비축 흑연을 즉시 방출하고 호주·인도네시아 대체 공급선 긴급 바우처를 투입한다.",
           impact: { businessTrust: 7, competitiveness: 5, policyMomentum: -3 },
-          summary: "기업신뢰 +7 · 산업경쟁력 +5 · 추진력 -3"
+          summary: "국가 비축 원자재 긴급 방출 및 수입선 다변화"
         },
         {
           text: "베이징과 고위급 핫라인을 열어 한국 기업에 대한 특별 통관 승인을 교섭한다.",
           impact: { diplomaticTrust: 6, businessTrust: 4, publicApproval: -2 },
-          summary: "외교신뢰 +6 · 기업신뢰 +4 · 여론 -2%"
+          summary: "베이징 고위급 핫라인 가동 및 특별 통관 교섭"
         }
       ]
     },
@@ -148,7 +148,7 @@ export const MONTHLY_CHAPTERS = {
       category: "government",
       categoryName: "이달의 긴급 특별 결재",
       title: "[3월 특별 결재] 국가 비축 핵심광물 60일분 비상 방출 및 대체 공급선 관세 면제",
-      costText: "배터리 셧다운 위기 차단, 가동률 정상화 / 비축 예산 소모 (추진력 -3)",
+      costText: "배터리 셧다운 위기 차단, 공장 가동률 정상화 / 정부 비축 자원 소모",
       impact: { businessTrust: 7, competitiveness: 5, policyMomentum: -3 },
       executeImmediate(engine) {
         if (engine.industryStates.battery) {
@@ -188,12 +188,12 @@ export const MONTHLY_CHAPTERS = {
         {
           text: "미국산 LNG 100억 달러 장기구매를 확약하고 자동차 관세를 2.5%로 최종 방어한다.",
           impact: { diplomaticTrust: 10, businessTrust: 7, publicApproval: -3, policyMomentum: -2 },
-          summary: "외교신뢰 +10 · 기업신뢰 +7 · 여론 -3% · 추진력 -2"
+          summary: "대미 에너지 구매 확대 및 자동차 관세 방어"
         },
         {
           text: "무리한 에너지 강매 요구를 단호히 거부하고 자동차 관세 분쟁 WTO 맞제소를 불사한다.",
           impact: { publicApproval: 8, diplomaticTrust: -10, businessTrust: -8 },
-          summary: "국민여론 +8% · 외교신뢰 -10 · 기업신뢰 -8"
+          summary: "강경 원칙 고수 및 다자 제소 절차 착수"
         }
       ]
     },
@@ -246,12 +246,12 @@ export const MONTHLY_CHAPTERS = {
         {
           text: "농어촌 상생 특별 피해 보전 기금 3조 원을 즉시 편성해 농가 피해를 전액 보전한다.",
           impact: { publicApproval: 8, presidentTrust: 4, policyMomentum: -5 },
-          summary: "국민여론 +8% · 대통령신임 +4 · 추진력 -5"
+          summary: "국회 통상 비상대책위 수용 및 소통 강화"
         },
         {
           text: "'국민 경제 전체를 위한 불가피한 결단'임을 호소하며 대국민 담화로 정면 돌파한다.",
           impact: { policyMomentum: 5, publicApproval: -6, presidentTrust: -3 },
-          summary: "추진력 +5 · 국민여론 -6% · 대통령신임 -3"
+          summary: "행정부 전권 추진 및 국정 흔들림 차단"
         }
       ]
     },
@@ -264,7 +264,7 @@ export const MONTHLY_CHAPTERS = {
       category: "government",
       categoryName: "이달의 긴급 특별 결재",
       title: "[5월 특별 결재] 농어촌 상생 발전 특별 피해 보전 기금 3조 원 긴급 편성",
-      costText: "광화문 시위 해산 및 국회 탄핵안 철회 / 막대한 재정 소모로 정책 추진력 -4",
+      costText: "광화문 시위 해산 및 국회 탄핵안 철회 / 대규모 긴급 예산 소모",
       impact: { publicApproval: 9, presidentTrust: 5, policyMomentum: -4 },
       executeImmediate(engine) {
         if (engine.industryStates.consumer) {
@@ -303,12 +303,12 @@ export const MONTHLY_CHAPTERS = {
         {
           text: "중국산 덤핑 철강에 즉각 28% 잠정 반덤핑 관세를 때려 국내 고로를 방어한다.",
           impact: { businessTrust: 7, competitiveness: 5, diplomaticTrust: -4 },
-          summary: "기업신뢰 +7 · 산업경쟁력 +5 · 외교신뢰 -4"
+          summary: "대미 파운드리 초격차 협력 체계 공고화"
         },
         {
           text: "브뤼셀로 날아가 한국의 K-ETS 배출권 비용을 100% 공제받는 탄소 동등성 협약을 맺는다.",
           impact: { diplomaticTrust: 8, businessTrust: 6, competitiveness: 4 },
-          summary: "외교신뢰 +8 · 기업신뢰 +6 · 산업경쟁력 +4"
+          summary: "대중 공급망 실무 채널 가동 및 균형 외교"
         }
       ]
     },
@@ -361,12 +361,12 @@ export const MONTHLY_CHAPTERS = {
         {
           text: "HMM 국적 컨테이너선 선복 25%를 중소기업에 강제 배정하고 물류 바우처를 투입한다.",
           impact: { publicApproval: 8, businessTrust: 5, policyMomentum: -2 },
-          summary: "국민여론 +8% · 기업신뢰 +5 · 추진력 -2"
+          summary: "대중 수출입 통제 검토 및 경제안보 강화"
         },
         {
           text: "항공 화물 전세기를 즉시 띄워 유통기한이 임박한 K-푸드와 긴급 부품을 공수한다.",
           impact: { competitiveness: 6, businessTrust: 4, policyMomentum: -3 },
-          summary: "산업경쟁력 +6 · 기업신뢰 +4 · 추진력 -3"
+          summary: "국내 소부장 자립화 긴급 예산 투입"
         }
       ]
     },
@@ -419,12 +419,12 @@ export const MONTHLY_CHAPTERS = {
         {
           text: "필수 원자재 무관세 할당관세를 전면 확대해 수입 물가를 잡고 수지 방어선을 친다.",
           impact: { presidentTrust: 6, publicApproval: 5, businessTrust: 3 },
-          summary: "대통령신임 +6 · 국민여론 +5% · 기업신뢰 +3"
+          summary: "청와대·내각 긴급 경제안보회의 소집"
         },
         {
           text: "고환율 가격경쟁력을 지렛대 삼아 수출 드라이브를 걸고 시장 점유율 확대로 맞선다.",
           impact: { businessTrust: 6, diplomaticTrust: -6, policyMomentum: 3 },
-          summary: "기업신뢰 +6 · 외교신뢰 -6 · 추진력 +3"
+          summary: "민관 긴급 점검회의 및 현장 대책 마련"
         }
       ]
     },
@@ -476,12 +476,12 @@ export const MONTHLY_CHAPTERS = {
         {
           text: "선수금환급보증(RG) 5조 원 특례를 즉시 승인하고 특수선 전용 도크 보안을 직권 허가한다.",
           impact: { businessTrust: 8, diplomaticTrust: 7, competitiveness: 6 },
-          summary: "기업신뢰 +8 · 외교신뢰 +7 · 산업경쟁력 +6"
+          summary: "동남아·인도 신흥 거점 진출 총력 지원"
         },
         {
           text: "미 해군과의 장기 파트너십을 지렛대 삼아 철강·자동차 관세 추가 인하를 압박한다.",
           impact: { diplomaticTrust: 5, businessTrust: 6, policyMomentum: 4 },
-          summary: "외교신뢰 +5 · 기업신뢰 +6 · 추진력 +4"
+          summary: "유럽·중동 시장 집중 및 수출선 다변화"
         }
       ]
     },
@@ -534,12 +534,12 @@ export const MONTHLY_CHAPTERS = {
         {
           text: "한·인도 CEPA 개정 및 한·아세안 FTA 업그레이드를 즉시 패스트트랙 비준한다.",
           impact: { competitiveness: 8, businessTrust: 7, diplomaticTrust: 6 },
-          summary: "산업경쟁력 +8 · 기업신뢰 +7 · 외교신뢰 +6"
+          summary: "차세대 반도체 R&D 세제 혜택 총동원"
         },
         {
           text: "원전·방산·K-소비재 패키지 수주 사절단을 직접 이끌고 중동·동남아를 순방한다.",
           impact: { publicApproval: 7, presidentTrust: 6, policyMomentum: 4 },
-          summary: "국민여론 +7% · 대통령신임 +6 · 추진력 +4"
+          summary: "대국민 통상 성과 설명회 및 상생 강화"
         }
       ]
     },
@@ -591,12 +591,12 @@ export const MONTHLY_CHAPTERS = {
         {
           text: "1년간의 에너지 구매와 50조 대미 투자를 묶어 '보편관세 영구 면제'에 당당히 서명한다.",
           impact: { diplomaticTrust: 15, businessTrust: 12, presidentTrust: 10, publicApproval: 6 },
-          summary: "외교신뢰 +15 · 기업신뢰 +12 · 대통령신임 +10 · 여론 +6%"
+          summary: "연간 목표 달성을 위한 막판 수출 밀어내기 총력전"
         },
         {
           text: "미국의 일방적 기술 안보 독소조항을 끝까지 거부하고 주권적 타협안을 고수한다.",
           impact: { publicApproval: 10, policyMomentum: 6, diplomaticTrust: -8 },
-          summary: "국민여론 +10% · 추진력 +6 · 외교신뢰 -8"
+          summary: "질적 체질 개선 및 무역 구조 개혁 선언"
         }
       ]
     },
@@ -649,12 +649,12 @@ export const MONTHLY_CHAPTERS = {
         {
           text: "대국민 담화문을 발표하고 지난 1년간 피땀 흘려 경제를 지켜낸 기업과 국민에게 감사한다.",
           impact: { publicApproval: 8, presidentTrust: 8, businessTrust: 8 },
-          summary: "국민여론 +8% · 대통령신임 +8 · 기업신뢰 +8"
+          summary: "초격차 수출 강국 청사진 발표 및 대국민 보고"
         },
         {
           text: "차기 정권을 위해 10년 대계의 '국가 신통상 안보 백서'를 국무회의에 헌정한다.",
           impact: { policyMomentum: 10, competitiveness: 8, presidentTrust: 6 },
-          summary: "추진력 +10 · 산업경쟁력 +8 · 대통령신임 +6"
+          summary: "차기 연도 무역 드라이브 로드맵 공식 확정"
         }
       ]
     },

@@ -828,7 +828,7 @@ class UIManager {
             <div style="background: rgba(34, 197, 94, 0.1); border: 1.5px solid #16a34a; border-radius: 6px; padding: 12px 16px; margin-top: 14px;">
               <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; flex-wrap: wrap; gap: 6px;">
                 <span style="font-size: 11px; font-weight: 800; color: #166534; text-transform: uppercase;">✅ 통상 결단 완료 · ${chapter.urgentCrisis.title}</span>
-                <span style="font-size: 11px; color: #15803d; font-weight: 700;">${chapterCrisisDecision.summary || ''}</span>
+                <span style="font-size: 11px; color: #15803d; font-weight: 700;">결단 확정</span>
               </div>
               <div style="font-size: 13.5px; font-weight: 700; color: #14532d;">
                 "${chapterCrisisDecision.chosenText}"
@@ -853,11 +853,8 @@ class UIManager {
               <div style="display: flex; flex-direction: column; gap: 8px;">
                 ${chapter.urgentCrisis.choices.map((c, idx) => `
                   <button class="secondary btn-chapter-crisis-choice" data-choice="${idx}" style="text-align: left; padding: 10px 14px; border: 1.5px solid #e5e7eb; border-radius: 6px; background: #fafaf9; cursor: pointer; transition: all 0.2s ease;">
-                    <div style="font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 3px;">
+                    <div style="font-size: 13.5px; font-weight: 700; color: var(--navy); line-height: 1.5;">
                       선택 ${idx + 1}. ${c.text}
-                    </div>
-                    <div style="font-size: 11px; color: #b45309; font-weight: 600;">
-                      📊 영향: ${c.summary}
                     </div>
                   </button>
                 `).join('')}
@@ -1054,7 +1051,7 @@ class UIManager {
           const idx = Number(btn.getAttribute('data-choice'));
           const res = this.gm.resolveChapterCrisis(idx);
           if (res && res.decision) {
-            this.showToast('통상 결단 확정', `"${res.decision.chosenText}" (${res.decision.summary})`, 'success');
+            this.showToast('통상 결단 확정', `"${res.decision.chosenText}"`, 'success');
           }
           this.render();
         };
@@ -1442,8 +1439,7 @@ class UIManager {
           <div style="display: flex; flex-direction: column; gap: 10px;">
             ${corp.dialogue.options.map((opt, idx) => `
               <button class="secondary btn-corp-opt" data-opt="${idx}" ${this.gm.actionPoints <= 0 ? 'disabled' : ''} style="text-align: left; padding: 12px 14px; border: 1px solid var(--line); line-height: 1.5;">
-                <strong style="color: var(--navy); display: block; margin-bottom: 4px;">지침 ${idx + 1}. ${opt.text}</strong>
-                <span style="font-size: 12px; color: var(--muted);">예상 파급효과: 기업신뢰 ${opt.impact?.businessTrust ? (opt.impact.businessTrust > 0 ? '+' : '') + opt.impact.businessTrust : '0'}pt, 산업 경쟁력 ${opt.impact?.competitiveness ? (opt.impact.competitiveness > 0 ? '+' : '') + opt.impact.competitiveness : '0'}pt</span>
+                <strong style="color: var(--navy); display: block; font-size: 13.5px; line-height: 1.5;">지침 ${idx + 1}. ${opt.text}</strong>
               </button>
             `).join('')}
           </div>
@@ -2023,7 +2019,7 @@ class UIManager {
         </div>
 
         <div style="font-size: 13px; color: var(--muted); margin-bottom: 10px; font-weight: 700;">
-          ⚡ 본부장 공식 입장 선택 (선택 즉시 지표 반영 및 내일 아침 중앙일보 1면 특종 보도):
+          ⚡ 본부장 공식 입장 표명 (익일 조간 1면 머리기사 및 대외 통상 협상력에 직결):
         </div>
 
         <div class="press-choices-list" style="display: flex; flex-direction: column; gap: 10px;">
@@ -2031,15 +2027,12 @@ class UIManager {
             const isSelected = selectedChoice?.id === c.id;
             return `
               <div class="press-choice-card ${isSelected ? 'selected' : ''}" data-idx="${idx}" style="background: ${isSelected ? 'rgba(37, 107, 79, 0.06)' : 'var(--paper-card)'}; border: ${isSelected ? '2px solid var(--green)' : '1px solid var(--line)'}; border-radius: 6px; padding: 12px 14px; cursor: pointer; transition: all 0.2s ease;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; flex-wrap: wrap; gap: 6px;">
-                  <span class="status-pill" style="background: ${isSelected ? 'var(--green)' : 'var(--gold)'}; color: #fff; font-size: 11px; font-weight: 800;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 6px;">
+                  <span class="status-pill" style="background: ${isSelected ? 'var(--green)' : 'var(--navy)'}; color: #fff; font-size: 11px; font-weight: 800;">
                     ${idx + 1}. ${c.label} ${isSelected ? '✓ 발표 완료' : ''}
                   </span>
-                  <span style="font-size: 12px; font-weight: 700; color: ${isSelected ? 'var(--green)' : 'var(--navy)'};">
-                    ${c.deltaSummary}
-                  </span>
                 </div>
-                <p style="font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 4px; line-height: 1.5;">
+                <p style="font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 6px; line-height: 1.5;">
                   "${c.quote}"
                 </p>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
@@ -2056,7 +2049,7 @@ class UIManager {
 
       <div style="margin: 20px 0; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
         <button class="primary" id="btn-view-newspaper" style="font-size: 16px; padding: 14px 34px; box-shadow: 0 4px 12px rgba(177,145,88,0.3);">
-          📰 기자회견 보도 중앙일보 1면 보기 →
+          📰 기자회견 보도 조간 1면 보기 →
         </button>
       </div>
     `;
