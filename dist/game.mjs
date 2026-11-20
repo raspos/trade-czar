@@ -24,7 +24,8 @@ export class GameManager {
     this.prng = null;
 
     this.currentMonth = 1;
-    this.actionPoints = 3;
+    this.maxActionPoints = 5;
+    this.actionPoints = 5;
     this.usedPoliciesThisMonth = [];
     this.activeEvent = null;
     this.activeNegotiation = null;
@@ -75,7 +76,8 @@ export class GameManager {
     this.doctrine = DOCTRINES[0];
 
     this.currentMonth = 1;
-    this.actionPoints = 3;
+    this.maxActionPoints = 5;
+    this.actionPoints = 5;
     this.usedPoliciesThisMonth = [];
     this.firstTurnBriefingDismissed = false;
     this.lastActionResult = null;
@@ -133,7 +135,8 @@ export class GameManager {
   }
 
   prepareMonth() {
-    this.actionPoints = 3;
+    this.maxActionPoints = 5;
+    this.actionPoints = 5;
     this.usedPoliciesThisMonth = [];
     this.lastNegotiationAgreement = null;
 
@@ -396,6 +399,7 @@ export class GameManager {
       prngState: this.prng ? this.prng.getState() : null,
       currentMonth: this.currentMonth,
       actionPoints: this.actionPoints,
+      maxActionPoints: this.maxActionPoints || 5,
       usedPoliciesThisMonth: this.usedPoliciesThisMonth,
       firstTurnBriefingDismissed: this.firstTurnBriefingDismissed || false,
       activeEvent: this.activeEvent,
@@ -441,7 +445,8 @@ export class GameManager {
     if (saved.prngState) this.prng.setState(saved.prngState);
 
     this.currentMonth = saved.currentMonth;
-    this.actionPoints = saved.actionPoints;
+    this.maxActionPoints = saved.maxActionPoints || 5;
+    this.actionPoints = saved.actionPoints !== undefined ? saved.actionPoints : this.maxActionPoints;
     this.usedPoliciesThisMonth = saved.usedPoliciesThisMonth || [];
     this.firstTurnBriefingDismissed = saved.firstTurnBriefingDismissed || false;
     this.lastActionResult = null;
