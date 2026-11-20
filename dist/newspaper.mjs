@@ -29,10 +29,14 @@ export class NewspaperEngine {
     let deck = "";
     let body = [];
 
-    const { corporateAction, proactiveThreat, twoLevelNote, doctrine } = extraContext;
+    const { corporateAction, proactiveThreat, twoLevelNote, doctrine, pressStatement } = extraContext;
 
-    // Narrative Prioritization
-    if (corporateAction && corporateAction.actionKey === 'hyundai_georgia_shift') {
+    // Narrative Prioritization (Press Statement gets top front page priority when present)
+    if (pressStatement) {
+      headline = pressStatement.headline;
+      deck = pressStatement.deck;
+      body.push(`정부서울청사 합동브리핑실에서 열린 ${month}월 수출입 동향 기자회견에서 통상교섭본부장은 "${pressStatement.quote}"라고 결연한 입장을 천명했다. 당국은 이달 무역수지가 ${bal >= 0 ? '+' : ''}$${bal}B를 기록했다고 발표했다.`);
+    } else if (corporateAction && corporateAction.actionKey === 'hyundai_georgia_shift') {
       headline = `현대차 조지아 3교대 전격 확대…美 관세 장기화에 "울산 특근 전면 중단"`;
       deck = `통상 리스크에 기업 '탈한국' 가속화…지역 부품사 연쇄 위기감 고조`;
       body.push(`현대자동차그룹이 미국의 고율 관세 장기화에 대응해 조지아 메타플랜트 생산라인을 3교대로 풀가동하고 국내 울산 공장 특근을 중단하기로 결정했다. 통상 리스크가 결국 국내 제조업 일자리와 협력업체 생태계를 직접 강타하는 모양새다.`);

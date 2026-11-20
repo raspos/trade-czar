@@ -1208,6 +1208,34 @@ main:has(.title-scene) {
     width: 100%;
   }
 }
+
+/* Interactive Press Conference */
+.press-qa-container {
+  background: var(--white);
+  border: 2px solid var(--gold);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 16px rgba(16, 28, 43, 0.06);
+}
+.press-choice-card {
+  transition: all 0.15s ease-in-out;
+}
+.press-choice-card:hover {
+  border-color: var(--gold) !important;
+  background: #fdfaf3 !important;
+  transform: translateY(-1px);
+}
+.press-choice-card.selected {
+  border: 2px solid var(--green) !important;
+  background: rgba(37, 107, 79, 0.08) !important;
+}
+.btn-press-select {
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: 700;
+  transition: background 0.15s ease;
+}
 </style>
   
 </head>
@@ -4213,6 +4241,168 @@ class PoliticsManager {
   }
 }
 
+// press.mjs - Monthly Press Conference Q&A System for 통상교섭본부장 | TRADE CZAR
+
+function getPressConferenceQA(monthlyResult, politicsStats = {}, lastNegotiation = null, threats = [], currentMonth = 1) {
+  const month = monthlyResult?.month || currentMonth || 1;
+  const bal = monthlyResult?.balance ?? 0;
+  const fx = monthlyResult?.macro?.fxRate ?? 1420;
+
+  // 1. Deficit or High FX Crisis
+  if (bal < 0 || fx >= 1445) {
+    return {
+      scenarioId: 'fx_deficit_crisis',
+      outlet: '한국경제',
+      reporter: '이현욱 거시금융팀장',
+      question: `원·달러 환율이 1,440원을 넘나들고 이달 무역수지가 적자로 돌아섰습니다. 환율 방어와 수출 부양 중 어디에 우선순위를 두시겠습니까?`,
+      choices: [
+        {
+          id: 'opt_export_drive',
+          label: '수출 총력전',
+          quote: '고환율을 기회 삼아 하반기 공격적인 수출 총력전에 나서겠습니다.',
+          deltas: { businessTrust: 4, publicApproval: -3, policyMomentum: 3 },
+          deltaSummary: '기업신뢰 +4 · 국민여론 -3% · 추진력 +3',
+          headline: `본부장 "환율 위기를 수출 기회로"…공격적 수출 드라이브 선언`,
+          deck: `무역금융 50조 긴급 투입…고환율 물가 부담 속 정면돌파 선택`
+        },
+        {
+          id: 'opt_stabilization',
+          label: '거시 수지 방어',
+          quote: '핵심 원자재 관세 긴급 인하와 외환 공조로 거시 경제 불확실성을 차단하겠습니다.',
+          deltas: { presidentTrust: 4, publicApproval: 3, businessTrust: -2 },
+          deltaSummary: '대통령신임 +4 · 국민여론 +3% · 기업신뢰 -2',
+          headline: `통상 당국, 긴급 수지 방어선 가동…"거시 안정 최우선"`,
+          deck: `원자재 관세 완화 및 수입 다변화 착수…재계 "수출 활력 대책도 병행해야"`
+        },
+        {
+          id: 'opt_structural_shift',
+          label: '고부가 체질 개선',
+          quote: '단기 환율에 연연하지 않고, 고부가가치 첨단 제품 수출로 체질을 바꾸겠습니다.',
+          deltas: { businessTrust: 3, policyMomentum: 4, competitiveness: 3 },
+          deltaSummary: '기업신뢰 +3 · 추진력 +4 · 산업경쟁력 +3',
+          headline: `본부장 "단기 환율 연연 안 해…고부가 수출로 체질 개선"`,
+          deck: `저가 범용 상품 축소 및 첨단 품목 집중…통상 구조개혁 청사진 제시`
+        }
+      ]
+    };
+  }
+
+  // 2. US Tariff Pressure & Surplus Friction
+  if ((threats && threats.some(t => t.partnerId === 'US')) || month % 3 === 1 || (lastNegotiation && lastNegotiation.scenario?.partnerId === 'US' && lastNegotiation.type !== 'agreed')) {
+    return {
+      scenarioId: 'us_tariff_pressure',
+      outlet: '조선일보',
+      reporter: '박수찬 워싱턴 특파원',
+      question: `미국 정부의 보편관세 압박과 대미 흑자 감축 요구가 거셉니다. 워싱턴의 요구에 양보할 것입니까, 아니면 끝까지 맞서 싸우겠습니까?`,
+      choices: [
+        {
+          id: 'opt_hardline',
+          label: '강경 원칙',
+          quote: '부당한 일방주의 관세 압박에 한 치도 굴복하지 않겠습니다. WTO 제소와 맞불 관세도 불사합니다.',
+          deltas: { publicApproval: 5, diplomaticTrust: -6, businessTrust: -3, policyMomentum: 2 },
+          deltaSummary: '국민여론 +5% · 외교신뢰 -6 · 기업신뢰 -3',
+          headline: `본부장 "美 관세 압박에 절대 굴복 없다"…통상 전쟁 불사 천명`,
+          deck: `정부서울청사 긴급 회견서 정면승부 선언…워싱턴 마찰·기업 긴장 고조`
+        },
+        {
+          id: 'opt_pragmatic',
+          label: '실용 타협',
+          quote: '미국산 에너지·농산물 구매를 확대해 대미 흑자를 전략적으로 조율하고 관세 폭탄을 피하겠습니다.',
+          deltas: { diplomaticTrust: 6, publicApproval: -5, policyMomentum: -2 },
+          deltaSummary: '외교신뢰 +6 · 국민여론 -5% · 추진력 -2',
+          headline: `본부장 "美 에너지 대거 구매"…실용 카드로 관세 폭탄 피한다`,
+          deck: `알래스카 LNG 등 수입 확대 약정…국내 농가·야권 거센 반발`
+        },
+        {
+          id: 'opt_tech_lead',
+          label: '기술 초격차',
+          quote: '정치적 장벽을 넘는 열쇠는 압도적 기술입니다. AI 반도체·조선 초격차에 사활을 걸겠습니다.',
+          deltas: { businessTrust: 6, presidentTrust: 3, competitiveness: 3 },
+          deltaSummary: '기업신뢰 +6 · 대통령신임 +3 · 산업경쟁력 +3',
+          headline: `본부장 "정치 흔들려도 기술은 안 흔들린다"…초격차 승부수`,
+          deck: `첨단 반도체·조선 MRO에 정책 역량 총동원…"대체 불가 파트너 될 것"`
+        }
+      ]
+    };
+  }
+
+  // 3. Supply Chain Dilemma & China Friction
+  if (month === 6 || month === 9 || (lastNegotiation && lastNegotiation.scenario?.partnerId === 'CN')) {
+    return {
+      scenarioId: 'supply_chain_dilemma',
+      outlet: '블룸버그',
+      reporter: '김소희 서울지국장',
+      question: `미·중 통상 패권 전쟁의 틈바구니에서 한국 공급망 분열 우려가 커지고 있습니다. 어느 쪽에 무게를 싣고 계십니까?`,
+      choices: [
+        {
+          id: 'opt_allies_first',
+          label: '가치 동맹 우선',
+          quote: '한미 동맹과 경제 안보를 최우선 가치로 두고 글로벌 공급망 재편에 확고히 동참하겠습니다.',
+          deltas: { diplomaticTrust: 4, businessTrust: -3, publicApproval: 2 },
+          deltaSummary: '외교신뢰 +4 · 기업신뢰 -3 · 국민여론 +2%',
+          headline: `본부장 "한미 경제동맹 확고 동참"…글로벌 공급망 재편 가속`,
+          deck: `대중 수출 비중 축소 불가피…대중 의존 기업들 비상 대책 촉구`
+        },
+        {
+          id: 'opt_china_pragmatism',
+          label: '대중 실용 균형',
+          quote: '이념보다 국익이 먼저입니다. 대중 실무 통상 대화를 가동해 불필요한 마찰을 차단하겠습니다.',
+          deltas: { diplomaticTrust: -3, businessTrust: 4, publicApproval: 2 },
+          deltaSummary: '외교신뢰 -3 · 기업신뢰 +4 · 국민여론 +2%',
+          headline: `본부장 "대중 통상 채널 즉각 가동…불필요한 갈등 차단"`,
+          deck: `원자재·핵심광물 공급망 실무 협의 제안…워싱턴 기류 예의주시`
+        },
+        {
+          id: 'opt_sovereignty',
+          label: '소부장 국산 자립',
+          quote: '양자택일 압박을 벗어나는 유일한 길은 핵심 소재·부품 국산화와 기술 자립뿐입니다.',
+          deltas: { businessTrust: 5, publicApproval: 4, competitiveness: 4 },
+          deltaSummary: '기업신뢰 +5 · 국민여론 +4% · 산업경쟁력 +4',
+          headline: `본부장 "소부장 자립만이 살길"…수출 공급망 독립 선언`,
+          deck: `핵심 광물·소재 국산화 로드맵 가동…재계 "R&D 세제 지원 대폭 확대 환영"`
+        }
+      ]
+    };
+  }
+
+  // 4. General Steady Growth & Target Achievement
+  return {
+    scenarioId: 'annual_target_strategy',
+    outlet: '중앙일보',
+    reporter: '정원석 통상전문기자',
+    question: `월간 무역흑자가 견조한 흐름을 보이고 있습니다만, 연간 무역 목표 달성을 위한 본부장님의 핵심 카드는 무엇입니까?`,
+    choices: [
+      {
+        id: 'opt_global_south',
+        label: '신시장 영토 확장',
+        quote: '미·중 편중에서 벗어나 아세안·인도·중동으로 우리 수출 영토를 전방위 확장하겠습니다.',
+        deltas: { publicApproval: 3, businessTrust: 4, policyMomentum: 3 },
+        deltaSummary: '국민여론 +3% · 기업신뢰 +4 · 추진력 +3',
+        headline: `본부장 "미·중 쏠림 벗어난다"…글로벌 사우스 신시장 총공세`,
+        deck: `아세안·인도·중동과 전방위 경제동반자협정(CEPA) 추진…수출 영토 확장`
+      },
+      {
+        id: 'opt_rd_breakthrough',
+        label: '초격차 R&D 투자',
+        quote: '반도체·모빌리티 R&D 세제 지원을 총동원해 세계 시장에서 절대적 초격차를 굳히겠습니다.',
+        deltas: { businessTrust: 6, presidentTrust: 3, competitiveness: 4 },
+        deltaSummary: '기업신뢰 +6 · 대통령신임 +3 · 산업경쟁력 +4',
+        headline: `본부장 "R&D 세제 혜택 총동원…기술 절대 우위 굳힌다"`,
+        deck: `차세대 반도체·배터리 거점 구축…기업 설비투자 세액공제 확대 건의`
+      },
+      {
+        id: 'opt_inclusive_trade',
+        label: '상생·체감형 통상',
+        quote: '수출의 온기가 골목상권과 청년 일자리까지 이어지도록 국민 체감형 상생 무역을 실현하겠습니다.',
+        deltas: { publicApproval: 6, businessTrust: -2, policyMomentum: 2 },
+        deltaSummary: '국민여론 +6% · 기업신뢰 -2 · 추진력 +2',
+        headline: `본부장 "수출 온기, 청년 일자리로"…상생 통상 대전환 선언`,
+        deck: `대·중소 상생 수출 컨소시엄 출범…국민 체감형 통상 정책으로 대전환`
+      }
+    ]
+  };
+}
+
 // newspaper.mjs - Virtual JoongAng Ilbo (중앙일보) Front Page Generator
 // Enhanced with multi-month memory, proactive partner threats, corporate agency, and Two-Level Game coverage
 
@@ -4244,10 +4434,14 @@ class NewspaperEngine {
     let deck = "";
     let body = [];
 
-    const { corporateAction, proactiveThreat, twoLevelNote, doctrine } = extraContext;
+    const { corporateAction, proactiveThreat, twoLevelNote, doctrine, pressStatement } = extraContext;
 
-    // Narrative Prioritization
-    if (corporateAction && corporateAction.actionKey === 'hyundai_georgia_shift') {
+    // Narrative Prioritization (Press Statement gets top front page priority when present)
+    if (pressStatement) {
+      headline = pressStatement.headline;
+      deck = pressStatement.deck;
+      body.push(`정부서울청사 합동브리핑실에서 열린 ${month}월 수출입 동향 기자회견에서 통상교섭본부장은 "${pressStatement.quote}"라고 결연한 입장을 천명했다. 당국은 이달 무역수지가 ${bal >= 0 ? '+' : ''}$${bal}B를 기록했다고 발표했다.`);
+    } else if (corporateAction && corporateAction.actionKey === 'hyundai_georgia_shift') {
       headline = `현대차 조지아 3교대 전격 확대…美 관세 장기화에 "울산 특근 전면 중단"`;
       deck = `통상 리스크에 기업 '탈한국' 가속화…지역 부품사 연쇄 위기감 고조`;
       body.push(`현대자동차그룹이 미국의 고율 관세 장기화에 대응해 조지아 메타플랜트 생산라인을 3교대로 풀가동하고 국내 울산 공장 특근을 중단하기로 결정했다. 통상 리스크가 결국 국내 제조업 일자리와 협력업체 생태계를 직접 강타하는 모양새다.`);
@@ -4764,6 +4958,8 @@ class GameManager {
 
     this.latestMonthlyResult = null;
     this.latestNewspaper = null;
+    this.latestPressStatement = null;
+    this.currentPressQA = null;
     this.finalVerdict = null;
     this.gameLog = [];
   }
@@ -4807,6 +5003,8 @@ class GameManager {
     this.activeCorporateAction = null;
     this.latestMonthlyResult = null;
     this.latestNewspaper = null;
+    this.latestPressStatement = null;
+    this.currentPressQA = null;
     this.finalVerdict = null;
     this.gameLog = [];
 
@@ -5052,13 +5250,23 @@ class GameManager {
     const baselineMonth = BASELINE_2026.months[this.currentMonth - 1];
     const polEval = this.politics.evaluateMonth(monthlyResult, baselineMonth);
 
-    // 3. Generate Virtual JoongAng Ilbo front page
+    // 3. Generate Press Conference QA & Initial JoongAng Ilbo front page
+    this.currentPressQA = getPressConferenceQA(
+      monthlyResult,
+      this.politics.stats,
+      this.lastNegotiationAgreement,
+      this.monthlyThreats,
+      this.currentMonth
+    );
+    this.latestPressStatement = null;
+
     const lastPol = this.usedPoliciesThisMonth.length > 0 ? getPolicy(this.usedPoliciesThisMonth[this.usedPoliciesThisMonth.length - 1]) : null;
     const extraContext = {
       corporateAction: this.corporateAgencyManager.actionHistory.length > 0 ? this.corporateAgencyManager.actionHistory[this.corporateAgencyManager.actionHistory.length - 1] : null,
       proactiveThreat: this.monthlyThreats.length > 0 ? this.monthlyThreats[this.monthlyThreats.length - 1] : null,
       twoLevelNote: this.activeNegotiation?.history?.slice(-1)[0]?.domesticNote,
-      doctrine: this.doctrine
+      doctrine: this.doctrine,
+      pressStatement: null
     };
     const newspaper = this.newspaperEngine.generateFrontPage(
       monthlyResult,
@@ -5089,6 +5297,47 @@ class GameManager {
     this.screen = "result_briefing";
     this.autoSave();
     return { status: "next_month" };
+  }
+
+  // Resolve Press Conference Statement
+  resolvePressAnswer(choiceIndex) {
+    if (!this.latestMonthlyResult) return null;
+    const qa = this.currentPressQA || getPressConferenceQA(
+      this.latestMonthlyResult,
+      this.politics.stats,
+      this.lastNegotiationAgreement,
+      this.monthlyThreats,
+      this.currentMonth
+    );
+    const choice = qa.choices[choiceIndex] || qa.choices[0];
+    if (!choice) return null;
+
+    // Apply political deltas
+    if (choice.deltas) {
+      this.politics.applyDeltas(choice.deltas);
+    }
+
+    this.latestPressStatement = choice;
+
+    // Regenerate newspaper with this press statement
+    const lastPol = this.usedPoliciesThisMonth.length > 0 ? getPolicy(this.usedPoliciesThisMonth[this.usedPoliciesThisMonth.length - 1]) : null;
+    const extraContext = {
+      corporateAction: this.corporateAgencyManager.actionHistory.length > 0 ? this.corporateAgencyManager.actionHistory[this.corporateAgencyManager.actionHistory.length - 1] : null,
+      proactiveThreat: this.monthlyThreats.length > 0 ? this.monthlyThreats[this.monthlyThreats.length - 1] : null,
+      twoLevelNote: this.activeNegotiation?.history?.slice(-1)[0]?.domesticNote,
+      doctrine: this.doctrine,
+      pressStatement: choice
+    };
+    this.latestNewspaper = this.newspaperEngine.generateFrontPage(
+      this.latestMonthlyResult,
+      this.politics.stats,
+      lastPol,
+      this.lastNegotiationAgreement,
+      extraContext
+    );
+
+    this.autoSave();
+    return { choice, newspaper: this.latestNewspaper };
   }
 
   // Go to next month after reviewing results & newspaper
@@ -5146,6 +5395,8 @@ class GameManager {
       triggeredEvents: this.eventEngine ? Array.from(this.eventEngine.triggeredEvents) : [],
       latestMonthlyResult: this.latestMonthlyResult,
       latestNewspaper: this.latestNewspaper,
+      latestPressStatement: this.latestPressStatement,
+      currentPressQA: this.currentPressQA,
       finalVerdict: this.finalVerdict,
       doctrine: this.doctrine ? this.doctrine.id : null,
       gameLog: this.gameLog
@@ -5209,6 +5460,8 @@ class GameManager {
 
     this.latestMonthlyResult = saved.latestMonthlyResult;
     this.latestNewspaper = saved.latestNewspaper;
+    this.latestPressStatement = saved.latestPressStatement || null;
+    this.currentPressQA = saved.currentPressQA || null;
     this.finalVerdict = saved.finalVerdict;
     this.gameLog = saved.gameLog || [];
     return true;
@@ -6647,19 +6900,17 @@ class UIManager {
       card.style.opacity = isUsed ? '0.6' : '1';
 
       card.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
-          <span class="status-pill">${policy.categoryName}</span>
-          ${isUsed ? '<span style="color: var(--muted); font-size: 12px; font-weight: 700;">✓ 당월 집행 완료</span>' : '<span style="color: var(--gold); font-size: 12px; font-weight: 700;">소모: 1 행동력</span>'}
-        </div>
-        <h3 style="border: 0; padding: 0; margin-bottom: 8px; font-size: 18px;">${policy.title}</h3>
-        <p style="font-size: 14px; color: #444; margin-bottom: 12px; line-height: 1.6;">${policy.description}</p>
-        <div style="background: rgba(177, 145, 88, 0.08); padding: 10px 14px; border-radius: 4px; font-size: 13px; margin-bottom: 16px;">
-          <b>기대 효과 및 부작용:</b> ${policy.costText}
-        </div>
-        <div>
-          <button class="primary btn-execute-policy" data-pid="${policy.id}" ${isUsed || noAP ? 'disabled' : ''}>
-            ${policy.isNegotiationLaunch ? '협상장 입장 →' : '정책 결재 및 집행'}
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="status-pill">${policy.categoryName}</span>
+            <h3 style="border: 0; padding: 0; margin: 0; font-size: 17px; font-weight: 800; color: var(--navy);">${policy.title}</h3>
+          </div>
+          <button class="primary btn-execute-policy" data-pid="${policy.id}" ${isUsed || noAP ? 'disabled' : ''} style="padding: 7px 16px; font-size: 13px; white-space: nowrap;">
+            ${isUsed ? '✓ 집행 완료' : (policy.isNegotiationLaunch ? '협상장 입장 ➔' : '결재 집행 (1 AP) ➔')}
           </button>
+        </div>
+        <div style="background: #fbf8f0; border-left: 3px solid var(--gold); padding: 8px 12px; border-radius: 4px; font-size: 13px; color: var(--ink);">
+          <strong>💡 파급 효과 및 반작용:</strong> ${policy.costText}
         </div>
       `;
       list.appendChild(card);
@@ -6895,7 +7146,7 @@ class UIManager {
     return wrap;
   }
 
-  // 8. Result Briefing Screen
+  // 8. Result Briefing Screen & Press Conference
   renderResultBriefingScreen() {
     const wrap = document.createElement('div');
     const res = this.gm.latestMonthlyResult;
@@ -6911,8 +7162,8 @@ class UIManager {
     scene.innerHTML = `
       <div class="scene-overlay">
         <div>
-          <h2>2027년 ${res.month}월 수출입 동향 공식 브리핑</h2>
-          <p>정부서울청사 본관 브리핑룸 · 관세청 및 산업통상부 공동 발표</p>
+          <h2>2027년 ${res.month}월 통상 브리핑 및 대국민 기자회견</h2>
+          <p>정부서울청사 합동브리핑실 · 관세청 및 통상교섭본부 공동 발표</p>
         </div>
       </div>
     `;
@@ -6924,27 +7175,33 @@ class UIManager {
     const topGainer = sortedByGrowth[0];
     const topLoser = sortedByGrowth[sortedByGrowth.length - 1];
 
+    const qa = this.gm.currentPressQA || getPressConferenceQA(
+      res,
+      this.gm.politics?.stats,
+      this.gm.lastNegotiationAgreement,
+      this.gm.monthlyThreats,
+      this.gm.currentMonth
+    );
+    const selectedChoice = this.gm.latestPressStatement;
+
     const panel = document.createElement('div');
     panel.className = 'panel';
     panel.style.textAlign = 'center';
     panel.innerHTML = `
       <span class="eyebrow" style="color: var(--gold); font-weight: 800;">OFFICIAL TRADE REPORT</span>
-      <h3 style="border: 0; padding: 0; font-size: 26px; margin: 8px 0 16px;">
+      <h3 style="border: 0; padding: 0; font-size: 24px; margin: 6px 0 16px;">
         ${res.month}월 무역수지: 
         <span style="color: ${res.balance >= 0 ? 'var(--green)' : 'var(--red)'};">
-          ${res.balance >= 0 ? '+' : ''}$${res.balance.toFixed(1)}B 흑자
+          ${res.balance >= 0 ? '+' : ''}$${res.balance.toFixed(1)}B ${res.balance >= 0 ? '흑자' : '적자'}
         </span>
       </h3>
-      <div class="metrics-strip">
+
+      <!-- 5-Metric Score Strip -->
+      <div class="metrics-strip" style="margin-bottom: 14px;">
         <div class="metric-card">
           <small>통관 상품수출</small>
           <strong>$${res.goodsExport !== undefined ? res.goodsExport.toFixed(1) : res.export.toFixed(1)}B</strong>
           <div class="delta ${res.yoyExportGrowth >= 0 ? 'plus' : 'minus'}">전년비 ${res.yoyExportGrowth >= 0 ? '+' : ''}${res.yoyExportGrowth}%</div>
-        </div>
-        <div class="metric-card">
-          <small>BOP 서비스수출</small>
-          <strong style="color: var(--navy);">$${(res.servicesExport || 0).toFixed(1)}B</strong>
-          <div style="font-size: 11px; color: var(--muted); margin-top: 2px;">MRO·물류·기술</div>
         </div>
         <div class="metric-card">
           <small>총수입액</small>
@@ -6952,126 +7209,78 @@ class UIManager {
           <div class="delta ${res.yoyImportGrowth >= 0 ? 'plus' : 'minus'}">전년비 ${res.yoyImportGrowth >= 0 ? '+' : ''}${res.yoyImportGrowth}%</div>
         </div>
         <div class="metric-card">
-          <small>통관 무역수지</small>
+          <small>당월 무역수지</small>
           <strong style="color: ${res.balance >= 0 ? 'var(--green)' : 'var(--red)'};">${res.balance >= 0 ? '+' : ''}$${res.balance.toFixed(1)}B</strong>
-        </div>
-        <div class="metric-card">
-          <small>월간 경상수지</small>
-          <strong style="color: ${(res.currentAccountBalance || res.balance) >= 0 ? 'var(--green)' : 'var(--red)'};">${(res.currentAccountBalance || res.balance) >= 0 ? '+' : ''}$${(res.currentAccountBalance || res.balance).toFixed(1)}B</strong>
         </div>
         <div class="metric-card">
           <small>연간 누적 흑자</small>
           <strong>$${res.cumulativeBalance.toFixed(1)}B</strong>
         </div>
-      </div>
-
-      <!-- Top Gainer vs Top Loser Callouts -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin: 20px 0; text-align: left;">
-        <div style="background: rgba(37, 107, 79, 0.08); border: 1px solid var(--green); border-radius: 6px; padding: 14px;">
-          <span class="status-pill" style="background: var(--green); color: #fff; font-size: 11px;">🏆 최대 개선 산업 (Top Gainer)</span>
-          <h4 style="font-size: 17px; margin: 8px 0 4px; color: var(--navy);">${topGainer.name}</h4>
-          <div style="font-size: 13px; color: #333;">당월 수출: <b>$${topGainer.export.toFixed(1)}B</b> · 무역수지: <b style="color: var(--green);">+$${topGainer.balance.toFixed(1)}B</b></div>
-          <small style="color: var(--muted); font-size: 11px; margin-top: 4px; display: block;">공장 가동률: ${topGainer.utilizationRate}% · 관세 장벽: ${topGainer.tradeBarrierIndex}pt</small>
-        </div>
-        <div style="background: rgba(175, 81, 71, 0.08); border: 1px solid var(--red); border-radius: 6px; padding: 14px;">
-          <span class="status-pill" style="background: var(--red); color: #fff; font-size: 11px;">⚠️ 최대 악화 산업 (Top Loser)</span>
-          <h4 style="font-size: 17px; margin: 8px 0 4px; color: var(--navy);">${topLoser.name}</h4>
-          <div style="font-size: 13px; color: #333;">당월 수출: <b>$${topLoser.export.toFixed(1)}B</b> · 무역수지: <b style="color: var(--red);">${topLoser.balance >= 0 ? '+' : ''}$${topLoser.balance.toFixed(1)}B</b></div>
-          <small style="color: var(--muted); font-size: 11px; margin-top: 4px; display: block;">공장 가동률: ${topLoser.utilizationRate}% · 관세 장벽: ${topLoser.tradeBarrierIndex}pt</small>
+        <div class="metric-card">
+          <small>원/달러 환율</small>
+          <strong>₩${res.macro ? res.macro.fxRate : 1420}</strong>
         </div>
       </div>
 
-      <!-- Delayed Policy Pipeline Callout -->
-      ${this.gm.economy && this.gm.economy.delayedPipeline && this.gm.economy.delayedPipeline.length > 0 ? `
-        <div style="background: #fcf9f2; border: 1px solid var(--gold); border-left: 5px solid var(--gold); border-radius: 6px; padding: 14px; margin: 16px 0; text-align: left;">
-          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
-            <span class="status-pill" style="background: var(--gold); color: #fff; font-weight: 800; font-size: 11px;">⏳ 정책 효과 지연 파이프라인 (Delayed Policy Pipeline)</span>
-            <small style="color: var(--muted); font-size: 11px;">집행 후 시차 반영 대기</small>
+      <!-- 1-line Highlight Bar -->
+      <div style="background: var(--paper-card); border: 1px solid var(--line); border-radius: 6px; padding: 10px 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 13px; text-align: left;">
+        <div>🏆 <strong>최대 개선 산업:</strong> <span style="color: var(--green); font-weight: 700;">${topGainer.name}</span> ($${topGainer.export.toFixed(1)}B · +$${topGainer.balance.toFixed(1)}B)</div>
+        <div>⚠️ <strong>부진 산업:</strong> <span style="color: var(--red); font-weight: 700;">${topLoser.name}</span> ($${topLoser.export.toFixed(1)}B · ${topLoser.balance >= 0 ? '+' : ''}$${topLoser.balance.toFixed(1)}B)</div>
+      </div>
+
+      <!-- Interactive Press Conference Section -->
+      <div class="press-qa-container" style="background: var(--white); border: 2px solid var(--gold); border-radius: 8px; padding: 20px; margin-bottom: 20px; text-align: left; box-shadow: 0 4px 16px rgba(16,28,43,0.06);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 20px;">🎙️</span>
+            <span style="font-family: var(--font-display); font-size: 17px; font-weight: 800; color: var(--navy);">대국민 기자회견 · 출입기자단 긴급 질의</span>
           </div>
-          <h4 style="font-size: 15px; color: var(--navy); margin: 4px 0 6px;">첨단 전략산업 생산설비 신·증설 보조금 파이프라인 가동 중</h4>
-          <p style="font-size: 13px; color: #444; margin: 0 0 6px; line-height: 1.5;">
-            현재 ${this.gm.economy.delayedPipeline.length}건의 장기 설비 투자가 진행 중입니다. 
-            약 ${this.gm.economy.delayedPipeline[0].monthsRemaining || 2}개월 뒤 평택·용인 반도체 패키징 라인 및 배터리 신증설 설비가 완공되어 국가 생산능력(Capacity Index)에 공식 반영될 예정입니다.
+          <span class="status-pill" style="background: var(--navy); color: #fff; font-size: 11px; font-weight: 700;">
+            ${qa.outlet} · ${qa.reporter}
+          </span>
+        </div>
+
+        <div style="background: #fbf8f0; border-left: 4px solid var(--gold); padding: 12px 16px; border-radius: 4px; margin-bottom: 14px;">
+          <p style="font-family: var(--font-serif); font-size: 15px; color: var(--ink); line-height: 1.6; margin: 0; font-weight: 600;">
+            "${qa.question}"
           </p>
         </div>
-      ` : ''}
 
-      <!-- Policy vs External Shock Decomposition Table -->
-      <div style="background: var(--white); border: 1px solid var(--line); border-radius: 6px; padding: 16px; margin: 20px 0; text-align: left;">
-        <h4 style="font-family: var(--font-serif); font-size: 16px; color: var(--navy); margin-bottom: 10px;">
-          📊 당월 수출 실적 요인 분해표 (Decomposition Table)
-        </h4>
-        <div class="table-responsive">
-          <table class="game-table">
-            <thead>
-              <tr>
-                <th>구분</th>
-                <th>요인 항목</th>
-                <th>기여 금액 ($B)</th>
-                <th>영향 성격</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>기준선</strong></td>
-                <td>2026년 동월 기준선 수출액</td>
-                <td><b>$${res.decomposition.baseExport.toFixed(1)}B</b></td>
-                <td><span style="color: var(--muted);">기준선</span></td>
-              </tr>
-              <tr>
-                <td>환율 요인</td>
-                <td>원/달러 환율 변동 효과 (FX Rate)</td>
-                <td style="color: ${res.decomposition.fxDelta >= 0 ? 'var(--green)' : 'var(--red)'}; font-weight: 700;">
-                  ${res.decomposition.fxDelta >= 0 ? '+' : ''}$${res.decomposition.fxDelta.toFixed(1)}B
-                </td>
-                <td>${res.decomposition.fxDelta >= 0 ? '환율 상승에 따른 가격경쟁력 개선' : '원화 강세로 수출 채산성 둔화'}</td>
-              </tr>
-              <tr>
-                <td>시장 요인</td>
-                <td>글로벌 수요 변동 지수</td>
-                <td style="color: ${res.decomposition.demandDelta >= 0 ? 'var(--green)' : 'var(--red)'}; font-weight: 700;">
-                  ${res.decomposition.demandDelta >= 0 ? '+' : ''}$${res.decomposition.demandDelta.toFixed(1)}B
-                </td>
-                <td>${res.decomposition.demandDelta >= 0 ? '글로벌 경기 호조' : '해외 경기 둔화 압력'}</td>
-              </tr>
-              <tr>
-                <td>통상 장벽</td>
-                <td>상대국 관세 장벽 (Tariff Impact)</td>
-                <td style="color: ${res.decomposition.tariffDelta >= 0 ? 'var(--green)' : 'var(--red)'}; font-weight: 700;">
-                  ${res.decomposition.tariffDelta >= 0 ? '+' : ''}$${res.decomposition.tariffDelta.toFixed(1)}B
-                </td>
-                <td>${res.decomposition.tariffDelta < 0 ? '미국·EU 등 품목 관세 인상 타격' : '관세 인상 억제'}</td>
-              </tr>
-              <tr>
-                <td>정책 기여</td>
-                <td>정부 무역금융 및 정책 지원</td>
-                <td style="color: var(--green); font-weight: 700;">
-                  +${res.decomposition.supportDelta >= 0 ? '$' + res.decomposition.supportDelta.toFixed(1) + 'B' : '$0.0B'}
-                </td>
-                <td><span style="color: var(--green);">정부 정책 직접 기여</span></td>
-              </tr>
-              <tr>
-                <td>생산 제약</td>
-                <td>국내 설비 및 팹 가동률 상한 (Capacity Cap)</td>
-                <td style="color: var(--red); font-weight: 700;">
-                  ${res.decomposition.capacityConstraintDelta < 0 ? '$' + res.decomposition.capacityConstraintDelta.toFixed(1) + 'B' : '$0.0B'}
-                </td>
-                <td><span style="color: var(--red);">국내 팹·공장 생산 한계로 공급 제한</span></td>
-              </tr>
-              <tr style="background: rgba(16, 28, 43, 0.05); font-weight: 800;">
-                <td><strong>최종 확정</strong></td>
-                <td><strong>2027년 ${res.month}월 공식 수출 총액</strong></td>
-                <td style="color: var(--navy); font-size: 15px;"><strong>$${res.export.toFixed(1)}B</strong></td>
-                <td><strong>관세청 확정 통계</strong></td>
-              </tr>
-            </tbody>
-          </table>
+        <div style="font-size: 13px; color: var(--muted); margin-bottom: 10px; font-weight: 700;">
+          ⚡ 본부장 공식 입장 선택 (선택 즉시 지표 반영 및 내일 아침 중앙일보 1면 특종 보도):
+        </div>
+
+        <div class="press-choices-list" style="display: flex; flex-direction: column; gap: 10px;">
+          ${qa.choices.map((c, idx) => {
+            const isSelected = selectedChoice?.id === c.id;
+            return `
+              <div class="press-choice-card ${isSelected ? 'selected' : ''}" data-idx="${idx}" style="background: ${isSelected ? 'rgba(37, 107, 79, 0.06)' : 'var(--paper-card)'}; border: ${isSelected ? '2px solid var(--green)' : '1px solid var(--line)'}; border-radius: 6px; padding: 12px 14px; cursor: pointer; transition: all 0.2s ease;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; flex-wrap: wrap; gap: 6px;">
+                  <span class="status-pill" style="background: ${isSelected ? 'var(--green)' : 'var(--gold)'}; color: #fff; font-size: 11px; font-weight: 800;">
+                    ${idx + 1}. ${c.label} ${isSelected ? '✓ 발표 완료' : ''}
+                  </span>
+                  <span style="font-size: 12px; font-weight: 700; color: ${isSelected ? 'var(--green)' : 'var(--navy)'};">
+                    ${c.deltaSummary}
+                  </span>
+                </div>
+                <p style="font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 4px; line-height: 1.5;">
+                  "${c.quote}"
+                </p>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
+                  <small style="color: var(--muted); font-size: 11px;">📰 1면 헤드라인: <strong>${c.headline}</strong></small>
+                  <button class="btn-press-select ${isSelected ? 'primary' : 'secondary'}" data-idx="${idx}" style="padding: 5px 12px; font-size: 11px;">
+                    ${isSelected ? '✓ 발표 완료' : '입장 발표'}
+                  </button>
+                </div>
+              </div>
+            `;
+          }).join('')}
         </div>
       </div>
 
-      <div style="margin: 24px 0; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
-        <button class="primary" id="btn-view-newspaper" style="font-size: 16px; padding: 12px 30px;">
-          📰 중앙일보 1면 보도 확인 →
+      <div style="margin: 20px 0; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+        <button class="primary" id="btn-view-newspaper" style="font-size: 16px; padding: 14px 34px; box-shadow: 0 4px 12px rgba(177,145,88,0.3);">
+          📰 기자회견 보도 중앙일보 1면 보기 →
         </button>
       </div>
     `;
@@ -7079,8 +7288,23 @@ class UIManager {
     wrap.appendChild(panel);
 
     setTimeout(() => {
+      wrap.querySelectorAll('.btn-press-select, .press-choice-card').forEach(el => {
+        el.onclick = (e) => {
+          e.stopPropagation();
+          const idx = Number(el.getAttribute('data-idx'));
+          const result = this.gm.resolvePressAnswer(idx);
+          if (result) {
+            this.showToast('공식 입장 발표 완료', `"${result.choice.quote}" (중앙일보 1면 반영)`, 'success');
+            this.render();
+          }
+        };
+      });
+
       const btn = document.getElementById('btn-view-newspaper');
       if (btn) btn.onclick = () => {
+        if (!this.gm.latestPressStatement) {
+          this.gm.resolvePressAnswer(0);
+        }
         this.gm.screen = 'newspaper';
         this.render();
       };

@@ -38,6 +38,7 @@ const [html, css, assets, ...modules] = await Promise.all([
     'policies.mjs',
     'events.mjs',
     'politics.mjs',
+    'press.mjs',
     'newspaper.mjs',
     'verdict.mjs',
     'storage.mjs',

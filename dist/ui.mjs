@@ -5,6 +5,7 @@ import { SCENARIOS } from './scenarios.mjs';
 import { ORIGINS, INDUSTRIES, PARTNERS } from './constants.mjs';
 import { POLICY_ACTIONS, DOCTRINES } from './policies.mjs';
 import { CORPORATIONS } from './corporations.mjs';
+import { getPressConferenceQA } from './press.mjs';
 import { StorageManager } from './storage.mjs';
 
 class UIManager {
@@ -1436,19 +1437,17 @@ class UIManager {
       card.style.opacity = isUsed ? '0.6' : '1';
 
       card.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
-          <span class="status-pill">${policy.categoryName}</span>
-          ${isUsed ? '<span style="color: var(--muted); font-size: 12px; font-weight: 700;">✓ 당월 집행 완료</span>' : '<span style="color: var(--gold); font-size: 12px; font-weight: 700;">소모: 1 행동력</span>'}
-        </div>
-        <h3 style="border: 0; padding: 0; margin-bottom: 8px; font-size: 18px;">${policy.title}</h3>
-        <p style="font-size: 14px; color: #444; margin-bottom: 12px; line-height: 1.6;">${policy.description}</p>
-        <div style="background: rgba(177, 145, 88, 0.08); padding: 10px 14px; border-radius: 4px; font-size: 13px; margin-bottom: 16px;">
-          <b>기대 효과 및 부작용:</b> ${policy.costText}
-        </div>
-        <div>
-          <button class="primary btn-execute-policy" data-pid="${policy.id}" ${isUsed || noAP ? 'disabled' : ''}>
-            ${policy.isNegotiationLaunch ? '협상장 입장 →' : '정책 결재 및 집행'}
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="status-pill">${policy.categoryName}</span>
+            <h3 style="border: 0; padding: 0; margin: 0; font-size: 17px; font-weight: 800; color: var(--navy);">${policy.title}</h3>
+          </div>
+          <button class="primary btn-execute-policy" data-pid="${policy.id}" ${isUsed || noAP ? 'disabled' : ''} style="padding: 7px 16px; font-size: 13px; white-space: nowrap;">
+            ${isUsed ? '✓ 집행 완료' : (policy.isNegotiationLaunch ? '협상장 입장 ➔' : '결재 집행 (1 AP) ➔')}
           </button>
+        </div>
+        <div style="background: #fbf8f0; border-left: 3px solid var(--gold); padding: 8px 12px; border-radius: 4px; font-size: 13px; color: var(--ink);">
+          <strong>💡 파급 효과 및 반작용:</strong> ${policy.costText}
         </div>
       `;
       list.appendChild(card);
@@ -1684,7 +1683,7 @@ class UIManager {
     return wrap;
   }
 
-  // 8. Result Briefing Screen
+  // 8. Result Briefing Screen & Press Conference
   renderResultBriefingScreen() {
     const wrap = document.createElement('div');
     const res = this.gm.latestMonthlyResult;
@@ -1700,8 +1699,8 @@ class UIManager {
     scene.innerHTML = `
       <div class="scene-overlay">
         <div>
-          <h2>2027년 ${res.month}월 수출입 동향 공식 브리핑</h2>
-          <p>정부서울청사 본관 브리핑룸 · 관세청 및 산업통상부 공동 발표</p>
+          <h2>2027년 ${res.month}월 통상 브리핑 및 대국민 기자회견</h2>
+          <p>정부서울청사 합동브리핑실 · 관세청 및 통상교섭본부 공동 발표</p>
         </div>
       </div>
     `;
@@ -1713,27 +1712,33 @@ class UIManager {
     const topGainer = sortedByGrowth[0];
     const topLoser = sortedByGrowth[sortedByGrowth.length - 1];
 
+    const qa = this.gm.currentPressQA || getPressConferenceQA(
+      res,
+      this.gm.politics?.stats,
+      this.gm.lastNegotiationAgreement,
+      this.gm.monthlyThreats,
+      this.gm.currentMonth
+    );
+    const selectedChoice = this.gm.latestPressStatement;
+
     const panel = document.createElement('div');
     panel.className = 'panel';
     panel.style.textAlign = 'center';
     panel.innerHTML = `
       <span class="eyebrow" style="color: var(--gold); font-weight: 800;">OFFICIAL TRADE REPORT</span>
-      <h3 style="border: 0; padding: 0; font-size: 26px; margin: 8px 0 16px;">
+      <h3 style="border: 0; padding: 0; font-size: 24px; margin: 6px 0 16px;">
         ${res.month}월 무역수지: 
         <span style="color: ${res.balance >= 0 ? 'var(--green)' : 'var(--red)'};">
-          ${res.balance >= 0 ? '+' : ''}$${res.balance.toFixed(1)}B 흑자
+          ${res.balance >= 0 ? '+' : ''}$${res.balance.toFixed(1)}B ${res.balance >= 0 ? '흑자' : '적자'}
         </span>
       </h3>
-      <div class="metrics-strip">
+
+      <!-- 5-Metric Score Strip -->
+      <div class="metrics-strip" style="margin-bottom: 14px;">
         <div class="metric-card">
           <small>통관 상품수출</small>
           <strong>$${res.goodsExport !== undefined ? res.goodsExport.toFixed(1) : res.export.toFixed(1)}B</strong>
           <div class="delta ${res.yoyExportGrowth >= 0 ? 'plus' : 'minus'}">전년비 ${res.yoyExportGrowth >= 0 ? '+' : ''}${res.yoyExportGrowth}%</div>
-        </div>
-        <div class="metric-card">
-          <small>BOP 서비스수출</small>
-          <strong style="color: var(--navy);">$${(res.servicesExport || 0).toFixed(1)}B</strong>
-          <div style="font-size: 11px; color: var(--muted); margin-top: 2px;">MRO·물류·기술</div>
         </div>
         <div class="metric-card">
           <small>총수입액</small>
@@ -1741,126 +1746,78 @@ class UIManager {
           <div class="delta ${res.yoyImportGrowth >= 0 ? 'plus' : 'minus'}">전년비 ${res.yoyImportGrowth >= 0 ? '+' : ''}${res.yoyImportGrowth}%</div>
         </div>
         <div class="metric-card">
-          <small>통관 무역수지</small>
+          <small>당월 무역수지</small>
           <strong style="color: ${res.balance >= 0 ? 'var(--green)' : 'var(--red)'};">${res.balance >= 0 ? '+' : ''}$${res.balance.toFixed(1)}B</strong>
-        </div>
-        <div class="metric-card">
-          <small>월간 경상수지</small>
-          <strong style="color: ${(res.currentAccountBalance || res.balance) >= 0 ? 'var(--green)' : 'var(--red)'};">${(res.currentAccountBalance || res.balance) >= 0 ? '+' : ''}$${(res.currentAccountBalance || res.balance).toFixed(1)}B</strong>
         </div>
         <div class="metric-card">
           <small>연간 누적 흑자</small>
           <strong>$${res.cumulativeBalance.toFixed(1)}B</strong>
         </div>
-      </div>
-
-      <!-- Top Gainer vs Top Loser Callouts -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin: 20px 0; text-align: left;">
-        <div style="background: rgba(37, 107, 79, 0.08); border: 1px solid var(--green); border-radius: 6px; padding: 14px;">
-          <span class="status-pill" style="background: var(--green); color: #fff; font-size: 11px;">🏆 최대 개선 산업 (Top Gainer)</span>
-          <h4 style="font-size: 17px; margin: 8px 0 4px; color: var(--navy);">${topGainer.name}</h4>
-          <div style="font-size: 13px; color: #333;">당월 수출: <b>$${topGainer.export.toFixed(1)}B</b> · 무역수지: <b style="color: var(--green);">+$${topGainer.balance.toFixed(1)}B</b></div>
-          <small style="color: var(--muted); font-size: 11px; margin-top: 4px; display: block;">공장 가동률: ${topGainer.utilizationRate}% · 관세 장벽: ${topGainer.tradeBarrierIndex}pt</small>
-        </div>
-        <div style="background: rgba(175, 81, 71, 0.08); border: 1px solid var(--red); border-radius: 6px; padding: 14px;">
-          <span class="status-pill" style="background: var(--red); color: #fff; font-size: 11px;">⚠️ 최대 악화 산업 (Top Loser)</span>
-          <h4 style="font-size: 17px; margin: 8px 0 4px; color: var(--navy);">${topLoser.name}</h4>
-          <div style="font-size: 13px; color: #333;">당월 수출: <b>$${topLoser.export.toFixed(1)}B</b> · 무역수지: <b style="color: var(--red);">${topLoser.balance >= 0 ? '+' : ''}$${topLoser.balance.toFixed(1)}B</b></div>
-          <small style="color: var(--muted); font-size: 11px; margin-top: 4px; display: block;">공장 가동률: ${topLoser.utilizationRate}% · 관세 장벽: ${topLoser.tradeBarrierIndex}pt</small>
+        <div class="metric-card">
+          <small>원/달러 환율</small>
+          <strong>₩${res.macro ? res.macro.fxRate : 1420}</strong>
         </div>
       </div>
 
-      <!-- Delayed Policy Pipeline Callout -->
-      ${this.gm.economy && this.gm.economy.delayedPipeline && this.gm.economy.delayedPipeline.length > 0 ? `
-        <div style="background: #fcf9f2; border: 1px solid var(--gold); border-left: 5px solid var(--gold); border-radius: 6px; padding: 14px; margin: 16px 0; text-align: left;">
-          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
-            <span class="status-pill" style="background: var(--gold); color: #fff; font-weight: 800; font-size: 11px;">⏳ 정책 효과 지연 파이프라인 (Delayed Policy Pipeline)</span>
-            <small style="color: var(--muted); font-size: 11px;">집행 후 시차 반영 대기</small>
+      <!-- 1-line Highlight Bar -->
+      <div style="background: var(--paper-card); border: 1px solid var(--line); border-radius: 6px; padding: 10px 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 13px; text-align: left;">
+        <div>🏆 <strong>최대 개선 산업:</strong> <span style="color: var(--green); font-weight: 700;">${topGainer.name}</span> ($${topGainer.export.toFixed(1)}B · +$${topGainer.balance.toFixed(1)}B)</div>
+        <div>⚠️ <strong>부진 산업:</strong> <span style="color: var(--red); font-weight: 700;">${topLoser.name}</span> ($${topLoser.export.toFixed(1)}B · ${topLoser.balance >= 0 ? '+' : ''}$${topLoser.balance.toFixed(1)}B)</div>
+      </div>
+
+      <!-- Interactive Press Conference Section -->
+      <div class="press-qa-container" style="background: var(--white); border: 2px solid var(--gold); border-radius: 8px; padding: 20px; margin-bottom: 20px; text-align: left; box-shadow: 0 4px 16px rgba(16,28,43,0.06);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 20px;">🎙️</span>
+            <span style="font-family: var(--font-display); font-size: 17px; font-weight: 800; color: var(--navy);">대국민 기자회견 · 출입기자단 긴급 질의</span>
           </div>
-          <h4 style="font-size: 15px; color: var(--navy); margin: 4px 0 6px;">첨단 전략산업 생산설비 신·증설 보조금 파이프라인 가동 중</h4>
-          <p style="font-size: 13px; color: #444; margin: 0 0 6px; line-height: 1.5;">
-            현재 ${this.gm.economy.delayedPipeline.length}건의 장기 설비 투자가 진행 중입니다. 
-            약 ${this.gm.economy.delayedPipeline[0].monthsRemaining || 2}개월 뒤 평택·용인 반도체 패키징 라인 및 배터리 신증설 설비가 완공되어 국가 생산능력(Capacity Index)에 공식 반영될 예정입니다.
+          <span class="status-pill" style="background: var(--navy); color: #fff; font-size: 11px; font-weight: 700;">
+            ${qa.outlet} · ${qa.reporter}
+          </span>
+        </div>
+
+        <div style="background: #fbf8f0; border-left: 4px solid var(--gold); padding: 12px 16px; border-radius: 4px; margin-bottom: 14px;">
+          <p style="font-family: var(--font-serif); font-size: 15px; color: var(--ink); line-height: 1.6; margin: 0; font-weight: 600;">
+            "${qa.question}"
           </p>
         </div>
-      ` : ''}
 
-      <!-- Policy vs External Shock Decomposition Table -->
-      <div style="background: var(--white); border: 1px solid var(--line); border-radius: 6px; padding: 16px; margin: 20px 0; text-align: left;">
-        <h4 style="font-family: var(--font-serif); font-size: 16px; color: var(--navy); margin-bottom: 10px;">
-          📊 당월 수출 실적 요인 분해표 (Decomposition Table)
-        </h4>
-        <div class="table-responsive">
-          <table class="game-table">
-            <thead>
-              <tr>
-                <th>구분</th>
-                <th>요인 항목</th>
-                <th>기여 금액 ($B)</th>
-                <th>영향 성격</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>기준선</strong></td>
-                <td>2026년 동월 기준선 수출액</td>
-                <td><b>$${res.decomposition.baseExport.toFixed(1)}B</b></td>
-                <td><span style="color: var(--muted);">기준선</span></td>
-              </tr>
-              <tr>
-                <td>환율 요인</td>
-                <td>원/달러 환율 변동 효과 (FX Rate)</td>
-                <td style="color: ${res.decomposition.fxDelta >= 0 ? 'var(--green)' : 'var(--red)'}; font-weight: 700;">
-                  ${res.decomposition.fxDelta >= 0 ? '+' : ''}$${res.decomposition.fxDelta.toFixed(1)}B
-                </td>
-                <td>${res.decomposition.fxDelta >= 0 ? '환율 상승에 따른 가격경쟁력 개선' : '원화 강세로 수출 채산성 둔화'}</td>
-              </tr>
-              <tr>
-                <td>시장 요인</td>
-                <td>글로벌 수요 변동 지수</td>
-                <td style="color: ${res.decomposition.demandDelta >= 0 ? 'var(--green)' : 'var(--red)'}; font-weight: 700;">
-                  ${res.decomposition.demandDelta >= 0 ? '+' : ''}$${res.decomposition.demandDelta.toFixed(1)}B
-                </td>
-                <td>${res.decomposition.demandDelta >= 0 ? '글로벌 경기 호조' : '해외 경기 둔화 압력'}</td>
-              </tr>
-              <tr>
-                <td>통상 장벽</td>
-                <td>상대국 관세 장벽 (Tariff Impact)</td>
-                <td style="color: ${res.decomposition.tariffDelta >= 0 ? 'var(--green)' : 'var(--red)'}; font-weight: 700;">
-                  ${res.decomposition.tariffDelta >= 0 ? '+' : ''}$${res.decomposition.tariffDelta.toFixed(1)}B
-                </td>
-                <td>${res.decomposition.tariffDelta < 0 ? '미국·EU 등 품목 관세 인상 타격' : '관세 인상 억제'}</td>
-              </tr>
-              <tr>
-                <td>정책 기여</td>
-                <td>정부 무역금융 및 정책 지원</td>
-                <td style="color: var(--green); font-weight: 700;">
-                  +${res.decomposition.supportDelta >= 0 ? '$' + res.decomposition.supportDelta.toFixed(1) + 'B' : '$0.0B'}
-                </td>
-                <td><span style="color: var(--green);">정부 정책 직접 기여</span></td>
-              </tr>
-              <tr>
-                <td>생산 제약</td>
-                <td>국내 설비 및 팹 가동률 상한 (Capacity Cap)</td>
-                <td style="color: var(--red); font-weight: 700;">
-                  ${res.decomposition.capacityConstraintDelta < 0 ? '$' + res.decomposition.capacityConstraintDelta.toFixed(1) + 'B' : '$0.0B'}
-                </td>
-                <td><span style="color: var(--red);">국내 팹·공장 생산 한계로 공급 제한</span></td>
-              </tr>
-              <tr style="background: rgba(16, 28, 43, 0.05); font-weight: 800;">
-                <td><strong>최종 확정</strong></td>
-                <td><strong>2027년 ${res.month}월 공식 수출 총액</strong></td>
-                <td style="color: var(--navy); font-size: 15px;"><strong>$${res.export.toFixed(1)}B</strong></td>
-                <td><strong>관세청 확정 통계</strong></td>
-              </tr>
-            </tbody>
-          </table>
+        <div style="font-size: 13px; color: var(--muted); margin-bottom: 10px; font-weight: 700;">
+          ⚡ 본부장 공식 입장 선택 (선택 즉시 지표 반영 및 내일 아침 중앙일보 1면 특종 보도):
+        </div>
+
+        <div class="press-choices-list" style="display: flex; flex-direction: column; gap: 10px;">
+          ${qa.choices.map((c, idx) => {
+            const isSelected = selectedChoice?.id === c.id;
+            return `
+              <div class="press-choice-card ${isSelected ? 'selected' : ''}" data-idx="${idx}" style="background: ${isSelected ? 'rgba(37, 107, 79, 0.06)' : 'var(--paper-card)'}; border: ${isSelected ? '2px solid var(--green)' : '1px solid var(--line)'}; border-radius: 6px; padding: 12px 14px; cursor: pointer; transition: all 0.2s ease;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; flex-wrap: wrap; gap: 6px;">
+                  <span class="status-pill" style="background: ${isSelected ? 'var(--green)' : 'var(--gold)'}; color: #fff; font-size: 11px; font-weight: 800;">
+                    ${idx + 1}. ${c.label} ${isSelected ? '✓ 발표 완료' : ''}
+                  </span>
+                  <span style="font-size: 12px; font-weight: 700; color: ${isSelected ? 'var(--green)' : 'var(--navy)'};">
+                    ${c.deltaSummary}
+                  </span>
+                </div>
+                <p style="font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 4px; line-height: 1.5;">
+                  "${c.quote}"
+                </p>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
+                  <small style="color: var(--muted); font-size: 11px;">📰 1면 헤드라인: <strong>${c.headline}</strong></small>
+                  <button class="btn-press-select ${isSelected ? 'primary' : 'secondary'}" data-idx="${idx}" style="padding: 5px 12px; font-size: 11px;">
+                    ${isSelected ? '✓ 발표 완료' : '입장 발표'}
+                  </button>
+                </div>
+              </div>
+            `;
+          }).join('')}
         </div>
       </div>
 
-      <div style="margin: 24px 0; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
-        <button class="primary" id="btn-view-newspaper" style="font-size: 16px; padding: 12px 30px;">
-          📰 중앙일보 1면 보도 확인 →
+      <div style="margin: 20px 0; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+        <button class="primary" id="btn-view-newspaper" style="font-size: 16px; padding: 14px 34px; box-shadow: 0 4px 12px rgba(177,145,88,0.3);">
+          📰 기자회견 보도 중앙일보 1면 보기 →
         </button>
       </div>
     `;
@@ -1868,8 +1825,23 @@ class UIManager {
     wrap.appendChild(panel);
 
     setTimeout(() => {
+      wrap.querySelectorAll('.btn-press-select, .press-choice-card').forEach(el => {
+        el.onclick = (e) => {
+          e.stopPropagation();
+          const idx = Number(el.getAttribute('data-idx'));
+          const result = this.gm.resolvePressAnswer(idx);
+          if (result) {
+            this.showToast('공식 입장 발표 완료', `"${result.choice.quote}" (중앙일보 1면 반영)`, 'success');
+            this.render();
+          }
+        };
+      });
+
       const btn = document.getElementById('btn-view-newspaper');
       if (btn) btn.onclick = () => {
+        if (!this.gm.latestPressStatement) {
+          this.gm.resolvePressAnswer(0);
+        }
         this.gm.screen = 'newspaper';
         this.render();
       };

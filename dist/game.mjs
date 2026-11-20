@@ -12,6 +12,7 @@ import { CORPORATIONS, getCorporation, CorporateAgencyManager } from './corporat
 import { EventEngine } from './events.mjs';
 import { PoliticsManager } from './politics.mjs';
 import { NewspaperEngine } from './newspaper.mjs';
+import { getPressConferenceQA } from './press.mjs';
 import { VerdictEngine } from './verdict.mjs';
 import { StorageManager } from './storage.mjs';
 
@@ -46,6 +47,8 @@ export class GameManager {
 
     this.latestMonthlyResult = null;
     this.latestNewspaper = null;
+    this.latestPressStatement = null;
+    this.currentPressQA = null;
     this.finalVerdict = null;
     this.gameLog = [];
   }
@@ -89,6 +92,8 @@ export class GameManager {
     this.activeCorporateAction = null;
     this.latestMonthlyResult = null;
     this.latestNewspaper = null;
+    this.latestPressStatement = null;
+    this.currentPressQA = null;
     this.finalVerdict = null;
     this.gameLog = [];
 
@@ -334,13 +339,23 @@ export class GameManager {
     const baselineMonth = BASELINE_2026.months[this.currentMonth - 1];
     const polEval = this.politics.evaluateMonth(monthlyResult, baselineMonth);
 
-    // 3. Generate Virtual JoongAng Ilbo front page
+    // 3. Generate Press Conference QA & Initial JoongAng Ilbo front page
+    this.currentPressQA = getPressConferenceQA(
+      monthlyResult,
+      this.politics.stats,
+      this.lastNegotiationAgreement,
+      this.monthlyThreats,
+      this.currentMonth
+    );
+    this.latestPressStatement = null;
+
     const lastPol = this.usedPoliciesThisMonth.length > 0 ? getPolicy(this.usedPoliciesThisMonth[this.usedPoliciesThisMonth.length - 1]) : null;
     const extraContext = {
       corporateAction: this.corporateAgencyManager.actionHistory.length > 0 ? this.corporateAgencyManager.actionHistory[this.corporateAgencyManager.actionHistory.length - 1] : null,
       proactiveThreat: this.monthlyThreats.length > 0 ? this.monthlyThreats[this.monthlyThreats.length - 1] : null,
       twoLevelNote: this.activeNegotiation?.history?.slice(-1)[0]?.domesticNote,
-      doctrine: this.doctrine
+      doctrine: this.doctrine,
+      pressStatement: null
     };
     const newspaper = this.newspaperEngine.generateFrontPage(
       monthlyResult,
@@ -371,6 +386,47 @@ export class GameManager {
     this.screen = "result_briefing";
     this.autoSave();
     return { status: "next_month" };
+  }
+
+  // Resolve Press Conference Statement
+  resolvePressAnswer(choiceIndex) {
+    if (!this.latestMonthlyResult) return null;
+    const qa = this.currentPressQA || getPressConferenceQA(
+      this.latestMonthlyResult,
+      this.politics.stats,
+      this.lastNegotiationAgreement,
+      this.monthlyThreats,
+      this.currentMonth
+    );
+    const choice = qa.choices[choiceIndex] || qa.choices[0];
+    if (!choice) return null;
+
+    // Apply political deltas
+    if (choice.deltas) {
+      this.politics.applyDeltas(choice.deltas);
+    }
+
+    this.latestPressStatement = choice;
+
+    // Regenerate newspaper with this press statement
+    const lastPol = this.usedPoliciesThisMonth.length > 0 ? getPolicy(this.usedPoliciesThisMonth[this.usedPoliciesThisMonth.length - 1]) : null;
+    const extraContext = {
+      corporateAction: this.corporateAgencyManager.actionHistory.length > 0 ? this.corporateAgencyManager.actionHistory[this.corporateAgencyManager.actionHistory.length - 1] : null,
+      proactiveThreat: this.monthlyThreats.length > 0 ? this.monthlyThreats[this.monthlyThreats.length - 1] : null,
+      twoLevelNote: this.activeNegotiation?.history?.slice(-1)[0]?.domesticNote,
+      doctrine: this.doctrine,
+      pressStatement: choice
+    };
+    this.latestNewspaper = this.newspaperEngine.generateFrontPage(
+      this.latestMonthlyResult,
+      this.politics.stats,
+      lastPol,
+      this.lastNegotiationAgreement,
+      extraContext
+    );
+
+    this.autoSave();
+    return { choice, newspaper: this.latestNewspaper };
   }
 
   // Go to next month after reviewing results & newspaper
@@ -428,6 +484,8 @@ export class GameManager {
       triggeredEvents: this.eventEngine ? Array.from(this.eventEngine.triggeredEvents) : [],
       latestMonthlyResult: this.latestMonthlyResult,
       latestNewspaper: this.latestNewspaper,
+      latestPressStatement: this.latestPressStatement,
+      currentPressQA: this.currentPressQA,
       finalVerdict: this.finalVerdict,
       doctrine: this.doctrine ? this.doctrine.id : null,
       gameLog: this.gameLog
@@ -491,6 +549,8 @@ export class GameManager {
 
     this.latestMonthlyResult = saved.latestMonthlyResult;
     this.latestNewspaper = saved.latestNewspaper;
+    this.latestPressStatement = saved.latestPressStatement || null;
+    this.currentPressQA = saved.currentPressQA || null;
     this.finalVerdict = saved.finalVerdict;
     this.gameLog = saved.gameLog || [];
     return true;
