@@ -692,6 +692,99 @@ class UIManager {
         campRoom.appendChild(stkSec);
       }
 
+      // 3.5. Core System: Domestic Coordination Game (국내 조율 게임)
+      const currentDomestic = this.gm.campaign.domesticHistory.find(d => d.month === this.gm.currentMonth);
+      if (stageData.domesticCoordination) {
+        const domSec = document.createElement('div');
+        domSec.style.margin = '20px 0';
+
+        if (currentDomestic) {
+          domSec.innerHTML = `
+            <div class="panel" style="border: 2px solid #b45309; background: #fffbeb; padding: 18px 20px; border-radius: 8px; box-shadow: 0 3px 12px rgba(180, 83, 9, 0.08);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <span class="step-badge" style="background: #b45309; color: #fff;">STEP 2</span>
+                <span class="status-pill" style="background: #b45309; color: #fff; font-weight: 800; font-size: 11px;">
+                  🏛️ 국내 조율 타결 · 국무회의 의결 완료
+                </span>
+                <small style="color: #92400e; font-weight: 700;">대외 협상 레버리지 확보</small>
+              </div>
+              <h3 style="font-size: 16px; color: #78350f; margin: 4px 0 6px; font-family: var(--font-serif); font-weight: 800;">
+                ${currentDomestic.title}
+              </h3>
+              <p style="font-size: 13px; color: #92400e; margin: 0; line-height: 1.5;">
+                💡 조율 결과: ${currentDomestic.reaction}
+              </p>
+            </div>
+          `;
+        } else {
+          const domData = stageData.domesticCoordination;
+          let ministersHtml = '';
+          if (domData.ministers) {
+            ministersHtml = `
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; margin-bottom: 14px;">
+                ${domData.ministers.map(m => `
+                  <div style="background: #ffffff; border: 1px solid #fde68a; border-radius: 6px; padding: 10px 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                      <strong style="color: #78350f; font-size: 13px;">${m.role}</strong>
+                      <span class="status-pill" style="background: #fef3c7; color: #92400e; font-size: 10px; font-weight: 700;">${m.stanceTag}</span>
+                    </div>
+                    <p style="font-size: 12px; color: #451a03; line-height: 1.45; margin: 0;">
+                      "${m.demands}"
+                    </p>
+                  </div>
+                `).join('')}
+              </div>
+            `;
+          }
+
+          let proposalsHtml = '';
+          const optsList = domData.proposals || domData.options || [];
+          proposalsHtml = `
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              ${optsList.map((p, idx) => `
+                <div style="background: #ffffff; border: 1.5px solid #fde68a; border-radius: 6px; padding: 14px 16px; transition: all 0.2s;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 6px;">
+                    <strong style="font-size: 14.5px; color: #78350f; font-family: var(--font-serif); font-weight: 800;">
+                      ${p.title}
+                    </strong>
+                    ${p.budgetBreakdown ? `<span style="font-size: 11px; background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 4px; font-weight: 700;">${p.budgetBreakdown}</span>` : ''}
+                  </div>
+                  <p style="font-size: 12.5px; color: #451a03; margin: 0 0 10px; line-height: 1.5;">
+                    ${p.reaction || p.allocationDesc}
+                  </p>
+                  <button class="secondary btn-domestic-proposal" data-pid="${p.id}" style="padding: 8px 14px; font-size: 12px; font-weight: 700; width: 100%; border-color: #d97706; color: #78350f; background: #fffbeb;">
+                    이 안으로 국내 합의 의결 ➔
+                  </button>
+                </div>
+              `).join('')}
+            </div>
+          `;
+
+          domSec.innerHTML = `
+            <div class="panel" style="border: 2px solid #b45309; background: #fffbeb; padding: 18px 20px; border-radius: 8px; box-shadow: 0 4px 14px rgba(180, 83, 9, 0.08);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 6px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="step-badge" style="background: #b45309; color: #fff;">STEP 2</span>
+                  <span class="status-pill" style="background: #b45309; color: #fff; font-weight: 800; font-size: 11px;">
+                    🏛️ 핵심 시스템: 국내 조율 게임 (Domestic Coordination)
+                  </span>
+                </div>
+                <small style="color: #92400e; font-weight: 700;">외국 정부와 협상 전 국내 부처·이해관계자 합의 필수</small>
+              </div>
+              <h3 style="font-size: 17px; color: #78350f; margin: 6px 0 4px; font-family: var(--font-serif); font-weight: 900;">
+                ${domData.title}
+              </h3>
+              <p style="font-size: 13px; color: #451a03; line-height: 1.55; margin: 0 0 14px;">
+                ${domData.desc}
+              </p>
+              ${ministersHtml}
+              ${proposalsHtml}
+            </div>
+          `;
+        }
+        campRoom.appendChild(domSec);
+      }
+
       // 4. Strategic Course Directives (통상교섭본부장의 전략 노선 결단)
       const choicesToRender = stageData.strategicChoices || stageData.finalChoices || [];
       const decSec = document.createElement('div');
@@ -701,6 +794,7 @@ class UIManager {
         decSec.innerHTML = `
           <div class="panel" style="border: 2px solid var(--green); background: #f0fdf4; padding: 18px 20px; box-shadow: 0 4px 12px rgba(22, 101, 52, 0.08);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span class="step-badge" style="background: var(--green); color: #fff;">STEP 3</span>
               <span class="status-pill" style="background: var(--green); color: #fff; font-weight: 800;">
                 ✅ ${this.gm.currentMonth}월 본부장 전략 노선 결단 확정
               </span>
@@ -717,7 +811,7 @@ class UIManager {
       } else {
         decSec.innerHTML = `
           <div class="step-section-header" style="margin-bottom: 12px;">
-            <span class="step-badge">STEP 2</span>
+            <span class="step-badge">STEP 3</span>
             <h3 class="step-section-title">통상교섭본부장의 전략 노선 결단 (단일 선택)</h3>
             <span class="step-section-hint">선택의 경제적·외교적 결과는 다음 달 사건과 무역통계로 드러납니다</span>
           </div>
@@ -1016,6 +1110,19 @@ class UIManager {
           this.activeIntelId = iid;
           if (this.gm.campaign) this.gm.campaign.inspectIntel(iid);
           this.render();
+        };
+      });
+
+      wrap.querySelectorAll('.btn-domestic-proposal').forEach(btn => {
+        btn.onclick = () => {
+          const pid = btn.getAttribute('data-pid');
+          if (this.gm.campaign) {
+            const res = this.gm.campaign.makeDomesticDecision(pid, this.gm);
+            if (res) {
+              this.showToast('국내 합의안 타결', `"${res.title}" 국무회의 의결`, 'success');
+              this.render();
+            }
+          }
         };
       });
 
