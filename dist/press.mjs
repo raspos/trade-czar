@@ -48,8 +48,8 @@ export function getPressConferenceQA(monthlyResult, politicsStats = {}, lastNego
   if ((threats && threats.some(t => t.partnerId === 'US')) || month % 3 === 1 || (lastNegotiation && lastNegotiation.scenario?.partnerId === 'US' && lastNegotiation.type !== 'agreed')) {
     return {
       scenarioId: 'us_tariff_pressure',
-      outlet: '조선일보',
-      reporter: '박수찬 워싱턴 특파원',
+      outlet: '연합뉴스',
+      reporter: '워싱턴 특파원',
       question: `미국 정부의 보편관세 압박과 대미 흑자 감축 요구가 거셉니다. 워싱턴의 요구에 양보할 것입니까, 아니면 끝까지 맞서 싸우겠습니까?`,
       choices: [
         {
