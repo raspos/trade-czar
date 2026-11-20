@@ -9,11 +9,13 @@ import { getPressConferenceQA } from './press.mjs';
 import { StorageManager } from './storage.mjs';
 import { MONTHLY_CHAPTERS } from './storyline.mjs';
 import { TAIWAN_STRAIT_CAMPAIGN } from './campaign.mjs';
+import { VisualStageManager, SHOWCASE_SCENES } from './visual-stage.mjs';
 
 class UIManager {
   constructor() {
     this.gm = new GameManager();
     this.appEl = document.getElementById('app');
+    this.stageManager = new VisualStageManager(this.gm);
     this.pendingOrigin = 'bureaucrat';
     this.pendingScenario = 'baseline';
     this.activePolicyTab = 'corporate'; // corporate, government, negotiation
@@ -501,11 +503,14 @@ class UIManager {
     const wrap = document.createElement('div');
     wrap.appendChild(this.renderNavTabs('office'));
 
-    // Scene header
+    // Visual Stage Engine (60~70% Screen Ratio, 2D Character Portraits with 5 Expressions, Desk Props, Dialogue)
+    wrap.appendChild(this.stageManager.renderStageElement(() => this.render()));
+
+    // Scene header info banner (Preserves DOM hooks)
     const maxAP = this.gm.maxActionPoints || 5;
     const scene = document.createElement('div');
     scene.className = 'scene-container';
-    scene.style.backgroundImage = "url('./assets/office-trade.jpg')";
+    scene.style.display = 'none';
     scene.innerHTML = `
       <div class="scene-overlay">
         <div>

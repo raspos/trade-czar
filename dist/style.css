@@ -1335,3 +1335,442 @@ main:has(.title-scene) {
   border: 2px solid #2563eb;
   background: #dbeafe;
 }
+
+/* =========================================================================
+   VISUAL STAGE ENGINE (60~70% Screen Ratio, 2D Character Portraits, Props)
+   ========================================================================= */
+.game-stage-wrapper {
+  margin: 0 0 24px;
+  background: #0f172a;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+}
+
+.stage-scene-tabs {
+  background: #0a0f1d;
+  padding: 8px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow-x: auto;
+}
+
+.stage-tabs-label {
+  font-size: 12px;
+  font-weight: 800;
+  color: #fbbf24;
+  white-space: nowrap;
+}
+
+.stage-tabs-scroll {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+}
+
+.stage-nav-tab {
+  background: rgba(255, 255, 255, 0.06);
+  color: #cbd5e1;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 6px 12px;
+  font-size: 11.5px;
+  font-weight: 700;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.stage-nav-tab:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.stage-nav-tab.active {
+  background: #d97706;
+  color: #ffffff;
+  border-color: #f59e0b;
+  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.4);
+}
+
+.game-stage-viewport {
+  position: relative;
+  min-height: 480px;
+  height: 62vh;
+  max-height: 620px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px 20px;
+  box-sizing: border-box;
+}
+
+.stage-hud-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  z-index: 10;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.stage-hud-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stage-flag {
+  font-size: 26px;
+}
+
+.stage-location-title {
+  font-size: 16px;
+  font-family: var(--font-serif);
+  font-weight: 900;
+  color: #f8fafc;
+  margin: 0 0 2px;
+}
+
+.stage-location-sub {
+  font-size: 11.5px;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.stage-status-badge {
+  font-size: 11px;
+  font-weight: 800;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 4px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.5px;
+}
+
+.stage-actors-area {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex: 1;
+  gap: 16px;
+  padding-bottom: 8px;
+  z-index: 5;
+}
+
+.stage-actor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.25s;
+}
+
+.stage-actor.focused-speaker {
+  transform: scale(1.04);
+  filter: drop-shadow(0 0 16px rgba(251, 191, 36, 0.55));
+}
+
+.stage-actor:not(.focused-speaker) {
+  opacity: 0.92;
+  filter: brightness(0.95);
+}
+
+.actor-portrait-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.actor-img {
+  height: 290px;
+  width: auto;
+  max-width: 250px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.5));
+}
+
+.actor-nametag {
+  background: rgba(15, 23, 42, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 6px 12px;
+  text-align: center;
+  margin-top: -12px;
+  z-index: 6;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  min-width: 140px;
+}
+
+.actor-nametag strong {
+  display: block;
+  font-size: 13px;
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.actor-nametag small {
+  display: block;
+  font-size: 10px;
+  color: #cbd5e1;
+}
+
+.actor-expression-badge {
+  position: absolute;
+  top: 10px;
+  right: -8px;
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  z-index: 7;
+}
+
+.actor-expression-badge.angry {
+  background: #dc2626;
+  color: #fff;
+}
+
+.actor-expression-badge.satisfied {
+  background: #16a34a;
+  color: #fff;
+}
+
+.actor-expression-badge.surprised {
+  background: #d97706;
+  color: #fff;
+}
+
+.actor-expression-badge.stern {
+  background: #475569;
+  color: #fff;
+}
+
+.actor-expression-badge.neutral {
+  background: #334155;
+  color: #e2e8f0;
+}
+
+.stage-center-props {
+  flex: 1;
+  max-width: 440px;
+  align-self: flex-end;
+  margin-bottom: 12px;
+  z-index: 6;
+}
+
+.stage-desk-surface {
+  background: rgba(15, 23, 42, 0.88);
+  border: 1px solid rgba(217, 119, 6, 0.4);
+  border-radius: 8px;
+  padding: 10px 14px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.props-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+
+.stage-prop-btn {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fde68a;
+  border: 1px solid rgba(253, 230, 138, 0.25);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.stage-prop-btn:hover {
+  background: rgba(253, 230, 138, 0.2);
+  border-color: #fde68a;
+  color: #ffffff;
+}
+
+.stage-prop-btn.active {
+  background: #d97706;
+  color: #ffffff;
+  border-color: #f59e0b;
+}
+
+.active-prop-dossier {
+  margin-top: 8px;
+  padding: 8px 10px;
+  background: rgba(0, 0, 0, 0.45);
+  border-left: 3px solid #f59e0b;
+  border-radius: 4px;
+  font-size: 11.5px;
+  color: #f8fafc;
+  line-height: 1.45;
+}
+
+.active-prop-dossier strong {
+  color: #fbbf24;
+  margin-right: 4px;
+}
+
+.stage-dialogue-box {
+  background: #090e1a;
+  border-top: 2px solid #b45309;
+  padding: 18px 22px;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dialogue-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dialogue-speaker-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(180, 83, 9, 0.2);
+  border: 1px solid rgba(180, 83, 9, 0.4);
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+
+.dialogue-speaker-pill strong {
+  font-size: 13px;
+  color: #fde68a;
+}
+
+.dialogue-speaker-pill .speaker-role {
+  font-size: 11.5px;
+  color: #94a3b8;
+}
+
+.stage-replay-btn {
+  background: transparent;
+  color: #94a3b8;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.stage-replay-btn:hover {
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+.dialogue-quote-text {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #f1f5f9;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  padding: 0 4px;
+}
+
+.stage-action-choices-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.stage-choice-button {
+  background: #1e293b;
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  color: #f8fafc;
+  padding: 12px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stage-choice-button:hover {
+  background: #28374d;
+  border-color: #f59e0b;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+
+.stage-choice-button.chosen {
+  background: #14532d;
+  border-color: #22c55e;
+  box-shadow: 0 0 14px rgba(34, 197, 94, 0.4);
+}
+
+.choice-num-pill {
+  background: #d97706;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 900;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.stage-choice-button.chosen .choice-num-pill {
+  background: #16a34a;
+}
+
+.choice-text {
+  font-size: 12.5px;
+  line-height: 1.45;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .game-stage-viewport {
+    height: auto;
+    min-height: 420px;
+    padding: 12px;
+  }
+  .stage-actors-area {
+    gap: 8px;
+  }
+  .actor-img {
+    height: 190px;
+    max-width: 150px;
+  }
+  .stage-center-props {
+    display: none;
+  }
+  .actor-nametag {
+    min-width: 100px;
+    padding: 4px 6px;
+  }
+  .actor-nametag strong {
+    font-size: 11px;
+  }
+  .stage-action-choices-grid {
+    grid-template-columns: 1fr;
+  }
+}
