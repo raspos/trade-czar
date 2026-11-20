@@ -31,6 +31,8 @@ const [html, css, assets, ...modules] = await Promise.all([
     'prng.mjs',
     'data.mjs',
     'scenarios.mjs',
+    'storyline.mjs',
+    'campaign.mjs',
     'origins.mjs',
     'corporations.mjs',
     'economy.mjs',

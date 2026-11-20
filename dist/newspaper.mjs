@@ -29,10 +29,54 @@ export class NewspaperEngine {
     let deck = "";
     let body = [];
 
-    const { corporateAction, proactiveThreat, twoLevelNote, doctrine, pressStatement } = extraContext;
+    const { corporateAction, proactiveThreat, twoLevelNote, doctrine, pressStatement, campaignDecision, campaignMonth, campaignBranch } = extraContext;
 
-    // Narrative Prioritization (Press Statement gets top front page priority when present)
-    if (pressStatement) {
+    // Campaign Pilot: Taiwan Strait Crisis Front-Page Priority
+    if (campaignDecision) {
+      if (campaignMonth === 1) {
+        if (campaignBranch === 'BRANCH_A') {
+          headline = `韓, 美 주도 '반도체 안보동맹' 전격 서명…대만해협 위기 속 TSMC 대체 선점`;
+          deck = `시안·우시 리스크 감수하고 서방 칩 요새로…베이징 "원자재 통상 보복" 격렬 반발`;
+          body.push(`중국의 대만해협 봉쇄로 글로벌 테크 공급망이 마비된 가운데, 정부가 미국과의 첨단 반도체 공급망 안보 동맹에 전격 서명했다. 워싱턴 시장 내 TSMC 대체 물량을 선점하는 대신 중국의 자원 보복을 정면 돌파하겠다는 전략적 결단이다.`);
+        } else if (campaignBranch === 'BRANCH_B') {
+          headline = `韓, "상업용 반도체는 제재 대상 아니다"…대만해협 격랑 속 '공급망 중립' 천명`;
+          deck = `美 세컨더리 보이콧 압박 맞서 시안 팹 사수…미·중 동시 물밑 교섭 착수`;
+          body.push(`대만해협의 전운 속에서 통상교섭본부장이 순수 민간 메모리 교역의 불가침성을 선언하며 '공급망 중립 지대'를 공식 천명했다. 미·중 양국의 일방적 줄세우기를 거부하고 국익 중심의 실용 통상 노선을 천명한 것으로 풀이된다.`);
+        } else {
+          headline = `韓, "미·중 패권에 휘둘리지 않는다"…용인 팹 국가 패스트트랙·유럽·인도 직수출 선언`;
+          deck = `100% 소부장 국내 자립화 승부수…독일·인도 자동차 고위 사절단 세종으로 집결`;
+          body.push(`미·중 패권 다툼의 희생양이 되지 않겠다는 선언과 함께, 용인 메가 클러스터 국내 완결형 생태계 구축과 유럽·인도 대체 시장 개척을 위한 국가 총동원령이 발동됐다. TSMC 대체 물량을 찾는 글로벌 기업들의 발길이 세종으로 이어지고 있다.`);
+        }
+      } else if (campaignMonth === 2) {
+        if (campaignBranch === 'BRANCH_A') {
+          headline = `中, 한국행 흑연·갈륨 통관 전면 동결…배터리 3사 "원자재 재고 20일분 비상"`;
+          deck = `美 초과이익 환수 압박까지 겹쳐…통상사령탑, 텍사스 증설 카드로 백악관 정면 승부`;
+          body.push(`한국의 대미 반도체 결속에 반발한 중국 상무부가 흑연·갈륨 통관을 전면 동결하며 배터리 산업에 비상이 걸렸다. 한편 워싱턴에서는 초과이익 환수 요구가 빗발치자 통상 당국은 현지 패키징 투자 조기 카드로 맞불을 놓았다.`);
+        } else if (campaignBranch === 'BRANCH_B') {
+          headline = `美 의회, 韓 반도체 FDPR 제재안 발의…中 "시안 열어줄 테니 철강 무관세 개방하라"`;
+          deck = `양대 강국 사이 샌드위치 위기…정부, 제네바 3자 다자 협정 발의로 정면 돌파`;
+          body.push(`한국의 상업적 중립 표방에 대해 미 의회가 세컨더리 보이콧 카드를 꺼내 들었고, 중국은 국내 철강 시장 개방이라는 독이 든 사과를 내밀었다. 통상 당국은 국내 산업 피해를 막기 위해 스위스 제네바 다자 협상으로 판을 키웠다.`);
+        } else {
+          headline = `EU·인도 통상 사절단 세종 전격 방문…韓 반도체 500억 달러 장기 공급 빅딜`;
+          deck = `용인 송전탑 국가직권 착공…유럽 CBAM 탄소세 5년 면제 확약서 쟁취`;
+          body.push(`TSMC 봉쇄로 유럽 자동차 라인이 멈출 위기에 처하자, 독일과 인도가 한국산 차량용 반도체 수주를 위해 세종으로 급파됐다. 정부는 국내 송전망 인허가를 직권 돌파하고 유럽 탄소국경세 전면 면제라는 역사적 쾌거를 거뒀다.`);
+        }
+      } else if (campaignMonth === 3) {
+        if (campaignBranch === 'BRANCH_A') {
+          headline = `韓·美 백악관 정상회담 통상 빅딜 체결…대미 반도체 수출 사상 최대치 돌파`;
+          deck = `TSMC 대체 점유율 85% 석권…美 LNG 장기 구매로 환율 관찰대상국 압박 털어내`;
+          body.push(`백악관 정상회담에서 한·미 포괄적 통상 빅딜이 최종 성사됐다. 한국 기업이 미국 시장 내 TSMC 대체 물량을 사실상 독점 수주하며 반도체 수출이 사상 최고치를 경신했으며, 에너지 구매 연계로 통상 마찰을 해소했다.`);
+        } else if (campaignBranch === 'BRANCH_B') {
+          headline = `제네바 실리콘 협정 극적 타결…미·중 양국, 韓 반도체 '중립 무역 지대' 공식 승인`;
+          deck = `치밀한 다자 외교로 시안 공장과 미국 수출선 동시 수호…세계의 공급망 완충국 우뚝`;
+          body.push(`스위스 제네바에서 열린 미·중·한 3자 비밀 회담에서 '제네바 실리콘 협정'이 공식 체결됐다. 한국은 고래 싸움 속에서 시안 팹과 대미 수출선을 모두 지켜내며 글로벌 공급망의 독보적 중립 완충 국가로 공인받았다.`);
+        } else {
+          headline = `자립형 K-반도체 제1기 팹 첫 출하…韓·EU·인도 신(新) 유라시아 통상 동맹 출범`;
+          deck = `미·중 패권 종속 탈출하고 기술 주권 입증…친환경 제철·배터리 유럽 무관세 협정 쾌거`;
+          body.push(`용인 반도체 메가 클러스터에서 첫 웨이퍼가 성공적으로 출하된 가운데, 유럽 및 신흥 시장과의 다자 FTA가 전격 발효됐다. 미·중 패권 줄다리기에서 탈피하여 독자적인 글로벌 산업 네트워크를 구축한 자주 통상의 승리다.`);
+        }
+      }
+    } else if (pressStatement) {
       headline = pressStatement.headline;
       deck = pressStatement.deck;
       body.push(`정부서울청사 합동브리핑실에서 열린 ${month}월 수출입 동향 기자회견에서 통상교섭본부장은 "${pressStatement.quote}"라고 결연한 입장을 천명했다. 당국은 이달 무역수지가 ${bal >= 0 ? '+' : ''}$${bal}B를 기록했다고 발표했다.`);

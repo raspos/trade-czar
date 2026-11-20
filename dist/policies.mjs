@@ -304,10 +304,26 @@ export const DOCTRINES = [
   }
 ];
 
+import { MONTHLY_CHAPTERS } from './storyline.mjs';
+
 export function getDoctrine(id) {
   return DOCTRINES.find(d => d.id === id);
 }
 
-export function getPolicy(id) {
+export function getPolicy(id, month = null) {
+  if (id && id.startsWith('special_policy_')) {
+    for (const ch of Object.values(MONTHLY_CHAPTERS)) {
+      if (ch.specialPolicy && ch.specialPolicy.id === id) return ch.specialPolicy;
+    }
+  }
   return POLICY_ACTIONS.find(p => p.id === id);
+}
+
+export function getMonthlyPolicies(month) {
+  const m = Math.max(1, Math.min(12, month || 1));
+  const ch = MONTHLY_CHAPTERS[m];
+  if (ch && ch.specialPolicy) {
+    return [ch.specialPolicy, ...POLICY_ACTIONS];
+  }
+  return [...POLICY_ACTIONS];
 }

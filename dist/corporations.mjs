@@ -169,8 +169,35 @@ export const CORPORATIONS = [
   }
 ];
 
-export function getCorporation(id) {
-  return CORPORATIONS.find(c => c.id === id);
+import { MONTHLY_CHAPTERS } from './storyline.mjs';
+
+export function getCorporation(id, month = null) {
+  const base = CORPORATIONS.find(c => c.id === id);
+  if (!base) return null;
+  if (!month || !MONTHLY_CHAPTERS[month]) return base;
+
+  const ch = MONTHLY_CHAPTERS[month];
+  if (ch.featuredCorpId === id && ch.featuredCorpGreeting && ch.featuredCorpOptions) {
+    return {
+      ...base,
+      isFeaturedThisMonth: true,
+      dialogue: {
+        greeting: ch.featuredCorpGreeting,
+        options: ch.featuredCorpOptions.map((opt, idx) => ({
+          id: `${id}_month_${month}_opt_${idx}`,
+          text: opt.text,
+          response: opt.response,
+          impact: opt.impact,
+          apply(engine) {
+            if (opt.apply) {
+              opt.apply(engine);
+            }
+          }
+        }))
+      }
+    };
+  }
+  return base;
 }
 
 // Autonomous Corporate Decision Engine (PHASE 4: 기업의 독립적 의사결정 시스템)

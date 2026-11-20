@@ -1206,3 +1206,132 @@ main:has(.title-scene) {
   font-weight: 700;
   transition: background 0.15s ease;
 }
+
+/* Geopolitical Campaign Situation Room (Pilot 3-Month Branching System) */
+.campaign-situation-room {
+  margin-bottom: 24px;
+}
+.campaign-act-badge {
+  background: var(--navy);
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 14px;
+  letter-spacing: 0.5px;
+  display: inline-block;
+  margin-bottom: 6px;
+}
+.intel-desk-container {
+  background: #f8fafc;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 16px 0;
+}
+.intel-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.intel-tabs-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.btn-intel-tab {
+  background: var(--white);
+  border: 1px solid #94a3b8;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--navy);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.btn-intel-tab.active {
+  background: var(--navy);
+  color: #fff;
+  border-color: var(--navy);
+}
+.intel-content-box {
+  background: #ffffff;
+  border-left: 4px solid var(--gold);
+  border-radius: 4px;
+  padding: 14px 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.stakeholder-dossier-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+  margin: 16px 0;
+}
+.stakeholder-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px 16px;
+  box-shadow: 0 2px 6px rgba(16, 28, 43, 0.04);
+}
+.stakeholder-quote-box {
+  background: #fdfbf7;
+  border-left: 3px solid var(--navy);
+  padding: 10px 12px;
+  margin-top: 8px;
+  font-size: 12.5px;
+  color: #334155;
+  line-height: 1.5;
+  font-style: italic;
+}
+.campaign-decision-card {
+  background: var(--white);
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px 18px;
+  margin-bottom: 12px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.campaign-decision-card:hover {
+  border-color: var(--gold);
+  background: #fdfcf9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(16, 28, 43, 0.08);
+}
+.campaign-decision-card.selected {
+  border: 2px solid var(--navy);
+  background: #f1f5f9;
+}
+.decision-rationale-tag {
+  font-size: 11.5px;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 4px 10px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-top: 8px;
+}
+.press-statement-option {
+  background: var(--white);
+  border: 1.5px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+.press-statement-option:hover {
+  border-color: #3b82f6;
+  background: #eff6ff;
+}
+.press-statement-option.selected {
+  border: 2px solid #2563eb;
+  background: #dbeafe;
+}

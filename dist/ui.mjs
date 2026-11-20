@@ -3,10 +3,12 @@
 import { GameManager } from './game.mjs';
 import { SCENARIOS } from './scenarios.mjs';
 import { ORIGINS, INDUSTRIES, PARTNERS } from './constants.mjs';
-import { POLICY_ACTIONS, DOCTRINES } from './policies.mjs';
-import { CORPORATIONS } from './corporations.mjs';
+import { POLICY_ACTIONS, getMonthlyPolicies, getPolicy, DOCTRINES } from './policies.mjs';
+import { CORPORATIONS, getCorporation } from './corporations.mjs';
 import { getPressConferenceQA } from './press.mjs';
 import { StorageManager } from './storage.mjs';
+import { MONTHLY_CHAPTERS } from './storyline.mjs';
+import { TAIWAN_STRAIT_CAMPAIGN } from './campaign.mjs';
 
 class UIManager {
   constructor() {
@@ -24,6 +26,7 @@ class UIManager {
     this.toastTimeout = null;
     this.selectedCorpId = 'samsung';
     this.lastCorpResponse = null;
+    this.activeIntelId = null;
 
     this.init();
   }
@@ -573,170 +576,322 @@ class UIManager {
     `;
     wrap.appendChild(apBanner);
 
-    // STEP 1 SECTION: 이달의 긴급 통상 현안 브리핑
-    const step1Header = document.createElement('div');
-    step1Header.className = 'step-section-header';
-    step1Header.innerHTML = `
-      <span class="step-badge">STEP 1</span>
-      <h3 class="step-section-title">이달의 긴급 통상 현안 브리핑</h3>
-      <span class="step-section-hint">먼저 주요 대외 동향을 확인하십시오</span>
-    `;
-    wrap.appendChild(step1Header);
+    // =========================================================================
+    // GEOPOLITICAL CAMPAIGN SITUATION ROOM (Months 1-3 Taiwan Strait Pilot)
+    // =========================================================================
+    const stageData = (this.gm.campaign && this.gm.currentMonth <= 3) ? this.gm.campaign.getCurrentStageData() : null;
 
-    // Corporate Action Feedback Alert
-    if (this.corporateFeedback) {
-      const fbBox = document.createElement('div');
-      fbBox.className = 'panel';
-      fbBox.style.borderLeft = '5px solid var(--green)';
-      fbBox.style.background = '#f0fdf4';
-      fbBox.style.marginBottom = '12px';
-      fbBox.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
-          <div>
-            <span class="status-pill" style="background: var(--green); color: #fff; font-size: 11px;">✅ 정부 대응 조치 확정</span>
-            <p style="margin: 4px 0 0; font-size: 13px; color: #166534; font-weight: 700;">${this.corporateFeedback.resolveText}</p>
+    if (stageData) {
+      const campRoom = document.createElement('div');
+      campRoom.className = 'campaign-situation-room';
+
+      const currentDecision = this.gm.campaign.decisionsHistory.find(d => d.month === this.gm.currentMonth);
+      const currentStmt = this.gm.campaign.diplomaticMemory.find(s => s.month === this.gm.currentMonth);
+
+      // STEP 1 SECTION: 이달의 긴급 통상 현안 브리핑
+      const step1Header = document.createElement('div');
+      step1Header.className = 'step-section-header';
+      step1Header.innerHTML = `
+        <span class="step-badge">STEP 1</span>
+        <h3 class="step-section-title">이달의 긴급 통상 정세 및 비밀 정보 브리핑</h3>
+        <span class="step-section-hint">외교·통상 전선의 돌발 위기를 파악하십시오</span>
+      `;
+      campRoom.appendChild(step1Header);
+
+      // 1. Situation Briefing Banner
+      const narrativeBox = document.createElement('div');
+      narrativeBox.className = 'panel';
+      narrativeBox.style.borderLeft = '6px solid var(--navy)';
+      narrativeBox.style.background = 'linear-gradient(180deg, #fdfbf7 0%, #f4ede2 100%)';
+      narrativeBox.style.padding = '22px 24px';
+      narrativeBox.style.marginBottom = '16px';
+      narrativeBox.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+          <span class="campaign-act-badge">${stageData.act} · 2027년 ${stageData.month}월 실록</span>
+          <span style="font-size: 12px; color: var(--muted); font-weight: 700;">대만해협 위기 시범 전역</span>
+        </div>
+        <h2 style="font-size: 22px; color: var(--navy); margin: 6px 0 3px; font-family: var(--font-serif); font-weight: 900;">
+          ${stageData.title}
+        </h2>
+        <div style="font-size: 13.5px; color: #78350f; font-weight: 700; margin-bottom: 12px;">
+          ${stageData.subtitle}
+        </div>
+        <p style="font-size: 14px; color: #334155; line-height: 1.65; margin: 0; word-break: keep-all;">
+          ${stageData.crisisSummary || stageData.climaxNarrative}
+        </p>
+      `;
+      campRoom.appendChild(narrativeBox);
+
+      // 2. Classified Intelligence Desk (기밀 첩보 서류철)
+      if (stageData.intelReports && stageData.intelReports.length > 0) {
+        if (!this.activeIntelId || !stageData.intelReports.some(i => i.id === this.activeIntelId)) {
+          this.activeIntelId = stageData.intelReports[0].id;
+        }
+        const activeIntel = stageData.intelReports.find(i => i.id === this.activeIntelId) || stageData.intelReports[0];
+
+        const intelBox = document.createElement('div');
+        intelBox.className = 'intel-desk-container';
+        intelBox.innerHTML = `
+          <div class="intel-header-row">
+            <div>
+              <span style="background: #e0e7ff; color: #3730a3; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">
+                📁 1급 비밀 대외 정보 서류철
+              </span>
+              <span style="font-size: 12px; color: #64748b; margin-left: 8px;">(클릭하여 각 기관별 비밀 보고서 열람)</span>
+            </div>
+            <small style="color: #64748b; font-weight: 600;">통상교섭본부 비밀취급인가 전용</small>
           </div>
-          <button class="secondary" id="btn-close-corp-fb" style="font-size: 11px; padding: 4px 8px;">✕</button>
-        </div>
-      `;
-      wrap.appendChild(fbBox);
-    }
-
-    // Dismissal Warning alert
-    if (this.gm.politics && this.gm.politics.dismissalWarning) {
-      const warnAlert = document.createElement('div');
-      warnAlert.className = 'panel';
-      warnAlert.style.borderLeft = '5px solid var(--red)';
-      warnAlert.style.background = '#fff5f5';
-      warnAlert.style.marginBottom = '12px';
-      warnAlert.innerHTML = `
-        <strong style="color: var(--red); font-size: 14px;">⚠️ 대통령실 경고: 조기 경질 위기!</strong>
-        <p style="font-size: 12px; margin: 3px 0 0; color: #661010;">연속된 무역수지 적자로 경질 위기에 몰렸습니다. 즉각적인 흑자 반전 대책이 요구됩니다.</p>
-      `;
-      wrap.appendChild(warnAlert);
-    }
-
-    // Suspended Negotiation Resume Banner
-    if (this.gm.activeNegotiation && this.gm.activeNegotiation.status === 'suspended') {
-      const suspBox = document.createElement('div');
-      suspBox.className = 'panel';
-      suspBox.style.borderLeft = '5px solid var(--gold)';
-      suspBox.style.background = '#fdfaf2';
-      suspBox.style.marginBottom = '12px';
-      suspBox.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-          <div>
-            <span class="status-pill" style="background: var(--gold); color: #fff; font-weight: 800;">⏸️ 양자 통상 협상 정회 중 (차월 속개 대기)</span>
-            <h4 style="font-size: 15px; margin: 4px 0 2px; color: var(--navy); font-family: var(--font-serif);">${this.gm.activeNegotiation.scenario.partnerName}</h4>
-            <p style="font-size: 12px; color: #555; margin: 0;">현재 협상 수용 점수: <strong>${this.gm.activeNegotiation.totalScore}pt</strong> / 긴장도: <strong>${this.gm.activeNegotiation.tension}%</strong></p>
+          <div class="intel-tabs-row">
+            ${stageData.intelReports.map(ir => `
+              <button class="btn-intel-tab ${ir.id === activeIntel.id ? 'active' : ''}" data-iid="${ir.id}">
+                ${ir.source.split(' ')[0]} 전문
+              </button>
+            `).join('')}
           </div>
-          <button class="primary" id="btn-resume-suspended-nego" style="font-size: 12px; padding: 6px 14px;">
-            협상장 입장 및 회담 속개 →
-          </button>
-        </div>
-      `;
-      wrap.appendChild(suspBox);
-    }
-
-    // Active random event modal trigger if present
-    if (this.gm.activeEvent) {
-      const evtCard = document.createElement('div');
-      evtCard.className = 'panel';
-      evtCard.style.borderLeft = '5px solid var(--red)';
-      evtCard.style.background = '#fefcf8';
-      evtCard.style.marginBottom = '12px';
-      evtCard.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px;">
-          <span class="status-pill" style="background: rgba(175, 81, 71, 0.15); color: var(--red); font-weight: 800;">🚨 ${this.gm.activeEvent.categoryName} 긴급 현안</span>
-          <small style="color: var(--muted);">${this.gm.currentMonth}월 발생</small>
-        </div>
-        <h4 style="font-family: var(--font-serif); font-size: 17px; margin-bottom: 6px; color: var(--navy);">${this.gm.activeEvent.title}</h4>
-        <p style="font-size: 13px; line-height: 1.5; margin-bottom: 12px; color: #333;">${this.gm.activeEvent.description}</p>
-        <div style="display: flex; flex-direction: column; gap: 6px;">
-          ${this.gm.activeEvent.choices.map((c, idx) => `
-            <button class="secondary btn-event-choice" data-choice="${idx}" style="text-align: left; padding: 10px 12px; border: 1px solid var(--line); font-size: 13px;">
-              <strong>선택 ${idx + 1}.</strong> ${c.text}
-            </button>
-          `).join('')}
-        </div>
-      `;
-      wrap.appendChild(evtCard);
-      setTimeout(() => {
-        wrap.querySelectorAll('.btn-event-choice').forEach(btn => {
-          btn.onclick = () => {
-            const idx = Number(btn.getAttribute('data-choice'));
-            this.gm.resolveEventChoice(idx);
-            this.render();
-          };
-        });
-      }, 0);
-    }
-
-    // Autonomous Corporate Action Alert
-    if (this.gm.activeCorporateAction) {
-      const corpAct = this.gm.activeCorporateAction;
-      const corpBox = document.createElement('div');
-      corpBox.className = 'panel';
-      corpBox.style.borderLeft = '5px solid var(--gold)';
-      corpBox.style.background = '#fdfaf2';
-      corpBox.style.marginBottom = '12px';
-      corpBox.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px;">
-          <span class="status-pill" style="background: var(--gold); color: #fff; font-weight: 800;">🏢 기업 긴급 의사결정 통보</span>
-          <small style="color: var(--muted);">${corpAct.corpName}</small>
-        </div>
-        <h4 style="font-size: 15px; color: var(--navy); margin: 3px 0 4px; font-family: var(--font-serif);">${corpAct.title}</h4>
-        <p style="font-size: 12px; color: #333; margin: 0 0 8px; line-height: 1.4;">${corpAct.description}</p>
-        <div style="display: flex; flex-direction: column; gap: 6px;">
-          ${corpAct.options.map(opt => `
-            <button class="secondary btn-corp-agency-opt" data-cid="${corpAct.corpId}" data-akey="${corpAct.actionKey}" data-oid="${opt.id}" style="text-align: left; padding: 8px 12px; border: 1px solid var(--line); font-size: 12px;">
-              <strong>${opt.text}</strong>
-              <span style="font-size: 11px; color: var(--muted); margin-left: 6px;">(${opt.cost})</span>
-            </button>
-          `).join('')}
-        </div>
-      `;
-      wrap.appendChild(corpBox);
-    }
-
-    // Proactive Foreign Threats Wire (간결하게 1~2줄로 요약)
-    if (this.gm.monthlyThreats && this.gm.monthlyThreats.length > 0) {
-      const threatBox = document.createElement('div');
-      threatBox.className = 'panel';
-      threatBox.style.borderLeft = '5px solid var(--red)';
-      threatBox.style.background = '#fff8f8';
-      threatBox.style.marginBottom = '12px';
-      threatBox.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px;">
-          <span class="status-pill" style="background: var(--red); color: #fff; font-weight: 800; font-size: 11px;">⚡ 외국의 통상 공세 경보</span>
-          <small style="color: var(--muted); font-size: 11px;">상대국 선제적 조치</small>
-        </div>
-        ${this.gm.monthlyThreats.map(t => `
-          <div style="margin-top: 4px;">
-            <strong style="font-size: 14px; color: #881313;">${t.headline}</strong>
-            <p style="font-size: 12px; color: #444; margin: 2px 0 4px; line-height: 1.4;">${t.description}</p>
-            <div style="font-size: 11px; color: #881313; font-weight: 700;">💡 대응 권고: ${t.actionPrompt}</div>
+          <div class="intel-content-box">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+              <strong style="color: #1e293b; font-size: 13.5px;">${activeIntel.title}</strong>
+              <small style="color: #64748b;">출처: ${activeIntel.source}</small>
+            </div>
+            <p style="font-size: 13px; color: #334155; line-height: 1.6; margin: 0;">
+              ${activeIntel.content}
+            </p>
           </div>
-        `).join('<hr style="margin: 8px 0; border: 0; border-top: 1px dashed #fca5a5;">')}
+        `;
+        campRoom.appendChild(intelBox);
+      }
+
+      // 3. Conflicting Stakeholder Demands (상충하는 이해관계자 압박)
+      if (stageData.stakeholders && stageData.stakeholders.length > 0) {
+        const stkSec = document.createElement('div');
+        stkSec.style.margin = '16px 0';
+        stkSec.innerHTML = `
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+            <h4 style="font-size: 15px; color: var(--navy); margin: 0; font-family: var(--font-serif); font-weight: 800;">
+              ⚡ 주요 당사국 및 산업계 대표 발언 (상충하는 이해관계)
+            </h4>
+            <small style="color: var(--muted);">배후 의도와 요구를 면밀히 분석하십시오</small>
+          </div>
+          <div class="stakeholder-dossier-grid">
+            ${stageData.stakeholders.map(stk => `
+              <div class="stakeholder-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                  <strong style="font-size: 14px; color: var(--navy);">${stk.flag} ${stk.name}</strong>
+                  <span class="status-pill" style="font-size: 10.5px;">${stk.org}</span>
+                </div>
+                <div style="font-size: 11.5px; color: #991b1b; font-weight: 700; margin-bottom: 6px;">
+                  핵심 기조: ${stk.stance}
+                </div>
+                <div class="stakeholder-quote-box">
+                  "${stk.quote}"
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+        campRoom.appendChild(stkSec);
+      }
+
+      // 4. Strategic Course Directives (통상교섭본부장의 전략 노선 결단)
+      const choicesToRender = stageData.strategicChoices || stageData.finalChoices || [];
+      const decSec = document.createElement('div');
+      decSec.style.margin = '20px 0';
+
+      if (currentDecision) {
+        decSec.innerHTML = `
+          <div class="panel" style="border: 2px solid var(--green); background: #f0fdf4; padding: 18px 20px; box-shadow: 0 4px 12px rgba(22, 101, 52, 0.08);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span class="status-pill" style="background: var(--green); color: #fff; font-weight: 800;">
+                ✅ ${this.gm.currentMonth}월 본부장 전략 노선 결단 확정
+              </span>
+              <small style="color: #166534; font-weight: 700;">내부 경제 엔진에 정책 집행 반영됨</small>
+            </div>
+            <h3 style="font-size: 17px; color: #14532d; margin: 4px 0 6px; font-family: var(--font-serif); font-weight: 800;">
+              ${currentDecision.label}
+            </h3>
+            <p style="font-size: 13.5px; color: #166534; margin: 0; line-height: 1.5;">
+              ${currentDecision.description}
+            </p>
+          </div>
+        `;
+      } else {
+        decSec.innerHTML = `
+          <div class="step-section-header" style="margin-bottom: 12px;">
+            <span class="step-badge">STEP 2</span>
+            <h3 class="step-section-title">통상교섭본부장의 전략 노선 결단 (단일 선택)</h3>
+            <span class="step-section-hint">선택의 경제적·외교적 결과는 다음 달 사건과 무역통계로 드러납니다</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            ${choicesToRender.map((c, idx) => `
+              <div class="campaign-decision-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 6px;">
+                  <strong style="font-size: 15px; color: var(--navy); font-family: var(--font-serif); font-weight: 800;">
+                    ${c.label}
+                  </strong>
+                </div>
+                <p style="font-size: 13px; color: #334155; line-height: 1.55; margin: 0 0 8px;">
+                  ${c.description}
+                </p>
+                <div class="decision-rationale-tag">
+                  ⚖️ 전략적 고려: ${c.rationale || c.summary}
+                </div>
+                <button class="primary btn-campaign-choice" data-cid="${c.id}" style="width: 100%; margin-top: 12px; padding: 10px 16px; font-size: 13.5px; font-weight: 800;">
+                  이 노선으로 공식 결단 하달 ➔
+                </button>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+      campRoom.appendChild(decSec);
+
+      // 5. Diplomatic Statement Podium (외신기자회견 공식 외교 발언대)
+      if (stageData.pressQuestion && stageData.pressStatements) {
+        const stmtSec = document.createElement('div');
+        stmtSec.style.margin = '20px 0';
+
+        if (currentStmt) {
+          stmtSec.innerHTML = `
+            <div class="panel" style="border: 2px solid #2563eb; background: #eff6ff; padding: 16px 20px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <span class="status-pill" style="background: #2563eb; color: #fff; font-weight: 800;">
+                  🎙️ 외신기자회견 공식 외교 발언 완료 (영구 기록)
+                </span>
+                <small style="color: #1e40af; font-weight: 700;">외교적 기억(Diplomatic Memory) 등재</small>
+              </div>
+              <p style="font-size: 14px; font-weight: 700; color: #1e3a8a; margin: 4px 0 0; line-height: 1.5;">
+                "${currentStmt.text}"
+              </p>
+            </div>
+          `;
+        } else {
+          stmtSec.innerHTML = `
+            <div class="panel" style="border: 1.5px solid #93c5fd; background: #f0f7ff; padding: 18px 20px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="background: #1d4ed8; color: #fff; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 4px;">
+                  🎙️ 외신기자회견 대외 공식 성명대
+                </span>
+                <small style="color: #1e40af; font-weight: 600;">말 한마디가 조간 1면과 상대국 대응을 바꿉니다</small>
+              </div>
+              <h4 style="font-size: 14px; color: #1e3a8a; margin: 0 0 10px; font-family: var(--font-serif); font-weight: 800;">
+                "${stageData.pressQuestion}"
+              </h4>
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                ${stageData.pressStatements.map(s => `
+                  <div class="press-statement-option">
+                    <div style="font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 4px;">
+                      ${s.text}
+                    </div>
+                    <div style="font-size: 11px; color: #64748b; margin-bottom: 8px;">
+                      파급 예상: ${s.note || ''}
+                    </div>
+                    <button class="secondary btn-campaign-stmt" data-sid="${s.id}" style="padding: 6px 14px; font-size: 12px; font-weight: 700;">
+                      이 발언을 공식 성명으로 발표 ➔
+                    </button>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }
+        campRoom.appendChild(stmtSec);
+      }
+
+      wrap.appendChild(campRoom);
+    } else {
+      // General Office View for Month 4+
+      // STEP 1 SECTION: 이달의 긴급 통상 현안 브리핑
+      const step1Header = document.createElement('div');
+      step1Header.className = 'step-section-header';
+      step1Header.innerHTML = `
+        <span class="step-badge">STEP 1</span>
+        <h3 class="step-section-title">이달의 긴급 통상 현안 브리핑</h3>
+        <span class="step-section-hint">먼저 주요 대외 동향을 확인하십시오</span>
       `;
-      wrap.appendChild(threatBox);
-    } else if (!this.gm.activeEvent && !this.gm.activeCorporateAction) {
-      // 평온한 달의 간결한 상태 카드
-      const calmBox = document.createElement('div');
-      calmBox.className = 'panel';
-      calmBox.style.background = '#f8fafc';
-      calmBox.style.padding = '14px 18px';
-      calmBox.style.marginBottom = '12px';
-      calmBox.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 10px; font-size: 13px; color: #334155;">
-          <span>🕊️</span>
-          <span><strong>대외 통상 전선 안정:</strong> 주요 교역국과의 마찰이 평시 수준을 유지하고 있습니다. 아래 핵심 정책 결재와 기업 지원에 집중하십시오.</span>
+      wrap.appendChild(step1Header);
+
+      const chapter = MONTHLY_CHAPTERS[this.gm.currentMonth] || MONTHLY_CHAPTERS[1];
+      const chapterCrisisDecision = this.gm.chapterCrisisDecisions?.[this.gm.currentMonth];
+
+      const storyChapterBox = document.createElement('div');
+      storyChapterBox.className = 'panel story-chapter-panel';
+      storyChapterBox.style.borderLeft = '6px solid var(--navy)';
+      storyChapterBox.style.background = 'linear-gradient(180deg, #fdfbf7 0%, #f7f1e6 100%)';
+      storyChapterBox.style.padding = '20px 22px';
+      storyChapterBox.style.marginBottom = '14px';
+      storyChapterBox.style.boxShadow = '0 3px 12px rgba(16, 28, 43, 0.08)';
+
+      let crisisHtml = '';
+      if (chapter.urgentCrisis) {
+        if (chapterCrisisDecision) {
+          crisisHtml = `
+            <div style="background: rgba(34, 197, 94, 0.1); border: 1.5px solid #16a34a; border-radius: 6px; padding: 12px 16px; margin-top: 14px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; flex-wrap: wrap; gap: 6px;">
+                <span style="font-size: 11px; font-weight: 800; color: #166534; text-transform: uppercase;">✅ 통상 결단 완료 · ${chapter.urgentCrisis.title}</span>
+                <span style="font-size: 11px; color: #15803d; font-weight: 700;">${chapterCrisisDecision.summary || ''}</span>
+              </div>
+              <div style="font-size: 13.5px; font-weight: 700; color: #14532d;">
+                "${chapterCrisisDecision.chosenText}"
+              </div>
+            </div>
+          `;
+        } else {
+          crisisHtml = `
+            <div style="background: #ffffff; border: 2px solid #b91c1c; border-radius: 8px; padding: 16px 18px; margin-top: 14px; box-shadow: 0 4px 14px rgba(185, 28, 28, 0.12);">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
+                <span style="background: #b91c1c; color: #fff; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 4px;">
+                  🚨 이달의 긴급 통상 결단 (고위급 딜레마)
+                </span>
+                <span style="font-size: 12px; color: #7f1d1d; font-weight: 700;">행동력(AP) 미소모</span>
+              </div>
+              <h4 style="font-size: 15px; color: #991b1b; margin: 0 0 6px; font-family: var(--font-serif); font-weight: 800;">
+                ${chapter.urgentCrisis.title}
+              </h4>
+              <p style="font-size: 13px; color: #374151; margin: 0 0 12px; line-height: 1.5;">
+                ${chapter.urgentCrisis.desc}
+              </p>
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                ${chapter.urgentCrisis.choices.map((c, idx) => `
+                  <button class="secondary btn-chapter-crisis-choice" data-choice="${idx}" style="text-align: left; padding: 10px 14px; border: 1.5px solid #e5e7eb; border-radius: 6px; background: #fafaf9; cursor: pointer; transition: all 0.2s ease;">
+                    <div style="font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 3px;">
+                      선택 ${idx + 1}. ${c.text}
+                    </div>
+                    <div style="font-size: 11px; color: #b45309; font-weight: 600;">
+                      📊 영향: ${c.summary}
+                    </div>
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      storyChapterBox.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+          <span style="background: var(--navy); color: var(--gold); font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 12px; letter-spacing: 0.5px;">
+            ${chapter.act} · 2027년 ${this.gm.currentMonth}월 통상 실록
+          </span>
+          <span style="font-size: 12px; color: var(--muted); font-weight: 600;">
+            총 12막 중 ${this.gm.currentMonth}막
+          </span>
         </div>
+        <h2 style="font-size: 21px; color: var(--navy); margin: 6px 0 2px; font-family: var(--font-serif); font-weight: 900; letter-spacing: -0.3px;">
+          ${chapter.title}
+        </h2>
+        <div style="font-size: 13px; color: #78350f; font-weight: 700; margin-bottom: 10px;">
+          ${chapter.subtitle}
+        </div>
+        <p style="font-size: 13.5px; color: #334155; line-height: 1.6; margin: 0; word-break: keep-all;">
+          ${chapter.briefing}
+        </p>
+        ${crisisHtml}
       `;
-      wrap.appendChild(calmBox);
+      wrap.appendChild(storyChapterBox);
     }
 
     // STEP 2 SECTION: 본부장 3대 결재 데스크
+    const chapter = MONTHLY_CHAPTERS[this.gm.currentMonth] || MONTHLY_CHAPTERS[1];
     const step2Header = document.createElement('div');
     step2Header.className = 'step-section-header';
     step2Header.innerHTML = `
@@ -746,35 +901,36 @@ class UIManager {
     `;
     wrap.appendChild(step2Header);
 
-    // 3대 핵심 업무 카드 그리드
     const officeGrid = document.createElement('div');
     officeGrid.className = 'office-grid';
-
     officeGrid.innerHTML = `
       <div class="office-card primary-task" id="obj-policies" style="cursor: pointer;">
         <span class="task-tag core">업무 ① · 핵심 결재 (각 1 AP)</span>
         <div class="icon-head">📁</div>
         <h3>월간 정책 결재함</h3>
-        <p>무역금융 지원, R&D 세액공제, 물류 바우처, 수출선 다변화 등 15대 정책을 결재합니다.</p>
+        <div style="font-size: 11px; background: rgba(180, 83, 9, 0.1); color: #92400e; padding: 4px 8px; border-radius: 4px; font-weight: 700; margin-bottom: 6px;">
+          ★ ${chapter.specialPolicy ? chapter.specialPolicy.title : '이달의 긴급 특별 결재 대기 중'}
+        </div>
+        <p style="font-size: 12px; color: #475569; margin: 0 0 10px;">이달의 긴급 특별 결재 및 금융·세제·인프라 등 15대 정책 수단을 집행합니다.</p>
         <button class="primary" style="width: 100%;">정책 결재함 열기 (${this.gm.actionPoints} AP 잔여) →</button>
       </div>
 
       <div class="office-card" id="obj-nego-us" style="cursor: pointer;">
         <span class="task-tag must">업무 ② · 통상 외교 (1 AP)</span>
         <div class="icon-head">🤝</div>
-        <h3>대미 통상 협상 훈령</h3>
-        <p>미국의 25% 자동차 관세 폭탄을 방어하기 위한 워싱턴 고위급 양자 담판 테이블로 직행합니다.</p>
+        <h3>${chapter.negotiationTitle || '대미 통상 협상 훈령'}</h3>
+        <p style="font-size: 12px; color: #475569; margin: 0 0 10px;">${chapter.negotiationDesc || '양자 통상 담판 테이블로 직행합니다.'}</p>
         <button class="secondary" style="width: 100%;">
-          ${this.gm.activeNegotiation && this.gm.activeNegotiation.status === 'suspended' ? '정회된 협상 속개 →' : '대미 협상 시작 →'}
+          ${this.gm.activeNegotiation && this.gm.activeNegotiation.status === 'suspended' ? '정회된 협상 속개 →' : (chapter.negotiationButtonText || '외교 협상 시작 →')}
         </button>
       </div>
 
       <div class="office-card" id="obj-corp-dialogue" style="cursor: pointer;">
         <span class="task-tag opt">업무 ③ · 산업 현장 (1 AP)</span>
         <div class="icon-head">💼</div>
-        <h3>10대 기업 현장 간담회</h3>
-        <p>삼성(반도체 팹), 현대차(관세), 조선 3사(도크), 포스코 등 주력 기업의 현장 병목을 해결합니다.</p>
-        <button class="secondary" style="width: 100%;">기업 간담회 진행 →</button>
+        <h3>${chapter.featuredCorpTitle || '10대 기업 현장 간담회'}</h3>
+        <p style="font-size: 12px; color: #475569; margin: 0 0 10px;">${chapter.featuredCorpGreeting ? chapter.featuredCorpGreeting.substring(0, 52) + '...' : '주력 수출 기업의 현장 병목을 해결합니다.'}</p>
+        <button class="secondary" style="width: 100%;">기업 간담회 진행 (1 AP) →</button>
       </div>
     `;
     wrap.appendChild(officeGrid);
@@ -856,6 +1012,54 @@ class UIManager {
         this.render();
       };
 
+      // Campaign Pilot Event Handlers (Intel tabs, strategic choices, diplomatic statements)
+      wrap.querySelectorAll('.btn-intel-tab').forEach(btn => {
+        btn.onclick = () => {
+          const iid = btn.getAttribute('data-iid');
+          this.activeIntelId = iid;
+          if (this.gm.campaign) this.gm.campaign.inspectIntel(iid);
+          this.render();
+        };
+      });
+
+      wrap.querySelectorAll('.btn-campaign-choice').forEach(btn => {
+        btn.onclick = () => {
+          const cid = btn.getAttribute('data-cid');
+          if (this.gm.campaign) {
+            const chosen = this.gm.campaign.makeStrategicDecision(cid, this.gm);
+            if (chosen) {
+              this.showToast('전략 노선 결단 확정', `"${chosen.label}" 공식 하달`, 'success');
+              this.render();
+            }
+          }
+        };
+      });
+
+      wrap.querySelectorAll('.btn-campaign-stmt').forEach(btn => {
+        btn.onclick = () => {
+          const sid = btn.getAttribute('data-sid');
+          if (this.gm.campaign) {
+            const stmt = this.gm.campaign.recordDiplomaticStatement(sid, this.gm);
+            if (stmt) {
+              this.gm.latestPressStatement = stmt;
+              this.showToast('외교 성명 발표 완료', '대외 공식 성명이 외신에 배포되었습니다.', 'info');
+              this.render();
+            }
+          }
+        };
+      });
+
+      wrap.querySelectorAll('.btn-chapter-crisis-choice').forEach(btn => {
+        btn.onclick = () => {
+          const idx = Number(btn.getAttribute('data-choice'));
+          const res = this.gm.resolveChapterCrisis(idx);
+          if (res && res.decision) {
+            this.showToast('통상 결단 확정', `"${res.decision.chosenText}" (${res.decision.summary})`, 'success');
+          }
+          this.render();
+        };
+      });
+
       wrap.querySelectorAll('.btn-corp-agency-opt').forEach(btn => {
         btn.onclick = () => {
           const cid = btn.getAttribute('data-cid');
@@ -880,7 +1084,7 @@ class UIManager {
           this.gm.activeNegotiation.resumeSession();
           this.gm.screen = 'negotiation';
         } else {
-          this.gm.executePolicy('nego_us_bilateral');
+          this.gm.launchNegotiation();
         }
         this.render();
       };
@@ -891,6 +1095,8 @@ class UIManager {
       };
       const elCorp = document.getElementById('obj-corp-dialogue');
       if (elCorp) elCorp.onclick = () => {
+        const ch = MONTHLY_CHAPTERS[this.gm.currentMonth];
+        this.selectedCorpId = ch?.featuredCorpId || 'samsung';
         this.corporateModalOpen = true;
         this.render();
       };
@@ -899,9 +1105,14 @@ class UIManager {
 
       const btnAdv = document.getElementById('btn-advance-month');
       if (btnAdv) btnAdv.onclick = () => {
-        if (this.gm.actionPoints > 0) {
-          if (!confirm(`아직 행동력 ${this.gm.actionPoints} AP가 남아있습니다. 추가 정책 결재 없이 이번 달 실적을 확정하시겠습니까?`)) {
-            return;
+        if (this.gm.currentMonth <= 3 && this.gm.campaign) {
+          const hasDecided = this.gm.campaign.decisionsHistory.some(d => d.month === this.gm.currentMonth);
+          if (!hasDecided) {
+            const stage = this.gm.campaign.getCurrentStageData();
+            const defChoice = (stage.strategicChoices || stage.finalChoices || [])[0];
+            if (defChoice) {
+              this.gm.campaign.makeStrategicDecision(defChoice.id, this.gm);
+            }
           }
         }
         this.gm.advanceTurn();
@@ -1175,7 +1386,9 @@ class UIManager {
     dialog.style.maxHeight = '90vh';
     dialog.style.overflowY = 'auto';
 
-    const corp = CORPORATIONS.find(c => c.id === this.selectedCorpId) || CORPORATIONS[0];
+    const ch = MONTHLY_CHAPTERS[this.gm.currentMonth] || MONTHLY_CHAPTERS[1];
+    const corp = getCorporation(this.selectedCorpId, this.gm.currentMonth) || CORPORATIONS[0];
+    const isFeatured = (ch.featuredCorpId === corp.id);
 
     dialog.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; border-bottom: 2px solid var(--gold); padding-bottom: 8px;">
@@ -1188,25 +1401,31 @@ class UIManager {
 
       <!-- Corporate selector tabs -->
       <div style="display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 16px;">
-        ${CORPORATIONS.map(c => `
-          <button class="secondary tab-corp-btn ${c.id === this.selectedCorpId ? 'primary' : ''}" data-cid="${c.id}" style="padding: 8px 12px; font-size: 13px; white-space: nowrap;">
-            ${c.icon} ${c.name}
-          </button>
-        `).join('')}
+        ${CORPORATIONS.map(c => {
+          const featured = (ch.featuredCorpId === c.id);
+          return `
+            <button class="secondary tab-corp-btn ${c.id === this.selectedCorpId ? 'primary' : ''}" data-cid="${c.id}" style="padding: 8px 12px; font-size: 13px; white-space: nowrap; ${featured ? 'border: 2px solid var(--gold); font-weight: 800;' : ''}">
+              ${c.icon} ${c.name} ${featured ? '★' : ''}
+            </button>
+          `;
+        }).join('')}
       </div>
 
       <!-- Corporate Card -->
-      <div style="background: var(--white); border: 1px solid var(--line); border-radius: 6px; padding: 18px; margin-bottom: 16px;">
+      <div style="background: var(--white); border: ${isFeatured ? '2px solid var(--gold)' : '1px solid var(--line)'}; border-radius: 6px; padding: 18px; margin-bottom: 16px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
           <div>
-            <h3 style="font-size: 18px; color: var(--navy); margin: 0;">${corp.icon} ${corp.name}</h3>
+            <h3 style="font-size: 18px; color: var(--navy); margin: 0;">
+              ${corp.icon} ${corp.name}
+              ${isFeatured ? '<span class="status-pill" style="background: var(--gold); color: #fff; font-size: 11px; margin-left: 6px;">★ 이달의 집중 현안 기업</span>' : ''}
+            </h3>
             <small style="color: var(--muted); font-weight: 700;">대표 면담자: ${corp.leader} · 수출 비중: ${(corp.annualExportShare * 100).toFixed(0)}%</small>
           </div>
           <span class="status-pill" style="font-size: 12px;">기조: ${corp.stance}</span>
         </div>
 
         <div style="background: #fbf8f0; border-left: 4px solid var(--gold); padding: 12px 14px; border-radius: 4px; margin: 12px 0; font-size: 14px; line-height: 1.6; color: #222;">
-          <strong>현장 애로 및 물리적 제약 요인:</strong><br>
+          <strong>현장 긴급 현안 및 최고경영진 발언:</strong><br>
           "${corp.dialogue.greeting}"
         </div>
 
@@ -1217,10 +1436,12 @@ class UIManager {
         ` : ''}
 
         <div style="margin-top: 16px;">
-          <h4 style="font-size: 14px; color: var(--navy); margin-bottom: 8px;">통상교섭본부장의 정책 지침 및 현장 지원 선택:</h4>
+          <h4 style="font-size: 14px; color: var(--navy); margin-bottom: 8px;">
+            통상교섭본부장의 정책 지침 및 현장 지원 선택 (1 AP 소모, 잔여: ${this.gm.actionPoints} AP):
+          </h4>
           <div style="display: flex; flex-direction: column; gap: 10px;">
             ${corp.dialogue.options.map((opt, idx) => `
-              <button class="secondary btn-corp-opt" data-opt="${idx}" style="text-align: left; padding: 12px 14px; border: 1px solid var(--line); line-height: 1.5;">
+              <button class="secondary btn-corp-opt" data-opt="${idx}" ${this.gm.actionPoints <= 0 ? 'disabled' : ''} style="text-align: left; padding: 12px 14px; border: 1px solid var(--line); line-height: 1.5;">
                 <strong style="color: var(--navy); display: block; margin-bottom: 4px;">지침 ${idx + 1}. ${opt.text}</strong>
                 <span style="font-size: 12px; color: var(--muted);">예상 파급효과: 기업신뢰 ${opt.impact?.businessTrust ? (opt.impact.businessTrust > 0 ? '+' : '') + opt.impact.businessTrust : '0'}pt, 산업 경쟁력 ${opt.impact?.competitiveness ? (opt.impact.competitiveness > 0 ? '+' : '') + opt.impact.competitiveness : '0'}pt</span>
               </button>
@@ -1249,8 +1470,13 @@ class UIManager {
           const optIdx = Number(btn.getAttribute('data-opt'));
           const res = this.gm.consultCorporation(this.selectedCorpId, optIdx);
           if (res) {
-            this.lastCorpResponse = res.response;
-            this.render();
+            if (res.error) {
+              this.showToast('행동력(AP) 부족', '남은 행동력(AP)이 없습니다.', 'warning');
+            } else {
+              this.lastCorpResponse = res.response;
+              this.showToast('기업 현장 지침 하달', `${corp.name}에 본부장 정책 지침을 하달했습니다. (1 AP 소모)`, 'success');
+              this.render();
+            }
           }
         };
       });
@@ -1418,8 +1644,14 @@ class UIManager {
     `;
     wrap.appendChild(header);
 
-    // List policies of active tab
-    const filtered = POLICY_ACTIONS.filter(p => p.category === this.activePolicyTab);
+    // List policies of active tab (including Month-specific Special Policy)
+    const allPolicies = getMonthlyPolicies(this.gm.currentMonth);
+    const filtered = allPolicies.filter(p => {
+      if (p.id.startsWith('special_policy_')) {
+        return this.activePolicyTab === 'government';
+      }
+      return p.category === this.activePolicyTab;
+    });
 
     const list = document.createElement('div');
     list.style.display = 'flex';
@@ -1429,20 +1661,27 @@ class UIManager {
     filtered.forEach(policy => {
       const isUsed = this.gm.usedPoliciesThisMonth.includes(policy.id);
       const noAP = this.gm.actionPoints <= 0;
+      const isSpecial = policy.id.startsWith('special_policy_');
 
       const card = document.createElement('div');
       card.className = 'panel';
       card.style.marginBottom = '0';
-      card.style.borderLeft = isUsed ? '4px solid var(--muted)' : '4px solid var(--gold)';
+      if (isSpecial) {
+        card.style.border = isUsed ? '2px solid #94a3b8' : '2px solid #b45309';
+        card.style.borderLeft = isUsed ? '6px solid var(--muted)' : '6px solid #b45309';
+        card.style.background = isUsed ? '#f8fafc' : '#fefce8';
+      } else {
+        card.style.borderLeft = isUsed ? '4px solid var(--muted)' : '4px solid var(--gold)';
+      }
       card.style.opacity = isUsed ? '0.6' : '1';
 
       card.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span class="status-pill">${policy.categoryName}</span>
+            <span class="status-pill" style="${isSpecial ? 'background: #b45309; color: #fff; font-weight: 800;' : ''}">${isSpecial ? '★ 이달의 긴급 특별 결재' : policy.categoryName}</span>
             <h3 style="border: 0; padding: 0; margin: 0; font-size: 17px; font-weight: 800; color: var(--navy);">${policy.title}</h3>
           </div>
-          <button class="primary btn-execute-policy" data-pid="${policy.id}" ${isUsed || noAP ? 'disabled' : ''} style="padding: 7px 16px; font-size: 13px; white-space: nowrap;">
+          <button class="primary btn-execute-policy" data-pid="${policy.id}" ${isUsed || noAP ? 'disabled' : ''} style="padding: 7px 16px; font-size: 13px; white-space: nowrap; ${isSpecial && !isUsed && !noAP ? 'background: #b45309;' : ''}">
             ${isUsed ? '✓ 집행 완료' : (policy.isNegotiationLaunch ? '협상장 입장 ➔' : '결재 집행 (1 AP) ➔')}
           </button>
         </div>

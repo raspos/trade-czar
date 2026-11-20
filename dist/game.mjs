@@ -15,6 +15,8 @@ import { NewspaperEngine } from './newspaper.mjs';
 import { getPressConferenceQA } from './press.mjs';
 import { VerdictEngine } from './verdict.mjs';
 import { StorageManager } from './storage.mjs';
+import { MONTHLY_CHAPTERS } from './storyline.mjs';
+import { CampaignManager } from './campaign.mjs';
 
 export class GameManager {
   constructor() {
@@ -50,6 +52,8 @@ export class GameManager {
     this.latestPressStatement = null;
     this.currentPressQA = null;
     this.finalVerdict = null;
+    this.chapterCrisisDecisions = {};
+    this.campaign = new CampaignManager();
     this.gameLog = [];
   }
 
@@ -95,6 +99,8 @@ export class GameManager {
     this.latestPressStatement = null;
     this.currentPressQA = null;
     this.finalVerdict = null;
+    this.chapterCrisisDecisions = {};
+    this.campaign = new CampaignManager();
     this.gameLog = [];
 
     this.prepareMonth();
@@ -218,17 +224,61 @@ export class GameManager {
     this.autoSave();
   }
 
+  // Resolve Monthly Chapter Dilemma Crisis (12-Month Narrative Arc)
+  resolveChapterCrisis(choiceIndex, month = null) {
+    const m = month || this.currentMonth;
+    const ch = MONTHLY_CHAPTERS[m];
+    if (!ch || !ch.urgentCrisis || !ch.urgentCrisis.choices[choiceIndex]) return null;
+    const choice = ch.urgentCrisis.choices[choiceIndex];
+
+    if (choice.impact) {
+      this.politics.applyDeltas(choice.impact);
+    }
+    if (choice.apply) {
+      choice.apply(this.economy);
+    }
+
+    this.chapterCrisisDecisions[m] = {
+      choiceIndex,
+      chosenText: choice.text,
+      impact: choice.impact,
+      summary: choice.summary
+    };
+
+    this.gameLog.push({
+      month: m,
+      type: "chapter_crisis",
+      title: ch.urgentCrisis.title,
+      chosenText: choice.text
+    });
+
+    this.autoSave();
+    return { success: true, decision: this.chapterCrisisDecisions[m] };
+  }
+
+  // Launch interactive bilateral negotiation
+  launchNegotiation(partnerId = null) {
+    if (this.actionPoints <= 0) return { error: "No action points remaining" };
+    const ch = MONTHLY_CHAPTERS[this.currentMonth];
+    const pid = partnerId || ch?.negotiationPartnerId || 'US';
+    this.activeNegotiation = new NegotiationEngine(pid, this.origin, this.prng);
+    this.screen = "negotiation";
+    this.autoSave();
+    return { success: true, mode: "negotiation" };
+  }
+
   // Execute a policy action
   executePolicy(policyId) {
     if (this.actionPoints <= 0) return { error: "No action points remaining" };
     if (this.usedPoliciesThisMonth.includes(policyId)) return { error: "Policy already executed this month" };
 
-    const policy = getPolicy(policyId);
+    const policy = getPolicy(policyId, this.currentMonth);
     if (!policy) return { error: "Unknown policy" };
 
-    if (policy.isNegotiationLaunch || policy.isNegotiation) {
-      // Launch interactive negotiation session!
-      this.activeNegotiation = new NegotiationEngine(policy.partnerId, this.origin, this.prng);
+    if (policy.isNegotiationLaunch || policy.isNegotiation || policyId === 'nego_us_bilateral') {
+      const ch = MONTHLY_CHAPTERS[this.currentMonth];
+      const partnerId = policy.partnerId || ch?.negotiationPartnerId || 'US';
+      this.activeNegotiation = new NegotiationEngine(partnerId, this.origin, this.prng);
       this.screen = "negotiation";
       this.autoSave();
       return { success: true, mode: "negotiation" };
@@ -267,9 +317,12 @@ export class GameManager {
 
   // Interactive Corporate Dialogue & Strategy Guidance
   consultCorporation(corpId, optionIndex) {
-    const corp = getCorporation(corpId);
+    if (this.actionPoints <= 0) return { error: "No action points remaining" };
+    const corp = getCorporation(corpId, this.currentMonth);
     if (!corp || !corp.dialogue || !corp.dialogue.options[optionIndex]) return null;
     const option = corp.dialogue.options[optionIndex];
+
+    this.actionPoints -= 1;
 
     if (option.impact) {
       this.politics.applyDeltas(option.impact);
@@ -355,7 +408,10 @@ export class GameManager {
       proactiveThreat: this.monthlyThreats.length > 0 ? this.monthlyThreats[this.monthlyThreats.length - 1] : null,
       twoLevelNote: this.activeNegotiation?.history?.slice(-1)[0]?.domesticNote,
       doctrine: this.doctrine,
-      pressStatement: null
+      pressStatement: this.latestPressStatement,
+      campaignDecision: this.campaign?.decisionsHistory?.find(d => d.month === this.currentMonth),
+      campaignMonth: this.currentMonth,
+      campaignBranch: this.campaign?.selectedBranch
     };
     const newspaper = this.newspaperEngine.generateFrontPage(
       monthlyResult,
@@ -365,6 +421,11 @@ export class GameManager {
       extraContext
     );
     this.latestNewspaper = newspaper;
+
+    // Advance campaign stage
+    if (this.campaign) {
+      this.campaign.advanceMonth();
+    }
 
     // 4. Check for dismissal
     if (polEval.isDismissed) {
@@ -415,7 +476,10 @@ export class GameManager {
       proactiveThreat: this.monthlyThreats.length > 0 ? this.monthlyThreats[this.monthlyThreats.length - 1] : null,
       twoLevelNote: this.activeNegotiation?.history?.slice(-1)[0]?.domesticNote,
       doctrine: this.doctrine,
-      pressStatement: choice
+      pressStatement: choice,
+      campaignDecision: this.campaign?.decisionsHistory?.find(d => d.month === this.latestMonthlyResult.month),
+      campaignMonth: this.latestMonthlyResult.month,
+      campaignBranch: this.campaign?.selectedBranch
     };
     this.latestNewspaper = this.newspaperEngine.generateFrontPage(
       this.latestMonthlyResult,
@@ -487,6 +551,8 @@ export class GameManager {
       latestPressStatement: this.latestPressStatement,
       currentPressQA: this.currentPressQA,
       finalVerdict: this.finalVerdict,
+      chapterCrisisDecisions: this.chapterCrisisDecisions || {},
+      campaign: this.campaign ? this.campaign.serialize() : null,
       doctrine: this.doctrine ? this.doctrine.id : null,
       gameLog: this.gameLog
     };
@@ -510,6 +576,9 @@ export class GameManager {
     this.lastActionResult = null;
     this.activeEvent = saved.activeEvent;
     this.lastNegotiationAgreement = saved.lastNegotiationAgreement;
+    this.chapterCrisisDecisions = saved.chapterCrisisDecisions || {};
+    this.campaign = new CampaignManager();
+    if (saved.campaign) this.campaign.deserialize(saved.campaign);
 
     const originCfg = getOrigin(this.origin);
     this.politics = new PoliticsManager(originCfg);
