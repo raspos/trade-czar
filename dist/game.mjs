@@ -1,627 +1,268 @@
-// game.mjs - Master Game State and Turn Orchestration for 통상교섭본부장 | TRADE CZAR
+// dist/game.mjs - Master Game State and Turn Orchestration for TRADE CZAR 2.0
+// Pure Event-Driven Non-Linear Strategic Simulation Engine
 
-import { SCENARIOS, setupRandomScenario } from './scenarios.mjs';
+import { SCENARIOS } from './scenarios.mjs';
 import { ORIGINS } from './constants.mjs';
-import { getOrigin } from './origins.mjs';
 import { PRNG } from './prng.mjs';
-import { BASELINE_2026 } from './data.mjs';
 import { EconomyEngine } from './economy.mjs';
-import { NegotiationEngine, ForeignPolicyManager } from './negotiations.mjs';
-import { POLICY_ACTIONS, getPolicy, DOCTRINES, getDoctrine } from './policies.mjs';
-import { CORPORATIONS, getCorporation, CorporateAgencyManager } from './corporations.mjs';
-import { EventEngine } from './events.mjs';
 import { PoliticsManager } from './politics.mjs';
 import { NewspaperEngine } from './newspaper.mjs';
-import { getPressConferenceQA } from './press.mjs';
-import { VerdictEngine } from './verdict.mjs';
 import { StorageManager } from './storage.mjs';
-import { MONTHLY_CHAPTERS } from './storyline.mjs';
-import { CampaignManager } from './campaign.mjs';
+import { selectEventForMonth } from './events-czar.mjs';
 
 export class GameManager {
   constructor() {
-    this.screen = "title"; // title, origin_select, scenario_select, office, war_room, negotiation, result_briefing, newspaper, verdict
-    this.scenario = null;
-    this.origin = null;
+    this.screen = "title"; // title, game, newspaper, verdict
     this.seed = 123456789;
     this.prng = null;
 
     this.currentMonth = 1;
-    this.maxActionPoints = 5;
-    this.actionPoints = 5;
-    this.usedPoliciesThisMonth = [];
-    this.activeEvent = null;
-    this.activeNegotiation = null;
-    this.lastNegotiationAgreement = null;
-
-    this.doctrine = null;
-    this.foreignPolicyEngine = new ForeignPolicyManager();
-    this.corporateAgencyManager = new CorporateAgencyManager();
-    this.monthlyThreats = [];
-    this.pendingCorporateActions = [];
-    this.activeCorporateAction = null;
+    this.currentEvent = null;
+    this.chosenChoice = null;
+    this.flags = {};
+    this.pastEventIds = [];
+    this.decisionHistory = [];
 
     this.economy = null;
     this.politics = null;
-    this.eventEngine = null;
     this.newspaperEngine = new NewspaperEngine();
-    this.verdictEngine = new VerdictEngine();
 
     this.latestMonthlyResult = null;
     this.latestNewspaper = null;
-    this.latestPressStatement = null;
-    this.currentPressQA = null;
+    this.isDismissed = false;
+    this.dismissalReason = null;
     this.finalVerdict = null;
-    this.chapterCrisisDecisions = {};
-    this.campaign = new CampaignManager();
-    this.gameLog = [];
+
+    // Check if save exists
+    this.hasSave = StorageManager.hasSave();
   }
 
-  // Start new game
-  newGame(scenarioId = "baseline", originId = "bureaucrat", customSeed = null) {
-    this.seed = customSeed !== null && !isNaN(customSeed) ? Number(customSeed) : Math.floor(Math.random() * 900000000) + 100000000;
+  // Start new game immediately (< 15 seconds to first decision)
+  newGame(customSeed = null) {
+    this.seed = customSeed !== null && !isNaN(customSeed)
+      ? Number(customSeed)
+      : Math.floor(Math.random() * 900000000) + 100000000;
     this.prng = new PRNG(this.seed);
 
-    let rawScenario = SCENARIOS.find(s => s.id === scenarioId) || SCENARIOS[0];
-    if (rawScenario.isRandom) {
-      const randomProps = setupRandomScenario(this.prng);
-      this.scenario = { ...rawScenario, ...randomProps };
-    } else {
-      this.scenario = { ...rawScenario };
-    }
-
-    this.origin = originId;
-    const originCfg = getOrigin(originId);
-
-    this.economy = new EconomyEngine(this.scenario, this.origin, this.prng);
-    this.politics = new PoliticsManager(originCfg);
-    this.eventEngine = new EventEngine(this.prng);
-    this.foreignPolicyEngine = new ForeignPolicyManager();
-    this.corporateAgencyManager = new CorporateAgencyManager();
-
-    // Default Doctrine
-    this.doctrine = DOCTRINES[0];
+    const scenario = SCENARIOS.find(s => s.id === 'baseline') || SCENARIOS[0];
+    const origin = ORIGINS.bureaucrat || Object.values(ORIGINS)[0];
 
     this.currentMonth = 1;
-    this.maxActionPoints = 5;
-    this.actionPoints = 5;
-    this.usedPoliciesThisMonth = [];
-    this.firstTurnBriefingDismissed = false;
-    this.lastActionResult = null;
-    this.activeEvent = null;
-    this.activeNegotiation = null;
-    this.lastNegotiationAgreement = null;
-    this.monthlyThreats = [];
-    this.pendingCorporateActions = [];
-    this.activeCorporateAction = null;
-    this.latestMonthlyResult = null;
-    this.latestNewspaper = null;
-    this.latestPressStatement = null;
-    this.currentPressQA = null;
+    this.flags = {};
+    this.pastEventIds = [];
+    this.decisionHistory = [];
+    this.chosenChoice = null;
+    this.isDismissed = false;
+    this.dismissalReason = null;
     this.finalVerdict = null;
-    this.chapterCrisisDecisions = {};
-    this.campaign = new CampaignManager();
-    this.gameLog = [];
 
-    this.prepareMonth();
-    this.screen = "office";
-    this.autoSave();
-    return this;
+    this.economy = new EconomyEngine(scenario, origin, this.prng);
+    this.politics = new PoliticsManager(origin);
+
+    // Initial baseline monthly result for Month 1 display
+    this.latestMonthlyResult = this.economy.simulateMonth(1, []);
+
+    // Select Month 1 opening event
+    this.currentEvent = selectEventForMonth(this);
+    this.pastEventIds.push(this.currentEvent.id);
+
+    this.screen = "game";
+    StorageManager.save(this.serializeState());
   }
 
-  setDoctrine(doctrineId) {
-    const doc = getDoctrine(doctrineId);
-    if (!doc) return;
-    this.doctrine = doc;
-    if (doc.id === 'semiconductor_supremacy') {
-      this.economy.industryStates.semiconductor.competitivenessIndex += 6;
-      this.economy.industryStates.semiconductor.capacityIndex += 3;
-    } else if (doc.id === 'us_alliance_first') {
-      this.politics.stats.diplomaticTrust = Math.min(100, this.politics.stats.diplomaticTrust + 8);
-      if (this.economy.partnerStates.US) {
-        this.economy.partnerStates.US.allianceBonus = 0.15;
-      }
-    } else if (doc.id === 'china_derisking') {
-      this.politics.stats.diplomaticTrust = Math.min(100, this.politics.stats.diplomaticTrust + 4);
-      if (this.economy.partnerStates.ASEAN) this.economy.partnerStates.ASEAN.growthMod = 0.04;
-      if (this.economy.partnerStates.INDIA) this.economy.partnerStates.INDIA.growthMod = 0.04;
-    } else if (doc.id === 'global_south_frontier') {
-      if (this.economy.partnerStates.ASEAN) this.economy.partnerStates.ASEAN.growthMod = 0.06;
-      if (this.economy.partnerStates.INDIA) this.economy.partnerStates.INDIA.growthMod = 0.06;
-      this.economy.industryStates.consumer.competitivenessIndex += 3;
-    } else if (doc.id === 'inclusive_sme_trade') {
-      this.politics.stats.publicApproval = Math.min(100, this.politics.stats.publicApproval + 8);
-      this.economy.industryStates.consumer.competitivenessIndex += 4;
-      this.economy.industryStates.machinery.competitivenessIndex += 3;
-    } else if (doc.id === 'energy_green_security') {
-      this.politics.stats.diplomaticTrust = Math.min(100, this.politics.stats.diplomaticTrust + 6);
-      if (this.economy.partnerStates.EU) this.economy.partnerStates.EU.greenExempt = true;
+  // Choose an action choice for current event
+  chooseOption(choiceId) {
+    if (!this.currentEvent || this.chosenChoice) return;
+
+    const choice = this.currentEvent.choices.find(c => c.id === choiceId);
+    if (!choice) return;
+
+    // Apply effects to economy, politics, and flags
+    if (typeof choice.effect === 'function') {
+      choice.effect(this);
     }
-    this.gameLog.push({
+
+    this.chosenChoice = choice;
+    this.decisionHistory.push({
       month: this.currentMonth,
-      type: "doctrine_change",
-      doctrineName: doc.name
-    });
-    this.autoSave();
-  }
-
-  prepareMonth() {
-    this.maxActionPoints = 5;
-    this.actionPoints = 5;
-    this.usedPoliciesThisMonth = [];
-    this.lastNegotiationAgreement = null;
-
-    // Check proactive foreign threats (US universal tariff, China dumping, EU CBAM)
-    this.monthlyThreats = this.foreignPolicyEngine.checkMonthlyProactiveThreats(
-      this.currentMonth,
-      this.economy,
-      this.politics,
-      this.gameLog.filter(g => g.type === 'negotiation')
-    );
-
-    // Check autonomous corporate decisions (Hyundai Georgia shift, Posco furnace shutdown, Samsung cut)
-    this.pendingCorporateActions = this.corporateAgencyManager.evaluateCorporateAutonomousActions(
-      this.currentMonth,
-      this.economy,
-      this.politics,
-      this.gameLog.filter(g => g.type === 'negotiation')
-    );
-    this.activeCorporateAction = this.pendingCorporateActions.length > 0 ? this.pendingCorporateActions[0] : null;
-
-    // Check for random event for this month
-    const stateForEvent = {
-      month: this.currentMonth,
-      currentMacro: this.economy.macroHistory.length > 0 ? this.economy.macroHistory[this.economy.macroHistory.length - 1] : { fxRate: 1400 },
-      politics: this.politics.stats
-    };
-
-    this.activeEvent = this.eventEngine.rollEvent(stateForEvent);
-  }
-
-  resolveCorporateAction(corpId, actionKey, optionId) {
-    if (!this.activeCorporateAction || this.activeCorporateAction.actionKey !== actionKey) return null;
-    const resolvedChoice = this.corporateAgencyManager.resolveActionResponse(
-      this.activeCorporateAction,
-      optionId,
-      this.economy,
-      this.politics
-    );
-
-    this.gameLog.push({
-      month: this.currentMonth,
-      type: "corporate_agency_response",
-      actionKey,
-      corpId,
-      chosenOption: resolvedChoice.text
+      eventId: this.currentEvent.id,
+      eventTitle: this.currentEvent.title,
+      choiceId: choice.id,
+      choiceText: choice.text,
+      feedback: choice.feedback
     });
 
-    this.pendingCorporateActions = this.pendingCorporateActions.filter(a => a.actionKey !== actionKey);
-    this.activeCorporateAction = this.pendingCorporateActions.length > 0 ? this.pendingCorporateActions[0] : null;
-    this.autoSave();
-    return resolvedChoice;
+    // Run economy simulation for the month
+    this.latestMonthlyResult = this.economy.simulateMonth(this.currentMonth, []);
+
+    // Check for early dismissal (Crisis failure)
+    const pTrust = this.politics.stats.presidentTrust;
+    const pApproval = this.politics.stats.publicApproval;
+
+    if (pTrust <= 10 || pApproval <= 15) {
+      this.isDismissed = true;
+      this.dismissalReason = pTrust <= 10
+        ? "대통령실과의 회복할 수 없는 정무적 신뢰 상실로 인한 전격 경질"
+        : "통상 위기 대처 실패와 민생 파탄에 따른 범국민적 여론 악화로 인한 해임";
+    }
+
+    StorageManager.save(this.serializeState());
   }
 
-  // Handle active event choice
-  resolveEventChoice(choiceIndex) {
-    if (!this.activeEvent || !this.activeEvent.choices[choiceIndex]) return;
-    const choice = this.activeEvent.choices[choiceIndex];
+  // Advance to JoongAng Ilbo front-page newspaper
+  advanceToNewspaper() {
+    if (!this.chosenChoice) return;
 
-    if (choice.impact) {
-      this.politics.applyDeltas(choice.impact);
-    }
-    if (choice.apply) {
-      choice.apply(this.economy);
-    }
-
-    this.gameLog.push({
-      month: this.currentMonth,
-      type: "event",
-      eventTitle: this.activeEvent.title,
-      chosenText: choice.text
-    });
-
-    this.activeEvent = null;
-    this.autoSave();
-  }
-
-  // Resolve Monthly Chapter Dilemma Crisis (12-Month Narrative Arc)
-  resolveChapterCrisis(choiceIndex, month = null) {
-    const m = month || this.currentMonth;
-    const ch = MONTHLY_CHAPTERS[m];
-    if (!ch || !ch.urgentCrisis || !ch.urgentCrisis.choices[choiceIndex]) return null;
-    const choice = ch.urgentCrisis.choices[choiceIndex];
-
-    if (choice.impact) {
-      this.politics.applyDeltas(choice.impact);
-    }
-    if (choice.apply) {
-      choice.apply(this.economy);
-    }
-
-    this.chapterCrisisDecisions[m] = {
-      choiceIndex,
-      chosenText: choice.text,
-      impact: choice.impact,
-      summary: choice.summary
-    };
-
-    this.gameLog.push({
-      month: m,
-      type: "chapter_crisis",
-      title: ch.urgentCrisis.title,
-      chosenText: choice.text
-    });
-
-    this.autoSave();
-    return { success: true, decision: this.chapterCrisisDecisions[m] };
-  }
-
-  // Launch interactive bilateral negotiation
-  launchNegotiation(partnerId = null) {
-    if (this.actionPoints <= 0) return { error: "No action points remaining" };
-    const ch = MONTHLY_CHAPTERS[this.currentMonth];
-    const pid = partnerId || ch?.negotiationPartnerId || 'US';
-    this.activeNegotiation = new NegotiationEngine(pid, this.origin, this.prng);
-    this.screen = "negotiation";
-    this.autoSave();
-    return { success: true, mode: "negotiation" };
-  }
-
-  // Execute a policy action
-  executePolicy(policyId) {
-    if (this.actionPoints <= 0) return { error: "No action points remaining" };
-    if (this.usedPoliciesThisMonth.includes(policyId)) return { error: "Policy already executed this month" };
-
-    const policy = getPolicy(policyId, this.currentMonth);
-    if (!policy) return { error: "Unknown policy" };
-
-    if (policy.isNegotiationLaunch || policy.isNegotiation || policyId === 'nego_us_bilateral') {
-      const ch = MONTHLY_CHAPTERS[this.currentMonth];
-      const partnerId = policy.partnerId || ch?.negotiationPartnerId || 'US';
-      this.activeNegotiation = new NegotiationEngine(partnerId, this.origin, this.prng);
-      this.screen = "negotiation";
-      this.autoSave();
-      return { success: true, mode: "negotiation" };
-    }
-
-    // Normal policy execution
-    this.actionPoints -= 1;
-    this.usedPoliciesThisMonth.push(policyId);
-
-    if (policy.executeImmediate) policy.executeImmediate(this.economy);
-    if (policy.delayMonths && policy.executeDelayed) {
-      this.economy.queueEffect(policy.delayMonths, policy.executeDelayed);
-    }
-    if (policy.impact) {
-      this.politics.applyDeltas(policy.impact);
-    }
-
-    this.lastActionResult = {
-      success: true,
-      policyId: policy.id,
-      title: policy.title,
-      costText: policy.costText,
-      remainingAP: this.actionPoints
-    };
-
-    this.gameLog.push({
-      month: this.currentMonth,
-      type: "policy",
-      policyId: policy.id,
-      title: policy.title
-    });
-
-    this.autoSave();
-    return { success: true, actionPoints: this.actionPoints, lastActionResult: this.lastActionResult };
-  }
-
-  // Interactive Corporate Dialogue & Strategy Guidance
-  consultCorporation(corpId, optionIndex) {
-    if (this.actionPoints <= 0) return { error: "No action points remaining" };
-    const corp = getCorporation(corpId, this.currentMonth);
-    if (!corp || !corp.dialogue || !corp.dialogue.options[optionIndex]) return null;
-    const option = corp.dialogue.options[optionIndex];
-
-    this.actionPoints -= 1;
-
-    if (option.impact) {
-      this.politics.applyDeltas(option.impact);
-    }
-    if (option.apply) {
-      option.apply(this.economy);
-    }
-
-    this.gameLog.push({
-      month: this.currentMonth,
-      type: "corporate_consultation",
-      corpId: corp.id,
-      corpName: corp.name,
-      chosenOption: option.text,
-      response: option.response
-    });
-
-    this.autoSave();
-    return {
-      corp,
-      option,
-      response: option.response
-    };
-  }
-
-  // Conclude active negotiation
-  concludeNegotiation(choice = 'agree') {
-    if (!this.activeNegotiation) return null;
-
-    const agreement = this.activeNegotiation.conclude(choice);
-    this.activeNegotiation.applyToEconomy(this.economy);
-    this.lastNegotiationAgreement = agreement;
-
-    // Spending 1 action point for negotiation
-    this.actionPoints = Math.max(0, this.actionPoints - 1);
-    this.usedPoliciesThisMonth.push(this.activeNegotiation.scenario.partnerId);
-
-    if (agreement.relationDelta) {
-      this.politics.applyDeltas({
-        diplomaticTrust: agreement.relationDelta > 0 ? 15 : -20,
-        presidentTrust: agreement.relationDelta > 0 ? 10 : -15,
-        publicApproval: agreement.relationDelta > 0 ? 10 : -10
-      });
-    }
-
-    this.gameLog.push({
-      month: this.currentMonth,
-      type: "negotiation",
-      partner: this.activeNegotiation.scenario.partnerName,
-      outcome: agreement.grade,
-      title: agreement.title
-    });
-
-    this.activeNegotiation = null;
-    this.screen = "office";
-    this.autoSave();
-    return agreement;
-  }
-
-  // Simulate and complete the monthly turn
-  advanceTurn() {
-    // 1. Run economic simulation for current month
-    const monthlyResult = this.economy.simulateMonth(this.currentMonth);
-    this.latestMonthlyResult = monthlyResult;
-
-    // 2. Politics evaluation against 2026 baseline expectations
-    const baselineMonth = BASELINE_2026.months[this.currentMonth - 1];
-    const polEval = this.politics.evaluateMonth(monthlyResult, baselineMonth);
-
-    // 3. Generate Press Conference QA & Initial JoongAng Ilbo front page
-    this.currentPressQA = getPressConferenceQA(
-      monthlyResult,
-      this.politics.stats,
-      this.lastNegotiationAgreement,
-      this.monthlyThreats,
-      this.currentMonth
-    );
-    this.latestPressStatement = null;
-
-    const lastPol = this.usedPoliciesThisMonth.length > 0 ? getPolicy(this.usedPoliciesThisMonth[this.usedPoliciesThisMonth.length - 1]) : null;
+    // Custom newspaper headline & article from event if present
     const extraContext = {
-      corporateAction: this.corporateAgencyManager.actionHistory.length > 0 ? this.corporateAgencyManager.actionHistory[this.corporateAgencyManager.actionHistory.length - 1] : null,
-      proactiveThreat: this.monthlyThreats.length > 0 ? this.monthlyThreats[this.monthlyThreats.length - 1] : null,
-      twoLevelNote: this.activeNegotiation?.history?.slice(-1)[0]?.domesticNote,
-      doctrine: this.doctrine,
-      pressStatement: this.latestPressStatement,
-      campaignDecision: this.campaign?.decisionsHistory?.find(d => d.month === this.currentMonth),
-      campaignMonth: this.currentMonth,
-      campaignBranch: this.campaign?.selectedBranch
+      corporateAction: null,
+      doctrine: null,
+      campaignDecision: null
     };
-    const newspaper = this.newspaperEngine.generateFrontPage(
-      monthlyResult,
+
+    let newspaper = this.newspaperEngine.generateFrontPage(
+      this.latestMonthlyResult,
       this.politics.stats,
-      lastPol,
-      this.lastNegotiationAgreement,
+      null,
+      null,
       extraContext
     );
+
+    // Override with event-specific narrative headline & story if defined
+    if (this.chosenChoice.newsHeadline) {
+      newspaper.headline = this.chosenChoice.newsHeadline;
+    }
+    if (this.chosenChoice.newsBody) {
+      newspaper.body = [this.chosenChoice.newsBody];
+    }
+    if (this.currentEvent.image) {
+      newspaper.leadImage = this.currentEvent.image;
+    }
+
     this.latestNewspaper = newspaper;
+    this.screen = "newspaper";
+    StorageManager.save(this.serializeState());
+  }
 
-    // Advance campaign stage
-    if (this.campaign) {
-      this.campaign.advanceMonth();
-    }
-
-    // 4. Check for dismissal
-    if (polEval.isDismissed) {
-      this.finalVerdict = this.verdictEngine.evaluateFinal(this.economy.monthlyResults, this.politics, this.origin, this.gameLog, this.economy);
+  // Advance to next month or final verdict
+  advanceMonth() {
+    if (this.isDismissed) {
+      this.evaluateVerdict();
       this.screen = "verdict";
-      this.autoSave();
-      return { status: "dismissed" };
+      StorageManager.save(this.serializeState());
+      return;
     }
 
-    // 5. Check if 12 months finished
-    if (this.currentMonth === 12) {
-      this.finalVerdict = this.verdictEngine.evaluateFinal(this.economy.monthlyResults, this.politics, this.origin, this.gameLog, this.economy);
-      this.screen = "result_briefing";
-      this.autoSave();
-      return { status: "year_end" };
+    if (this.currentMonth >= 12) {
+      this.evaluateVerdict();
+      this.screen = "verdict";
+      StorageManager.save(this.serializeState());
+      return;
     }
 
-    // Proceed to briefing
-    this.screen = "result_briefing";
-    this.autoSave();
-    return { status: "next_month" };
+    this.currentMonth += 1;
+    this.chosenChoice = null;
+    this.currentEvent = selectEventForMonth(this);
+    if (this.currentEvent) {
+      this.pastEventIds.push(this.currentEvent.id);
+    }
+
+    this.screen = "game";
+    StorageManager.save(this.serializeState());
   }
 
-  // Resolve Press Conference Statement
-  resolvePressAnswer(choiceIndex) {
-    if (!this.latestMonthlyResult) return null;
-    const qa = this.currentPressQA || getPressConferenceQA(
-      this.latestMonthlyResult,
-      this.politics.stats,
-      this.lastNegotiationAgreement,
-      this.monthlyThreats,
-      this.currentMonth
-    );
-    const choice = qa.choices[choiceIndex] || qa.choices[0];
-    if (!choice) return null;
+  // Evaluate final verdict narrative
+  evaluateVerdict() {
+    const totalExp = this.latestMonthlyResult ? this.latestMonthlyResult.cumulativeExport : 650;
+    const totalBal = this.latestMonthlyResult ? this.latestMonthlyResult.cumulativeBalance : 25;
+    const approval = Math.round(this.politics.stats.publicApproval);
+    const presTrust = Math.round(this.politics.stats.presidentTrust);
 
-    // Apply political deltas
-    if (choice.deltas) {
-      this.politics.applyDeltas(choice.deltas);
-    }
+    let title = "";
+    let grade = "";
+    let epilogue = "";
 
-    this.latestPressStatement = choice;
-
-    // Regenerate newspaper with this press statement
-    const lastPol = this.usedPoliciesThisMonth.length > 0 ? getPolicy(this.usedPoliciesThisMonth[this.usedPoliciesThisMonth.length - 1]) : null;
-    const extraContext = {
-      corporateAction: this.corporateAgencyManager.actionHistory.length > 0 ? this.corporateAgencyManager.actionHistory[this.corporateAgencyManager.actionHistory.length - 1] : null,
-      proactiveThreat: this.monthlyThreats.length > 0 ? this.monthlyThreats[this.monthlyThreats.length - 1] : null,
-      twoLevelNote: this.activeNegotiation?.history?.slice(-1)[0]?.domesticNote,
-      doctrine: this.doctrine,
-      pressStatement: choice,
-      campaignDecision: this.campaign?.decisionsHistory?.find(d => d.month === this.latestMonthlyResult.month),
-      campaignMonth: this.latestMonthlyResult.month,
-      campaignBranch: this.campaign?.selectedBranch
-    };
-    this.latestNewspaper = this.newspaperEngine.generateFrontPage(
-      this.latestMonthlyResult,
-      this.politics.stats,
-      lastPol,
-      this.lastNegotiationAgreement,
-      extraContext
-    );
-
-    this.autoSave();
-    return { choice, newspaper: this.latestNewspaper };
-  }
-
-  // Go to next month after reviewing results & newspaper
-  proceedToNextMonth() {
-    if (this.currentMonth < 12 && !this.politics.isDismissed) {
-      this.currentMonth += 1;
-      this.prepareMonth();
-      this.screen = "office";
-      this.autoSave();
+    if (this.isDismissed) {
+      title = "임기 중 전격 경질";
+      grade = "낙제 (F)";
+      epilogue = `${this.currentMonth}개월간의 험난한 통상 전쟁 끝에 교섭본부장직에서 불명예 퇴진했다. ${this.dismissalReason}. 대한민국 수출은 거대한 보호무역의 소용돌이 속에서 방향을 잃었고, 후임 본부장에게 무거운 부채를 남기게 되었다.`;
+    } else if (totalExp >= 700 && totalBal > 30 && approval >= 55) {
+      title = "글로벌 통상 강국의 수장";
+      grade = "최우수 (S)";
+      epilogue = "글로벌 복합 위기 속에서도 사상 최초로 연간 수출 7,000억 달러의 대기록을 돌파했다. 미국과의 안보 동맹을 지키는 동시에 중국과의 실용 교역로를 확보하며 대한민국 통상사에 길이 남을 업적을 남기고 경제부총리로 영전했다.";
+    } else if (totalExp >= 650 && totalBal >= 0 && presTrust >= 50) {
+      title = "실용주의 통상 관료의 명예로운 완주";
+      grade = "우수 (A)";
+      epilogue = "보호무역과 자원 무기화의 격랑 속에서 원칙과 실리를 균형 있게 조율하며 12개월의 임기를 성공적으로 마쳤다. 자동차와 반도체의 핵심 수출 전선을 지켜내며 대한민국 경제의 버팀목 역할을 충실히 완수했다.";
+    } else if (totalBal < 0 || approval < 40) {
+      title = "보호무역 격랑 속의 상처뿐인 방어";
+      grade = "보통 (C)";
+      epilogue = "미국의 관세 압박과 중국의 자원 보복, 국내 이해관계자들의 반발 사이에서 고군분투했으나 무역수지 악화를 완전히 막아내지는 못했다. 수출 강국의 위상은 지켰으나 산업계와 농가에 적지 않은 상처를 남겼다.";
     } else {
-      this.screen = "verdict";
-      this.autoSave();
+      title = "임무 완수와 험난했던 시험대";
+      grade = "양호 (B)";
+      epilogue = "1년의 임기 동안 수많은 위기를 넘나들며 대한민국 무역의 마지노선을 지켜냈다. 거센 외풍 속에서도 한국 제조업의 저력을 입증하며 후반기 통상 전략의 기틀을 마련했다.";
     }
+
+    this.finalVerdict = {
+      title,
+      grade,
+      epilogue,
+      totalExport: totalExp.toFixed(1),
+      totalBalance: totalBal.toFixed(1),
+      publicApproval: approval,
+      presidentTrust: presTrust,
+      monthsServed: this.isDismissed ? this.currentMonth : 12
+    };
   }
 
-  autoSave() {
-    StorageManager.save(this.serialize());
-  }
-
-  serialize() {
+  // Serialization for Storage
+  serializeState() {
     return {
       screen: this.screen,
-      scenario: this.scenario,
-      origin: this.origin,
-      seed: this.seed,
-      prngState: this.prng ? this.prng.getState() : null,
       currentMonth: this.currentMonth,
-      actionPoints: this.actionPoints,
-      maxActionPoints: this.maxActionPoints || 5,
-      usedPoliciesThisMonth: this.usedPoliciesThisMonth,
-      firstTurnBriefingDismissed: this.firstTurnBriefingDismissed || false,
-      activeEvent: this.activeEvent,
-      activeNegotiation: this.activeNegotiation ? {
-        partnerId: this.activeNegotiation.scenario.partnerId,
-        tension: this.activeNegotiation.tension,
-        totalScore: this.activeNegotiation.totalScore,
-        history: this.activeNegotiation.history,
-        usedCards: Array.from(this.activeNegotiation.usedCards),
-        status: this.activeNegotiation.status,
-        domesticState: this.activeNegotiation.domesticState,
-        currentCounterDemand: this.activeNegotiation.currentCounterDemand,
-        consecutiveAggressiveCount: this.activeNegotiation.consecutiveAggressiveCount || 0
-      } : null,
-      lastNegotiationAgreement: this.lastNegotiationAgreement,
-      macroHistory: this.economy ? this.economy.macroHistory : [],
-      monthlyResults: this.economy ? this.economy.monthlyResults : [],
-      industryStates: this.economy ? this.economy.industryStates : {},
-      partnerStates: this.economy ? this.economy.partnerStates : {},
-      delayedPipeline: this.economy ? this.economy.delayedPipeline : [],
+      flags: this.flags,
+      pastEventIds: this.pastEventIds,
+      decisionHistory: this.decisionHistory,
+      chosenChoice: this.chosenChoice,
+      currentEvent: this.currentEvent,
       politicsStats: this.politics ? this.politics.stats : null,
-      politicsHistory: this.politics ? this.politics.history : [],
-      consecutiveDeficits: this.politics ? this.politics.consecutiveDeficits : 0,
-      isDismissed: this.politics ? this.politics.isDismissed : false,
-      dismissalWarning: this.politics ? this.politics.dismissalWarning : false,
-      triggeredEvents: this.eventEngine ? Array.from(this.eventEngine.triggeredEvents) : [],
-      latestMonthlyResult: this.latestMonthlyResult,
-      latestNewspaper: this.latestNewspaper,
-      latestPressStatement: this.latestPressStatement,
-      currentPressQA: this.currentPressQA,
+      isDismissed: this.isDismissed,
+      dismissalReason: this.dismissalReason,
       finalVerdict: this.finalVerdict,
-      chapterCrisisDecisions: this.chapterCrisisDecisions || {},
-      campaign: this.campaign ? this.campaign.serialize() : null,
-      doctrine: this.doctrine ? this.doctrine.id : null,
-      gameLog: this.gameLog
+      latestMonthlyResult: this.latestMonthlyResult
     };
   }
 
-  deserialize(saved) {
-    if (!saved) return false;
-    this.screen = saved.screen;
-    this.scenario = saved.scenario;
-    this.origin = saved.origin;
-    this.seed = saved.seed;
-    this.doctrine = saved.doctrine ? getDoctrine(saved.doctrine) : DOCTRINES[0];
+  // Load game from storage
+  loadGame() {
+    const raw = StorageManager.load();
+    if (!raw || !raw.data) return false;
+
+    const data = raw.data;
+    const scenario = SCENARIOS.find(s => s.id === 'baseline') || SCENARIOS[0];
+    const origin = ORIGINS.bureaucrat || Object.values(ORIGINS)[0];
+
     this.prng = new PRNG(this.seed);
-    if (saved.prngState) this.prng.setState(saved.prngState);
+    this.economy = new EconomyEngine(scenario, origin, this.prng);
+    this.politics = new PoliticsManager(origin);
 
-    this.currentMonth = saved.currentMonth;
-    this.maxActionPoints = saved.maxActionPoints || 5;
-    this.actionPoints = saved.actionPoints !== undefined ? saved.actionPoints : this.maxActionPoints;
-    this.usedPoliciesThisMonth = saved.usedPoliciesThisMonth || [];
-    this.firstTurnBriefingDismissed = saved.firstTurnBriefingDismissed || false;
-    this.lastActionResult = null;
-    this.activeEvent = saved.activeEvent;
-    this.lastNegotiationAgreement = saved.lastNegotiationAgreement;
-    this.chapterCrisisDecisions = saved.chapterCrisisDecisions || {};
-    this.campaign = new CampaignManager();
-    if (saved.campaign) this.campaign.deserialize(saved.campaign);
-
-    const originCfg = getOrigin(this.origin);
-    this.politics = new PoliticsManager(originCfg);
-    if (saved.politicsStats) this.politics.stats = saved.politicsStats;
-    if (saved.politicsHistory) this.politics.history = saved.politicsHistory;
-    this.politics.consecutiveDeficits = saved.consecutiveDeficits || 0;
-    this.politics.isDismissed = saved.isDismissed || false;
-    this.politics.dismissalWarning = saved.dismissalWarning || false;
-
-    this.economy = new EconomyEngine(this.scenario, this.origin, this.prng);
-    if (saved.macroHistory) this.economy.macroHistory = saved.macroHistory;
-    if (saved.monthlyResults) this.economy.monthlyResults = saved.monthlyResults;
-    if (saved.industryStates) this.economy.industryStates = saved.industryStates;
-    if (saved.partnerStates) this.economy.partnerStates = saved.partnerStates;
-    if (saved.delayedPipeline) this.economy.delayedPipeline = saved.delayedPipeline;
-
-    this.eventEngine = new EventEngine(this.prng);
-    if (saved.triggeredEvents) this.eventEngine.triggeredEvents = new Set(saved.triggeredEvents);
-
-    if (saved.activeNegotiation) {
-      this.activeNegotiation = new NegotiationEngine(saved.activeNegotiation.partnerId, this.origin, this.prng);
-      this.activeNegotiation.tension = saved.activeNegotiation.tension;
-      this.activeNegotiation.totalScore = saved.activeNegotiation.totalScore;
-      this.activeNegotiation.history = saved.activeNegotiation.history;
-      this.activeNegotiation.usedCards = new Set(saved.activeNegotiation.usedCards);
-      this.activeNegotiation.status = saved.activeNegotiation.status;
-      if (saved.activeNegotiation.domesticState) {
-        this.activeNegotiation.domesticState = saved.activeNegotiation.domesticState;
-      }
-      if (saved.activeNegotiation.currentCounterDemand) {
-        this.activeNegotiation.currentCounterDemand = saved.activeNegotiation.currentCounterDemand;
-      }
-      if (saved.activeNegotiation.consecutiveAggressiveCount) {
-        this.activeNegotiation.consecutiveAggressiveCount = saved.activeNegotiation.consecutiveAggressiveCount;
-      }
+    if (data.politicsStats) {
+      this.politics.stats = { ...data.politicsStats };
     }
 
-    this.latestMonthlyResult = saved.latestMonthlyResult;
-    this.latestNewspaper = saved.latestNewspaper;
-    this.latestPressStatement = saved.latestPressStatement || null;
-    this.currentPressQA = saved.currentPressQA || null;
-    this.finalVerdict = saved.finalVerdict;
-    this.gameLog = saved.gameLog || [];
+    this.screen = data.screen || "game";
+    this.currentMonth = data.currentMonth || 1;
+    this.flags = data.flags || {};
+    this.pastEventIds = data.pastEventIds || [];
+    this.decisionHistory = data.decisionHistory || [];
+    this.chosenChoice = data.chosenChoice || null;
+    this.currentEvent = data.currentEvent || null;
+    this.isDismissed = data.isDismissed || false;
+    this.dismissalReason = data.dismissalReason || null;
+    this.finalVerdict = data.finalVerdict || null;
+
+    this.latestMonthlyResult = this.economy.simulateMonth(this.currentMonth, []);
     return true;
   }
 }

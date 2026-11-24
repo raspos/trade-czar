@@ -1,6 +1,6 @@
-// build-play.mjs - Bundler for standalone play.html
+// build-play.mjs - Bundler for standalone play.html (TRADE CZAR 2.0 Reboot)
 import { readFile, writeFile } from 'node:fs/promises';
-import { existsSync, readdirSync } from 'node:fs';
+import { existsSync } from 'node:fs';
 
 const dist = new URL('./dist/', import.meta.url);
 const read = (name, encoding) => readFile(new URL(name, dist), encoding);
@@ -14,10 +14,14 @@ const artwork = [
   'assets/press-v2.jpg',
   'assets/origins-trade.jpg',
   'assets/office-rebuild.jpg',
+  'assets/president-rebuild.jpg',
+  'assets/hearing52.jpg',
+  'assets/crisis52.jpg',
+  'assets/ministry52.jpg',
+  'assets/board52.jpg',
   'assets/joongang-logo.png',
   'assets/pretendard.woff2',
-  'assets/noto-serif-kr.woff2',
-  'assets/paperlogy.woff2'
+  'assets/noto-serif-kr.woff2'
 ];
 
 const availableArtwork = artwork.filter(name => existsSync(new URL(name, dist)));
@@ -31,17 +35,9 @@ const [html, css, assets, ...modules] = await Promise.all([
     'prng.mjs',
     'data.mjs',
     'scenarios.mjs',
-    'storyline.mjs',
-    'campaign.mjs',
-    'visual-stage.mjs',
-    'origins.mjs',
-    'corporations.mjs',
+    'events-czar.mjs',
     'economy.mjs',
-    'negotiations.mjs',
-    'policies.mjs',
-    'events.mjs',
     'politics.mjs',
-    'press.mjs',
     'newspaper.mjs',
     'verdict.mjs',
     'storage.mjs',
@@ -75,33 +71,6 @@ for (let i = 0; i < availableArtwork.length; i++) {
   const mime = name.endsWith('.png') ? 'data:image/png' : 'data:image/jpeg';
   const base64 = assets[i].toString('base64');
   js = js.replaceAll('./' + name, `${mime};base64,${base64}`);
-}
-
-// Embed SVG portraits and scene backgrounds as base64 data URIs
-try {
-  const portraitsDir = new URL('assets/portraits/', dist);
-  if (existsSync(portraitsDir)) {
-    const pFiles = readdirSync(portraitsDir).filter(f => f.endsWith('.svg'));
-    for (const f of pFiles) {
-      const content = await read('assets/portraits/' + f, 'utf8');
-      const b64 = Buffer.from(content).toString('base64');
-      const dataUri = 'data:image/svg+xml;base64,' + b64;
-      js = js.replaceAll('./assets/portraits/' + f, dataUri);
-    }
-  }
-
-  const scenesDir = new URL('assets/scenes/', dist);
-  if (existsSync(scenesDir)) {
-    const sFiles = readdirSync(scenesDir).filter(f => f.endsWith('.svg'));
-    for (const f of sFiles) {
-      const content = await read('assets/scenes/' + f, 'utf8');
-      const b64 = Buffer.from(content).toString('base64');
-      const dataUri = 'data:image/svg+xml;base64,' + b64;
-      js = js.replaceAll('./assets/scenes/' + f, dataUri);
-    }
-  }
-} catch (e) {
-  console.warn('SVG embedding error:', e.message);
 }
 
 const page = html
