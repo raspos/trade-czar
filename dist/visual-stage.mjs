@@ -4,39 +4,39 @@
 // interactive desk props, and docked bottom dialogue boxes modeled after BOK Governor.
 
 export const SHOWCASE_SCENES = {
-  us_negotiation: {
-    id: "scene_us_negotiation",
-    title: "미국 무역대표부(USTR) 고위급 협상장",
-    location: "워싱턴 D.C. USTR 본부 대회의실",
-    flag: "🇺🇸",
-    npcId: "us_trade_rep",
-    npcName: "캐서린 타이",
-    npcTitle: "미국 무역대표부(USTR) 대표",
-    bgSvg: "./assets/scenes/scene_us_negotiation.svg",
-    defaultExpr: "stern",
-    dialogue: "한국산 전기차와 배터리에 대한 세액공제 유예는 미국 내 추가 투자와 알래스카 LNG 장기구매 계약이 전제되어야 합니다. 의회의 기류는 매우 강경합니다.",
+  minister_office: {
+    id: "scene_minister_office",
+    title: "통상교섭본부장 집무실",
+    location: "정부서울청사 10층 통상교섭본부",
+    flag: "🏛️",
+    npcId: "deputy_pm",
+    npcName: "경제부총리",
+    npcTitle: "경제부총리 겸 기획재정부 장관",
+    bgSvg: "./assets/scenes/scene_minister_office.svg",
+    defaultExpr: "neutral",
+    dialogue: "본부장, 올해 2027 통상 현안 보고서가 올라왔네. 대외 무역전쟁의 파고가 거세니 국내 산업 생태계와 재정을 단단히 조율해 국익의 활로를 열어주게.",
     props: [
-      { id: "tariff_draft", label: "📄 관세 양허안 초안", detail: "대미 자동차 25% 품목 관세 잠정 유예 조항 및 3년 내 미국 현지화 60% 달성 의무화 조항 수록." },
-      { id: "lng_memo", label: "⚡ 알래스카 LNG 구매서", detail: "연간 400만 톤 규모 15년 장기 공급계약. 러스트벨트 및 공화당 상원의원 집중 로비 품목." },
-      { id: "us_intel", label: "🔒 USTR 전략 전문", detail: "USTR은 한국의 반도체 보조금 및 대중국 첨단장비 규제 동참을 이번 협상의 최종 마지노선으로 설정함." }
+      { id: "trade_agenda", label: "📄 2027 통상 현안 종합보고서", detail: "대외 관세 리스크, 주력 수출 10대 품목 공급망 점검 및 대정부 건의사항 수록." },
+      { id: "macro_dossier", label: "📊 거시경제 및 외환 점검표", detail: "원/달러 환율 변동성, 외환보유액, 통상 마찰에 따른 무역수지 적자 위험 분석." },
+      { id: "cabinet_docket", label: "📁 국무회의 상정 안건철", detail: "통상교섭본부 긴급 산업지원 및 무역금융 특별회계 3조원 신설 건." }
     ],
     choices: [
       {
-        id: "us_opt_1",
-        label: "대미 반도체 400억 달러 투자 패키지와 연계하여 자동차 관세 완전 면제를 관철한다.",
-        reactionText: "타이 대표가 서류를 넘겨보며 고개를 끄덕입니다: '삼성과 SK의 텍사스 증설 일정과 연계된다면 백악관 국가경제위원회(NEC)를 설득할 명분이 생깁니다.'",
+        id: "min_opt_1",
+        label: "국내 10대 주력 수출산업의 공급망을 우선 재정비하고 비상 수출금융을 즉각 가동하겠습니다.",
+        reactionText: "경제부총리가 고개를 끄덕이며 메모합니다: '기재부도 무역금융 특례보증을 즉시 확대 편성하겠네. 현장의 자금난을 선제적으로 막아주게.'",
         newExpr: "satisfied"
       },
       {
-        id: "us_opt_2",
-        label: "알래스카 LNG 수입 다변화 카드로 미국 의회 러스트벨트 의원들을 우회 압박한다.",
-        reactionText: "타이 대표의 눈빛이 흔들립니다: '에너지 카드는 펜실베이니아와 오하이오 의원들을 움직일 수 있습니다. 다만 의회 청문회 일정을 고려해야 합니다.'",
+        id: "min_opt_2",
+        label: "부처 간 이견을 조율하고 국회와 긴밀히 소통하여 통상 위기 극복을 위한 초당적 협력을 이끌어내겠습니다.",
+        reactionText: "경제부총리가 안도하는 표정을 짓습니다: '정치권과의 조율이 관건이었는데 본부장이 앞장서주니 든든하군. 국무회의에서 전폭 지원하겠네.'",
         newExpr: "surprised"
       },
       {
-        id: "us_opt_3",
-        label: "세계무역기구(WTO) 불공정 보조금 제소 가능성을 시사하며 원칙적 재협상을 요구한다.",
-        reactionText: "타이 대표의 표정이 순식간에 차갑게 굳어집니다: '통상교섭본부장, 워싱턴은 다자 분쟁 제소를 동맹에 대한 비우호적 조치로 간주할 것입니다.'",
+        id: "min_opt_3",
+        label: "대외 불확실성이 극심하므로 관망세를 유지하며 주요국의 정책 발표를 먼저 지켜보겠습니다.",
+        reactionText: "경제부총리의 표정이 굳어집니다: '골든타임을 놓치면 우리 기업들이 먼저 쓰러지네! 지금은 기민하게 움직여야 할 때일세.'",
         newExpr: "angry"
       }
     ]
@@ -188,13 +188,50 @@ export const SHOWCASE_SCENES = {
         newExpr: "angry"
       }
     ]
+  },
+  us_negotiation: {
+    id: "scene_us_negotiation",
+    title: "미국 무역대표부(USTR) 고위급 협상장",
+    location: "워싱턴 D.C. USTR 본부 대회의실",
+    flag: "🇺🇸",
+    npcId: "us_trade_rep",
+    npcName: "캐서린 타이",
+    npcTitle: "미국 무역대표부(USTR) 대표",
+    bgSvg: "./assets/scenes/scene_us_negotiation.svg",
+    defaultExpr: "stern",
+    dialogue: "한국산 전기차와 배터리에 대한 세액공제 유예는 미국 내 추가 투자와 알래스카 LNG 장기구매 계약이 전제되어야 합니다. 의회의 기류는 매우 강경합니다.",
+    props: [
+      { id: "tariff_draft", label: "📄 관세 양허안 초안", detail: "대미 자동차 25% 품목 관세 잠정 유예 조항 및 3년 내 미국 현지화 60% 달성 의무화 조항 수록." },
+      { id: "lng_memo", label: "⚡ 알래스카 LNG 구매서", detail: "연간 400만 톤 규모 15년 장기 공급계약. 러스트벨트 및 공화당 상원의원 집중 로비 품목." },
+      { id: "us_intel", label: "🔒 USTR 전략 전문", detail: "USTR은 한국의 반도체 보조금 및 대중국 첨단장비 규제 동참을 이번 협상의 최종 마지노선으로 설정함." }
+    ],
+    choices: [
+      {
+        id: "us_opt_1",
+        label: "대미 반도체 400억 달러 투자 패키지와 연계하여 자동차 관세 완전 면제를 관철한다.",
+        reactionText: "타이 대표가 서류를 넘겨보며 고개를 끄덕입니다: '삼성과 SK의 텍사스 증설 일정과 연계된다면 백악관 국가경제위원회(NEC)를 설득할 명분이 생깁니다.'",
+        newExpr: "satisfied"
+      },
+      {
+        id: "us_opt_2",
+        label: "알래스카 LNG 수입 다변화 카드로 미국 의회 러스트벨트 의원들을 우회 압박한다.",
+        reactionText: "타이 대표의 눈빛이 흔들립니다: '에너지 카드는 펜실베이니아와 오하이오 의원들을 움직일 수 있습니다. 다만 의회 청문회 일정을 고려해야 합니다.'",
+        newExpr: "surprised"
+      },
+      {
+        id: "us_opt_3",
+        label: "세계무역기구(WTO) 불공정 보조금 제소 가능성을 시사하며 원칙적 재협상을 요구한다.",
+        reactionText: "타이 대표의 표정이 순식간에 차갑게 굳어집니다: '통상교섭본부장, 워싱턴은 다자 분쟁 제소를 동맹에 대한 비우호적 조치로 간주할 것입니다.'",
+        newExpr: "angry"
+      }
+    ]
   }
 };
 
 export class VisualStageManager {
   constructor(gameManager) {
     this.gm = gameManager;
-    this.activeSceneKey = 'us_negotiation'; // Default showcase scene or campaign synced
+    this.activeSceneKey = 'minister_office'; // Default showcase scene or campaign synced
     this.npcExpressions = {}; // { npcId: 'neutral' | 'angry' | 'surprised' | 'satisfied' | 'stern' }
     this.activePropId = null;
     this.dialogueHistory = [];
@@ -212,7 +249,7 @@ export class VisualStageManager {
   }
 
   getCurrentScene() {
-    return SHOWCASE_SCENES[this.activeSceneKey] || SHOWCASE_SCENES.us_negotiation;
+    return SHOWCASE_SCENES[this.activeSceneKey] || SHOWCASE_SCENES.minister_office;
   }
 
   getNpcExpression(npcId, defaultExpr = 'neutral') {
@@ -235,10 +272,10 @@ export class VisualStageManager {
     const tabsBar = document.createElement('div');
     tabsBar.className = 'stage-scene-tabs';
     tabsBar.innerHTML = `
-      <div class="stage-tabs-label">🎬 5대 핵심 전용 장면:</div>
+      <div class="stage-tabs-label">🎬 주요 전용 장면:</div>
       <div class="stage-tabs-scroll">
-        <button class="stage-nav-tab ${this.activeSceneKey === 'us_negotiation' ? 'active' : ''}" data-skey="us_negotiation">
-          🇺🇸 미국 USTR 협상장
+        <button class="stage-nav-tab ${this.activeSceneKey === 'minister_office' ? 'active' : ''}" data-skey="minister_office">
+          🏛️ 본부장 집무실
         </button>
         <button class="stage-nav-tab ${this.activeSceneKey === 'president_office' ? 'active' : ''}" data-skey="president_office">
           🇰🇷 대통령 긴급 독대

@@ -3790,39 +3790,39 @@ class CampaignManager {
 // interactive desk props, and docked bottom dialogue boxes modeled after BOK Governor.
 
 const SHOWCASE_SCENES = {
-  us_negotiation: {
-    id: "scene_us_negotiation",
-    title: "미국 무역대표부(USTR) 고위급 협상장",
-    location: "워싱턴 D.C. USTR 본부 대회의실",
-    flag: "🇺🇸",
-    npcId: "us_trade_rep",
-    npcName: "캐서린 타이",
-    npcTitle: "미국 무역대표부(USTR) 대표",
-    bgSvg: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDcwMCIgd2lkdGg9IjEyMDAiIGhlaWdodD0iNzAwIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0id2FsbEdyYWQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzFlMjkzYiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjY1JSIgc3RvcC1jb2xvcj0iIzBmMTcyYSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMjA2MTciLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Indvb2RHcmFkIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM3ODM1MGYiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMjcxMDAzIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJ0YWJsZUdyYWQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzQ1MWEwMyIgc3RvcC1vcGFjaXR5PSIwLjk1Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iNDAlIiBzdG9wLWNvbG9yPSIjMWMwYjAyIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzAyMDYxNyIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0id2luZG93TGlnaHQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjEyIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjZmZmZmZmIiBzdG9wLW9wYWNpdHk9IjAuMDMiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZmZmZmZmIiBzdG9wLW9wYWNpdHk9IjAiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgoKICA8IS0tIEJhY2sgV2FsbCAtLT4KICA8cmVjdCB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI3MDAiIGZpbGw9InVybCgjd2FsbEdyYWQpIi8+CgogIDwhLS0gV2FsbCBXb29kIE1vbGRpbmcgJiBQYW5lbHMgLS0+CiAgPHJlY3QgeD0iMCIgeT0iNjAiIHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjEyIiBmaWxsPSJ1cmwoI3dvb2RHcmFkKSIvPgogIDxyZWN0IHg9IjAiIHk9IjM4MCIgd2lkdGg9IjEyMDAiIGhlaWdodD0iMTYiIGZpbGw9InVybCgjd29vZEdyYWQpIi8+CgogIDwhLS0gQXJjaGl0ZWN0dXJhbCBCYWNrZ3JvdW5kIFdpbmRvd3MgLyBNb25pdG9ycyAtLT4KICA8ZyBvcGFjaXR5PSIwLjQ1Ij4KICAgIDxyZWN0IHg9IjEyMCIgeT0iMTAwIiB3aWR0aD0iMjYwIiBoZWlnaHQ9IjI1MCIgcng9IjgiIGZpbGw9IiMxZTI5M2IiIHN0cm9rZT0iIzc4MzUwZiIgc3Ryb2tlLXdpZHRoPSI0Ii8+CiAgICA8cmVjdCB4PSIxMzUiIHk9IjExNSIgd2lkdGg9IjIzMCIgaGVpZ2h0PSIyMjAiIGZpbGw9InVybCgjd2luZG93TGlnaHQpIi8+CiAgICA8bGluZSB4MT0iMjUwIiB5MT0iMTAwIiB4Mj0iMjUwIiB5Mj0iMzUwIiBzdHJva2U9IiM3ODM1MGYiIHN0cm9rZS13aWR0aD0iMyIvPgogICAgPGxpbmUgeDE9IjEyMCIgeTE9IjIyNSIgeDI9IjM4MCIgeTI9IjIyNSIgc3Ryb2tlPSIjNzgzNTBmIiBzdHJva2Utd2lkdGg9IjMiLz4KCiAgICA8cmVjdCB4PSI4MjAiIHk9IjEwMCIgd2lkdGg9IjI2MCIgaGVpZ2h0PSIyNTAiIHJ4PSI4IiBmaWxsPSIjMWUyOTNiIiBzdHJva2U9IiM3ODM1MGYiIHN0cm9rZS13aWR0aD0iNCIvPgogICAgPHJlY3QgeD0iODM1IiB5PSIxMTUiIHdpZHRoPSIyMzAiIGhlaWdodD0iMjIwIiBmaWxsPSJ1cmwoI3dpbmRvd0xpZ2h0KSIvPgogICAgPGxpbmUgeDE9Ijk1MCIgeTE9IjEwMCIgeDI9Ijk1MCIgeTI9IjM1MCIgc3Ryb2tlPSIjNzgzNTBmIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgIDxsaW5lIHgxPSI4MjAiIHkxPSIyMjUiIHgyPSIxMDgwIiB5Mj0iMjI1IiBzdHJva2U9IiM3ODM1MGYiIHN0cm9rZS13aWR0aD0iMyIvPgogIDwvZz4KCiAgPCEtLSBDZW50ZXIgQ3Jlc3QgLyBMb2dvIFNoaWVsZCBCYWNraW5nIC0tPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDYwMCwgMjAwKSIgZmlsdGVyPSJkcm9wLXNoYWRvdygwIDRweCAxMnB4IHJnYmEoMCwwLDAsMC41KSkiPgogICAgPGNpcmNsZSBjeD0iMCIgY3k9IjAiIHI9IjcwIiBmaWxsPSIjMGYxNzJhIiBzdHJva2U9IiM3ODM1MGYiIHN0cm9rZS13aWR0aD0iNCIvPgogICAgPGNpcmNsZSBjeD0iMCIgY3k9IjAiIHI9IjU4IiBmaWxsPSJub25lIiBzdHJva2U9IiNkOTc3MDYiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtZGFzaGFycmF5PSI2IDMiLz4KICAgIDx0ZXh0IHg9IjAiIHk9IjIwIiBmb250LXNpemU9IjUyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7wn4e68J+HuDwvdGV4dD4KICA8L2c+CgogIDwhLS0gVG9wIE9mZmljaWFsIEhlYWRlciBQbGFxdWUgLS0+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjAwLCAzNSkiPgogICAgPHJlY3QgeD0iLTQyMCIgeT0iLTIwIiB3aWR0aD0iODQwIiBoZWlnaHQ9IjM4IiByeD0iNiIgZmlsbD0iIzAyMDYxNyIgc3Ryb2tlPSIjNzgzNTBmIiBzdHJva2Utd2lkdGg9IjIiLz4KICAgIDx0ZXh0IHg9IjAiIHk9IjQiIGZvbnQtZmFtaWx5PSInUHJldGVuZGFyZCcsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZvbnQtd2VpZ2h0PSI5MDAiIGZpbGw9IiNmZGU2OGEiIGxldHRlci1zcGFjaW5nPSIxLjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPgogICAgICBPRkZJQ0UgT0YgVEhFIFVOSVRFRCBTVEFURVMgVFJBREUgUkVQUkVTRU5UQVRJVkUgwrcgV0FTSElOR1RPTiBELkMuCiAgICA8L3RleHQ+CiAgPC9nPgoKICA8IS0tIE1hc3NpdmUgQ3VydmVkIENvbmZlcmVuY2UgLyBOZWdvdGlhdGlvbiBUYWJsZSBpbiBGb3JlZ3JvdW5kIC0tPgogIDxnPgogICAgPCEtLSBUYWJsZSBCYXNlIC8gU2hhZG93IC0tPgogICAgPGVsbGlwc2UgY3g9IjYwMCIgY3k9IjYyMCIgcng9IjY4MCIgcnk9IjI0MCIgZmlsbD0iIzAwMDAwMCIgb3BhY2l0eT0iMC42NSIvPgogICAgPCEtLSBUYWJsZSBUb3AgLS0+CiAgICA8ZWxsaXBzZSBjeD0iNjAwIiBjeT0iNjAwIiByeD0iNjYwIiByeT0iMjIwIiBmaWxsPSJ1cmwoI3RhYmxlR3JhZCkiIHN0cm9rZT0iIzc4MzUwZiIgc3Ryb2tlLXdpZHRoPSI2Ii8+CiAgICA8IS0tIFRhYmxlIFJlZmxlY3Rpb24gU3RyaXAgLS0+CiAgICA8ZWxsaXBzZSBjeD0iNjAwIiBjeT0iNTcwIiByeD0iNTQwIiByeT0iMTQwIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMS41IiBvcGFjaXR5PSIwLjE1Ii8+CiAgPC9nPgoKICA8IS0tIEludGVyYWN0aXZlIFRhYmxlIERlc2sgUHJvcHMgLS0+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjAwLCA1MDApIj4KICAgIDwhLS0gT2ZmaWNpYWwgRG9jdW1lbnQgRm9sZGVyIENlbnRlciAtLT4KICAgIDxyZWN0IHg9Ii04MCIgeT0iLTMwIiB3aWR0aD0iMTYwIiBoZWlnaHQ9IjcwIiByeD0iNCIgZmlsbD0iI2ZlZjNjNyIgc3Ryb2tlPSIjYjQ1MzA5IiBzdHJva2Utd2lkdGg9IjIiIHRyYW5zZm9ybT0icm90YXRlKC0zKSIvPgogICAgPGxpbmUgeDE9Ii02MCIgeTE9Ii0xMCIgeDI9IjYwIiB5Mj0iLTEwIiBzdHJva2U9IiM5MjQwMGUiIHN0cm9rZS13aWR0aD0iMiIvPgogICAgPGxpbmUgeDE9Ii02MCIgeTE9IjUiIHgyPSI0MCIgeTI9IjUiIHN0cm9rZT0iIzkyNDAwZSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KICAgIDxsaW5lIHgxPSItNjAiIHkxPSIyMCIgeDI9IjUwIiB5Mj0iMjAiIHN0cm9rZT0iIzkyNDAwZSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KICAgIDxjaXJjbGUgY3g9IjQ1IiBjeT0iMTgiIHI9IjgiIGZpbGw9IiNkYzI2MjYiIG9wYWNpdHk9IjAuOCIvPgoKICAgIDwhLS0gTGVmdCBEZWxlZ2F0ZSBNaWNyb3Bob25lIC0tPgogICAgPGNpcmNsZSBjeD0iLTI4MCIgY3k9Ii0yMCIgcj0iMTYiIGZpbGw9IiMwZjE3MmEiIHN0cm9rZT0iIzY0NzQ4YiIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgICA8cGF0aCBkPSJNIC0yODAgLTIwIFEgLTI3MCAtNjAgLTI1MCAtNzAiIHN0cm9rZT0iIzMzNDE1NSIgc3Ryb2tlLXdpZHRoPSI0IiBmaWxsPSJub25lIi8+CiAgICA8cmVjdCB4PSItMjU0IiB5PSItODAiIHdpZHRoPSI4IiBoZWlnaHQ9IjE4IiByeD0iMiIgZmlsbD0iIzAyMDYxNyIvPgoKICAgIDwhLS0gUmlnaHQgRGVsZWdhdGUgTWljcm9waG9uZSAtLT4KICAgIDxjaXJjbGUgY3g9IjI4MCIgY3k9Ii0yMCIgcj0iMTYiIGZpbGw9IiMwZjE3MmEiIHN0cm9rZT0iIzY0NzQ4YiIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgICA8cGF0aCBkPSJNIDI4MCAtMjAgUSAyNzAgLTYwIDI1MCAtNzAiIHN0cm9rZT0iIzMzNDE1NSIgc3Ryb2tlLXdpZHRoPSI0IiBmaWxsPSJub25lIi8+CiAgICA8cmVjdCB4PSIyNDYiIHk9Ii04MCIgd2lkdGg9IjgiIGhlaWdodD0iMTgiIHJ4PSIyIiBmaWxsPSIjMDIwNjE3Ii8+CgogICAgPCEtLSBFeGVjdXRpdmUgUGVuIFN0YW5kIC0tPgogICAgPHJlY3QgeD0iMTQwIiB5PSItMjAiIHdpZHRoPSIzNiIgaGVpZ2h0PSIyMCIgcng9IjMiIGZpbGw9IiMxZTI5M2IiLz4KICAgIDxsaW5lIHgxPSIxNTgiIHkxPSItMjAiIHgyPSIxNzUiIHkyPSItNTUiIHN0cm9rZT0iI2Q5NzcwNiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8L2c+Cjwvc3ZnPg==",
-    defaultExpr: "stern",
-    dialogue: "한국산 전기차와 배터리에 대한 세액공제 유예는 미국 내 추가 투자와 알래스카 LNG 장기구매 계약이 전제되어야 합니다. 의회의 기류는 매우 강경합니다.",
+  minister_office: {
+    id: "scene_minister_office",
+    title: "통상교섭본부장 집무실",
+    location: "정부서울청사 10층 통상교섭본부",
+    flag: "🏛️",
+    npcId: "deputy_pm",
+    npcName: "경제부총리",
+    npcTitle: "경제부총리 겸 기획재정부 장관",
+    bgSvg: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDcwMCIgd2lkdGg9IjEyMDAiIGhlaWdodD0iNzAwIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0id2FsbEdyYWQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzBmMTcyYSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjY1JSIgc3RvcC1jb2xvcj0iIzFlMjkzYiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMjA2MTciLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Indvb2RHcmFkIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNiNDUzMDkiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMjcxMDAzIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJ0YWJsZUdyYWQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzVhMmQwYyIgc3RvcC1vcGFjaXR5PSIwLjk1Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iNDAlIiBzdG9wLWNvbG9yPSIjMjQxMDA1Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzAyMDYxNyIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0id2luZG93TGlnaHQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjE0Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjZmZmZmZmIiBzdG9wLW9wYWNpdHk9IjAuMDQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZmZmZmZmIiBzdG9wLW9wYWNpdHk9IjAiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgoKICA8IS0tIEJhY2sgV2FsbCAtLT4KICA8cmVjdCB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI3MDAiIGZpbGw9InVybCgjd2FsbEdyYWQpIi8+CgogIDwhLS0gV2FsbCBXb29kIE1vbGRpbmcgJiBQYW5lbHMgLS0+CiAgPHJlY3QgeD0iMCIgeT0iNjAiIHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjEyIiBmaWxsPSJ1cmwoI3dvb2RHcmFkKSIvPgogIDxyZWN0IHg9IjAiIHk9IjM4MCIgd2lkdGg9IjEyMDAiIGhlaWdodD0iMTYiIGZpbGw9InVybCgjd29vZEdyYWQpIi8+CgogIDwhLS0gQXJjaGl0ZWN0dXJhbCBCYWNrZ3JvdW5kIFdpbmRvd3Mgb3Zlcmxvb2tpbmcgU2VvdWwgLS0+CiAgPGcgb3BhY2l0eT0iMC40NSI+CiAgICA8cmVjdCB4PSIxMjAiIHk9IjEwMCIgd2lkdGg9IjI2MCIgaGVpZ2h0PSIyNTAiIHJ4PSI4IiBmaWxsPSIjMWUyOTNiIiBzdHJva2U9IiNiNDUzMDkiIHN0cm9rZS13aWR0aD0iNCIvPgogICAgPHJlY3QgeD0iMTM1IiB5PSIxMTUiIHdpZHRoPSIyMzAiIGhlaWdodD0iMjIwIiBmaWxsPSJ1cmwoI3dpbmRvd0xpZ2h0KSIvPgogICAgPGxpbmUgeDE9IjI1MCIgeTE9IjEwMCIgeDI9IjI1MCIgeTI9IjM1MCIgc3Ryb2tlPSIjYjQ1MzA5IiBzdHJva2Utd2lkdGg9IjMiLz4KICAgIDxsaW5lIHgxPSIxMjAiIHkxPSIyMjUiIHgyPSIzODAiIHkyPSIyMjUiIHN0cm9rZT0iI2I0NTMwOSIgc3Ryb2tlLXdpZHRoPSIzIi8+CgogICAgPHJlY3QgeD0iODIwIiB5PSIxMDAiIHdpZHRoPSIyNjAiIGhlaWdodD0iMjUwIiByeD0iOCIgZmlsbD0iIzFlMjkzYiIgc3Ryb2tlPSIjYjQ1MzA5IiBzdHJva2Utd2lkdGg9IjQiLz4KICAgIDxyZWN0IHg9IjgzNSIgeT0iMTE1IiB3aWR0aD0iMjMwIiBoZWlnaHQ9IjIyMCIgZmlsbD0idXJsKCN3aW5kb3dMaWdodCkiLz4KICAgIDxsaW5lIHgxPSI5NTAiIHkxPSIxMDAiIHgyPSI5NTAiIHkyPSIzNTAiIHN0cm9rZT0iI2I0NTMwOSIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgICA8bGluZSB4MT0iODIwIiB5MT0iMjI1IiB4Mj0iMTA4MCIgeTI9IjIyNSIgc3Ryb2tlPSIjYjQ1MzA5IiBzdHJva2Utd2lkdGg9IjMiLz4KICA8L2c+CgogIDwhLS0gQ2VudGVyIENyZXN0IC8gTWluaXN0cnkgRW1ibGVtIC0tPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDYwMCwgMjAwKSIgZmlsdGVyPSJkcm9wLXNoYWRvdygwIDRweCAxMnB4IHJnYmEoMCwwLDAsMC41KSkiPgogICAgPGNpcmNsZSBjeD0iMCIgY3k9IjAiIHI9IjcwIiBmaWxsPSIjMGYxNzJhIiBzdHJva2U9IiNiNDUzMDkiIHN0cm9rZS13aWR0aD0iNCIvPgogICAgPGNpcmNsZSBjeD0iMCIgY3k9IjAiIHI9IjU4IiBmaWxsPSJub25lIiBzdHJva2U9IiNkOTc3MDYiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtZGFzaGFycmF5PSI2IDMiLz4KICAgIDx0ZXh0IHg9IjAiIHk9IjIwIiBmb250LXNpemU9IjUyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7wn4+b77iPPC90ZXh0PgogIDwvZz4KCiAgPCEtLSBUb3AgT2ZmaWNpYWwgSGVhZGVyIFBsYXF1ZSAtLT4KICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2MDAsIDM1KSI+CiAgICA8cmVjdCB4PSItNDQwIiB5PSItMjAiIHdpZHRoPSI4ODAiIGhlaWdodD0iMzgiIHJ4PSI2IiBmaWxsPSIjMDIwNjE3IiBzdHJva2U9IiNiNDUzMDkiIHN0cm9rZS13aWR0aD0iMiIvPgogICAgPHRleHQgeD0iMCIgeT0iNCIgZm9udC1mYW1pbHk9IidQcmV0ZW5kYXJkJywgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMyIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iI2ZkZTY4YSIgbGV0dGVyLXNwYWNpbmc9IjEuNSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+CiAgICAgIEdPVkVSTk1FTlQgQ09NUExFWCBTRU9VTCDCtyBNSU5JU1RFUiBGT1IgVFJBREUgRVhFQ1VUSVZFIE9GRklDRQogICAgPC90ZXh0PgogIDwvZz4KCiAgPCEtLSBFeGVjdXRpdmUgRGVzayBpbiBGb3JlZ3JvdW5kIC0tPgogIDxnPgogICAgPGVsbGlwc2UgY3g9IjYwMCIgY3k9IjYyMCIgcng9IjY4MCIgcnk9IjI0MCIgZmlsbD0iIzAwMDAwMCIgb3BhY2l0eT0iMC42NSIvPgogICAgPGVsbGlwc2UgY3g9IjYwMCIgY3k9IjYwMCIgcng9IjY2MCIgcnk9IjIyMCIgZmlsbD0idXJsKCN0YWJsZUdyYWQpIiBzdHJva2U9IiNiNDUzMDkiIHN0cm9rZS13aWR0aD0iNiIvPgogICAgPGVsbGlwc2UgY3g9IjYwMCIgY3k9IjU3MCIgcng9IjU0MCIgcnk9IjE0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjEuNSIgb3BhY2l0eT0iMC4xNSIvPgogIDwvZz4KCiAgPCEtLSBJbnRlcmFjdGl2ZSBUYWJsZSBEZXNrIFByb3BzIC0tPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDYwMCwgNTAwKSI+CiAgICA8IS0tIE9mZmljaWFsIERvY3VtZW50IEZvbGRlciBDZW50ZXIgLS0+CiAgICA8cmVjdCB4PSItODAiIHk9Ii0zMCIgd2lkdGg9IjE2MCIgaGVpZ2h0PSI3MCIgcng9IjQiIGZpbGw9IiNmZWYzYzciIHN0cm9rZT0iI2I0NTMwOSIgc3Ryb2tlLXdpZHRoPSIyIiB0cmFuc2Zvcm09InJvdGF0ZSgtMikiLz4KICAgIDxsaW5lIHgxPSItNjAiIHkxPSItMTAiIHgyPSI2MCIgeTI9Ii0xMCIgc3Ryb2tlPSIjOTI0MDBlIiBzdHJva2Utd2lkdGg9IjIiLz4KICAgIDxsaW5lIHgxPSItNjAiIHkxPSI1IiB4Mj0iNDAiIHkyPSI1IiBzdHJva2U9IiM5MjQwMGUiIHN0cm9rZS13aWR0aD0iMS41Ii8+CiAgICA8bGluZSB4MT0iLTYwIiB5MT0iMjAiIHgyPSI1MCIgeTI9IjIwIiBzdHJva2U9IiM5MjQwMGUiIHN0cm9rZS13aWR0aD0iMS41Ii8+CiAgICA8Y2lyY2xlIGN4PSI0NSIgY3k9IjE4IiByPSI4IiBmaWxsPSIjZGMyNjI2IiBvcGFjaXR5PSIwLjgiLz4KCiAgICA8IS0tIExlZnQgRmxhZyAvIFN0YW5kIC0tPgogICAgPGNpcmNsZSBjeD0iLTI4MCIgY3k9Ii0yMCIgcj0iMTYiIGZpbGw9IiMwZjE3MmEiIHN0cm9rZT0iIzY0NzQ4YiIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgICA8dGV4dCB4PSItMjgwIiB5PSItMTIiIGZvbnQtc2l6ZT0iMTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiPvCfh7Dwn4e3PC90ZXh0PgoKICAgIDwhLS0gUmlnaHQgRXhlY3V0aXZlIFBob25lIC8gSG90bGluZSAtLT4KICAgIDxjaXJjbGUgY3g9IjI4MCIgY3k9Ii0yMCIgcj0iMTYiIGZpbGw9IiMwZjE3MmEiIHN0cm9rZT0iIzY0NzQ4YiIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgICA8dGV4dCB4PSIyODAiIHk9Ii0xMiIgZm9udC1zaXplPSIxNiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+8J+TnjwvdGV4dD4KCiAgICA8IS0tIEV4ZWN1dGl2ZSBQZW4gU3RhbmQgLS0+CiAgICA8cmVjdCB4PSIxNDAiIHk9Ii0yMCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjIwIiByeD0iMyIgZmlsbD0iIzFlMjkzYiIvPgogICAgPGxpbmUgeDE9IjE1OCIgeTE9Ii0yMCIgeDI9IjE3NSIgeTI9Ii01NSIgc3Ryb2tlPSIjZDk3NzA2IiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDwvZz4KPC9zdmc+Cg==",
+    defaultExpr: "neutral",
+    dialogue: "본부장, 올해 2027 통상 현안 보고서가 올라왔네. 대외 무역전쟁의 파고가 거세니 국내 산업 생태계와 재정을 단단히 조율해 국익의 활로를 열어주게.",
     props: [
-      { id: "tariff_draft", label: "📄 관세 양허안 초안", detail: "대미 자동차 25% 품목 관세 잠정 유예 조항 및 3년 내 미국 현지화 60% 달성 의무화 조항 수록." },
-      { id: "lng_memo", label: "⚡ 알래스카 LNG 구매서", detail: "연간 400만 톤 규모 15년 장기 공급계약. 러스트벨트 및 공화당 상원의원 집중 로비 품목." },
-      { id: "us_intel", label: "🔒 USTR 전략 전문", detail: "USTR은 한국의 반도체 보조금 및 대중국 첨단장비 규제 동참을 이번 협상의 최종 마지노선으로 설정함." }
+      { id: "trade_agenda", label: "📄 2027 통상 현안 종합보고서", detail: "대외 관세 리스크, 주력 수출 10대 품목 공급망 점검 및 대정부 건의사항 수록." },
+      { id: "macro_dossier", label: "📊 거시경제 및 외환 점검표", detail: "원/달러 환율 변동성, 외환보유액, 통상 마찰에 따른 무역수지 적자 위험 분석." },
+      { id: "cabinet_docket", label: "📁 국무회의 상정 안건철", detail: "통상교섭본부 긴급 산업지원 및 무역금융 특별회계 3조원 신설 건." }
     ],
     choices: [
       {
-        id: "us_opt_1",
-        label: "대미 반도체 400억 달러 투자 패키지와 연계하여 자동차 관세 완전 면제를 관철한다.",
-        reactionText: "타이 대표가 서류를 넘겨보며 고개를 끄덕입니다: '삼성과 SK의 텍사스 증설 일정과 연계된다면 백악관 국가경제위원회(NEC)를 설득할 명분이 생깁니다.'",
+        id: "min_opt_1",
+        label: "국내 10대 주력 수출산업의 공급망을 우선 재정비하고 비상 수출금융을 즉각 가동하겠습니다.",
+        reactionText: "경제부총리가 고개를 끄덕이며 메모합니다: '기재부도 무역금융 특례보증을 즉시 확대 편성하겠네. 현장의 자금난을 선제적으로 막아주게.'",
         newExpr: "satisfied"
       },
       {
-        id: "us_opt_2",
-        label: "알래스카 LNG 수입 다변화 카드로 미국 의회 러스트벨트 의원들을 우회 압박한다.",
-        reactionText: "타이 대표의 눈빛이 흔들립니다: '에너지 카드는 펜실베이니아와 오하이오 의원들을 움직일 수 있습니다. 다만 의회 청문회 일정을 고려해야 합니다.'",
+        id: "min_opt_2",
+        label: "부처 간 이견을 조율하고 국회와 긴밀히 소통하여 통상 위기 극복을 위한 초당적 협력을 이끌어내겠습니다.",
+        reactionText: "경제부총리가 안도하는 표정을 짓습니다: '정치권과의 조율이 관건이었는데 본부장이 앞장서주니 든든하군. 국무회의에서 전폭 지원하겠네.'",
         newExpr: "surprised"
       },
       {
-        id: "us_opt_3",
-        label: "세계무역기구(WTO) 불공정 보조금 제소 가능성을 시사하며 원칙적 재협상을 요구한다.",
-        reactionText: "타이 대표의 표정이 순식간에 차갑게 굳어집니다: '통상교섭본부장, 워싱턴은 다자 분쟁 제소를 동맹에 대한 비우호적 조치로 간주할 것입니다.'",
+        id: "min_opt_3",
+        label: "대외 불확실성이 극심하므로 관망세를 유지하며 주요국의 정책 발표를 먼저 지켜보겠습니다.",
+        reactionText: "경제부총리의 표정이 굳어집니다: '골든타임을 놓치면 우리 기업들이 먼저 쓰러지네! 지금은 기민하게 움직여야 할 때일세.'",
         newExpr: "angry"
       }
     ]
@@ -3974,13 +3974,50 @@ const SHOWCASE_SCENES = {
         newExpr: "angry"
       }
     ]
+  },
+  us_negotiation: {
+    id: "scene_us_negotiation",
+    title: "미국 무역대표부(USTR) 고위급 협상장",
+    location: "워싱턴 D.C. USTR 본부 대회의실",
+    flag: "🇺🇸",
+    npcId: "us_trade_rep",
+    npcName: "캐서린 타이",
+    npcTitle: "미국 무역대표부(USTR) 대표",
+    bgSvg: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDcwMCIgd2lkdGg9IjEyMDAiIGhlaWdodD0iNzAwIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0id2FsbEdyYWQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzFlMjkzYiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjY1JSIgc3RvcC1jb2xvcj0iIzBmMTcyYSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMjA2MTciLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Indvb2RHcmFkIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM3ODM1MGYiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMjcxMDAzIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJ0YWJsZUdyYWQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzQ1MWEwMyIgc3RvcC1vcGFjaXR5PSIwLjk1Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iNDAlIiBzdG9wLWNvbG9yPSIjMWMwYjAyIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzAyMDYxNyIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0id2luZG93TGlnaHQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjEyIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjZmZmZmZmIiBzdG9wLW9wYWNpdHk9IjAuMDMiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZmZmZmZmIiBzdG9wLW9wYWNpdHk9IjAiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgoKICA8IS0tIEJhY2sgV2FsbCAtLT4KICA8cmVjdCB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI3MDAiIGZpbGw9InVybCgjd2FsbEdyYWQpIi8+CgogIDwhLS0gV2FsbCBXb29kIE1vbGRpbmcgJiBQYW5lbHMgLS0+CiAgPHJlY3QgeD0iMCIgeT0iNjAiIHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjEyIiBmaWxsPSJ1cmwoI3dvb2RHcmFkKSIvPgogIDxyZWN0IHg9IjAiIHk9IjM4MCIgd2lkdGg9IjEyMDAiIGhlaWdodD0iMTYiIGZpbGw9InVybCgjd29vZEdyYWQpIi8+CgogIDwhLS0gQXJjaGl0ZWN0dXJhbCBCYWNrZ3JvdW5kIFdpbmRvd3MgLyBNb25pdG9ycyAtLT4KICA8ZyBvcGFjaXR5PSIwLjQ1Ij4KICAgIDxyZWN0IHg9IjEyMCIgeT0iMTAwIiB3aWR0aD0iMjYwIiBoZWlnaHQ9IjI1MCIgcng9IjgiIGZpbGw9IiMxZTI5M2IiIHN0cm9rZT0iIzc4MzUwZiIgc3Ryb2tlLXdpZHRoPSI0Ii8+CiAgICA8cmVjdCB4PSIxMzUiIHk9IjExNSIgd2lkdGg9IjIzMCIgaGVpZ2h0PSIyMjAiIGZpbGw9InVybCgjd2luZG93TGlnaHQpIi8+CiAgICA8bGluZSB4MT0iMjUwIiB5MT0iMTAwIiB4Mj0iMjUwIiB5Mj0iMzUwIiBzdHJva2U9IiM3ODM1MGYiIHN0cm9rZS13aWR0aD0iMyIvPgogICAgPGxpbmUgeDE9IjEyMCIgeTE9IjIyNSIgeDI9IjM4MCIgeTI9IjIyNSIgc3Ryb2tlPSIjNzgzNTBmIiBzdHJva2Utd2lkdGg9IjMiLz4KCiAgICA8cmVjdCB4PSI4MjAiIHk9IjEwMCIgd2lkdGg9IjI2MCIgaGVpZ2h0PSIyNTAiIHJ4PSI4IiBmaWxsPSIjMWUyOTNiIiBzdHJva2U9IiM3ODM1MGYiIHN0cm9rZS13aWR0aD0iNCIvPgogICAgPHJlY3QgeD0iODM1IiB5PSIxMTUiIHdpZHRoPSIyMzAiIGhlaWdodD0iMjIwIiBmaWxsPSJ1cmwoI3dpbmRvd0xpZ2h0KSIvPgogICAgPGxpbmUgeDE9Ijk1MCIgeTE9IjEwMCIgeDI9Ijk1MCIgeTI9IjM1MCIgc3Ryb2tlPSIjNzgzNTBmIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgIDxsaW5lIHgxPSI4MjAiIHkxPSIyMjUiIHgyPSIxMDgwIiB5Mj0iMjI1IiBzdHJva2U9IiM3ODM1MGYiIHN0cm9rZS13aWR0aD0iMyIvPgogIDwvZz4KCiAgPCEtLSBDZW50ZXIgQ3Jlc3QgLyBMb2dvIFNoaWVsZCBCYWNraW5nIC0tPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDYwMCwgMjAwKSIgZmlsdGVyPSJkcm9wLXNoYWRvdygwIDRweCAxMnB4IHJnYmEoMCwwLDAsMC41KSkiPgogICAgPGNpcmNsZSBjeD0iMCIgY3k9IjAiIHI9IjcwIiBmaWxsPSIjMGYxNzJhIiBzdHJva2U9IiM3ODM1MGYiIHN0cm9rZS13aWR0aD0iNCIvPgogICAgPGNpcmNsZSBjeD0iMCIgY3k9IjAiIHI9IjU4IiBmaWxsPSJub25lIiBzdHJva2U9IiNkOTc3MDYiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtZGFzaGFycmF5PSI2IDMiLz4KICAgIDx0ZXh0IHg9IjAiIHk9IjIwIiBmb250LXNpemU9IjUyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7wn4e68J+HuDwvdGV4dD4KICA8L2c+CgogIDwhLS0gVG9wIE9mZmljaWFsIEhlYWRlciBQbGFxdWUgLS0+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjAwLCAzNSkiPgogICAgPHJlY3QgeD0iLTQyMCIgeT0iLTIwIiB3aWR0aD0iODQwIiBoZWlnaHQ9IjM4IiByeD0iNiIgZmlsbD0iIzAyMDYxNyIgc3Ryb2tlPSIjNzgzNTBmIiBzdHJva2Utd2lkdGg9IjIiLz4KICAgIDx0ZXh0IHg9IjAiIHk9IjQiIGZvbnQtZmFtaWx5PSInUHJldGVuZGFyZCcsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZvbnQtd2VpZ2h0PSI5MDAiIGZpbGw9IiNmZGU2OGEiIGxldHRlci1zcGFjaW5nPSIxLjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPgogICAgICBPRkZJQ0UgT0YgVEhFIFVOSVRFRCBTVEFURVMgVFJBREUgUkVQUkVTRU5UQVRJVkUgwrcgV0FTSElOR1RPTiBELkMuCiAgICA8L3RleHQ+CiAgPC9nPgoKICA8IS0tIE1hc3NpdmUgQ3VydmVkIENvbmZlcmVuY2UgLyBOZWdvdGlhdGlvbiBUYWJsZSBpbiBGb3JlZ3JvdW5kIC0tPgogIDxnPgogICAgPCEtLSBUYWJsZSBCYXNlIC8gU2hhZG93IC0tPgogICAgPGVsbGlwc2UgY3g9IjYwMCIgY3k9IjYyMCIgcng9IjY4MCIgcnk9IjI0MCIgZmlsbD0iIzAwMDAwMCIgb3BhY2l0eT0iMC42NSIvPgogICAgPCEtLSBUYWJsZSBUb3AgLS0+CiAgICA8ZWxsaXBzZSBjeD0iNjAwIiBjeT0iNjAwIiByeD0iNjYwIiByeT0iMjIwIiBmaWxsPSJ1cmwoI3RhYmxlR3JhZCkiIHN0cm9rZT0iIzc4MzUwZiIgc3Ryb2tlLXdpZHRoPSI2Ii8+CiAgICA8IS0tIFRhYmxlIFJlZmxlY3Rpb24gU3RyaXAgLS0+CiAgICA8ZWxsaXBzZSBjeD0iNjAwIiBjeT0iNTcwIiByeD0iNTQwIiByeT0iMTQwIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMS41IiBvcGFjaXR5PSIwLjE1Ii8+CiAgPC9nPgoKICA8IS0tIEludGVyYWN0aXZlIFRhYmxlIERlc2sgUHJvcHMgLS0+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjAwLCA1MDApIj4KICAgIDwhLS0gT2ZmaWNpYWwgRG9jdW1lbnQgRm9sZGVyIENlbnRlciAtLT4KICAgIDxyZWN0IHg9Ii04MCIgeT0iLTMwIiB3aWR0aD0iMTYwIiBoZWlnaHQ9IjcwIiByeD0iNCIgZmlsbD0iI2ZlZjNjNyIgc3Ryb2tlPSIjYjQ1MzA5IiBzdHJva2Utd2lkdGg9IjIiIHRyYW5zZm9ybT0icm90YXRlKC0zKSIvPgogICAgPGxpbmUgeDE9Ii02MCIgeTE9Ii0xMCIgeDI9IjYwIiB5Mj0iLTEwIiBzdHJva2U9IiM5MjQwMGUiIHN0cm9rZS13aWR0aD0iMiIvPgogICAgPGxpbmUgeDE9Ii02MCIgeTE9IjUiIHgyPSI0MCIgeTI9IjUiIHN0cm9rZT0iIzkyNDAwZSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KICAgIDxsaW5lIHgxPSItNjAiIHkxPSIyMCIgeDI9IjUwIiB5Mj0iMjAiIHN0cm9rZT0iIzkyNDAwZSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KICAgIDxjaXJjbGUgY3g9IjQ1IiBjeT0iMTgiIHI9IjgiIGZpbGw9IiNkYzI2MjYiIG9wYWNpdHk9IjAuOCIvPgoKICAgIDwhLS0gTGVmdCBEZWxlZ2F0ZSBNaWNyb3Bob25lIC0tPgogICAgPGNpcmNsZSBjeD0iLTI4MCIgY3k9Ii0yMCIgcj0iMTYiIGZpbGw9IiMwZjE3MmEiIHN0cm9rZT0iIzY0NzQ4YiIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgICA8cGF0aCBkPSJNIC0yODAgLTIwIFEgLTI3MCAtNjAgLTI1MCAtNzAiIHN0cm9rZT0iIzMzNDE1NSIgc3Ryb2tlLXdpZHRoPSI0IiBmaWxsPSJub25lIi8+CiAgICA8cmVjdCB4PSItMjU0IiB5PSItODAiIHdpZHRoPSI4IiBoZWlnaHQ9IjE4IiByeD0iMiIgZmlsbD0iIzAyMDYxNyIvPgoKICAgIDwhLS0gUmlnaHQgRGVsZWdhdGUgTWljcm9waG9uZSAtLT4KICAgIDxjaXJjbGUgY3g9IjI4MCIgY3k9Ii0yMCIgcj0iMTYiIGZpbGw9IiMwZjE3MmEiIHN0cm9rZT0iIzY0NzQ4YiIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgICA8cGF0aCBkPSJNIDI4MCAtMjAgUSAyNzAgLTYwIDI1MCAtNzAiIHN0cm9rZT0iIzMzNDE1NSIgc3Ryb2tlLXdpZHRoPSI0IiBmaWxsPSJub25lIi8+CiAgICA8cmVjdCB4PSIyNDYiIHk9Ii04MCIgd2lkdGg9IjgiIGhlaWdodD0iMTgiIHJ4PSIyIiBmaWxsPSIjMDIwNjE3Ii8+CgogICAgPCEtLSBFeGVjdXRpdmUgUGVuIFN0YW5kIC0tPgogICAgPHJlY3QgeD0iMTQwIiB5PSItMjAiIHdpZHRoPSIzNiIgaGVpZ2h0PSIyMCIgcng9IjMiIGZpbGw9IiMxZTI5M2IiLz4KICAgIDxsaW5lIHgxPSIxNTgiIHkxPSItMjAiIHgyPSIxNzUiIHkyPSItNTUiIHN0cm9rZT0iI2Q5NzcwNiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8L2c+Cjwvc3ZnPg==",
+    defaultExpr: "stern",
+    dialogue: "한국산 전기차와 배터리에 대한 세액공제 유예는 미국 내 추가 투자와 알래스카 LNG 장기구매 계약이 전제되어야 합니다. 의회의 기류는 매우 강경합니다.",
+    props: [
+      { id: "tariff_draft", label: "📄 관세 양허안 초안", detail: "대미 자동차 25% 품목 관세 잠정 유예 조항 및 3년 내 미국 현지화 60% 달성 의무화 조항 수록." },
+      { id: "lng_memo", label: "⚡ 알래스카 LNG 구매서", detail: "연간 400만 톤 규모 15년 장기 공급계약. 러스트벨트 및 공화당 상원의원 집중 로비 품목." },
+      { id: "us_intel", label: "🔒 USTR 전략 전문", detail: "USTR은 한국의 반도체 보조금 및 대중국 첨단장비 규제 동참을 이번 협상의 최종 마지노선으로 설정함." }
+    ],
+    choices: [
+      {
+        id: "us_opt_1",
+        label: "대미 반도체 400억 달러 투자 패키지와 연계하여 자동차 관세 완전 면제를 관철한다.",
+        reactionText: "타이 대표가 서류를 넘겨보며 고개를 끄덕입니다: '삼성과 SK의 텍사스 증설 일정과 연계된다면 백악관 국가경제위원회(NEC)를 설득할 명분이 생깁니다.'",
+        newExpr: "satisfied"
+      },
+      {
+        id: "us_opt_2",
+        label: "알래스카 LNG 수입 다변화 카드로 미국 의회 러스트벨트 의원들을 우회 압박한다.",
+        reactionText: "타이 대표의 눈빛이 흔들립니다: '에너지 카드는 펜실베이니아와 오하이오 의원들을 움직일 수 있습니다. 다만 의회 청문회 일정을 고려해야 합니다.'",
+        newExpr: "surprised"
+      },
+      {
+        id: "us_opt_3",
+        label: "세계무역기구(WTO) 불공정 보조금 제소 가능성을 시사하며 원칙적 재협상을 요구한다.",
+        reactionText: "타이 대표의 표정이 순식간에 차갑게 굳어집니다: '통상교섭본부장, 워싱턴은 다자 분쟁 제소를 동맹에 대한 비우호적 조치로 간주할 것입니다.'",
+        newExpr: "angry"
+      }
+    ]
   }
 };
 
 class VisualStageManager {
   constructor(gameManager) {
     this.gm = gameManager;
-    this.activeSceneKey = 'us_negotiation'; // Default showcase scene or campaign synced
+    this.activeSceneKey = 'minister_office'; // Default showcase scene or campaign synced
     this.npcExpressions = {}; // { npcId: 'neutral' | 'angry' | 'surprised' | 'satisfied' | 'stern' }
     this.activePropId = null;
     this.dialogueHistory = [];
@@ -3998,7 +4035,7 @@ class VisualStageManager {
   }
 
   getCurrentScene() {
-    return SHOWCASE_SCENES[this.activeSceneKey] || SHOWCASE_SCENES.us_negotiation;
+    return SHOWCASE_SCENES[this.activeSceneKey] || SHOWCASE_SCENES.minister_office;
   }
 
   getNpcExpression(npcId, defaultExpr = 'neutral') {
@@ -4021,10 +4058,10 @@ class VisualStageManager {
     const tabsBar = document.createElement('div');
     tabsBar.className = 'stage-scene-tabs';
     tabsBar.innerHTML = `
-      <div class="stage-tabs-label">🎬 5대 핵심 전용 장면:</div>
+      <div class="stage-tabs-label">🎬 주요 전용 장면:</div>
       <div class="stage-tabs-scroll">
-        <button class="stage-nav-tab ${this.activeSceneKey === 'us_negotiation' ? 'active' : ''}" data-skey="us_negotiation">
-          🇺🇸 미국 USTR 협상장
+        <button class="stage-nav-tab ${this.activeSceneKey === 'minister_office' ? 'active' : ''}" data-skey="minister_office">
+          🏛️ 본부장 집무실
         </button>
         <button class="stage-nav-tab ${this.activeSceneKey === 'president_office' ? 'active' : ''}" data-skey="president_office">
           🇰🇷 대통령 긴급 독대
@@ -8479,7 +8516,7 @@ class UIManager {
         <ol style="font-size: 14px; line-height: 1.7; padding-left: 20px; color: #333; margin-bottom: 20px;">
           <li><b>출신과 시나리오 선택:</b> 관료·기업가·정치인 중 출신을 정하고, 2027년 대한민국이 마주할 통상 위기 시나리오를 선택합니다.</li>
           <li><b>월간 3회 정책 결재 (3 AP):</b> 매월 주어지는 3회의 행동력으로 기업 현장 지원, 무역금융 확대, 규제 혁신 등을 결재합니다. 정책은 1~3개월의 시차를 두고 파급됩니다.</li>
-          <li><b>고위급 양자 통상 담판 (2-Level Games):</b> 미국의 25% 보편·자동차 관세 폭탄과 중국의 공급망 디커플링에 맞서 워싱턴·베이징과의 양자 협상 테이블에서 국익을 방어합니다.</li>
+          <li><b>통상 정책 및 전략 수립:</b> 미국의 관세 장벽과 글로벌 공급망 위기에 맞서 국내 산업 생태계를 지키고 국익의 활로를 엽니다.</li>
           <li><b>무역 성적표와 중앙일보 1면:</b> 매월 말 경제 시뮬레이션이 실행되어 관세청 수출입 확정치와 가상 중앙일보 1면 조간이 발행됩니다.</li>
           <li><b>12개월 완주와 2028년 최종 평가:</b> 12차례 무역 성적표를 거친 후 정부서울청사와 용산 대통령실의 최종 평가를 받아 7대 다중 엔딩에 도달합니다.</li>
         </ol>
@@ -8713,7 +8750,7 @@ class UIManager {
         <div class="step-num">2</div>
         <div>
           <div class="step-title">2단계: 본부장 결재 (5 AP)</div>
-          <div class="step-desc">협상·정책·기업 지원 결재</div>
+          <div class="step-desc">정책·국내조율·기업 지원 결재</div>
         </div>
       </div>
       <div class="flow-step ${this.gm.actionPoints === 0 ? 'active' : ''}">
@@ -8749,7 +8786,7 @@ class UIManager {
         <div class="ap-badge-icon">⚡</div>
         <div class="ap-banner-text">
           <h3>본부장 가용 행동력: <span style="color: #fde047;">${this.gm.actionPoints}</span> / ${maxAP} AP</h3>
-          <p>협상 담판(1 AP), 정책 결재(각 1 AP), 기업 지원(1 AP) 등에 자유롭게 배분하십시오.</p>
+          <p>정책 결재(각 1 AP), 국내 조율(1 AP), 기업 지원(1 AP) 등에 자유롭게 배분하십시오.</p>
         </div>
       </div>
       <div class="ap-slots-row">
@@ -9188,15 +9225,25 @@ class UIManager {
         <button class="primary" style="width: 100%;">정책 결재함 열기 (${this.gm.actionPoints} AP 잔여) →</button>
       </div>
 
-      <div class="office-card" id="obj-nego-us" style="cursor: pointer;">
-        <span class="task-tag must">업무 ② · 통상 외교 (1 AP)</span>
-        <div class="icon-head">🤝</div>
-        <h3>${chapter.negotiationTitle || '대미 통상 협상 훈령'}</h3>
-        <p style="font-size: 12px; color: #475569; margin: 0 0 10px;">${chapter.negotiationDesc || '양자 통상 담판 테이블로 직행합니다.'}</p>
-        <button class="secondary" style="width: 100%;">
-          ${this.gm.activeNegotiation && this.gm.activeNegotiation.status === 'suspended' ? '정회된 협상 속개 →' : (chapter.negotiationButtonText || '외교 협상 시작 →')}
-        </button>
-      </div>
+      ${this.gm.activeNegotiation && this.gm.activeNegotiation.status === 'suspended' ? `
+        <div class="office-card" id="obj-nego-us" style="cursor: pointer;">
+          <span class="task-tag must">외교 속개 (1 AP)</span>
+          <div class="icon-head">🤝</div>
+          <h3>정회된 협상 속개</h3>
+          <p style="font-size: 12px; color: #475569; margin: 0 0 10px;">일시 정회 중인 양자 통상 담판 테이블로 복귀합니다.</p>
+          <button class="secondary" style="width: 100%;">정회된 협상 속개 →</button>
+        </div>
+      ` : `
+        <div class="office-card" id="obj-domestic-coordination" style="cursor: pointer;">
+          <span class="task-tag must">업무 ② · 부처 조율 (1 AP)</span>
+          <div class="icon-head">🏛️</div>
+          <h3>국내 부처·이해관계자 조정</h3>
+          <p style="font-size: 12px; color: #475569; margin: 0 0 10px;">경제부총리·산업부·농림부 및 국회와의 이견을 사전 조율하여 국가적 단일 대오를 구축합니다.</p>
+          <button class="secondary" style="width: 100%;">
+            국내 정책 조율 데스크 →
+          </button>
+        </div>
+      `}
 
       <div class="office-card" id="obj-corp-dialogue" style="cursor: pointer;">
         <span class="task-tag opt">업무 ③ · 산업 현장 (1 AP)</span>
@@ -9364,6 +9411,13 @@ class UIManager {
       if (elWar) elWar.onclick = () => { this.gm.screen = 'war_room'; this.render(); };
       const elPol = document.getElementById('obj-policies');
       if (elPol) elPol.onclick = () => { this.gm.screen = 'policies'; this.render(); };
+      const elCoord = document.getElementById('obj-domestic-coordination');
+      if (elCoord) elCoord.onclick = () => {
+        this.stageManager.setScene('domestic_council');
+        this.render();
+        const domTarget = document.querySelector('.campaign-situation-room') || document.querySelector('.game-stage-wrapper');
+        if (domTarget) domTarget.scrollIntoView({ behavior: 'smooth' });
+      };
       const elNego = document.getElementById('obj-nego-us');
       if (elNego) elNego.onclick = () => {
         if (this.gm.activeNegotiation && this.gm.activeNegotiation.status === 'suspended') {
@@ -9440,8 +9494,8 @@ class UIManager {
           <p style="margin: 0; font-size: 12px; color: #555;">2027년 12개월 동안 무역수지 흑자를 수호하고 10대 첨단 주력산업을 지켜내십시오.</p>
         </div>
         <div style="background: var(--white); padding: 10px; border-radius: 4px; border: 1px solid var(--line);">
-          <strong style="color: var(--navy); display: block; margin-bottom: 3px;">3. 월간 3 AP (Action)</strong>
-          <p style="margin: 0; font-size: 12px; color: #555;">매월 3회의 정책 행동력(대미 담판, 설비 매칭, 무역금융 등)을 전략적으로 배분합니다.</p>
+          <strong style="color: var(--navy); display: block; margin-bottom: 3px;">3. 월간 가용 AP (Action)</strong>
+          <p style="margin: 0; font-size: 12px; color: #555;">매월 주어지는 정책 행동력(정책 결재, 부처 조율, 기업 지원 등)을 전략적으로 배분합니다.</p>
         </div>
         <div style="background: var(--white); padding: 10px; border-radius: 4px; border: 1px solid var(--line);">
           <strong style="color: var(--navy); display: block; margin-bottom: 3px;">4. 결과 확인 (Feedback)</strong>

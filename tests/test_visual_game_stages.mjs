@@ -71,34 +71,46 @@ server.listen(PORT, async () => {
     console.log('✓ Visual Stage Viewport successfully mounted in Executive Office');
 
     // -------------------------------------------------------------
-    // SCENE 1: 미국 USTR 협상장 (Katherine Tai)
+    // SCENE 0: 통상교섭본부장 집무실 (DEFAULT OPENING SCENE with Deputy PM)
     // -------------------------------------------------------------
-    console.log('\n--- Verifying Scene 1: 미국 USTR 협상장 ---');
-    await page.click('.stage-nav-tab[data-skey="us_negotiation"]');
-    await page.waitForTimeout(500);
+    console.log('\n--- Verifying Scene 0: 통상교섭본부장 집무실 (Default First Screen) ---');
+    
+    // Verify that on initial entry, NO "미국과 협상" is on screen
+    const defaultSceneTitle = await page.$eval('.stage-location-title', el => el.textContent.trim());
+    const defaultSpeaker = await page.$eval('.dialogue-speaker-pill strong', el => el.textContent.trim());
+    console.log(`Default Scene Title: ${defaultSceneTitle}`);
+    console.log(`Default Scene Speaker: ${defaultSpeaker}`);
 
-    const s1Title = await page.$eval('.stage-location-title', el => el.textContent.trim());
-    const s1Speaker = await page.$eval('.dialogue-speaker-pill strong', el => el.textContent.trim());
-    console.log(`Scene 1 Title: ${s1Title}`);
-    console.log(`Scene 1 Speaker: ${s1Speaker}`);
+    if (defaultSceneTitle.includes('미국') || defaultSpeaker.includes('캐서린 타이')) {
+      throw new Error('Default first screen still shows US negotiation!');
+    }
 
-    // Click interactive desk prop: 관세 양허안 초안
-    await page.click('.stage-prop-btn[data-pid="tariff_draft"]');
+    // Verify Office Grid Card 2 is Domestic Coordination, not US Negotiation
+    const coordCard = await page.$('#obj-domestic-coordination');
+    const negoUsCard = await page.$('#obj-nego-us');
+    console.log(`Domestic Coordination Card present: ${coordCard !== null}`);
+    console.log(`US Negotiation Card present: ${negoUsCard !== null}`);
+    if (!coordCard || negoUsCard) {
+      throw new Error('Card 2 should be Domestic Coordination, and US Negotiation must not be displayed on entry!');
+    }
+
+    // Click interactive desk prop: 📄 2027 통상 현안 종합보고서
+    await page.click('.stage-prop-btn[data-pid="trade_agenda"]');
     await page.waitForTimeout(300);
     const propDetail = await page.$eval('.active-prop-dossier', el => el.textContent.trim());
     console.log(`Interactive Desk Prop Opened: ${propDetail.substring(0, 40)}...`);
 
-    // Click Choice 1 (대미 반도체 400억 달러 패키지 연계)
-    await page.click('.stage-choice-button[data-cid="us_opt_1"]');
+    // Click Choice 1 (국내 10대 주력 수출산업 공급망 재정비 및 수출금융 가동)
+    await page.click('.stage-choice-button[data-cid="min_opt_1"]');
     await page.waitForTimeout(500);
 
-    const s1Reaction = await page.$eval('.dialogue-quote-text', el => el.textContent.trim());
-    const s1NpcExpr = await page.$eval('.actor-expression-badge', el => el.textContent.trim());
-    console.log(`NPC Reaction: ${s1Reaction.substring(0, 60)}...`);
-    console.log(`NPC Expression changed to: ${s1NpcExpr}`);
+    const s0Reaction = await page.$eval('.dialogue-quote-text', el => el.textContent.trim());
+    const s0NpcExpr = await page.$eval('.actor-expression-badge', el => el.textContent.trim());
+    console.log(`Deputy PM Reaction: ${s0Reaction.substring(0, 60)}...`);
+    console.log(`Deputy PM Expression changed to: ${s0NpcExpr}`);
 
-    await page.screenshot({ path: 'tests/stage_1_us_negotiation.png', fullPage: false });
-    console.log('✓ Saved tests/stage_1_us_negotiation.png');
+    await page.screenshot({ path: 'tests/stage_0_minister_office.png', fullPage: false });
+    console.log('✓ Saved tests/stage_0_minister_office.png');
 
     // -------------------------------------------------------------
     // SCENE 2: 대통령 긴급 독대 (Presidential Private Audience)

@@ -302,7 +302,7 @@ class UIManager {
         <ol style="font-size: 14px; line-height: 1.7; padding-left: 20px; color: #333; margin-bottom: 20px;">
           <li><b>출신과 시나리오 선택:</b> 관료·기업가·정치인 중 출신을 정하고, 2027년 대한민국이 마주할 통상 위기 시나리오를 선택합니다.</li>
           <li><b>월간 3회 정책 결재 (3 AP):</b> 매월 주어지는 3회의 행동력으로 기업 현장 지원, 무역금융 확대, 규제 혁신 등을 결재합니다. 정책은 1~3개월의 시차를 두고 파급됩니다.</li>
-          <li><b>고위급 양자 통상 담판 (2-Level Games):</b> 미국의 25% 보편·자동차 관세 폭탄과 중국의 공급망 디커플링에 맞서 워싱턴·베이징과의 양자 협상 테이블에서 국익을 방어합니다.</li>
+          <li><b>통상 정책 및 전략 수립:</b> 미국의 관세 장벽과 글로벌 공급망 위기에 맞서 국내 산업 생태계를 지키고 국익의 활로를 엽니다.</li>
           <li><b>무역 성적표와 중앙일보 1면:</b> 매월 말 경제 시뮬레이션이 실행되어 관세청 수출입 확정치와 가상 중앙일보 1면 조간이 발행됩니다.</li>
           <li><b>12개월 완주와 2028년 최종 평가:</b> 12차례 무역 성적표를 거친 후 정부서울청사와 용산 대통령실의 최종 평가를 받아 7대 다중 엔딩에 도달합니다.</li>
         </ol>
@@ -536,7 +536,7 @@ class UIManager {
         <div class="step-num">2</div>
         <div>
           <div class="step-title">2단계: 본부장 결재 (5 AP)</div>
-          <div class="step-desc">협상·정책·기업 지원 결재</div>
+          <div class="step-desc">정책·국내조율·기업 지원 결재</div>
         </div>
       </div>
       <div class="flow-step ${this.gm.actionPoints === 0 ? 'active' : ''}">
@@ -572,7 +572,7 @@ class UIManager {
         <div class="ap-badge-icon">⚡</div>
         <div class="ap-banner-text">
           <h3>본부장 가용 행동력: <span style="color: #fde047;">${this.gm.actionPoints}</span> / ${maxAP} AP</h3>
-          <p>협상 담판(1 AP), 정책 결재(각 1 AP), 기업 지원(1 AP) 등에 자유롭게 배분하십시오.</p>
+          <p>정책 결재(각 1 AP), 국내 조율(1 AP), 기업 지원(1 AP) 등에 자유롭게 배분하십시오.</p>
         </div>
       </div>
       <div class="ap-slots-row">
@@ -1011,15 +1011,25 @@ class UIManager {
         <button class="primary" style="width: 100%;">정책 결재함 열기 (${this.gm.actionPoints} AP 잔여) →</button>
       </div>
 
-      <div class="office-card" id="obj-nego-us" style="cursor: pointer;">
-        <span class="task-tag must">업무 ② · 통상 외교 (1 AP)</span>
-        <div class="icon-head">🤝</div>
-        <h3>${chapter.negotiationTitle || '대미 통상 협상 훈령'}</h3>
-        <p style="font-size: 12px; color: #475569; margin: 0 0 10px;">${chapter.negotiationDesc || '양자 통상 담판 테이블로 직행합니다.'}</p>
-        <button class="secondary" style="width: 100%;">
-          ${this.gm.activeNegotiation && this.gm.activeNegotiation.status === 'suspended' ? '정회된 협상 속개 →' : (chapter.negotiationButtonText || '외교 협상 시작 →')}
-        </button>
-      </div>
+      ${this.gm.activeNegotiation && this.gm.activeNegotiation.status === 'suspended' ? `
+        <div class="office-card" id="obj-nego-us" style="cursor: pointer;">
+          <span class="task-tag must">외교 속개 (1 AP)</span>
+          <div class="icon-head">🤝</div>
+          <h3>정회된 협상 속개</h3>
+          <p style="font-size: 12px; color: #475569; margin: 0 0 10px;">일시 정회 중인 양자 통상 담판 테이블로 복귀합니다.</p>
+          <button class="secondary" style="width: 100%;">정회된 협상 속개 →</button>
+        </div>
+      ` : `
+        <div class="office-card" id="obj-domestic-coordination" style="cursor: pointer;">
+          <span class="task-tag must">업무 ② · 부처 조율 (1 AP)</span>
+          <div class="icon-head">🏛️</div>
+          <h3>국내 부처·이해관계자 조정</h3>
+          <p style="font-size: 12px; color: #475569; margin: 0 0 10px;">경제부총리·산업부·농림부 및 국회와의 이견을 사전 조율하여 국가적 단일 대오를 구축합니다.</p>
+          <button class="secondary" style="width: 100%;">
+            국내 정책 조율 데스크 →
+          </button>
+        </div>
+      `}
 
       <div class="office-card" id="obj-corp-dialogue" style="cursor: pointer;">
         <span class="task-tag opt">업무 ③ · 산업 현장 (1 AP)</span>
@@ -1187,6 +1197,13 @@ class UIManager {
       if (elWar) elWar.onclick = () => { this.gm.screen = 'war_room'; this.render(); };
       const elPol = document.getElementById('obj-policies');
       if (elPol) elPol.onclick = () => { this.gm.screen = 'policies'; this.render(); };
+      const elCoord = document.getElementById('obj-domestic-coordination');
+      if (elCoord) elCoord.onclick = () => {
+        this.stageManager.setScene('domestic_council');
+        this.render();
+        const domTarget = document.querySelector('.campaign-situation-room') || document.querySelector('.game-stage-wrapper');
+        if (domTarget) domTarget.scrollIntoView({ behavior: 'smooth' });
+      };
       const elNego = document.getElementById('obj-nego-us');
       if (elNego) elNego.onclick = () => {
         if (this.gm.activeNegotiation && this.gm.activeNegotiation.status === 'suspended') {
@@ -1263,8 +1280,8 @@ class UIManager {
           <p style="margin: 0; font-size: 12px; color: #555;">2027년 12개월 동안 무역수지 흑자를 수호하고 10대 첨단 주력산업을 지켜내십시오.</p>
         </div>
         <div style="background: var(--white); padding: 10px; border-radius: 4px; border: 1px solid var(--line);">
-          <strong style="color: var(--navy); display: block; margin-bottom: 3px;">3. 월간 3 AP (Action)</strong>
-          <p style="margin: 0; font-size: 12px; color: #555;">매월 3회의 정책 행동력(대미 담판, 설비 매칭, 무역금융 등)을 전략적으로 배분합니다.</p>
+          <strong style="color: var(--navy); display: block; margin-bottom: 3px;">3. 월간 가용 AP (Action)</strong>
+          <p style="margin: 0; font-size: 12px; color: #555;">매월 주어지는 정책 행동력(정책 결재, 부처 조율, 기업 지원 등)을 전략적으로 배분합니다.</p>
         </div>
         <div style="background: var(--white); padding: 10px; border-radius: 4px; border: 1px solid var(--line);">
           <strong style="color: var(--navy); display: block; margin-bottom: 3px;">4. 결과 확인 (Feedback)</strong>

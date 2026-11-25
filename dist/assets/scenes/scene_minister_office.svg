@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="1200" height="700">
+  <defs>
+    <linearGradient id="wallGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="65%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="woodGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#b45309"/>
+      <stop offset="100%" stop-color="#271003"/>
+    </linearGradient>
+    <linearGradient id="tableGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#5a2d0c" stop-opacity="0.95"/>
+      <stop offset="40%" stop-color="#241005"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="windowLight" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.14"/>
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Back Wall -->
+  <rect width="1200" height="700" fill="url(#wallGrad)"/>
+
+  <!-- Wall Wood Molding & Panels -->
+  <rect x="0" y="60" width="1200" height="12" fill="url(#woodGrad)"/>
+  <rect x="0" y="380" width="1200" height="16" fill="url(#woodGrad)"/>
+
+  <!-- Architectural Background Windows overlooking Seoul -->
+  <g opacity="0.45">
+    <rect x="120" y="100" width="260" height="250" rx="8" fill="#1e293b" stroke="#b45309" stroke-width="4"/>
+    <rect x="135" y="115" width="230" height="220" fill="url(#windowLight)"/>
+    <line x1="250" y1="100" x2="250" y2="350" stroke="#b45309" stroke-width="3"/>
+    <line x1="120" y1="225" x2="380" y2="225" stroke="#b45309" stroke-width="3"/>
+
+    <rect x="820" y="100" width="260" height="250" rx="8" fill="#1e293b" stroke="#b45309" stroke-width="4"/>
+    <rect x="835" y="115" width="230" height="220" fill="url(#windowLight)"/>
+    <line x1="950" y1="100" x2="950" y2="350" stroke="#b45309" stroke-width="3"/>
+    <line x1="820" y1="225" x2="1080" y2="225" stroke="#b45309" stroke-width="3"/>
+  </g>
+
+  <!-- Center Crest / Ministry Emblem -->
+  <g transform="translate(600, 200)" filter="drop-shadow(0 4px 12px rgba(0,0,0,0.5))">
+    <circle cx="0" cy="0" r="70" fill="#0f172a" stroke="#b45309" stroke-width="4"/>
+    <circle cx="0" cy="0" r="58" fill="none" stroke="#d97706" stroke-width="1.5" stroke-dasharray="6 3"/>
+    <text x="0" y="20" font-size="52" text-anchor="middle">🏛️</text>
+  </g>
+
+  <!-- Top Official Header Plaque -->
+  <g transform="translate(600, 35)">
+    <rect x="-440" y="-20" width="880" height="38" rx="6" fill="#020617" stroke="#b45309" stroke-width="2"/>
+    <text x="0" y="4" font-family="'Pretendard', sans-serif" font-size="13" font-weight="900" fill="#fde68a" letter-spacing="1.5" text-anchor="middle">
+      GOVERNMENT COMPLEX SEOUL · MINISTER FOR TRADE EXECUTIVE OFFICE
+    </text>
+  </g>
+
+  <!-- Executive Desk in Foreground -->
+  <g>
+    <ellipse cx="600" cy="620" rx="680" ry="240" fill="#000000" opacity="0.65"/>
+    <ellipse cx="600" cy="600" rx="660" ry="220" fill="url(#tableGrad)" stroke="#b45309" stroke-width="6"/>
+    <ellipse cx="600" cy="570" rx="540" ry="140" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.15"/>
+  </g>
+
+  <!-- Interactive Table Desk Props -->
+  <g transform="translate(600, 500)">
+    <!-- Official Document Folder Center -->
+    <rect x="-80" y="-30" width="160" height="70" rx="4" fill="#fef3c7" stroke="#b45309" stroke-width="2" transform="rotate(-2)"/>
+    <line x1="-60" y1="-10" x2="60" y2="-10" stroke="#92400e" stroke-width="2"/>
+    <line x1="-60" y1="5" x2="40" y2="5" stroke="#92400e" stroke-width="1.5"/>
+    <line x1="-60" y1="20" x2="50" y2="20" stroke="#92400e" stroke-width="1.5"/>
+    <circle cx="45" cy="18" r="8" fill="#dc2626" opacity="0.8"/>
+
+    <!-- Left Flag / Stand -->
+    <circle cx="-280" cy="-20" r="16" fill="#0f172a" stroke="#64748b" stroke-width="2"/>
+    <text x="-280" y="-12" font-size="18" text-anchor="middle">🇰🇷</text>
+
+    <!-- Right Executive Phone / Hotline -->
+    <circle cx="280" cy="-20" r="16" fill="#0f172a" stroke="#64748b" stroke-width="2"/>
+    <text x="280" y="-12" font-size="16" text-anchor="middle">📞</text>
+
+    <!-- Executive Pen Stand -->
+    <rect x="140" y="-20" width="36" height="20" rx="3" fill="#1e293b"/>
+    <line x1="158" y1="-20" x2="175" y2="-55" stroke="#d97706" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>
